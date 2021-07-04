@@ -15,8 +15,12 @@
 \RequirePackage{fontspec}
 \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 \setmainfont{GFS Didot} % is said to be a good Latin font to match with Porson-style fonts
-\newfontfamily\greekfont{GFS Olga} % a Porson-style font; has a higher x-height than GFS Porson, and therefore matches better with Latin fonts
+\newfontfamily\greekfont{GFS Porson}
+%  \newfontfamily\greekfont{GFS Olga}
+%   ... a Porson-style font; has a higher x-height than GFS Porson, and therefore matches better with Latin fonts.
+%       But seems to be buggy/immature. Bad kerning on λλ.
 \newenvironment{greek}{\greekfont}{}
+% Both Olga and Porson lack real bold:
 \newenvironment{boldgreek}{\fontspec{GFS Olga}[FakeBold=0.1]}{} % discontinuous behavior: 0.0 gives no bolding, 0.0001 gives quite a bit
 
 % A symbol to be used like κύνεσσιν < κύων, to show A is an inflected form of B.
@@ -32,6 +36,8 @@
 \newenvironment{vocabpage}{\begin{raggedright}\begin{multicols}{2}}{\end{multicols}\end{raggedright}}
 \newenvironment{vocabcommon}{\common\\}{}
 \newenvironment{vocabuncommon}{\uncommon\\}{}
+\newenvironment{widespacing}{\linespread{1.5}}{}
+\newenvironment{foreignpage}{\pagebreak\begin{greek}\begin{raggedright}\begin{widespacing} \large}{\end{widespacing}\end{raggedright}\end{greek}\pagebreak}
 
 % The following need to be in their own separate paragraphs.
 \newcommand{\bigseparator}{
