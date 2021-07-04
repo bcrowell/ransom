@@ -4,9 +4,7 @@
 
 \begin{document}
 
-\begin{vocabpage}
-
-<% vocab(
+<% v = vocab(
 %q{
 βουλη
 θοος
@@ -60,8 +58,6 @@
 κοσμητωρ
 }
 ) %>
-
-\end{vocabpage}
 
 \pagebreak
 

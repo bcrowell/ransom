@@ -3,8 +3,10 @@ require_relative "lib/file_util"
 require_relative "lib/string_util"
 
 def vocab(common,uncommon,rare)
+  print "\\begin{vocabpage}\n"
   vocab_helper('common',common)
   vocab_helper('uncommon',common+" "+rare)
+  print "\\end{vocabpage}\n"
 end
 
 def vocab_helper(commonness,files)
