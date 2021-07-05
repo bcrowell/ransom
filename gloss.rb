@@ -90,14 +90,14 @@ def main
   }
 
   threshold = 700 # words ranked higher than this are listed as common
-  0.upto(1) { |commonness|
-    if commonness==0 then env="vocabcommon" else env="vocabuncommon" end
-    print "\n\\begin{#{env}}\n" 
+  threshold2 = 1700 # words ranked lower than this get ransom notes
+  save_up_complaints = []
+  0.upto(2) { |commonness|
     result.sort { |a,b| to_key(a[1]) <=> to_key(b[1]) } .each { |entry|
       word_raw,word,lemma,rank,f,pos,cltk_pos = entry
       if rank.nil? then rank=9999 end
       next if Ignore_words.patch(word) || Ignore_words.patch(lemma)
-      next unless rank<threshold && commonness==0 or rank>=threshold && commonness==1
+      next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
       next unless rank>100
       if add_cap_to_lemma(lemma) then lemma=capitalize(lemma) end
       key1 = remove_accents(to_key(word)).downcase
@@ -114,15 +114,15 @@ def main
         end
       end
       filename = "glosses/#{key}"
-      s = "<% vocab('#{key}') %>"
       if !(FileTest.exist?(filename)) then
         if key1==key2 then foo=key1 else foo="#{key1} or #{key2}" end
-        s = sprintf("%-35s",s)+" % no entry for #{foo}"
+        save_up_complaints.push("no entry for #{foo}")
       end
-      print s+"\n"
+      print "#{key}\n"
     }
-    print "\\end{#{env}}\n" 
+    print "\n"
   }
+  print save_up_complaints.join("\n"),"\n"
 end
 
 def to_key(s)

@@ -1,0 +1,18 @@
+unclear license; homepage says cc-by-sa, but file itself says nc; did they change licenses?
+  https://github.com/PerseusDL/treebank_data/issues/29
+
+I have code that generates both a json file and an sdbm file.
+I commented out the code to generate the sdbm file, because it's super huge, and
+reading the json file is actually pretty efficient.
+
+Oops, in the following I used their version 1, but later versions have already been converted
+to unicode; see treebank_data/v2.1/Greek/texts/
+
+git clone https://github.com/PerseusDL/treebank_data
+head -207651 v1/greek/data/agdt-1.7.xml | tail -170456 >~/iliad_perseus.xml
+head -346041 v1/greek/data/agdt-1.7.xml | tail -138389 >~/odyssey_perseus.xml
+python3 beta_to_unicode.py <iliad_perseus.xml >iliad_unicode.xml
+python3 beta_to_unicode.py <odyssey_perseus.xml >odyssey_unicode.xml
+cat iliad_unicode.xml odyssey_unicode.xml | ruby flatten.rb >homer_lemmas.csv
+cat homer_lemmas.csv | ruby to_db.rb
+ruby make_freq.rb >homer_freq.json
