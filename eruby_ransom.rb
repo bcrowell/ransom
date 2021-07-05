@@ -53,18 +53,19 @@ def ransom(t,v)
 end
 
 def foreign_helper(t,ransom,gloss_these:[])
+  # If gloss_these isn't empty, then we assume it contains a list of rare lemmatized forms.
   print "\\begin{foreignpage}\n"
   if ransom then print "\\begin{graytext}\n" end
   lines = t.split(/\s*\n\s*/).select { |line| line=~/[[:alpha:]]/ }
   gg = gloss_these.map { |x| remove_accents(x)}
   0.upto(lines.length-1) { |i|
     w = words(lines[i])
-    ww = w.map { |x| remove_accents(x)}
+    ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
     gg.each { |x|
-      if ww.include?(x) then
+      if ww.include?(x) then # lemmatized version of sentence includes this rare lemma that we were asked to gloss
         j = ww.index(x)
-        aaa = w[j].gsub(/[[:alpha:]]/,'*')
-        lines[i] = lines[i].sub(/#{w[j]}/,aaa)
+        word = w[j] # original inflected form
+        lines[i] = lines[i].sub(/#{word}/) {"==#{x}=="}
       end
     }
   }
@@ -78,8 +79,31 @@ def words(s)
   return s.scan(/[[:alpha:]]+/)
 end
 
+class Lemmatize
+  @@lemmas = json_from_file_or_die("lemmas/homer_lemmas.json")
+  # typical entry when there's no ambiguity:
+  #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
+  def Lemmatize.lemmatize(word)
+    # returns [lemma,success]
+    if @@lemmas.has_key?(word) then return Lemmatize.lemma_helper(word) end
+    if @@lemmas.has_key?(capitalize(word)) then return Lemmatize.lemma_helper(capitalize(word)) end
+    return [word,false]
+  end
+
+  def Lemmatize.lemma_helper(word)
+    lemma,lemma_number,pos,count,if_ambiguous,ambig = @@lemmas[word]
+    return [lemma,true]
+  end
+end
+
+def capitalize(x)
+  return x.sub(/^(.)/) {$1.upcase}
+end
+
+
 def die(message)
   #  $stderr.print message,"\n"
   raise message # gives a stack trace
   exit(-1)
 end
+
