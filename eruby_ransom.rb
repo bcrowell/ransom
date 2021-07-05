@@ -65,7 +65,12 @@ def foreign_helper(t,ransom,gloss_these:[])
       if ww.include?(x) then # lemmatized version of sentence includes this rare lemma that we were asked to gloss
         j = ww.index(x)
         word = w[j] # original inflected form
-        lines[i] = lines[i].sub(/#{word}/) {"==#{x}=="}
+        code =                 %q(\makebox[0pt]{__})
+        code.sub!(/__/,        %q(\parbox{WIDTH}{CONTENTS})  )
+        code.sub!(/WIDTH/,     "50pt"  )
+        code.sub!(/CONTENTS/,  %q(\begin{blacktext}__\end{blacktext})  )
+        code.sub!(/__/,        x   )
+        lines[i] = lines[i].sub(/#{word}/) {"#{code}#{word}"}
       end
     }
   }

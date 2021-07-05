@@ -39,6 +39,7 @@
 \newenvironment{widespacing}{\linespread{1.5}}{}
 \newenvironment{foreignpage}{\pagebreak\begin{greek}\begin{raggedright}\begin{widespacing} \large}{\end{widespacing}\end{raggedright}\end{greek}\pagebreak}
 \newenvironment{graytext}{\color{black!25}}{} % xcolor package, https://tex.stackexchange.com/a/17105/6853
+\newenvironment{blacktext}{\color{black}}{} % xcolor package, https://tex.stackexchange.com/a/17105/6853
 
 
 % The following need to be in their own separate paragraphs.
