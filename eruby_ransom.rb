@@ -29,17 +29,25 @@ def sort_vocab(s)
 end
 
 def vocab1(file)
-  path = "glosses/#{file}"
+  entry = get_gloss(file)
+  # {  "word": "ἔθηκε",  "gloss": "put, put in a state",  "lexical": "τίθημι" }
+  return if entry.nil?
+  word,gloss,lexical = entry['word'],entry['gloss'],entry['lexical']
+  if entry.has_key?('lexical') then
+    s = "\\vocabinflection{#{word}}{#{lexical}}{#{gloss}}"
+  else
+    s = "\\vocab{#{word}}{#{gloss}}"
+  end
+  print "#{s}\\\\"
+end
+
+def get_gloss(key)
+  path = "glosses/#{key}"
   if FileTest.exist?(path) then
-    entry = json_from_file_or_die(path)
+    return json_from_file_or_die(path)
     # {  "word": "ἔθηκε",  "gloss": "put, put in a state",  "lexical": "τίθημι" }
-    word,gloss,lexical = entry['word'],entry['gloss'],entry['lexical']
-    if entry.has_key?('lexical') then
-      s = "\\vocabinflection{#{word}}{#{lexical}}{#{gloss}}"
-    else
-      s = "\\vocab{#{word}}{#{gloss}}"
-    end
-    print "#{s}\\\\"
+  else
+    return nil
   end
 end
 
@@ -65,11 +73,13 @@ def foreign_helper(t,ransom,gloss_these:[])
       if ww.include?(x) then # lemmatized version of sentence includes this rare lemma that we were asked to gloss
         j = ww.index(x)
         word = w[j] # original inflected form
+        entry = get_gloss(to_key(x))
+        if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
         code =                 %q(\makebox[0pt]{__})
         code.sub!(/__/,        %q(\parbox[b]{WIDTH}{CONTENTS})  ) # https://en.wikibooks.org/wiki/LaTeX/Boxes
         code.sub!(/WIDTH/,     "0pt"  )
-        code.sub!(/CONTENTS/,  %q(\begin{blacktext}__\end{blacktext})  )
-        code.sub!(/__/,        x   )
+        code.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
+        code.sub!(/__/,        gloss  )
         lines[i] = lines[i].sub(/#{word}/) {"#{code}#{word}"}
       end
     }
@@ -77,6 +87,10 @@ def foreign_helper(t,ransom,gloss_these:[])
   print lines.join("\\\\\n"),"\n\n"
   if ransom then print "\\end{graytext}\n" end
   print "\\end{foreignpage}\n"
+end
+
+def to_key(word)
+  return remove_accents(word).downcase
 end
 
 def words(s)

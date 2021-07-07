@@ -14,12 +14,13 @@
 % https://tex.stackexchange.com/a/37251/6853
 \RequirePackage{fontspec}
 \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
-\setmainfont{GFS Didot} % is said to be a good Latin font to match with Porson-style fonts
+\setmainfont{GFS Didot} % is said to be a good Latin font to match with Porson-style fonts; if changing this, change it on the following line as well
+\newfontfamily\latinfont{GFS Didot}
 \newfontfamily\greekfont{GFS Porson}
-%  \newfontfamily\greekfont{GFS Olga}
-%   ... a Porson-style font; has a higher x-height than GFS Porson, and therefore matches better with Latin fonts.
-%       But seems to be buggy/immature. Bad kerning on λλ.
+%  Also tried GFS Olga, which is also a Porson-style font; has a higher x-height than GFS Porson, and therefore matches better with Latin fonts.
+%  But seems to be buggy/immature/weird. Bad/weird kerning on λλ.
 \newenvironment{greek}{\greekfont}{}
+\newenvironment{latin}{\latinfont}{}
 % Both Olga and Porson lack real bold:
 \newenvironment{boldgreek}{\fontspec{GFS Olga}[FakeBold=0.1]}{} % discontinuous behavior: 0.0 gives no bolding, 0.0001 gives quite a bit
 
