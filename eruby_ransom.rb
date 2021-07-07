@@ -92,6 +92,7 @@ def foreign_helper(t,ransom,gloss_these:[])
             code = "#{code}#{word}"
           end
           if Options.if_render_glosses then
+            #pos = Init.get_pos_data(page,line,word_key) # a hash whose keys are "x","y","width","height","depth", all in units of pts
             code =                 %q(\smash{\makebox[0pt]{__}})
             code.sub!(/__/,        %q(\parbox[b]{WIDTH}{CONTENTS})  ) # https://en.wikibooks.org/wiki/LaTeX/Boxes
             code.sub!(/WIDTH/,     "0pt"  )
@@ -167,6 +168,30 @@ class Init
       \\newwrite\\posoutputfile
       \\immediate\\openout\\posoutputfile=#{Options.pos_file}
     }
+  end
+  @@pos = {} # will be a hash of hashes, @@pos[gloss_key][name_of_datum]
+  if Options.if_render_glosses then
+    IO.foreach(Options.pos_file) { |line| 
+      line.sub!(/\s+$/,'') # trim trailing whitespace, such as a newline
+      a = line.split(/,/,-1)
+      page,line,word_key,x,y,width,height,depth = a
+      key = [page,line,word_key].join(",")
+      data = [x,y,width,height,depth]
+      if !(@@pos.has_key?(key)) then @@pos[key] = {} end
+      0.upto(data.length-1) { |i|
+        name_of_datum = ["x","y","width","height","depth"][i]
+        value = data[i]
+        next if value==''
+        value.sub!(/pt/,'')
+        value = value.to_f
+        if ["x","y"].include?(name_of_datum) then value = value/65536.0 end # convert to points
+        if @@pos[key][name_of_datum].nil? then @@pos[key][name_of_datum]=value end
+      }
+    }
+  end
+  def get_pos_data(page,line,word_key)
+    # returns a hash whose keys are "x","y","width","height","depth", all in units of pts
+    return @@pos[[page,line,word_key].join(",")]
   end
 end
 
