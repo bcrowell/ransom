@@ -66,8 +66,8 @@ def foreign_helper(t,ransom,gloss_these:[])
         j = ww.index(x)
         word = w[j] # original inflected form
         code =                 %q(\makebox[0pt]{__})
-        code.sub!(/__/,        %q(\parbox{WIDTH}{CONTENTS})  )
-        code.sub!(/WIDTH/,     "50pt"  )
+        code.sub!(/__/,        %q(\parbox[b]{WIDTH}{CONTENTS})  ) # https://en.wikibooks.org/wiki/LaTeX/Boxes
+        code.sub!(/WIDTH/,     "0pt"  )
         code.sub!(/CONTENTS/,  %q(\begin{blacktext}__\end{blacktext})  )
         code.sub!(/__/,        x   )
         lines[i] = lines[i].sub(/#{word}/) {"#{code}#{word}"}
