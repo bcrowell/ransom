@@ -65,25 +65,29 @@ def foreign_helper(t,ransom,gloss_these:[])
   print "\\begin{foreignpage}\n"
   if ransom then print "\\begin{graytext}\n" end
   lines = t.split(/\s*\n\s*/).select { |line| line=~/[[:alpha:]]/ }
-  gg = gloss_these.map { |x| remove_accents(x)}
-  0.upto(lines.length-1) { |i|
-    w = words(lines[i])
-    ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
-    gg.each { |x|
-      if ww.include?(x) then # lemmatized version of sentence includes this rare lemma that we were asked to gloss
-        j = ww.index(x)
-        word = w[j] # original inflected form
-        entry = get_gloss(to_key(x))
-        if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
-        code =                 %q(\makebox[0pt]{__})
-        code.sub!(/__/,        %q(\parbox[b]{WIDTH}{CONTENTS})  ) # https://en.wikibooks.org/wiki/LaTeX/Boxes
-        code.sub!(/WIDTH/,     "0pt"  )
-        code.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
-        code.sub!(/__/,        gloss  )
-        lines[i] = lines[i].sub(/#{word}/) {"#{code}#{word}"}
-      end
+  if gloss_these.length>0 then
+    gg = gloss_these.map { |x| remove_accents(x)}
+    0.upto(lines.length-1) { |i|
+      w = words(lines[i])
+      ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
+      gg.each { |x|
+        if ww.include?(x) then # lemmatized version of sentence includes this rare lemma that we were asked to gloss
+          j = ww.index(x)
+          word = w[j] # original inflected form
+          entry = get_gloss(to_key(x))
+          if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
+          if Options.if_render_glosses then
+            code =                 %q(\smash{\makebox[0pt]{__}})
+            code.sub!(/__/,        %q(\parbox[b]{WIDTH}{CONTENTS})  ) # https://en.wikibooks.org/wiki/LaTeX/Boxes
+            code.sub!(/WIDTH/,     "0pt"  )
+            code.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
+            code.sub!(/__/,        gloss  )
+            lines[i] = lines[i].sub(/#{word}/) {"#{code}#{word}"}
+          end
+        end
+      }
     }
-  }
+  end
   print lines.join("\\\\\n"),"\n\n"
   if ransom then print "\\end{graytext}\n" end
   print "\\end{foreignpage}\n"
@@ -124,6 +128,38 @@ class Lemmatize
     return [lemma,true]
   end
 end
+
+class Options
+  if ARGV.length<1 then die("no command-line argument supplied") end
+  @@the_options = JSON.parse(ARGV[0])
+  def Options.if_write_pos() return Options.has_flag('write_pos') end
+  def Options.if_render_glosses() return Options.has_flag('render_glosses') end
+  def Options.if_clean() return Options.has_flag('clean') end
+  def Options.pos_file() return @@the_options['pos_file'] end
+  def Options.has_flag(flag)
+    return @@the_options.has_key?(flag) && @@the_options[flag]
+  end
+end
+
+class Init
+  # Code that gets run when the eruby script starts, but after code that's higher up in the file.
+  require 'fileutils'
+  if Options.if_clean then FileUtils.rm_f(Options.pos_file) end # Currently I open the file to write, not append, so this isn't necessary.
+  if Options.if_write_pos then
+    print %Q{
+      \\newwrite\\posoutputfile
+      \\openout\\posoutputfile=#{Options.pos_file}
+    }
+  end
+end
+
+END {
+  if Options.if_write_pos then
+    print %q{
+      \closeout\posoutputfile
+    }
+  end
+}
 
 def capitalize(x)
   return x.sub(/^(.)/) {$1.upcase}

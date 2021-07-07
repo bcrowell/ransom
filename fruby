@@ -39,7 +39,7 @@ def binding_for_eval()
 end
 
 if ARGV.empty? then die("Usage: fruby infile >outfile") end
-infile = ARGV[0]
+infile = ARGV.shift # leave the rest of the command line parameters, if any, to be accessed by the eruby code
 if ! File.exist?(infile) then die("File #{infile} does not exist.") end
 t = nil
 File.open(infile,'r') { |f|
