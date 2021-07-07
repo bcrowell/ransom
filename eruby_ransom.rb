@@ -74,16 +74,30 @@ def foreign_helper(t,ransom,gloss_these:[])
         if ww.include?(x) then # lemmatized version of sentence includes this rare lemma that we were asked to gloss
           j = ww.index(x)
           word = w[j] # original inflected form
-          entry = get_gloss(to_key(x))
+          key = to_key(x)
+          entry = get_gloss(key)
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
+          code = nil
+          if Options.if_write_pos then
+            code = %q{
+              \savebox{\myboxregister}{WORD}%
+              \smash{\pdfsavepos\usebox{\myboxregister}}%
+              \write\posoutputfile{\thepage,LINE,KEY,\the\pdflastxpos,\the\pdflastypos,\the\wd\myboxregister,\the\ht\myboxregister,\the\dp\myboxregister}%
+            }
+            code.gsub!(/WORD/,word)
+            code.gsub!(/LINE/,i.to_s)
+            code.gsub!(/KEY/,key)
+            code = "#{code}#{word}"
+          end
           if Options.if_render_glosses then
             code =                 %q(\smash{\makebox[0pt]{__}})
             code.sub!(/__/,        %q(\parbox[b]{WIDTH}{CONTENTS})  ) # https://en.wikibooks.org/wiki/LaTeX/Boxes
             code.sub!(/WIDTH/,     "0pt"  )
             code.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
             code.sub!(/__/,        gloss  )
-            lines[i] = lines[i].sub(/#{word}/) {"#{code}#{word}"}
+            code = "#{code}#{word}"
           end
+          if !(code.nil?) then lines[i] = lines[i].sub(/#{word}/,code) end
         end
       }
     }
@@ -147,6 +161,7 @@ class Init
   if Options.if_clean then FileUtils.rm_f(Options.pos_file) end # Currently I open the file to write, not append, so this isn't necessary.
   if Options.if_write_pos then
     print %Q{
+      \\newsavebox\\myboxregister
       \\newwrite\\posoutputfile
       \\openout\\posoutputfile=#{Options.pos_file}
     }
@@ -159,6 +174,9 @@ END {
       \closeout\posoutputfile
     }
   end
+  print %q{
+    \end{document}
+  }
 }
 
 def capitalize(x)
