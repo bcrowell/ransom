@@ -79,10 +79,12 @@ def foreign_helper(t,ransom,gloss_these:[])
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           if Options.if_write_pos then
+            # Re the need for \immediate in the following, see https://tex.stackexchange.com/q/604110/6853
             code = %q{
               \savebox{\myboxregister}{WORD}%
               \smash{\pdfsavepos\usebox{\myboxregister}}%
-              \write\posoutputfile{\thepage,LINE,KEY,\the\pdflastxpos,\the\pdflastypos,\the\wd\myboxregister,\the\ht\myboxregister,\the\dp\myboxregister}%
+              \immediate\write\posoutputfile{\thepage,LINE,KEY,,,\the\wd\myboxregister,\the\ht\myboxregister,\the\dp\myboxregister}%
+              \write\posoutputfile{\thepage,LINE,KEY,\the\pdflastxpos,\the\pdflastypos,,,}%
             }
             code.gsub!(/WORD/,word)
             code.gsub!(/LINE/,i.to_s)
@@ -163,7 +165,7 @@ class Init
     print %Q{
       \\newsavebox\\myboxregister
       \\newwrite\\posoutputfile
-      \\openout\\posoutputfile=#{Options.pos_file}
+      \\immediate\\openout\\posoutputfile=#{Options.pos_file}
     }
   end
 end
