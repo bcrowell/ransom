@@ -80,6 +80,7 @@ foreign(text)
 ransom(text,v)
 %>
 
+<% print Patch_names.patch(%q{
 Sing, Ο goddess, the destructive wrath of Achilles, son of Peleus,
 which brought countless woes upon the Greeks, 1 and hurled many valiant
 souls of heroes down to Hades, and made themselves 2 a prey to dogs and
@@ -96,6 +97,6 @@ daughter, and bringing invaluable ransoms, having in his hands the
 fillets of far-darting Apollo on his golden sceptre. And he supplicated
 all the Greeks, but chiefly the two sons of Atreus, the leaders of the
 people:
-
+}) %>
 
 \end{document}

@@ -34,7 +34,7 @@ def vocab1(file)
     entry = json_from_file_or_die(path)
     # {  "word": "ἔθηκε",  "gloss": "put, put in a state",  "lexical": "τίθημι" }
     word,gloss,lexical = entry['word'],entry['gloss'],entry['lexical']
-    if entry.has_key?(lexical) then
+    if entry.has_key?('lexical') then
       s = "\\vocabinflection{#{word}}{#{lexical}}{#{gloss}}"
     else
       s = "\\vocab{#{word}}{#{gloss}}"
@@ -82,6 +82,16 @@ end
 def words(s)
   # fixme: handle apostrophes
   return s.scan(/[[:alpha:]]+/)
+end
+
+class Patch_names
+  @@patches = {"Latona"=>"Leto","Ulysses"=>"Odysseus","Jove"=>"Zeus","Atrides"=>"Atreides"}
+  def Patch_names.patch(text)
+    @@patches.each { |k,v|
+      text = text.gsub(/#{k}/,v)
+    }
+    return text
+  end
 end
 
 class Lemmatize
