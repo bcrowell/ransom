@@ -62,12 +62,14 @@ end
 
 def foreign_helper(t,ransom,gloss_these:[])
   # If gloss_these isn't empty, then we assume it contains a list of rare lemmatized forms.
-  print "\\begin{foreignpage}\n"
-  if ransom then print "\\begin{graytext}\n" end
+  gloss_code = ''
+  main_code = "\\begin{foreignpage}\n"
+  if ransom then main_code = main_code + "\\begin{graytext}\n" end
   lines = t.split(/\s*\n\s*/).select { |line| line=~/[[:alpha:]]/ }
   if gloss_these.length>0 then
     gg = gloss_these.map { |x| remove_accents(x)}
     0.upto(lines.length-1) { |i|
+      line_hash = Digest::MD5.hexdigest(lines[i])
       w = words(lines[i])
       ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
       gg.each { |x|
@@ -78,36 +80,39 @@ def foreign_helper(t,ransom,gloss_these:[])
           entry = get_gloss(key)
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
+          new_gloss_code = nil
           if Options.if_write_pos then
             # Re the need for \immediate in the following, see https://tex.stackexchange.com/q/604110/6853
             code = %q{
               \savebox{\myboxregister}{WORD}%
               \smash{\pdfsavepos\usebox{\myboxregister}}%
-              \immediate\write\posoutputfile{\thepage,LINE,KEY,,,\the\wd\myboxregister,\the\ht\myboxregister,\the\dp\myboxregister}%
-              \write\posoutputfile{\thepage,LINE,KEY,\the\pdflastxpos,\the\pdflastypos,,,}%
+              \immediate\write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,,,\the\wd\myboxregister,\the\ht\myboxregister,\the\dp\myboxregister}%
+              \write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,\the\pdflastxpos,\the\pdflastypos,,,}%
             }
+            code.gsub!(/LINE_HASH/,line_hash)
             code.gsub!(/WORD/,word)
             code.gsub!(/LINE/,i.to_s)
             code.gsub!(/KEY/,key)
             code = "#{code}#{word}"
           end
           if Options.if_render_glosses then
-            #pos = Init.get_pos_data(page,line,word_key) # a hash whose keys are "x","y","width","height","depth", all in units of pts
-            code =                 %q(\smash{\makebox[0pt]{__}})
-            code.sub!(/__/,        %q(\parbox[b]{WIDTH}{CONTENTS})  ) # https://en.wikibooks.org/wiki/LaTeX/Boxes
-            code.sub!(/WIDTH/,     "0pt"  )
-            code.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
-            code.sub!(/__/,        gloss  )
-            code = "#{code}#{word}"
+            pos = Init.get_pos_data(line_hash) # a hash whose keys are "x","y","width","height","depth", all in units of pts
+            new_gloss_code =                 %q(\smash{\makebox[0pt]{__}})
+            new_gloss_code.sub!(/__/,        %q(\parbox[b]{WIDTH}{CONTENTS})  ) # https://en.wikibooks.org/wiki/LaTeX/Boxes
+            new_gloss_code.sub!(/WIDTH/,     (pos['width'].to_s+"pt")  )
+            new_gloss_code.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
+            new_gloss_code.sub!(/__/,        gloss  )
           end
+          if !(new_gloss_code.nil?) then gloss_code = gloss_code + new_gloss_code end
           if !(code.nil?) then lines[i] = lines[i].sub(/#{word}/,code) end
         end
       }
     }
   end
-  print lines.join("\\\\\n"),"\n\n"
-  if ransom then print "\\end{graytext}\n" end
-  print "\\end{foreignpage}\n"
+  main_code = main_code + lines.join("\\\\\n") + "\n\n"
+  if ransom then main_code = main_code + "\\end{graytext}\n" end
+  code = main_code +gloss_code + "\\end{foreignpage}\n"
+  print code
 end
 
 def to_key(word)
@@ -120,7 +125,7 @@ def words(s)
 end
 
 class Patch_names
-  @@patches = {"Latona"=>"Leto","Ulysses"=>"Odysseus","Jove"=>"Zeus","Atrides"=>"Atreides"}
+  @@patches = {"Latona"=>"Leto","Ulysses"=>"Odysseus","Jove"=>"Zeus","Atrides"=>"Atreides","Minervia"=>"Athena"}
   def Patch_names.patch(text)
     @@patches.each { |k,v|
       text = text.gsub(/#{k}/,v)
@@ -161,6 +166,7 @@ end
 class Init
   # Code that gets run when the eruby script starts, but after code that's higher up in the file.
   require 'fileutils'
+  require 'digest'
   if Options.if_clean then FileUtils.rm_f(Options.pos_file) end # Currently I open the file to write, not append, so this isn't necessary.
   if Options.if_write_pos then
     print %Q{
@@ -174,8 +180,8 @@ class Init
     IO.foreach(Options.pos_file) { |line| 
       line.sub!(/\s+$/,'') # trim trailing whitespace, such as a newline
       a = line.split(/,/,-1)
-      page,line,word_key,x,y,width,height,depth = a
-      key = [page,line,word_key].join(",")
+      line_hash,page,line,word_key,x,y,width,height,depth = a
+      key = line_hash
       data = [x,y,width,height,depth]
       if !(@@pos.has_key?(key)) then @@pos[key] = {} end
       0.upto(data.length-1) { |i|
@@ -189,9 +195,9 @@ class Init
       }
     }
   end
-  def get_pos_data(page,line,word_key)
+  def Init.get_pos_data(line_hash)
     # returns a hash whose keys are "x","y","width","height","depth", all in units of pts
-    return @@pos[[page,line,word_key].join(",")]
+    return @@pos[line_hash]
   end
 end
 
