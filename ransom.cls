@@ -9,7 +9,7 @@
 \RequirePackage{graphicx} % needed for \resizebox
 \RequirePackage{multicol,xcolor,calc}
 \RequirePackage{parskip} % disables indentation at the beginning of a paragraph
-\RequirePackage[absolute]{textpos}
+\RequirePackage[absolute,overlay]{textpos}
 
 % https://tex.stackexchange.com/a/37251/6853
 \RequirePackage{fontspec}

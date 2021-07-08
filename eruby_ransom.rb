@@ -96,8 +96,8 @@ def foreign_helper(t,ransom,gloss_these:[])
             code = "#{code}#{word}"
           end
           if Options.if_render_glosses then
-            pos = Init.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth", all in units of pts
-            x,y,width,height = pos['x'],pos['y'],pos['width'],pos['height'] # all floats
+            pos = Init.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
+            x,y,width,height = pos['x'],pos['y'],pos['width'],pos['height'] # all floats in units of pts
             a =                 %q(\parbox[b]{WIDTH}{CONTENTS})  # https://en.wikibooks.org/wiki/LaTeX/Boxes
             a.sub!(/WIDTH/,     "#{width}pt"  )
             a.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
@@ -105,8 +105,9 @@ def foreign_helper(t,ransom,gloss_these:[])
             new_gloss_code = %q(\begin{textblock*}{_WIDTH_pt}(_XPOS_,_YPOS_)_GLOSS_\end{textblock*}) + "\n"
             new_gloss_code.sub!(/_WIDTH_/,"#{width}")
             new_gloss_code.sub!(/_XPOS_/,"#{x}pt")
-            new_gloss_code.sub!(/_YPOS_/,"\\pdfpageheight-#{y}pt-#{height}pt")
-            # ... uses calc package; textpos's coordinate system goes from top down, pdfsavepos from bottom up
+            new_gloss_code.sub!(/_YPOS_/,"\\pdfpageheight-#{y}pt-#{0.7*height}pt")
+            # ... Uses calc package; textpos's coordinate system goes from top down, pdfsavepos from bottom up.
+            #     The final term scoots up the gloss so that its top is almost as high as the top of the Greek text.
             new_gloss_code.sub!(/_GLOSS_/,a)
           end
           if !(new_gloss_code.nil?) then gloss_code = gloss_code + new_gloss_code end
@@ -132,7 +133,7 @@ def words(s)
 end
 
 class Patch_names
-  @@patches = {"Latona"=>"Leto","Ulysses"=>"Odysseus","Jove"=>"Zeus","Atrides"=>"Atreides","Minervia"=>"Athena"}
+  @@patches = {"Latona"=>"Leto","Ulysses"=>"Odysseus","Jove"=>"Zeus","Atrides"=>"Atreides","Minerva"=>"Athena"}
   def Patch_names.patch(text)
     @@patches.each { |k,v|
       text = text.gsub(/#{k}/,v)
