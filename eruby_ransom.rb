@@ -100,14 +100,13 @@ def foreign_helper(t,ransom,gloss_these:[])
             w = pos['width'].to_s # string representing the width in units of points
             x = pos['x'].to_s # ... similar
             y = pos['y'].to_s #          ...
-            a =                 %q(\smash{\makebox[0pt]{__}})
-            a.sub!(/__/,        %q(\parbox[b]{WIDTH}{CONTENTS})  ) # https://en.wikibooks.org/wiki/LaTeX/Boxes
+            a =                 %q(\parbox[b]{WIDTH}{CONTENTS})  # https://en.wikibooks.org/wiki/LaTeX/Boxes
             a.sub!(/WIDTH/,     (w+"pt")  )
             a.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
             a.sub!(/__/,        gloss  )
             new_gloss_code = %q(\begin{textblock*}{_WIDTH_pt}(_XPOS_,_YPOS_)_GLOSS_\end{textblock*}) + "\n"
             new_gloss_code.sub!(/_WIDTH_/,w)
-            new_gloss_code.sub!(/_XPOS_/,"#{x}pt+0.3in")
+            new_gloss_code.sub!(/_XPOS_/,"#{x}pt")
             new_gloss_code.sub!(/_YPOS_/,"\\pdfpageheight-#{y}pt")
             # ... uses calc package; textpos's coordinate system goes from top down, pdfsavepos from bottom up
             new_gloss_code.sub!(/_GLOSS_/,a)
