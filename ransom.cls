@@ -7,9 +7,9 @@
 % Bindingoffset refers to the gutter.
 
 \RequirePackage{graphicx} % needed for \resizebox
-\RequirePackage{multicol,xcolor}
+\RequirePackage{multicol,xcolor,calc}
 \RequirePackage{parskip} % disables indentation at the beginning of a paragraph
-\RequirePackage{textpos}
+\RequirePackage[absolute]{textpos}
 
 % https://tex.stackexchange.com/a/37251/6853
 \RequirePackage{fontspec}

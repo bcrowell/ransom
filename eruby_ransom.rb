@@ -97,11 +97,22 @@ def foreign_helper(t,ransom,gloss_these:[])
           end
           if Options.if_render_glosses then
             pos = Init.get_pos_data(line_hash) # a hash whose keys are "x","y","width","height","depth", all in units of pts
-            new_gloss_code =                 %q(\smash{\makebox[0pt]{__}})
-            new_gloss_code.sub!(/__/,        %q(\parbox[b]{WIDTH}{CONTENTS})  ) # https://en.wikibooks.org/wiki/LaTeX/Boxes
-            new_gloss_code.sub!(/WIDTH/,     (pos['width'].to_s+"pt")  )
-            new_gloss_code.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
-            new_gloss_code.sub!(/__/,        gloss  )
+            w = pos['width'].to_s # string representing the width in units of points
+            x = pos['x'].to_s # ... similar
+            #y = pos['y'].to_s # ...
+            y = pos['y']
+            #y = 9*72-y
+            y = y.to_s
+            a =                 %q(\smash{\makebox[0pt]{__}})
+            a.sub!(/__/,        %q(\parbox[b]{WIDTH}{CONTENTS})  ) # https://en.wikibooks.org/wiki/LaTeX/Boxes
+            a.sub!(/WIDTH/,     (w+"pt")  )
+            a.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
+            a.sub!(/__/,        gloss  )
+            new_gloss_code = %q(\begin{textblock*}{_WIDTH_pt}(_XPOS_pt,_YPOS_pt)_GLOSS_\end{textblock*}) + "\n"
+            new_gloss_code.sub!(/_WIDTH_/,w)
+            new_gloss_code.sub!(/_XPOS_/,x)
+            new_gloss_code.sub!(/_YPOS_/,"9in-#{y}") # uses calc package
+            new_gloss_code.sub!(/_GLOSS_/,a)
           end
           if !(new_gloss_code.nil?) then gloss_code = gloss_code + new_gloss_code end
           if !(code.nil?) then lines[i] = lines[i].sub(/#{word}/,code) end
