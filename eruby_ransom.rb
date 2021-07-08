@@ -96,18 +96,16 @@ def foreign_helper(t,ransom,gloss_these:[])
             code = "#{code}#{word}"
           end
           if Options.if_render_glosses then
-            pos = Init.get_pos_data(line_hash) # a hash whose keys are "x","y","width","height","depth", all in units of pts
-            w = pos['width'].to_s # string representing the width in units of points
-            x = pos['x'].to_s # ... similar
-            y = pos['y'].to_s #          ...
+            pos = Init.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth", all in units of pts
+            x,y,width,height = pos['x'],pos['y'],pos['width'],pos['height'] # all floats
             a =                 %q(\parbox[b]{WIDTH}{CONTENTS})  # https://en.wikibooks.org/wiki/LaTeX/Boxes
-            a.sub!(/WIDTH/,     (w+"pt")  )
+            a.sub!(/WIDTH/,     "#{width}pt"  )
             a.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
             a.sub!(/__/,        gloss  )
             new_gloss_code = %q(\begin{textblock*}{_WIDTH_pt}(_XPOS_,_YPOS_)_GLOSS_\end{textblock*}) + "\n"
-            new_gloss_code.sub!(/_WIDTH_/,w)
+            new_gloss_code.sub!(/_WIDTH_/,"#{width}")
             new_gloss_code.sub!(/_XPOS_/,"#{x}pt")
-            new_gloss_code.sub!(/_YPOS_/,"\\pdfpageheight-#{y}pt")
+            new_gloss_code.sub!(/_YPOS_/,"\\pdfpageheight-#{y}pt-#{height}pt")
             # ... uses calc package; textpos's coordinate system goes from top down, pdfsavepos from bottom up
             new_gloss_code.sub!(/_GLOSS_/,a)
           end
@@ -190,7 +188,7 @@ class Init
       line.sub!(/\s+$/,'') # trim trailing whitespace, such as a newline
       a = line.split(/,/,-1)
       line_hash,page,line,word_key,x,y,width,height,depth = a
-      key = line_hash
+      key = [line_hash,word_key].join(",")
       data = [x,y,width,height,depth]
       if !(@@pos.has_key?(key)) then @@pos[key] = {} end
       0.upto(data.length-1) { |i|
@@ -204,9 +202,9 @@ class Init
       }
     }
   end
-  def Init.get_pos_data(line_hash)
+  def Init.get_pos_data(line_hash,word_key)
     # returns a hash whose keys are "x","y","width","height","depth", all in units of pts
-    return @@pos[line_hash]
+    return @@pos[[line_hash,word_key].join(",")]
   end
 end
 
