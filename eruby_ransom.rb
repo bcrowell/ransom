@@ -105,9 +105,9 @@ def foreign_helper(t,ransom,gloss_these:[])
             a.sub!(/WIDTH/,     (w+"pt")  )
             a.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
             a.sub!(/__/,        gloss  )
-            new_gloss_code = %q(\begin{textblock*}{_WIDTH_pt}(_XPOS_pt,_YPOS_)_GLOSS_\end{textblock*}) + "\n"
+            new_gloss_code = %q(\begin{textblock*}{_WIDTH_pt}(_XPOS_,_YPOS_)_GLOSS_\end{textblock*}) + "\n"
             new_gloss_code.sub!(/_WIDTH_/,w)
-            new_gloss_code.sub!(/_XPOS_/,x)
+            new_gloss_code.sub!(/_XPOS_/,"#{x}pt+0.3in")
             new_gloss_code.sub!(/_YPOS_/,"\\pdfpageheight-#{y}pt")
             # ... uses calc package; textpos's coordinate system goes from top down, pdfsavepos from bottom up
             new_gloss_code.sub!(/_GLOSS_/,a)
@@ -120,7 +120,8 @@ def foreign_helper(t,ransom,gloss_these:[])
   end
   main_code = main_code + lines.join("\\\\\n") + "\n\n"
   if ransom then main_code = main_code + "\\end{graytext}\n" end
-  code = main_code +gloss_code + "\\end{foreignpage}\n"
+  gloss_code = "\n{\\linespread{1.0}\\footnotesize #{gloss_code} }\n"
+  code = main_code + gloss_code + "\\end{foreignpage}\n"
   print code
 end
 
