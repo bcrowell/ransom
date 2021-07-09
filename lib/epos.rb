@@ -52,7 +52,8 @@ class Epos
     # Glob is a string such as "sing-destructive-wrath". It defines a chunk in which these three words occur in this order,
     # but possibly with other words in between. Case-insensitive.
     # A chunk is a contiguous portion of the text that doesn't contain certain chunk-ending characters and doesn't span files.
-    # For verse, these chunk-ending characters are \r and \n. For latin-script prose, they're . ? ;.
+    # For verse, the only chunk-ending character is \n. For latin-script prose, they're . ? ; and \n\n.
+    # An example where the \n\n matters is near the beginning of Buckley, where a paragraph ends with a colon setting off quoted speech.
     # Example:
     #   ruby -e 'require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); print e.word_glob_to_hard_ref("μῆνιν-ἄειδε")'
     #   For a non-unique match, try ῥοδοδάκτυλος-Ἠώς.
@@ -61,7 +62,7 @@ class Epos
     # indices are zero-based, and character_index is the first character in the chunk.
     keys = glob.split(/-/)
     spl = self.splitters
-    regex_no_splitters = "[^#{spl}]*"
+    regex_no_splitters = "[^#{spl}@]*" # The @ is a convenience for when we call matches_without_containing_paragraph_break.
     word_regexen = keys.map { |key| "(?<![[:alpha:]])"+key+"(?![[:alpha:]])" } # negative lookahead and lookbehind so it's an isolated word
     whole_regex = word_regexen.join(regex_no_splitters)
     c = self.get_contents
@@ -70,6 +71,7 @@ class Epos
     result = nil
     0.upto(c.length-1) { |i|
       m = c[i].scan(/#{whole_regex}/i)
+      m = m.select { |x| Epos.matches_without_containing_paragraph_break(whole_regex,x) }
       if m.length>0 && found then non_unique=true; break end
       if m.length>0 && !found then
         result = [i,c[i].index(m[0])]
@@ -77,7 +79,11 @@ class Epos
       end
       if m.length>1 then non_unique=true; break end
     }
-    if result.nil? then return [nil,nil] end
+    #if glob=~/greaved/ then raise "glob=#{glob}, result=#{result}\n" end # qwe
+    if result.nil? then
+      raise "failed match for #{glob}"
+      return [nil,nil]
+    end
     result[1] = first_character_in_chunk(result)
     return [result,non_unique]
   end
@@ -91,6 +97,7 @@ class Epos
     i = ref[1]
     while true do
       break if i==0 || (s[i-1]=~/[#{spl}]/)
+      break if i>=2 && s[i-1]=="\n" && s[i-2]=="\n"
       i = i-1
     end
     return i
@@ -215,6 +222,12 @@ class Epos
 
   def Epos.strip_pg_footnotes(s)
     return s.gsub(/Footnote \d+([^\n]+\n)+/,'')
+  end
+
+  def Epos.matches_without_containing_paragraph_break(regex,x)
+    # For our convenience, the regex refuses to match @.
+    x = x.gsub(/\n\n/,"@")
+    if x=~/#{regex}/i then return true else return false end
   end
 
 end
