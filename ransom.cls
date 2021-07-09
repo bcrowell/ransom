@@ -24,7 +24,9 @@
 % Both Olga and Porson lack real bold:
 \newenvironment{boldgreek}{\fontspec{GFS Olga}[FakeBold=0.1]}{} % discontinuous behavior: 0.0 gives no bolding, 0.0001 gives quite a bit
 
-\titleformat{\chapter}{\large\bfseries}{}{}{}{}
+\titleformat{\chapter}{\Large\bfseries}{}{}{}{}
+\titleformat{\section}{\large\bfseries}{}{}{}{}
+\titlespacing*{\chapter}{0pt}{-30pt}{10pt}
 
 % A symbol to be used like κύνεσσιν < κύων, to show A is an inflected form of B.
 %%%% \newcommand{\from}{$\prec$\hardspace{0.2em}} % or \textless
