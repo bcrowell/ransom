@@ -4,6 +4,10 @@
 
 \begin{document}
 
+\chapter*{Purpose and use of this book}
+
+\includegraphics[width=\linewidth]{figs/manual}
+
 <% v = vocab(%q{
 βουλη
 θοος

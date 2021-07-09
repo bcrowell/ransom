@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="210mm"
+   height="297mm"
+   viewBox="0 0 210 297"
+   version="1.1"
+   id="svg8"
+   inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
+   sodipodi:docname="manual.svg">
+  <defs
+     id="defs2" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="1.125219"
+     inkscape:cx="80.903936"
+     inkscape:cy="931.03206"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1280"
+     inkscape:window-height="998"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="false" />
+  <metadata
+     id="metadata5">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title />
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <image
+       sodipodi:absref="/home/bcrowell/Documents/programming/ransom/figs/../mockup/manual/c.jpg"
+       xlink:href="../mockup/manual/c.jpg"
+       y="39.104519"
+       x="70.417595"
+       id="image874"
+       preserveAspectRatio="none"
+       height="27.470879"
+       width="27.268143"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160" />
+    <image
+       sodipodi:absref="/home/bcrowell/Documents/programming/ransom/figs/../mockup/manual/b.jpg"
+       xlink:href="../mockup/manual/b.jpg"
+       width="41.206314"
+       height="27.470879"
+       preserveAspectRatio="none"
+       id="image939"
+       x="13.36957"
+       y="38.899311"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160" />
+    <rect
+       style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.91805476;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       id="rect891"
+       width="26.651934"
+       height="11.377727"
+       x="37.873802"
+       y="60.249779"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160" />
+    <image
+       sodipodi:absref="/home/bcrowell/Documents/programming/ransom/figs/../mockup/manual/a.jpg"
+       xlink:href="../mockup/manual/a.jpg"
+       width="41.206314"
+       height="27.470879"
+       preserveAspectRatio="none"
+       id="image877"
+       x="35.636414"
+       y="37.399479"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160" />
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35277775px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none"
+       x="41.458565"
+       y="33.286121"
+       id="text879"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160"><tspan
+         sodipodi:role="line"
+         id="tspan877"
+         x="41.458565"
+         y="33.286121"
+         style="stroke-width:0.35277775px">Greek</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35277775px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none"
+       x="56.888634"
+       y="20.193951"
+       id="text883"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160"><tspan
+         sodipodi:role="line"
+         id="tspan881"
+         x="56.888634"
+         y="20.193951"
+         style="stroke-width:0.35277775px">glosses for</tspan><tspan
+         sodipodi:role="line"
+         x="56.888634"
+         y="24.603672"
+         style="stroke-width:0.35277775px"
+         id="tspan885">difficult words,</tspan><tspan
+         sodipodi:role="line"
+         x="56.888634"
+         y="29.013393"
+         style="stroke-width:0.35277775px"
+         id="tspan887">positioned</tspan><tspan
+         sodipodi:role="line"
+         x="56.888634"
+         y="33.423115"
+         style="stroke-width:0.35277775px"
+         id="tspan889">geometrically</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35277775px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none"
+       x="84.319862"
+       y="25.960735"
+       id="text895"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160"><tspan
+         sodipodi:role="line"
+         id="tspan893"
+         x="84.319862"
+         y="25.960735"
+         style="stroke-width:0.35277775px">English</tspan><tspan
+         sodipodi:role="line"
+         x="84.319862"
+         y="30.370459"
+         style="stroke-width:0.35277775px"
+         id="tspan897">translation</tspan></text>
+    <text
+       xml:space="preserve"
+       style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.52777767px;line-height:125%;font-family:'Liberation Serif';-inkscape-font-specification:'Liberation Serif';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.35277775px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;marker:none;marker-start:none;marker-mid:none;marker-end:none"
+       x="14.65077"
+       y="28.298626"
+       id="text901"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160"><tspan
+         sodipodi:role="line"
+         id="tspan899"
+         x="14.65077"
+         y="28.298626"
+         style="stroke-width:0.35277775px">vocabulary</tspan><tspan
+         sodipodi:role="line"
+         x="14.65077"
+         y="32.708347"
+         style="stroke-width:0.35277775px"
+         id="tspan903">list</tspan></text>
+    <path
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.24694444;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 23.690608,32.662688 6.701947,13.559755"
+       id="path909"
+       inkscape:connector-curvature="0"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160" />
+    <path
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.24694444;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 46.601919,34.533001 2.182029,12.936318"
+       id="path911"
+       inkscape:connector-curvature="0"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160" />
+    <path
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.24694444;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 92.112824,32.039253 86.65775,47.469319"
+       id="path915"
+       inkscape:connector-curvature="0"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160" />
+    <path
+       style="opacity:1;vector-effect:none;fill:#a2988a;fill-opacity:0.75229361;stroke:none;stroke-width:0.93333334;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="M 211.74609 154.34766 L 207.62109 230.92773 L 245.32227 228.57227 L 243.55469 223.26953 L 242.9668 217.37891 L 250.625 217.96875 L 252.98047 219.73633 L 253.57031 156.70508 L 234.71875 154.9375 L 211.74609 154.34766 z M 212.87695 164.96875 L 218.68945 164.96875 L 218.68945 168.26758 L 212.87695 168.26758 L 212.87695 164.96875 z M 240.99805 173.29492 L 248.69531 173.29492 L 248.69531 175.18164 L 240.99805 175.18164 L 240.99805 173.29492 z M 230.94336 182.4082 L 238.79883 182.4082 L 238.79883 184.29297 L 230.94336 184.29297 L 230.94336 182.4082 z M 214.76172 183.34961 L 222.93164 183.34961 L 222.93164 185.70703 L 214.76172 185.70703 L 214.76172 183.34961 z M 210.83398 199.68945 L 217.11719 199.68945 L 217.11719 201.88867 L 210.83398 201.88867 L 210.83398 199.68945 z M 232.19922 202.67383 L 241.46875 202.67383 L 241.46875 205.97266 L 232.19922 205.97266 L 232.19922 202.67383 z M 212.08984 212.25781 L 219.94531 212.25781 L 219.94531 214.30078 L 212.08984 214.30078 L 212.08984 212.25781 z M 217.27539 216.18555 L 221.98828 216.18555 L 221.98828 218.85547 L 217.27539 218.85547 L 217.27539 216.18555 z M 213.0332 220.42773 L 218.8457 220.42773 L 218.8457 223.41211 L 213.0332 223.41211 L 213.0332 220.42773 z "
+       transform="scale(0.26458333)"
+       id="path917"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160" />
+    <path
+       style="opacity:1;vector-effect:none;fill:none;fill-opacity:1;stroke:#000000;stroke-width:0.24694444;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       d="m 65.616748,34.688859 -3.117183,12.78046"
+       id="path913"
+       inkscape:connector-curvature="0"
+       inkscape:export-xdpi="160"
+       inkscape:export-ydpi="160" />
+  </g>
+</svg>

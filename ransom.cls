@@ -1,13 +1,13 @@
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{ransom}
 
-\LoadClass[10pt]{book}
+\LoadClass[12pt]{book}
 \RequirePackage[paperheight=9in,paperwidth=6in,bindingoffset=0.3in, left=0.5in, right=0.5in]{geometry} 
 % https://tex.stackexchange.com/q/80520/6853
 % Bindingoffset refers to the gutter.
 
 \RequirePackage{graphicx} % needed for \resizebox
-\RequirePackage{multicol,xcolor,calc}
+\RequirePackage{multicol,xcolor,calc,titlesec}
 \RequirePackage{parskip} % disables indentation at the beginning of a paragraph
 \RequirePackage[absolute,overlay]{textpos}
 
@@ -24,6 +24,8 @@
 % Both Olga and Porson lack real bold:
 \newenvironment{boldgreek}{\fontspec{GFS Olga}[FakeBold=0.1]}{} % discontinuous behavior: 0.0 gives no bolding, 0.0001 gives quite a bit
 
+\titleformat{\chapter}{\large\bfseries}{}{}{}{}
+
 % A symbol to be used like κύνεσσιν < κύων, to show A is an inflected form of B.
 %%%% \newcommand{\from}{$\prec$\hardspace{0.2em}} % or \textless
 \newcommand{\from}{\raisebox{.25ex}{{\tiny{$\prec$}}}\hardspace{0.2em}}
@@ -34,7 +36,7 @@
 \newcommand{\common}{\textit{common}}
 \newcommand{\uncommon}{\bigseparator\vspace{2mm}\textit{uncommon}}
 
-\newenvironment{vocabpage}{\begin{raggedright}\begin{multicols}{2}}{\end{multicols}\end{raggedright}}
+\newenvironment{vocabpage}{\cleardoublepage\begin{raggedright}\begin{multicols}{2}}{\end{multicols}\end{raggedright}}
 \newenvironment{vocabcommon}{\common\\}{}
 \newenvironment{vocabuncommon}{\uncommon\\}{}
 \newenvironment{widespacing}{\linespread{1.5}}{}
