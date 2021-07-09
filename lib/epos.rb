@@ -1,8 +1,5 @@
 class Epos
 
-  # One-liner to update or create a frequency file (needn't be done explicitly, but can be a good test):
-  #   ruby -e 'require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); e.freq'
-
   def initialize(text,script,is_verse)
     # Text is the pathname of either a file or a directory containing some files. If it's a directory, then
     # any files inside it are taken to be texts, unless they have extensions .freq, .index, or .meta.
@@ -24,6 +21,32 @@ class Epos
     return s.scan(/[[:alpha:]]+/)
   end
 
+  def extract(r1,r2,remove_numerals:true)
+    # r1 and r2 are hard refs
+    # Returns chunk r1 (inclusive) to r2 (not inclusive). Leading and trailing whitespace is stripped, except that
+    # if it's verse, then the result has exactly one trailing newline.
+    # One-liner for testing:
+    #   ruby -e 'require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); r1=e.word_glob_to_hard_ref("μῆνιν-ἄειδε")[0]; r2=e.word_glob_to_hard_ref("ἐϋκνήμιδες-Ἀχαιοί")[0]; print e.extract(r1,r2)'
+    c = self.get_contents
+    if r1[0]==r2[0] then
+      result = c[r1[0]][r1[1]..(r2[1]-1)]
+    else
+      a = []
+      a.push(c[r1[0]][r1[1]..-1])
+      (r1[0]+1).upto(r2[0]-1) { |i| a.push(c[i]) }
+      if r2[1]>0 then a.push(c[r2[0]][0..(r2[1]-1)]) end # the case r2[1]=0 would produce anomalous behavior because index -1 has a special meaning
+      result = join_file_contents(a)
+    end
+    result = strip_whitespace(result)
+    if self.is_verse then result=result+"\n" end
+    if remove_numerals then result.gsub!(/\s+\d+/,'') end
+    return result
+  end
+
+  def strip_whitespace(s)
+    return s.sub(/\s+$/,'').sub(/^\s+/,'')
+  end
+
   def word_glob_to_hard_ref(glob)
     # Glob is a string such as "sing-destructive-wrath". It defines a chunk in which these three words occur in this order,
     # but possibly with other words in between. Case-insensitive.
@@ -34,18 +57,10 @@ class Epos
     #   For a non-unique match, try ῥοδοδάκτυλος-Ἠώς.
     # Returns [hard_ref,non_unique]. Hard_ref is a hard reference, meaning an internal data structure that is not likely to
     # remain valid when the text is edited. Currently hard_ref is implemented as [file_number,character_index], where both
-    # indices are zero-based.
+    # indices are zero-based, and character_index is the first character in the chunk.
     keys = glob.split(/-/)
-    if self.is_verse then
-      splitters = "\r\n"
-    else 
-      if self.script=='greek' then
-        splitters = "\\.;"
-      else
-        splitters = "\\.\\?;" # defaults, appropriate for latin script
-      end
-    end
-    regex_no_splitters = "[^#{splitters}]*"
+    spl = self.splitters
+    regex_no_splitters = "[^#{spl}]*"
     word_regexen = keys.map { |key| "(?<![[:alpha:]])"+key+"(?![[:alpha:]])" } # negative lookahead and lookbehind so it's an isolated word
     whole_regex = word_regexen.join(regex_no_splitters)
     c = self.get_contents
@@ -61,7 +76,35 @@ class Epos
       end
       if m.length>1 then non_unique=true; break end
     }
+    result[1] = first_character_in_chunk(result)
     return [result,non_unique]
+  end
+
+  def first_character_in_chunk(ref)
+    # In an example like ...κοσμήτορε λαῶν·\n\n«Ἀτρεΐδαι τε καὶ..., the second chunk starts at the opening quote, because
+    # the newlines are chunk separators in verse.
+    # This happens naturally because
+    s = self.get_contents[ref[0]]
+    spl = self.splitters
+    i = ref[1]
+    while true do
+      break if i==0 || (s[i-1]=~/[#{spl}]/)
+      i = i-1
+    end
+    return i
+  end
+
+  def splitters
+    # Returns a string suitable for inserting into a regex as [...] or [^...].
+    if self.is_verse then
+      return "\r\n"
+    else 
+      if self.script=='greek' then
+        return "\\.;"
+      else
+        return "\\.\\?;" # defaults, appropriate for latin script
+      end
+    end
   end
 
   def get_contents
@@ -73,7 +116,11 @@ class Epos
 
   def get_contents_one_string
     # concatenates contents of files, with exactly two newlines separating each
-    return self.get_contents.join("\n\n").sub(/\n{3,}/,"\n\n")
+    return join_file_contents(self.get_contents)
+  end
+
+  def join_file_contents(a)
+    return a.join("\n\n").sub(/\n{3,}/,"\n\n")
   end
 
   def all_files
@@ -92,6 +139,9 @@ class Epos
       return [self.text]
     end
   end
+
+  # One-liner to update or create a frequency file (needn't be done explicitly, but can be a good test):
+  #   ruby -e 'require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); e.freq'
 
   def freq(cutoff_rank:100)
     # Returns a cached word-frequency table.
