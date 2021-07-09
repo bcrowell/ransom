@@ -1,17 +1,20 @@
 class Epos
 
   # One-liner to update or create a frequency file (needn't be done explicitly, but can be a good test):
-  #   ruby -e 'require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek"); e.freq'
+  #   ruby -e 'require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); e.freq'
 
-  def initialize(text,script)
+  def initialize(text,script,is_verse)
     # Text is the pathname of either a file or a directory containing some files. If it's a directory, then
     # any files inside it are taken to be texts, unless they have extensions .freq, .index, or .meta.
     # Script can be 'latin', 'greek', or 'hebrew'.
+    # Is_verse is boolean
     @text = text
     @script = script
+    @is_verse = is_verse
+    @contents = nil
   end
 
-  attr_reader :text,:script
+  attr_reader :text,:script,:is_verse
 
   def words(s)
     # Split a string into words, discarding any punctuation except for punctuation that can occur in a word, e.g.,
@@ -21,8 +24,60 @@ class Epos
     return s.scan(/[[:alpha:]]+/)
   end
 
+  def word_glob_to_hard_ref(glob)
+    # Glob is a string such as "sing-destructive-wrath". It defines a chunk in which these three words occur in this order,
+    # but possibly with other words in between. Case-insensitive.
+    # A chunk is a contiguous portion of the text that doesn't contain certain chunk-ending characters and doesn't span files.
+    # For verse, these chunk-ending characters are \r and \n. For latin-script prose, they're . ? ;.
+    # Example:
+    #   ruby -e 'require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); print e.word_glob_to_hard_ref("μῆνιν-ἄειδε")'
+    #   For a non-unique match, try ῥοδοδάκτυλος-Ἠώς.
+    # Returns [hard_ref,non_unique]. Hard_ref is a hard reference, meaning an internal data structure that is not likely to
+    # remain valid when the text is edited. Currently hard_ref is implemented as [file_number,character_index], where both
+    # indices are zero-based.
+    keys = glob.split(/-/)
+    if self.is_verse then
+      splitters = "\r\n"
+    else 
+      if self.script=='greek' then
+        splitters = "\\.;"
+      else
+        splitters = "\\.\\?;" # defaults, appropriate for latin script
+      end
+    end
+    regex_no_splitters = "[^#{splitters}]*"
+    word_regexen = keys.map { |key| "(?<![[:alpha:]])"+key+"(?![[:alpha:]])" } # negative lookahead and lookbehind so it's an isolated word
+    whole_regex = word_regexen.join(regex_no_splitters)
+    c = self.get_contents
+    non_unique = false
+    found = false
+    result = nil
+    0.upto(c.length-1) { |i|
+      m = c[i].scan(/#{whole_regex}/i)
+      if m.length>0 && found then non_unique=true; break end
+      if m.length>0 && !found then
+        result = [i,c[i].index(m[0])]
+        found = true
+      end
+      if m.length>1 then non_unique=true; break end
+    }
+    return [result,non_unique]
+  end
+
+  def get_contents
+    # returns an array in which each element is a string holding the contents of a file.
+    if !(@contents.nil?) then return @contents end
+    @contents = self.all_files.map { |file| slurp_file(file) }
+    return @contents
+  end
+
+  def get_contents_one_string
+    # concatenates contents of files, with exactly two newlines separating each
+    return self.get_contents.join("\n\n").sub(/\n{3,}/,"\n\n")
+  end
+
   def all_files
-    # Returns a list of files, or nil on an error.
+    # Returns a list of files, or nil on an error. The list is sorted in alphabetical order by filename.
     if File.directory?(self.text) then
       files = []
       Dir.each_child(self.text).each { |file|
@@ -39,7 +94,9 @@ class Epos
   end
 
   def freq(cutoff_rank:100)
+    # Returns a cached word-frequency table.
     # Words will not be indexed if they rank in the top 100 by frequency or if they don't contain at least two alphabetical characters.
+    # This is needed in order to generate word glob references for a given hard reference.
     file = self.freq_filename_helper
     if File.exists?(file) && latest_modification(file)>self.all_files.map { |t| latest_modification(t) }.max then
       return json_from_file_or_die(file)
