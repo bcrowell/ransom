@@ -1,6 +1,7 @@
 require 'json'
 require_relative "lib/file_util"
 require_relative "lib/string_util"
+require_relative "lib/epos"
 
 def vocab(words)
   # Input is a string consisting of three sections, each separated by a double newline.

@@ -1,6 +1,6 @@
 class Epos
 
-  def initialize(text,script,is_verse)
+  def initialize(text,script,is_verse,postfilter:nil)
     # Text is the pathname of either a file or a directory containing some files. If it's a directory, then
     # any files inside it are taken to be texts, unless they have extensions .freq, .index, or .meta.
     # Script can be 'latin', 'greek', or 'hebrew'.
@@ -8,10 +8,11 @@ class Epos
     @text = text
     @script = script
     @is_verse = is_verse
+    @postfilter = postfilter
     @contents = nil
   end
 
-  attr_reader :text,:script,:is_verse
+  attr_reader :text,:script,:is_verse,:postfilter
 
   def words(s)
     # Split a string into words, discarding any punctuation except for punctuation that can occur in a word, e.g.,
@@ -76,6 +77,7 @@ class Epos
       end
       if m.length>1 then non_unique=true; break end
     }
+    if result.nil? then return [nil,nil] end
     result[1] = first_character_in_chunk(result)
     return [result,non_unique]
   end
@@ -83,7 +85,7 @@ class Epos
   def first_character_in_chunk(ref)
     # In an example like ...κοσμήτορε λαῶν·\n\n«Ἀτρεΐδαι τε καὶ..., the second chunk starts at the opening quote, because
     # the newlines are chunk separators in verse.
-    # This happens naturally because
+    if ref.nil? then raise "nil ref" end
     s = self.get_contents[ref[0]]
     spl = self.splitters
     i = ref[1]
@@ -107,10 +109,36 @@ class Epos
     end
   end
 
+  def line_to_hard_ref(book,line)
+    # This is meant for a source text in which there are lines of verse, separated by newlines.
+    # Sometimes such texts have arabic numerals at the end of lines stating the line numbers. Currently
+    # we ignore them, so we depend on the assumption that there are no lines such as chapter headers or footnotes.
+    # Both book and line are 1-based.
+    s = self.get_contents[book-1]
+    if s.nil? then raise "Book #{book} doesn't exist, number of books is #{self.get_contents.length} (numbering is 1-based)." end
+    a = s.scan(/[^\r\n]*[\r\n]+/)
+    count = 0
+    offset = 0
+    a.each { |l|
+      if l=~/[[:alpha:]]/ then count+=1 end
+      if count==line then return [book-1,offset] end
+      offset += l.length
+    }
+    raise "Line #{line} doesn't exist in book #{book}, number of lines is #{count}"
+  end
+
   def get_contents
     # returns an array in which each element is a string holding the contents of a file.
     if !(@contents.nil?) then return @contents end
-    @contents = self.all_files.map { |file| slurp_file(file) }
+    s = self.all_files.map { |file| slurp_file(file) }
+    s = s.map { |x| x.gsub(/\r\n/,"\n") }
+    #if !(self.postfilter.nil?) then s=s.map { |x| self.postfilter.call(x)} end
+    if !(self.postfilter.nil?) then
+      $stderr.print "s lengths=#{s.map { |x| x.length}}\n"
+      s=s.map { |x| x.gsub(/Footnote \d+([^\n]+\n)+/,'') }
+      $stderr.print "s lengths=#{s.map { |x| x.length}}\n"
+    end
+    @contents = s
     return @contents
   end
 
@@ -188,6 +216,10 @@ class Epos
     else
       if self.text=~/\./ then return self.text.sub(/\..*/,".freq") else return self.text+".freq" end
     end
+  end
+
+  def Epos.strip_pg_footnotes(s)
+    return s.gsub(/Footnote \d+([^\n]+\n)+/,'')
   end
 
 end
