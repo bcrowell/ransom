@@ -132,12 +132,7 @@ class Epos
     if !(@contents.nil?) then return @contents end
     s = self.all_files.map { |file| slurp_file(file) }
     s = s.map { |x| x.gsub(/\r\n/,"\n") }
-    #if !(self.postfilter.nil?) then s=s.map { |x| self.postfilter.call(x)} end
-    if !(self.postfilter.nil?) then
-      $stderr.print "s lengths=#{s.map { |x| x.length}}\n"
-      s=s.map { |x| x.gsub(/Footnote \d+([^\n]+\n)+/,'') }
-      $stderr.print "s lengths=#{s.map { |x| x.length}}\n"
-    end
+    if !(self.postfilter.nil?) then s=s.map { |x| self.postfilter.call(x)} end
     @contents = s
     return @contents
   end

@@ -68,11 +68,9 @@ ransom(text,v)
 
 <%
 translation = Epos.new("text/buckley_iliad.txt","latin",false,postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
-$stderr.print translation.get_contents_one_string.length,"\n"
 
 r1 = translation.word_glob_to_hard_ref("sing-goddess")[0]
 r2 = translation.word_glob_to_hard_ref("sons-atreus-greaved")[0]
-$stderr.print "r1=#{r1} r2=#{r2} ---------------------------- \n"
 print Patch_names.patch(translation.extract(r1,r2))
 %>
 
