@@ -66,7 +66,8 @@ def foreign_helper(t,ransom,gloss_these:[])
   gloss_code = ''
   main_code = "\\begin{foreignpage}\n"
   if ransom then main_code = main_code + "\\begin{graytext}\n" end
-  lines = t.split(/\s*\n\s*/).select { |line| line=~/[[:alpha:]]/ }
+  lines = t.split(/\s*\n\s*/)
+  #lines = lines.select { |line| line=~/[[:alpha:]]/ } # remove blank lines -- why was I doing this?
   if gloss_these.length>0 then
     gg = gloss_these.map { |x| remove_accents(x)}
     0.upto(lines.length-1) { |i|
@@ -84,17 +85,16 @@ def foreign_helper(t,ransom,gloss_these:[])
           new_gloss_code = nil
           if Options.if_write_pos then
             # Re the need for \immediate in the following, see https://tex.stackexchange.com/q/604110/6853
-            code = %q{
-              \savebox{\myboxregister}{WORD}%
-              \smash{\pdfsavepos\usebox{\myboxregister}}%
+            code = %q{\savebox{\myboxregister}{WORD}%
+              %\smash{\pdfsavepos\usebox{\myboxregister}}%
+              \makebox{\pdfsavepos\usebox{\myboxregister}}%
               \immediate\write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,,,\the\wd\myboxregister,\the\ht\myboxregister,\the\dp\myboxregister}%
-              \write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,\the\pdflastxpos,\the\pdflastypos,,,}%
-            }
+              \write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,\the\pdflastxpos,\the\pdflastypos,,,}}
             code.gsub!(/LINE_HASH/,line_hash)
             code.gsub!(/WORD/,word)
             code.gsub!(/LINE/,i.to_s)
             code.gsub!(/KEY/,key)
-            code = "#{code}#{word}"
+            #code = "#{code}#{word}"
           end
           if Options.if_render_glosses then
             pos = Init.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
@@ -117,11 +117,15 @@ def foreign_helper(t,ransom,gloss_these:[])
       }
     }
   end
-  main_code = main_code + lines.join("\\\\\n") + "\n\n"
+  main_code = main_code + verse_lines_to_latex(lines) + "\n\n"
   if ransom then main_code = main_code + "\\end{graytext}\n" end
   gloss_code = "\n{\\linespread{1.0}\\footnotesize #{gloss_code} }\n"
   code = main_code + gloss_code + "\\end{foreignpage}\n"
   print code
+end
+
+def verse_lines_to_latex(lines)
+  return lines.join("\\\\\n")
 end
 
 def to_key(word)

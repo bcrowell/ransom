@@ -97,7 +97,7 @@ class Epos
     i = ref[1]
     while true do
       break if i==0 || (s[i-1]=~/[#{spl}]/)
-      break if i>=2 && s[i-1]=="\n" && s[i-2]=="\n"
+      break if i>=2 && s[i-1]=="\n" && s[i-2]=="\n" # only relevant for prose, in which double newline is a chunk separator
       i = i-1
     end
     return i
