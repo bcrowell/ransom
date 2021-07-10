@@ -5,23 +5,37 @@ require_relative "lib/file_util"
 require_relative "lib/string_util"
 require_relative "lib/epos"
 require_relative "lib/vlist"
+require_relative "lib/linguistics"
 
 def vocab(vl)
   # Input is a Vlist object.
   # The three sections are interpreted as common, uncommon, and rare.
   # Prints latex code for vocab page, and returns the three file lists for later reuse.
-  common,uncommon,rare = [vl.file_list(0),vl.file_list(1),vl.file_list(2)]
   print "\\begin{vocabpage}\n"
-  vocab_helper('common',common)
-  vocab_helper('uncommon',uncommon+rare)
+  vocab_helper('common',vl,0,0)
+  vocab_helper('uncommon',vl,1,2)
   print "\\end{vocabpage}\n"
-  return [common,uncommon,rare]
+  return vl.list.map { |l| l.map{ |entry| entry[0] } }
 end
 
-def vocab_helper(commonness,files)
+def vocab_helper(commonness,vl,lo,hi)
   if commonness=='common' then tag='vocabcommon' else tag='vocabuncommon' end
+  #if files.include?("κυων") then $stderr.print "doggies in vocab_helper\n" end
+  l = []
+  lo.upto(hi) { |i|
+    vl.list[i].each { |entry|
+      word,lexical,data = entry
+      if data.nil? then data={} end
+      is_3rd_decl = data.has_key?('is_3rd_decl')
+      if lexical=='κύων' then $stderr.print "doggies in vocab_helper\n" end
+      file_under = lexical
+      l.push([file_under,word,lexical,data])
+    }
+  }
   print "\\begin{#{tag}}\n"
-  files.sort.each { |file| vocab1(file) }
+  l.sort { |a,b| alpha_compare(a[0],b[0])}.each { |entry| 
+    vocab1(word_to_filename(entry[2])) 
+  }
   print "\\end{#{tag}}\n"
 end
 
@@ -36,6 +50,10 @@ def vocab1(file)
     s = "\\vocab{#{word}}{#{gloss}}"
   end
   print "#{s}\\\\"
+end
+
+def word_to_filename(s)
+  return remove_accents(s).downcase
 end
 
 def get_gloss(key)

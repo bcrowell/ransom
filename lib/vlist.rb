@@ -2,8 +2,8 @@ class Vlist
 # a vocabulary list
 
 def initialize(list)
-  # List is a list whose elements are lists common, uncommon, and rare words.
-  # Each element of a is a list of items of the form [word,lexical].
+  # List is a list whose elements are lists of common, uncommon, and rare words.
+  # Each element of a is a list of items of the form [word,lexical] or [word,lexical,data].
   @list = list
   list.each { |l| l.sort! { |a,b| alpha_compare(a[1],b[1]) } } # alphabetical order by lexical form
 end
@@ -17,10 +17,6 @@ def to_s
     a.push(x)
   }
   return a.join("\n")
-end
-
-def file_list(commonness)
-  return self.list[commonness].map { |item| remove_accents(item[1]).downcase }
 end
 
 def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[700,1700])
@@ -77,6 +73,8 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[700,1700])
       next if Ignore_words.patch(word) || Ignore_words.patch(lemma)
       next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
       next unless rank>100
+      is_3rd_decl = guess_whether_third_declension(word_raw,lemma,pos)
+      #if lemma=="κύων" then $stderr.print "============= doggies!\n" end
       key1 = remove_accents(word).downcase
       key2 = remove_accents(lemma).downcase
       filename1 = "glosses/#{key1}"
@@ -96,10 +94,17 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[700,1700])
         whine.push("no entry for #{foo}")
       end
       if warn_ambig.has_key?(word) then whine.push(warn_ambig[word]) end
-      this_part_of_result2.push([word_raw,lemma])
+      this_part_of_result2.push([word_raw,lemma,{'is_3rd_decl':is_3rd_decl}])
     }
     result2.push(this_part_of_result2)
   }
+  if whine.length>0 then
+    whiny_file = "warnings"
+    File.open(whiny_file,"w") { |f|
+      whine.each { |complaint| f.print "#{complaint}\n" }
+    }
+    $stderr.print "#{whine.length} warnings written to the file #{whiny_file}\n"
+  end
   return Vlist.new(result2)
 end
 

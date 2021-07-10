@@ -7,13 +7,12 @@ def guess_whether_third_declension(word,lemma,pos)
   c = pos[7] # ngdavl
   # I don't know how the following work, so just give up and return false:
   if number=='d' || c=='l' || c=='v' then return false end
+  if guess_whether_third_declension_helper(gender,remove_accents(lemma)) then return true end
   w = remove_accents(word)
   if number=='s' then
     if c=='n' then
       # ---- nominative singular ----
-      return true if gender=='m' && !(w=~/ος$/)
-      return true if gender=='f' && !(w=~/(α|η)$/)
-      return true if gender=='n' && !(w=~/(ον)$/)
+      guess_whether_third_declension_helper(gender,w)
     end
     if c=='g' then
       # ---- genitive singular ----
@@ -46,5 +45,13 @@ def guess_whether_third_declension(word,lemma,pos)
       return true if !(w=~/(ας|ους|α)$/) #  -ας and -α are ambiguous
     end
   end
+  return false
+end
+
+def guess_whether_third_declension_helper(gender,w)
+  # Given the singular nominative form w (which is the lexical form), try to guess whether it's 3rd declension.
+  return true if gender=='m' && !(w=~/ος$/)
+  return true if gender=='f' && !(w=~/(α|η)$/)
+  return true if gender=='n' && !(w=~/(ον)$/)
   return false
 end
