@@ -103,6 +103,10 @@ def short_name_to_char(n)
   return char_to_short_name_hash().invert()[n]
 end
 
+def alpha_sort(l)
+  return l.sort { |a,b| remove_accents(a).downcase <=> remove_accents(b).downcase }
+end
+
 def remove_accents(s)
   return s.chars.map { |c| remove_accents_one_char(c)}.join('')
 end
