@@ -104,7 +104,11 @@ def short_name_to_char(n)
 end
 
 def alpha_sort(l)
-  return l.sort { |a,b| remove_accents(a).downcase <=> remove_accents(b).downcase }
+  return l.sort { |a,b| alpha_compare(a,b) }
+end
+
+def alpha_compare(a,b)
+  return (remove_accents(a).downcase <=> remove_accents(b).downcase)
 end
 
 def remove_accents(s)

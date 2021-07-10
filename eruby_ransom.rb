@@ -1,17 +1,16 @@
 require 'json'
 require 'sdbm'
+require 'set'
 require_relative "lib/file_util"
 require_relative "lib/string_util"
 require_relative "lib/epos"
+require_relative "lib/vlist"
 
-def vocab(words)
-  # Input is a string consisting of three sections, each separated by a double newline.
-  # These sections are common, uncommon, and rare.
-  # Within each section, words are separated by whitespace.
-  a = words.split(/\n\n/)
-  if a.length>3 then die("more than 3 sections in input to vocab") end
-  while a.length<3 do a.push([]) end
-  common,uncommon,rare = a.map { |x| sort_vocab(x)}
+def vocab(vl)
+  # Input is a Vlist object.
+  # The three sections are interpreted as common, uncommon, and rare.
+  # Prints latex code for vocab page, and returns the three file lists for later reuse.
+  common,uncommon,rare = [vl.file_list(0),vl.file_list(1),vl.file_list(2)]
   print "\\begin{vocabpage}\n"
   vocab_helper('common',common)
   vocab_helper('uncommon',uncommon+rare)
@@ -22,12 +21,8 @@ end
 def vocab_helper(commonness,files)
   if commonness=='common' then tag='vocabcommon' else tag='vocabuncommon' end
   print "\\begin{#{tag}}\n"
-  files.each { |file| vocab1(file) }
+  files.sort.each { |file| vocab1(file) }
   print "\\end{#{tag}}\n"
-end
-
-def sort_vocab(s)
-  return s.split(/\s+/).select { |x| x=~/[[:alpha:]]/ }.sort
 end
 
 def vocab1(file)

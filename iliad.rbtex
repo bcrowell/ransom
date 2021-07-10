@@ -63,66 +63,29 @@ useful mnemonic.
 
 }
 
-<% v = vocab(%q{
-βουλη
-θοος
-θυγατηρ
-κυνεσσιν
-λισσομαι
-λαος
-λυσομαι
-μαλιστα
-σφωε
-τευχω
-χερσιν
-χρυσεος
-αναξ
-τελεω
-ερις
-ηρως
-ωρσε
-θεα
+<%
 
-μηνις
-ξυνεηκε
-οιωνος
-ουνεκα
-σκηπτρον
-στρατον
-χρυσεος
-ψυχη
-απερεισιος
-αρητηρ
-αειδω
-αλγος
-αποινα
-εριζω
-εκηβολος
-ιφθιμος
-ολεκω
+lemmas_file = "lemmas/homer_lemmas.json"
+freq_file = "lemmas/homer_freq.json"
 
-ουλομενος
-μυριος
-προιαπτω
-ελωριον
-διαστητην
-βασιλευς
-χολοω
-νοσος
-ατιμαζω
-στεμμα
-κοσμητωρ
-}) %>
+%>
+
+<%
+
+e = Epos.new("text/ιλιας","greek",true)
+r1 = e.line_to_hard_ref(1,1)
+r2 = e.line_to_hard_ref(1,17)
+text = e.extract(r1,r2)
+
+v = vocab(Vlist.from_text(text,lemmas_file,freq_file))
+
+%>
 
 \pagebreak
 
 \mychapter{1}
 
 <%
-e = Epos.new("text/ιλιας","greek",true)
-r1 = e.line_to_hard_ref(1,1)
-r2 = e.line_to_hard_ref(1,17)
-text = e.extract(r1,r2)
 foreign(text)
 %>
 

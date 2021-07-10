@@ -5,6 +5,7 @@ def initialize(list)
   # List is a list whose elements are lists common, uncommon, and rare words.
   # Each element of a is a list of items of the form [word,lexical].
   @list = list
+  list.each { |l| l.sort! { |a,b| alpha_compare(a[1],b[1]) } } # alphabetical order by lexical form
 end
 
 attr_reader :list
@@ -16,6 +17,10 @@ def to_s
     a.push(x)
   }
   return a.join("\n")
+end
+
+def file_list(commonness)
+  return self.list[commonness].map { |item| remove_accents(item[1]).downcase }
 end
 
 def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[700,1700])
