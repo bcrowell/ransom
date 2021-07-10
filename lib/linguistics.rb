@@ -52,12 +52,19 @@ end
 def guess_whether_third_declension_helper(gender,w)
   # Given the singular nominative form w (which is the lexical form), try to guess whether it's 3rd declension.
   # List of words that are feminine and end if -ος:
-  return false if
-          ["νυος","νησος","φηγος","αμπελος","διαλεκτος","διαμετρος","αυλειος","συγκλητος","ερημος","ηπειρος","οδος","κελευθος","αμαξιτος","ατραπος",
-           "βασανος","βιβλος","γερανος","γναθος","γυψος","δελτος","δοκος","δροσος","καμνος","καρδοπος","κβωτος","κοπρος","ληνος","λιθος","νοσος",
-           "πλινθος","ραβδος","σορος","σποδος","ταφρος","χηλος","ψαμμος","ψηφος"].include?(w)
+  return false if is_feminine_ending_in_os(w)
   return true if gender=='m' && !(w=~/ος$/)
   return true if gender=='f' && !(w=~/(α|η)$/)
   return true if gender=='n' && !(w=~/(ον)$/)
   return false
+end
+
+def is_feminine_ending_in_os(w)
+  # Given the unaccented singular nominative form w (which is the lexical form), determine whether this is one of the
+  # exceptional feminine forms ending in -ος.
+  # https://latin.stackexchange.com/a/13261/3597
+  return  ["νυος","νησος","φηγος","αμπελος","διαλεκτος","διαμετρος","αυλειος","συγκλητος","ερημος","ηπειρος","οδος","κελευθος","αμαξιτος","ατραπος",
+           "βασανος","βιβλος","γερανος","γναθος","γυψος","δελτος","δοκος","δροσος","καμνος","καρδοπος","κβωτος","κοπρος","ληνος","λιθος","νοσος",
+           "πλινθος","ραβδος","σορος","σποδος","ταφρος","χηλος","ψαμμος","ψηφος"].include?(w)
+
 end
