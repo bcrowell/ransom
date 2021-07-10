@@ -74,7 +74,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[700,1700])
       next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
       next unless rank>100
       is_3rd_decl = guess_whether_third_declension(word_raw,lemma,pos)
-      #if lemma=="κύων" then $stderr.print "============= doggies!\n" end
+      #if lemma=="κύων" then $stderr.print "============= doggies! is_3rd_decl=#{is_3rd_decl}, word_raw=#{word_raw}\n" end
       key1 = remove_accents(word).downcase
       key2 = remove_accents(lemma).downcase
       filename1 = "glosses/#{key1}"
@@ -94,7 +94,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[700,1700])
         whine.push("no entry for #{foo}")
       end
       if warn_ambig.has_key?(word) then whine.push(warn_ambig[word]) end
-      this_part_of_result2.push([word_raw,lemma,{'is_3rd_decl':is_3rd_decl}])
+      this_part_of_result2.push([word,lemma,{'is_3rd_decl' => is_3rd_decl}])
     }
     result2.push(this_part_of_result2)
   }

@@ -26,28 +26,33 @@ def vocab_helper(commonness,vl,lo,hi)
     vl.list[i].each { |entry|
       word,lexical,data = entry
       if data.nil? then data={} end
-      is_3rd_decl = data.has_key?('is_3rd_decl')
-      if lexical=='κύων' then $stderr.print "doggies in vocab_helper\n" end
+      #is_3rd_decl = (data.has_key?('is_3rd_decl') && data[is_3rd_decl])
+      #if lexical=='κύων' then $stderr.print "doggies in vocab_helper, data=#{data}, #{data.keys} word=#{word} is_3rd_decl=#{is_3rd_decl}\n" end
+      #if is_3rd_decl then $stderr.print "doggies in vocab_helper, data=#{data}, #{data.keys} word=#{word} is_3rd_decl=#{is_3rd_decl}\n" end
       file_under = lexical
       l.push([file_under,word,lexical,data])
     }
   }
   print "\\begin{#{tag}}\n"
   l.sort { |a,b| alpha_compare(a[0],b[0])}.each { |entry| 
-    vocab1(word_to_filename(entry[2])) 
+    vocab1(entry)
   }
   print "\\end{#{tag}}\n"
 end
 
-def vocab1(file)
-  entry = get_gloss(file)
+def vocab1(stuff)
+  file_under,word,lexical,data = stuff
+  entry_lexical   = get_gloss(word_to_filename(lexical))
+  entry_inflected = get_gloss(word_to_filename(word))
   # {  "word": "ἔθηκε",  "gloss": "put, put in a state",  "lexical": "τίθημι" }
+  entry = entry_inflected
+  if entry.nil? then entry=entry_lexical end
   return if entry.nil?
-  word,gloss,lexical = entry['word'],entry['gloss'],entry['lexical']
-  if entry.has_key?('lexical') then
+  word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
+  if entry.has_key?('lexical') || (data.has_key?('is_3rd_decl') && data['is_3rd_decl'] && word!=lexical)then
     s = "\\vocabinflection{#{word}}{#{lexical}}{#{gloss}}"
   else
-    s = "\\vocab{#{word}}{#{gloss}}"
+    s = "\\vocab{#{lexical}}{#{gloss}}"
   end
   print "#{s}\\\\"
 end
