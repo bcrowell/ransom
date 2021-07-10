@@ -45,7 +45,7 @@ class Epos
   end
 
   def strip_whitespace(s)
-    return s.sub(/\s+$/,'').sub(/^\s+/,'')
+    return s.sub(/\s+\Z/,'').sub(/\A\s+/,'')
   end
 
   def word_glob_to_hard_ref(glob)
