@@ -2,7 +2,7 @@ class Epos
 
   def initialize(text,script,is_verse,postfilter:nil)
     # Text is the pathname of either a file or a directory containing some files. If it's a directory, then
-    # any files inside it are taken to be texts, unless they have extensions .freq, .index, or .meta.
+    # any files inside it are taken to be texts, unless they have extensions .freq, .index, .dir, .pag, or .meta.
     # Script can be 'latin', 'greek', or 'hebrew'.
     # Is_verse is boolean
     @text = text
@@ -60,6 +60,19 @@ class Epos
     # Returns [hard_ref,non_unique]. Hard_ref is a hard reference, meaning an internal data structure that is not likely to
     # remain valid when the text is edited. Currently hard_ref is implemented as [file_number,character_index], where both
     # indices are zero-based, and character_index is the first character in the chunk.
+    cache = self.auxiliary_filename_helper("cache")
+    result = nil
+    if File.exists?(cache+".dir") then
+      SDBM.open(cache) { |db| if db.has_key?(glob) then result=JSON.parse(db[glob]) end }
+    end
+    if !(result.nil?) then return result end # return cached result
+    result = word_glob_to_hard_ref_helper(glob)
+    SDBM.open(cache) { |db| db[glob]=JSON.generate(result) }
+    return result
+  end
+
+  def word_glob_to_hard_ref_helper(glob)
+    # Does the actual work for word_glob_to_hard_ref(), in the case where the result is not cached.
     keys = glob.split(/-/)
     spl = self.splitters
     regex_no_splitters = "[^#{spl}@]*" # The @ is a convenience for when we call matches_without_containing_paragraph_break.
@@ -159,7 +172,7 @@ class Epos
       files = []
       Dir.each_child(self.text).each { |file|
         next if File.directory?(file)
-        next if file=~/\.(freq|index|meta)/
+        next if file=~/\.(freq|dir|pag|index|meta)/
         files.push(dir_and_file_to_path(self.text,file))
       }
       if files.length==0 then raise "No files found in directory #{self.text}" end
@@ -213,10 +226,14 @@ class Epos
   end
 
   def freq_filename_helper
+    return self.auxiliary_filename_helper("freq")
+  end
+
+  def auxiliary_filename_helper(ext)
     if File.directory?(self.text) then
-      return dir_and_file_to_path(self.text,"epos.freq")
+      return dir_and_file_to_path(self.text,"epos.#{ext}")
     else
-      if self.text=~/\./ then return self.text.sub(/\..*/,".freq") else return self.text+".freq" end
+      if self.text=~/\./ then return self.text.sub(/\..*/,".#{ext}") else return self.text+".#{ext}" end
     end
   end
 

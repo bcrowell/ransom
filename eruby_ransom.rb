@@ -1,4 +1,5 @@
 require 'json'
+require 'sdbm'
 require_relative "lib/file_util"
 require_relative "lib/string_util"
 require_relative "lib/epos"
