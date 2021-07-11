@@ -51,7 +51,7 @@ def vocab1(stuff)
   word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
   if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
   if entry.has_key?('lexical') || (data.has_key?('is_3rd_decl') && data['is_3rd_decl'] && word!=lexical)then
-    s = "\\vocabinflection{#{word}}{#{lexical}}{#{gloss}}"
+    s = "\\vocabinflection{#{word.downcase}}{#{lexical}}{#{gloss}}"
   else
     s = "\\vocab{#{lexical}}{#{gloss}}"
   end

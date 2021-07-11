@@ -19,7 +19,7 @@ def to_s
   return a.join("\n")
 end
 
-def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,1700])
+def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,800])
   lemmas = json_from_file_or_die(lemmas_file)
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -47,8 +47,9 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,1700])
   t.scan(/[^\s—]+/).each { |word_raw|
     word = word_raw.gsub(/[^[:alpha:]᾽']/,'')
     next unless word=~/[[:alpha:]]/
-    if !(lemmas.has_key?(word)) then whine.push("error: no index entry for #{word_raw}, key=#{word}"); next end
-    lemma,lemma_number,pos,count,if_ambiguous,ambig = lemmas[word]
+    lemma_entry = Vlist.get_lemma_helper(lemmas,word)
+    if lemma_entry.nil? then whine.push("error: no index entry for #{word_raw}, key=#{word}"); next end
+    lemma,lemma_number,pos,count,if_ambiguous,ambig = lemma_entry
     if if_ambiguous then 
       warn_ambig[word]= "warning: lemma for #{word_raw} is ambiguous, taking most common one; #{ambig}"
     end
@@ -58,6 +59,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,1700])
     rank = freq_rank[lemma]
     f = freq[lemma]
     entry = word_raw,word,lemma,rank,f,pos # word and word_raw are not super useful, in many cases will be just the first example in this passage
+    #$stderr.print "entry=#{entry}\n"
     result.push(entry)
   }
 
@@ -78,7 +80,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,1700])
       difficult_to_recognize = is_3rd_decl
       next if rank<threshold_no_gloss && !difficult_to_recognize      
       next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
-      #if lemma=~/(κύων|χείρ)/ then $stderr.print "============= doggies! is_3rd_decl=#{is_3rd_decl}, word_raw=#{word_raw}\n" end
+      #if lemma=~/(κύων|χείρ)/i then $stderr.print "============= doggies! is_3rd_decl=#{is_3rd_decl}, word_raw=#{word_raw}\n" end
       key1 = remove_accents(word).downcase
       key2 = remove_accents(lemma).downcase
       filename1 = "glosses/#{key1}"
@@ -110,6 +112,12 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,1700])
     $stderr.print "#{whine.length} warnings written to the file #{whiny_file}\n"
   end
   return Vlist.new(result2)
+end
+
+def Vlist.get_lemma_helper(lemmas,word)
+  if lemmas.has_key?(word) then return lemmas[word] end
+  if lemmas.has_key?(word.downcase) then return lemmas[word.downcase] end
+  return nil
 end
 
 end # class Vlist
