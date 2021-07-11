@@ -98,7 +98,8 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
       filename = "glosses/#{key}"
       if !(FileTest.exist?(filename)) then
         if key1==key2 then foo=key1 else foo="#{key1} or #{key2}" end
-        whine.push("no entry for #{foo}")
+        whine.push("no glossary entry for #{filename} -- contents would look like { \"word\":\"#{lemma}\",\"gloss\":\"\" }\n"+
+                    "  https://en.wiktionary.org/wiki/#{lemma}")
       end
       if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end
       this_part_of_result2.push([word,lemma,{'is_3rd_decl' => is_3rd_decl}])
