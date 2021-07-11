@@ -19,7 +19,7 @@ def to_s
   return a.join("\n")
 end
 
-def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[700,1700])
+def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,1700])
   lemmas = json_from_file_or_die(lemmas_file)
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -63,18 +63,22 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[700,1700])
 
   result.sort! { |a,b| b[4] <=> a[4] } # descending order by frequency
 
-  threshold = thresholds[0] # words ranked higher than this are listed as common
-  threshold2 = thresholds[1] # words ranked lower than this get ransom notes
+  threshold_difficult = thresholds[0] # words ranked lower than this may be glossed if they're difficult forms to recognize
+  threshold_no_gloss = thresholds[1] # words ranked higher than this are not normally glossed
+  threshold = thresholds[2] # words ranked higher than this are listed as common
+  threshold2 = thresholds[3] # words ranked lower than this get ransom notes
   result2 = []
   0.upto(2) { |commonness|
     this_part_of_result2 = []
     result.sort { |a,b| a[1] <=> b[1] } .each { |entry|
       word_raw,word,lemma,rank,f,pos = entry
       next if Ignore_words.patch(word) || Ignore_words.patch(lemma)
-      next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
-      next unless rank>100
+      next unless rank>=threshold_difficult
       is_3rd_decl = guess_whether_third_declension(word_raw,lemma,pos)
-      #if lemma=="κύων" then $stderr.print "============= doggies! is_3rd_decl=#{is_3rd_decl}, word_raw=#{word_raw}\n" end
+      difficult_to_recognize = is_3rd_decl
+      next if rank<threshold_no_gloss && !difficult_to_recognize      
+      next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
+      #if lemma=~/(κύων|χείρ)/ then $stderr.print "============= doggies! is_3rd_decl=#{is_3rd_decl}, word_raw=#{word_raw}\n" end
       key1 = remove_accents(word).downcase
       key2 = remove_accents(lemma).downcase
       filename1 = "glosses/#{key1}"

@@ -100,6 +100,7 @@ def foreign_helper(t,ransom,gloss_these:[])
           word = w[j] # original inflected form
           key = to_key(x)
           entry = get_gloss(key)
+          if entry.nil? then entry=get_gloss(to_key(word)) end # see if there's a gloss for the inflected form
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil

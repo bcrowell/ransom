@@ -16,3 +16,5 @@ python3 beta_to_unicode.py <odyssey_perseus.xml >odyssey_unicode.xml
 cat iliad_unicode.xml odyssey_unicode.xml | ruby flatten.rb >homer_lemmas.csv
 cat homer_lemmas.csv | ruby to_db.rb
 ruby make_freq.rb >homer_freq.json
+ruby -e 'require "./lib/string_util.rb"; require "./lib/file_util.rb"; require "json"; x=remove_macrons_and_breves(slurp_file("lemmas/homer_lemmas.json")); print x' >a.a ... and replace
+ruby -e 'require "./lib/string_util.rb"; require "./lib/file_util.rb"; require "json"; x=remove_macrons_and_breves(slurp_file("lemmas/homer_freq.json")); print x' >a.a ... and replace
