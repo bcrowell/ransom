@@ -69,39 +69,11 @@ lemmas_file = "lemmas/homer_lemmas.json"
 freq_file = "lemmas/homer_freq.json"
 greek = Epos.new("text/ιλιας","greek",true)
 translation = Epos.new("text/buckley_iliad.txt","latin",false,postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
+stuff = lemmas_file,freq_file,greek,translation
 
 %>
 
-<%
-
-r1 = greek.line_to_hard_ref(1,1)
-r2 = greek.line_to_hard_ref(1,17)
-text = greek.extract(r1,r2)
-
-v = vocab(Vlist.from_text(text,lemmas_file,freq_file))
-
-%>
-
-\pagebreak
-
-\mychapter{1}
-
-<%
-foreign(text)
-%>
-
-\myransomchapter{1}
-
-<%
-ransom(text,v)
-%>
-
-<%
-
-r1 = translation.word_glob_to_hard_ref("sing-goddess")[0]
-r2 = translation.word_glob_to_hard_ref("greaved-heavenly-dwellings")[0]
-print Patch_names.patch(translation.extract(r1,r2))
-%>
+<% four_page_layout(stuff,[1,1],[1,17],"sing-goddess","greaved-heavenly-dwellings",start_chapter:1) %>
 
 
 %=============================================================================

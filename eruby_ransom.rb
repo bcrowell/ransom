@@ -7,6 +7,23 @@ require_relative "lib/epos"
 require_relative "lib/vlist"
 require_relative "lib/linguistics"
 
+def four_page_layout(stuff,g1,g2,t1,t2,start_chapter:nil)  
+  # g1 and g2 are line refs of the form [book,line]
+  # t1 and t2 are word globs
+  lemmas_file,freq_file,greek,translation = stuff
+  greek_text = greek.extract(greek.line_to_hard_ref(g1[0],g1[1]),greek.line_to_hard_ref(g2[0],g2[1]))
+  v = vocab(Vlist.from_text(greek_text,lemmas_file,freq_file))
+  print "\\pagebreak\n\n"
+  if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
+  print foreign(greek_text),"\n\n"
+  if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
+  print ransom(greek_text,v),"\n\n"
+  translation_text = translation.extract(translation.word_glob_to_hard_ref(t1)[0],translation.word_glob_to_hard_ref(t2)[0])
+  translation_text = Patch_names.patch(translation_text)
+  if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
+  print translation_text
+end
+
 def vocab(vl)
   # Input is a Vlist object.
   # The three sections are interpreted as common, uncommon, and rare.
