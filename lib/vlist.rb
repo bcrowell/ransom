@@ -70,6 +70,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
   threshold = thresholds[2] # words ranked higher than this are listed as common
   threshold2 = thresholds[3] # words ranked lower than this get ransom notes
   result2 = []
+  ambig_warnings = []
   0.upto(2) { |commonness|
     this_part_of_result2 = []
     result.sort { |a,b| a[1] <=> b[1] } .each { |entry|
@@ -99,11 +100,12 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
         if key1==key2 then foo=key1 else foo="#{key1} or #{key2}" end
         whine.push("no entry for #{foo}")
       end
-      if warn_ambig.has_key?(word) then whine.push(warn_ambig[word]) end
+      if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end
       this_part_of_result2.push([word,lemma,{'is_3rd_decl' => is_3rd_decl}])
     }
     result2.push(this_part_of_result2)
   }
+  whine = whine + ambig_warnings
   if whine.length>0 then
     whiny_file = "warnings"
     File.open(whiny_file,"w") { |f|
@@ -123,15 +125,20 @@ end
 end # class Vlist
 
 class Ignore_words
-  @@index = [
-    # Words in the following list can be accented or unaccented. Accents are stripped.
-    "η","τα","τον","ο","τους","αυτους",
-    "επι","ανα",
-    "δυω","πολλας","δη",
-    "λητους","διος","πηληιαδεω","ατρειδα","ατρειδης","απολλων","αιδι", # proper nouns
-    "κακος"
-  ].to_set
+  # Words in the following list can be accented or unaccented, lemmatized or inflected. Case is nor significant. Accents are stripped.
+  # If an inflected form is given here, then it will only match that inflected form.
+  # First line is proper names.
+  @@index = %q{
+    λητους διος πηληιαδεω ατρειδα ατρειδης απολλων αιδι Χρύση Χρύσης αχιλλευς
+    η τα τον ο τους αυτους
+    επι ανα
+    δυω πολλας δη
+    κακος
+  }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Ignore_words.patch(word)
-    return @@index.include?(remove_accents(word).downcase)
+    w = remove_accents(word).downcase
+    return @@index.include?(w)
   end
+
 end
+
