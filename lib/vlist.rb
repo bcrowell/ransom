@@ -9,6 +9,7 @@ def initialize(list)
 end
 
 attr_reader :list
+attr_accessor :console_messages
 
 def to_s
   a = []
@@ -112,9 +113,10 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
     File.open(whiny_file,"w") { |f|
       whine.each { |complaint| f.print "#{complaint}\n" }
     }
-    $stderr.print "#{whine.length} warnings written to the file #{whiny_file}\n"
   end
-  return Vlist.new(result2)
+  vl = Vlist.new(result2)
+  vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n"
+  return vl
 end
 
 def Vlist.get_lemma_helper(lemmas,word)

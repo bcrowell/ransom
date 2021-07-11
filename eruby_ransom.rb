@@ -11,6 +11,7 @@ def vocab(vl)
   # Input is a Vlist object.
   # The three sections are interpreted as common, uncommon, and rare.
   # Prints latex code for vocab page, and returns the three file lists for later reuse.
+  if Options.if_render_glosses then $stderr.print vl.console_messages end
   print "\\begin{vocabpage}\n"
   vocab_helper('common',vl,0,0)
   vocab_helper('uncommon',vl,1,2)
@@ -29,7 +30,7 @@ def vocab_helper(commonness,vl,lo,hi)
       #is_3rd_decl = (data.has_key?('is_3rd_decl') && data[is_3rd_decl])
       #if lexical=='κύων' then $stderr.print "doggies in vocab_helper, data=#{data}, #{data.keys} word=#{word} is_3rd_decl=#{is_3rd_decl}\n" end
       #if is_3rd_decl then $stderr.print "doggies in vocab_helper, data=#{data}, #{data.keys} word=#{word} is_3rd_decl=#{is_3rd_decl}\n" end
-      file_under = lexical
+      file_under = get_gloss(lexical,word)['file_under']
       l.push([file_under,word,lexical,data])
     }
   }
@@ -42,11 +43,7 @@ end
 
 def vocab1(stuff)
   file_under,word,lexical,data = stuff
-  entry_lexical   = get_gloss(word_to_filename(lexical))
-  entry_inflected = get_gloss(word_to_filename(word))
-  # {  "word": "ἔθηκε",  "gloss": "put, put in a state",  "lexical": "τίθημι" }
-  entry = entry_inflected
-  if entry.nil? then entry=entry_lexical end
+  entry = get_gloss(lexical,word)
   return if entry.nil?
   word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
   if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
@@ -62,7 +59,23 @@ def word_to_filename(s)
   return remove_accents(s).downcase
 end
 
-def get_gloss(key)
+def get_gloss(lexical,word)
+  # It doesn't matter whether the inputs have accents or not. We immediately strip them off.
+  # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
+  # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
+  entry_lexical   = get_gloss_helper(word_to_filename(lexical))
+  entry_inflected = get_gloss_helper(word_to_filename(word))
+  if entry_inflected.nil? then
+    entry = entry_lexical
+    file_under = lexical
+  else
+    entry = entry_inflected
+    file_under = word
+  end
+  return entry.merge({'file_under'=>file_under})
+end
+
+def get_gloss_helper(key)
   path = "glosses/#{key}"
   if FileTest.exist?(path) then
     return json_from_file_or_die(path)
@@ -99,7 +112,7 @@ def foreign_helper(t,ransom,gloss_these:[])
           j = ww.index(x)
           word = w[j] # original inflected form
           key = to_key(x)
-          entry = get_gloss(key)
+          entry = get_gloss(x,word) # it doesn't matter whether inputs have accents
           if entry.nil? then entry=get_gloss(to_key(word)) end # see if there's a gloss for the inflected form
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil

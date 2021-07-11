@@ -34,6 +34,7 @@ def do_filtering(t)
   t.gsub!(/\$\[\]\$/,'') # empty $[]$
   t.gsub!(/\$\$/,'') # empty $$
   t.gsub!(/^\s*\n/,'') # lines containing only whitespace
+  t.gsub!(/^\(\.\/\w+\.tex$/,'') # (./iliad.tex
 
   # messages from specific packages, etc.
   date_version = "<[^>]+>" # e.g., <2008/02/07>, used by packages to announce what version they are
@@ -44,6 +45,7 @@ def do_filtering(t)
   t.sub!(/Package: [^\n]+beamerposter[^\n]+\n/,'')
   # remove lines beginning with specific text
   [
+    "\\TU/GFSDidot",
     "For additional information on amsmath",
     "Document Class",
     "Style option",
