@@ -15,7 +15,7 @@ def vocab(vl)
   vocab_helper('common',vl,0,0)
   vocab_helper('uncommon',vl,1,2)
   print "\\end{vocabpage}\n"
-  return vl.list.map { |l| l.map{ |entry| entry[0] } }
+  return vl.list.map { |l| l.map{ |entry| entry[1] } }
 end
 
 def vocab_helper(commonness,vl,lo,hi)
@@ -95,7 +95,7 @@ def foreign_helper(t,ransom,gloss_these:[])
       w = words(lines[i])
       ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
       gg.each { |x|
-        if ww.include?(x) then # lemmatized version of sentence includes this rare lemma that we were asked to gloss
+        if ww.include?(x) then # lemmatized version of line includes this rare lemma that we were asked to gloss
           j = ww.index(x)
           word = w[j] # original inflected form
           key = to_key(x)

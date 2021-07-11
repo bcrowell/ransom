@@ -79,6 +79,8 @@ text = e.extract(r1,r2)
 
 v = vocab(Vlist.from_text(text,lemmas_file,freq_file))
 
+#$stderr.print "=======================\n",v,"\n"
+
 %>
 
 \pagebreak
