@@ -19,7 +19,7 @@ def to_s
   return a.join("\n")
 end
 
-def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,800])
+def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
   lemmas = json_from_file_or_die(lemmas_file)
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],

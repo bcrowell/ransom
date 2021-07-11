@@ -87,13 +87,13 @@ def foreign_helper(t,ransom,gloss_these:[])
   main_code = "\\begin{foreignpage}\n"
   if ransom then main_code = main_code + "\\begin{graytext}\n" end
   lines = t.split(/\s*\n\s*/)
-  #lines = lines.select { |line| line=~/[[:alpha:]]/ } # remove blank lines -- why was I doing this?
   if gloss_these.length>0 then
     gg = gloss_these.map { |x| remove_accents(x)}
     0.upto(lines.length-1) { |i|
       line_hash = Digest::MD5.hexdigest(lines[i])
       w = words(lines[i])
       ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
+      #$stderr.print "ww=#{ww}\n" # qwe
       gg.each { |x|
         if ww.include?(x) then # lemmatized version of line includes this rare lemma that we were asked to gloss
           j = ww.index(x)
@@ -175,6 +175,7 @@ class Lemmatize
   def Lemmatize.lemmatize(word)
     # returns [lemma,success]
     if @@lemmas.has_key?(word) then return Lemmatize.lemma_helper(word) end
+    if @@lemmas.has_key?(word.downcase) then return Lemmatize.lemma_helper(word.downcase) end
     if @@lemmas.has_key?(capitalize(word)) then return Lemmatize.lemma_helper(capitalize(word)) end
     return [word,false]
   end
