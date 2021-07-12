@@ -58,8 +58,8 @@
        id="g859"
        transform="matrix(0.62994849,0,0,0.62994849,4.9474295,6.5536259)">
       <image
-         sodipodi:absref="/home/bcrowell/Documents/programming/ransom/figs/../mockup/manual/c.jpg"
-         xlink:href="../mockup/manual/c.jpg"
+         sodipodi:absref="manual-bitmaps/c.jpg"
+         xlink:href="manual-bitmaps/c.jpg"
          y="39.104519"
          x="70.417595"
          id="image874"
@@ -69,8 +69,8 @@
          inkscape:export-xdpi="160"
          inkscape:export-ydpi="160" />
       <image
-         sodipodi:absref="/home/bcrowell/Documents/programming/ransom/figs/../mockup/manual/b.jpg"
-         xlink:href="../mockup/manual/b.jpg"
+         sodipodi:absref="manual-bitmaps/b.jpg"
+         xlink:href="manual-bitmaps/b.jpg"
          width="41.206314"
          height="27.470879"
          preserveAspectRatio="none"
@@ -89,8 +89,8 @@
          id="rect891"
          style="opacity:1;vector-effect:none;fill:#ffffff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.91805476;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1" />
       <image
-         sodipodi:absref="/home/bcrowell/Documents/programming/ransom/figs/../mockup/manual/a.jpg"
-         xlink:href="../mockup/manual/a.jpg"
+         sodipodi:absref="manual-bitmaps/a.jpg"
+         xlink:href="manual-bitmaps/a.jpg"
          width="41.206314"
          height="27.470879"
          preserveAspectRatio="none"
