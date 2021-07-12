@@ -19,7 +19,7 @@ stuff = lemmas_file,freq_file,greek,translation
 <%
 
 four_page_layout(stuff,[1,1],[1,17],"sing goddess","greaved heavenly dwellings",start_chapter:1)
-four_page_layout(stuff,[1,17],[1,33],"greaved heavenly dwellings","irritate me not")
+four_page_layout(stuff,[1,17],[1,33],"greaved heavenly dwellings","irritate me not|")
 
 %>
 

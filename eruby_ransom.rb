@@ -6,6 +6,7 @@ require_relative "lib/string_util"
 require_relative "lib/epos"
 require_relative "lib/vlist"
 require_relative "lib/linguistics"
+require_relative "lib/clown"
 
 def four_page_layout(stuff,g1,g2,t1,t2,start_chapter:nil)  
   # g1 and g2 are line refs of the form [book,line]

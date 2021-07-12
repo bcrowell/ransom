@@ -54,9 +54,13 @@ class Epos
     # A chunk is a contiguous portion of the text that doesn't contain certain chunk-ending characters and doesn't span files.
     # For verse, the only chunk-ending character is \n. For latin-script prose, they're . ? ; and \n\n.
     # An example where the \n\n matters is near the beginning of Buckley, where a paragraph ends with a colon setting off quoted speech.
+    # The API is structured so that usually we think of a chunk as a pointer to just before its own first character.
+    # A string like "irritate me not|", with a | at the end, produces a ref to the end of this chunk, i.e., it's as if you were
+    # referencing the following chunk.
     # Example:
-    #   ruby -e 'require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); print e.word_glob_to_hard_ref("μῆνιν-ἄειδε")'
+    #   rm -f text/ιλιας.cache* && ruby -e 'require "sdbm"; require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); print e.word_glob_to_hard_ref("μῆνιν-ἄειδε")'
     #   For a non-unique match, try ῥοδοδάκτυλος-Ἠώς.
+    #   rm -f text/buckley_iliad.cache* && ruby -e 'require "sdbm"; require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/buckley_iliad.txt","latin",false); print e.word_glob_to_hard_ref("irritate me not|")'
     # Returns [hard_ref,non_unique]. Hard_ref is a hard reference, meaning an internal data structure that is not likely to
     # remain valid when the text is edited. Currently hard_ref is implemented as [file_number,character_index], where both
     # indices are zero-based, and character_index is the first character in the chunk.
@@ -73,6 +77,10 @@ class Epos
 
   def word_glob_to_hard_ref_helper(glob)
     # Does the actual work for word_glob_to_hard_ref(), in the case where the result is not cached.
+    if glob=~/(.*)\|[^[:alpha:]]*/ then
+      x = word_glob_to_hard_ref_helper($1)
+      return [self.next_chunk(x[0]),x[1]]
+    end
     keys = glob.split(/[\-\s]+/)
     spl = self.splitters
     regex_no_splitters = "[^#{spl}@]*" # The @ is a convenience for when we call matches_without_containing_paragraph_break.
@@ -114,6 +122,34 @@ class Epos
       i = i-1
     end
     return i
+  end
+
+  def next_chunk(ref)
+    # returns a ref
+    # if used at the end of the last file, can return a reference to a first character of a fictitious next file
+    if ref.nil? then raise "nil ref" end
+    s = self.get_contents[ref[0]]
+    spl = self.splitters
+    i = ref[1]
+    while true do
+      if i==s.length-1 || (s[i+1]=~/[#{spl}]/) then bump=2; break end
+      if i<=s.length-3 && s[i+1]=="\n" && s[i+2]=="\n" then bump=3; break end # only relevant for prose, in which double newline is a chunk separator
+      i = i+1
+    end
+    ref = clown([ref[0],i])
+    1.upto(bump) { |k| ref=self.increment_ref(ref) }
+    return ref
+  end
+
+  def increment_ref(ref)
+    # if used at the end of the last file, can return a reference to a first character of a fictitious next file
+    s = self.get_contents[ref[0]]
+    i = ref[1]
+    if i<s.length-1 then
+      return [ref[0],i+1]
+    else
+      return [ref[0]+1,0]
+    end
   end
 
   def splitters
