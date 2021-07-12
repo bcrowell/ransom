@@ -5,6 +5,7 @@ COMPILE = xelatex $(BOOK) | ruby filter_latex_messages.rb
 #COMPILE = xelatex $(BOOK)
 
 default:
+	@rm -f warnings
 	@make figures # renders any figure whose pdf is older than its svg
 	@fruby $(BOOK).rbtex '{$(GENERIC),"clean":true}' >$(BOOK).tex
 	@$(COMPILE)

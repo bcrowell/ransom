@@ -99,7 +99,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
       filename = "glosses/#{key}"
       if !(FileTest.exist?(filename)) then
         if key1==key2 then foo=key1 else foo="#{key1} or #{key2}" end
-        whine.push("no glossary entry for #{filename} -- contents would look like { \"word\":\"#{lemma}\",\"gloss\":\"\" }\n"+
+        whine.push("no glossary entry for #{filename2} -- contents would look like { \"word\":\"#{lemma}\",\"gloss\":\"\" }\n"+
                     "  https://en.wiktionary.org/wiki/#{lemma}")
       end
       if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end
@@ -110,7 +110,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
   whine = whine + ambig_warnings
   if whine.length>0 then
     whiny_file = "warnings"
-    File.open(whiny_file,"w") { |f|
+    File.open(whiny_file,"a") { |f|
       whine.each { |complaint| f.print "#{complaint}\n" }
     }
   end
@@ -132,11 +132,12 @@ class Ignore_words
   # If an inflected form is given here, then it will only match that inflected form.
   # First line is proper names.
   @@index = %q{
-    Ἀγαμέμνων λητους διος πηληιαδεω ατρειδα ατρειδης απολλων αιδι Χρύση Χρύσης αχιλλευς
-    η τα τον ο τους αυτους
+    Ὀλύμπιος Ἄργος Πρίαμος Ἀγαμέμνων λητους διος πηληιαδεω ατρειδα ατρειδης απολλων αιδι Χρύση Χρύσης αχιλλευς
+    η τα τον ο τους αυτους εμος
+    ειμι
     επι ανα
     δυω πολλας δη
-    κακος
+    κακος ευ παρα
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Ignore_words.patch(word)
     w = remove_accents(word).downcase
