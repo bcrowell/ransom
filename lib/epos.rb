@@ -49,7 +49,7 @@ class Epos
   end
 
   def word_glob_to_hard_ref(glob)
-    # Glob is a string such as "sing-destructive-wrath". It defines a chunk in which these three words occur in this order,
+    # Glob is a string such as "sing-destructive-wrath" (with hyphens or whitespace). It defines a chunk in which these three words occur in this order,
     # but possibly with other words in between. Case-insensitive.
     # A chunk is a contiguous portion of the text that doesn't contain certain chunk-ending characters and doesn't span files.
     # For verse, the only chunk-ending character is \n. For latin-script prose, they're . ? ; and \n\n.
@@ -73,7 +73,7 @@ class Epos
 
   def word_glob_to_hard_ref_helper(glob)
     # Does the actual work for word_glob_to_hard_ref(), in the case where the result is not cached.
-    keys = glob.split(/-/)
+    keys = glob.split(/[\-\s]+/)
     spl = self.splitters
     regex_no_splitters = "[^#{spl}@]*" # The @ is a convenience for when we call matches_without_containing_paragraph_break.
     word_regexen = keys.map { |key| "(?<![[:alpha:]])"+key+"(?![[:alpha:]])" } # negative lookahead and lookbehind so it's an isolated word

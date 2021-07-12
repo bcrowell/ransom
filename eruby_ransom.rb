@@ -11,14 +11,17 @@ def four_page_layout(stuff,g1,g2,t1,t2,start_chapter:nil)
   # g1 and g2 are line refs of the form [book,line]
   # t1 and t2 are word globs
   lemmas_file,freq_file,greek,translation = stuff
-  greek_text = greek.extract(greek.line_to_hard_ref(g1[0],g1[1]),greek.line_to_hard_ref(g2[0],g2[1]))
+  rg1,rg2 = greek.line_to_hard_ref(g1[0],g1[1]),greek.line_to_hard_ref(g2[0],g2[1])
+  greek_text = greek.extract(rg1,rg2)
   v = vocab(Vlist.from_text(greek_text,lemmas_file,freq_file))
   print "\\pagebreak\n\n"
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print foreign(greek_text),"\n\n"
   if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
   print ransom(greek_text,v),"\n\n"
-  translation_text = translation.extract(translation.word_glob_to_hard_ref(t1)[0],translation.word_glob_to_hard_ref(t2)[0])
+  rt1,rt2 = translation.word_glob_to_hard_ref(t1)[0],translation.word_glob_to_hard_ref(t2)[0]
+  if rt1.nil? || rt2.nil? then raise "bad word glob, #{t1}->#{rt1} or #{t2}->#{rt2}" end
+  translation_text = translation.extract(rt1,rt2)
   translation_text = Patch_names.patch(translation_text)
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print translation_text
@@ -47,7 +50,10 @@ def vocab_helper(commonness,vl,lo,hi)
       #is_3rd_decl = (data.has_key?('is_3rd_decl') && data[is_3rd_decl])
       #if lexical=='κύων' then $stderr.print "doggies in vocab_helper, data=#{data}, #{data.keys} word=#{word} is_3rd_decl=#{is_3rd_decl}\n" end
       #if is_3rd_decl then $stderr.print "doggies in vocab_helper, data=#{data}, #{data.keys} word=#{word} is_3rd_decl=#{is_3rd_decl}\n" end
-      file_under = get_gloss(lexical,word)['file_under']
+      g = get_gloss(lexical,word)
+      next if g.nil?
+      file_under = g['file_under']
+      if file_under.nil? then raise "get_gloss = #{g}, doesn't have a file_under key" end
       l.push([file_under,word,lexical,data])
     }
   }
@@ -89,7 +95,8 @@ def get_gloss(lexical,word)
     entry = entry_inflected
     file_under = word
   end
-  return entry.merge({'file_under'=>file_under})
+  if !(entry.nil?) then entry = entry.merge({'file_under'=>file_under}) end
+  return entry
 end
 
 def get_gloss_helper(key)
@@ -130,7 +137,6 @@ def foreign_helper(t,ransom,gloss_these:[])
           word = w[j] # original inflected form
           key = to_key(x)
           entry = get_gloss(x,word) # it doesn't matter whether inputs have accents
-          if entry.nil? then entry=get_gloss(to_key(word)) end # see if there's a gloss for the inflected form
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil

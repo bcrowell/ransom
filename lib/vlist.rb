@@ -132,7 +132,7 @@ class Ignore_words
   # If an inflected form is given here, then it will only match that inflected form.
   # First line is proper names.
   @@index = %q{
-    λητους διος πηληιαδεω ατρειδα ατρειδης απολλων αιδι Χρύση Χρύσης αχιλλευς
+    Ἀγαμέμνων λητους διος πηληιαδεω ατρειδα ατρειδης απολλων αιδι Χρύση Χρύσης αχιλλευς
     η τα τον ο τους αυτους
     επι ανα
     δυω πολλας δη
