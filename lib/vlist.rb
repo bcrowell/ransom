@@ -103,7 +103,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
         gloss_help.push({
           'filename'=>key2,
           'lemma'=>lemma,
-          'url'=> "https://en.wiktionary.org/wiki/#{lemma}",
+          'url'=> "https://en.wiktionary.org/wiki/#{lemma} https://logeion.uchicago.edu/#{lemma}",
           'wikt'=> WiktionaryGlosses.get_glosses(lemma).join(', ')
         })
         whine.push("no glossary entry for #{filename2} , see gloss help file")
@@ -160,10 +160,10 @@ class Ignore_words
   # If an inflected form is given here, then it will only match that inflected form.
   # First line is proper names.
   @@index = %q{
-    Ὀλύμπιος Ἄργος Πρίαμος Ἀγαμέμνων λητους διος πηληιαδεω ατρειδα ατρειδης απολλων αιδι Χρύση Χρύσης αχιλλευς
-    η τα τον ο τους αυτους εμος
+    Λετω ολυμπος Ὀλύμπιος Ἄργος Πρίαμος Ἀγαμέμνων λητους διος πηληιαδεω ατρειδα ατρειδης απολλων αιδι Χρύση Χρύσης αχιλλευς τενεδος
+    η τα τον ο τους αυτους εμος αυτου σος
     ειμι
-    επι ανα
+    επι ανα μετα
     δυω πολλας δη
     κακος ευ παρα
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set

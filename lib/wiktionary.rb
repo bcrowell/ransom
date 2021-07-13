@@ -46,6 +46,7 @@ def WiktionaryGlosses.get_glosses(lexical)
     if s.has_key?('glosses') then glosses = glosses+s['glosses'] end # is usually a singleton array
   }
   return [] if glosses.length==0
+  glosses = glosses.map { |x| x.sub(/\A(to|I) /,'')}
   return glosses
 end
 
