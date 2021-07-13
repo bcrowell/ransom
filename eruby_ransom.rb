@@ -144,7 +144,6 @@ def foreign_helper(t,ransom,gloss_these:[])
           if Options.if_write_pos then
             # Re the need for \immediate in the following, see https://tex.stackexchange.com/q/604110/6853
             code = %q{\savebox{\myboxregister}{WORD}%
-              %\smash{\pdfsavepos\usebox{\myboxregister}}%
               \makebox{\pdfsavepos\usebox{\myboxregister}}%
               \immediate\write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,,,\the\wd\myboxregister,\the\ht\myboxregister,\the\dp\myboxregister}%
               \write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,\the\pdflastxpos,\the\pdflastypos,,,}}
@@ -152,7 +151,6 @@ def foreign_helper(t,ransom,gloss_these:[])
             code.gsub!(/WORD/,word)
             code.gsub!(/LINE/,i.to_s)
             code.gsub!(/KEY/,key)
-            #code = "#{code}#{word}"
           end
           if Options.if_render_glosses then
             pos = Init.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
@@ -168,6 +166,8 @@ def foreign_helper(t,ransom,gloss_these:[])
             # ... Uses calc package; textpos's coordinate system goes from top down, pdfsavepos from bottom up.
             #     The final term scoots up the gloss so that its top is almost as high as the top of the Greek text.
             new_gloss_code.sub!(/_GLOSS_/,a)
+            code = %q{\begin{whitetext}WORD\end{whitetext}}
+            code.gsub!(/WORD/,word)
           end
           if !(new_gloss_code.nil?) then gloss_code = gloss_code + new_gloss_code end
           if !(code.nil?) then lines[i] = lines[i].sub(/#{word}/,code) end
