@@ -13,13 +13,14 @@ def four_page_layout(stuff,g1,g2,t1,t2,start_chapter:nil)
   # t1 and t2 are word globs
   lemmas_file,freq_file,greek,translation = stuff
   rg1,rg2 = greek.line_to_hard_ref(g1[0],g1[1]),greek.line_to_hard_ref(g2[0],g2[1])
+  first_line_number = g1[1]
   greek_text = greek.extract(rg1,rg2)
   v = vocab(Vlist.from_text(greek_text,lemmas_file,freq_file))
   print "\\pagebreak\n\n"
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
-  print foreign(greek_text),"\n\n"
+  print foreign(greek_text,first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
-  print ransom(greek_text,v),"\n\n"
+  print ransom(greek_text,v,first_line_number),"\n\n"
   rt1,rt2 = translation.word_glob_to_hard_ref(t1)[0],translation.word_glob_to_hard_ref(t2)[0]
   if rt1.nil? || rt2.nil? then raise "bad word glob, #{t1}->#{rt1} or #{t2}->#{rt2}" end
   translation_text = translation.extract(rt1,rt2)
@@ -110,16 +111,16 @@ def get_gloss_helper(key)
   end
 end
 
-def foreign(t)
-  foreign_helper(t,false)
+def foreign(t,first_line_number)
+  foreign_helper(t,false,first_line_number)
 end
 
-def ransom(t,v)
+def ransom(t,v,first_line_number)
   common,uncommon,rare = v
-  foreign_helper(t,true,gloss_these:rare)
+  foreign_helper(t,true,first_line_number,gloss_these:rare)
 end
 
-def foreign_helper(t,ransom,gloss_these:[])
+def foreign_helper(t,ransom,first_line_number,gloss_these:[])
   # If gloss_these isn't empty, then we assume it contains a list of rare lemmatized forms.
   gloss_code = ''
   main_code = "\\begin{foreignpage}\n"
@@ -175,7 +176,7 @@ def foreign_helper(t,ransom,gloss_these:[])
       }
     }
   end
-  main_code = main_code + verse_lines_to_latex(lines) + "\n\n"
+  main_code = main_code + verse_lines_to_latex(lines,first_line_number) + "\n\n"
   if ransom then main_code = main_code + "\\end{graytext}\n" end
   gloss_code = "\n{\\linespread{1.0}\\footnotesize #{gloss_code} }\n"
   code = main_code + gloss_code + "\\end{foreignpage}\n"
@@ -189,8 +190,15 @@ def clean_up_unicode(s)
   return s
 end
 
-def verse_lines_to_latex(lines)
-  return lines.join("\\\\\n")
+def verse_lines_to_latex(lines,first_line_number)
+  cooked = []
+  0.upto(lines.length-1) { |i|
+    line_number = first_line_number+i
+    c = clown(lines[i])
+    if line_number%5==0 then c=c+"\\hfill{}\\linenumber{#{line_number}}" end
+    cooked.push(c)
+  }
+  return cooked.join("\\\\\n")
 end
 
 def to_key(word)

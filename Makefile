@@ -4,6 +4,8 @@ GENERIC = "pos_file":"$(POS)"
 COMPILE = xelatex $(BOOK) | ruby filter_latex_messages.rb
 #COMPILE = xelatex $(BOOK)
 
+.PHONY: clean
+
 $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex
 	@rm -f warnings
 	@make figures # renders any figure whose pdf is older than its svg

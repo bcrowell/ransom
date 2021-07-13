@@ -52,9 +52,11 @@
 
 % xcolor package, https://tex.stackexchange.com/a/17105/6853
 \newenvironment{graytext}{\color{black!25}}{}
+\newenvironment{mediumgraytext}{\color{black!50}}{} % used for line numbers
 \newenvironment{blacktext}{\color{black}}{}
 \newenvironment{whitetext}{\color{white}}{}
 
+\newcommand{\linenumber}[1]{\begin{mediumgraytext}{\footnotesize{}#1}\end{mediumgraytext}}
 
 % The following need to be in their own separate paragraphs.
 \newcommand{\bigseparator}{
