@@ -8,6 +8,20 @@ require_relative "lib/vlist"
 require_relative "lib/linguistics"
 require_relative "lib/clown"
 
+class Options
+  if ARGV.length<1 then die("no command-line argument supplied") end
+  @@the_options = JSON.parse(ARGV[0])
+  def Options.if_write_pos() return Options.has_flag('write_pos') end
+  def Options.if_render_glosses() return Options.has_flag('render_glosses') end
+  def Options.if_clean() return Options.has_flag('clean') end
+  def Options.pos_file() return @@the_options['pos_file'] end
+  def Options.has_flag(flag)
+    return @@the_options.has_key?(flag) && @@the_options[flag]
+  end
+end
+
+if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
+
 def four_page_layout(stuff,g1,g2,t1,t2,start_chapter:nil)  
   # g1 and g2 are line refs of the form [book,line]
   # t1 and t2 are word globs
@@ -239,18 +253,6 @@ class Lemmatize
   def Lemmatize.lemma_helper(word)
     lemma,lemma_number,pos,count,if_ambiguous,ambig = @@lemmas[word]
     return [lemma,true]
-  end
-end
-
-class Options
-  if ARGV.length<1 then die("no command-line argument supplied") end
-  @@the_options = JSON.parse(ARGV[0])
-  def Options.if_write_pos() return Options.has_flag('write_pos') end
-  def Options.if_render_glosses() return Options.has_flag('render_glosses') end
-  def Options.if_clean() return Options.has_flag('clean') end
-  def Options.pos_file() return @@the_options['pos_file'] end
-  def Options.has_flag(flag)
-    return @@the_options.has_key?(flag) && @@the_options[flag]
   end
 end
 

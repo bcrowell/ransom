@@ -18,8 +18,17 @@ stuff = lemmas_file,freq_file,greek,translation
 
 <%
 
-four_page_layout(stuff,[1,1],[1,17],"sing goddess","greaved heavenly dwellings",start_chapter:1)
-four_page_layout(stuff,[1,17],[1,33],"greaved heavenly dwellings","irritate me not|")
+breaks = [
+  [ [1,1], "sing goddess" ],
+  [ [1,17], "greaved heavenly dwellings" ],
+  [ [1,33], "irritate me not|" ],
+  [ [1,50], "first attacked mules" ]
+]
+
+0.upto(breaks.length-2) { |i|
+  if i==0 then s=breaks[i][0] else s=nil end
+  four_page_layout(stuff,breaks[i][0],breaks[i+1][0],breaks[i][1],breaks[i+1][1],start_chapter:s)
+}
 
 %>
 
