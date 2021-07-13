@@ -4,7 +4,11 @@ filename = "wiktextract/grc_en.json"
 
 @@glosses = {}
 if not File.exists?(filename) then
-  $stderr.print "Warning: file #{filename} not found, so we won't be able to give automatic suggestions of glosses.\n"
+  $stderr.print %q{
+    Warning: file #{filename} not found, so we won't be able to give automatic suggestions of glosses.
+    See wiktextract/notes.txt re how to create this file.
+    This has no effect on production of the pdf files. It just makes it more work to create glosses for new pages.
+    }
 else  
   # $stderr.print "Reading #{filename}...\n"
   IO.foreach(filename) { |line|
