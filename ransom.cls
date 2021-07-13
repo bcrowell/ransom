@@ -6,23 +6,18 @@
 % https://tex.stackexchange.com/q/80520/6853
 % Bindingoffset refers to the gutter.
 
+% https://tex.stackexchange.com/a/37251/6853
+\RequirePackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+
+\newcommand{\rightheaderwhatvocab}{Minivocab} % gets redefined by, e.g., greekransom.sty
+\newcommand{\rightheaderwhatglosses}{Ransom notes}
+\RequirePackage{greekransom}
+
 \RequirePackage{graphicx} % needed for \resizebox
 \RequirePackage{multicol,xcolor,calc,titlesec,fancyhdr}
 \RequirePackage{parskip} % disables indentation at the beginning of a paragraph
 \RequirePackage[absolute,overlay]{textpos}
-
-% https://tex.stackexchange.com/a/37251/6853
-\RequirePackage{fontspec}
-\defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
-\setmainfont{GFS Didot} % is said to be a good Latin font to match with Porson-style fonts; if changing this, change it on the following line as well
-\newfontfamily\latinfont{GFS Didot}
-\newfontfamily\greekfont{GFS Porson}
-%  Also tried GFS Olga, which is also a Porson-style font; has a higher x-height than GFS Porson, and therefore matches better with Latin fonts.
-%  But seems to be buggy/immature/weird. Bad/weird kerning on λλ.
-\newenvironment{greek}{\greekfont}{}
-\newenvironment{latin}{\latinfont}{}
-% Both Olga and Porson lack real bold:
-\newenvironment{boldgreek}{\fontspec{GFS Olga}[FakeBold=0.1]}{} % discontinuous behavior: 0.0 gives no bolding, 0.0001 gives quite a bit
 
 \titleformat{\chapter}{\Large\bfseries}{}{}{}{}
 \titleformat{\section}{\large\bfseries}{}{}{}{}
@@ -36,8 +31,6 @@
 \newcommand{\rightheaderinfo}{}
 \newcommand{\leftheaderwhat}{}
 \newcommand{\rightheaderwhat}{}
-\newcommand{\rightheaderwhatvocab}{Λεξικόνιον}
-\newcommand{\rightheaderwhatglosses}{Σχόλια}
 \pagestyle{fancy}
 \fancyhf{}
 \fancyhead[CE]{ΙΛΙΑΣ \leftheaderinfo} % or Ἰλιάς
