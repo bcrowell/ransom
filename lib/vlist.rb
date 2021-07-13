@@ -20,7 +20,23 @@ def to_s
   return a.join("\n")
 end
 
-def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
+def total_entries
+  return self.list.inject(0){|sum,x| sum + x.length }
+end
+
+def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entries:55)
+  while true do
+    vl = Vlist.from_text_helper(t,lemmas_file,freq_file,thresholds)
+    $stderr.print "vl.total_entries=#{vl.total_entries}\n" # qwe
+    if vl.total_entries<=max_entries then $stderr.print "===#{thresholds}\n" end # qwe
+    if vl.total_entries<=max_entries then return vl end
+    vl.console_messages = nil # ... will also have had the side-effect of writing a bunch of files to help_gloss
+    thresholds[1] = (thresholds[1]*1.5).round+1
+    thresholds[2] = (thresholds[2]*1.5).round+1
+  end
+end
+
+def Vlist.from_text_helper(t,lemmas_file,freq_file,thresholds)
   lemmas = json_from_file_or_die(lemmas_file)
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
