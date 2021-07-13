@@ -25,18 +25,6 @@ def total_entries
 end
 
 def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entries:55)
-  while true do
-    vl = Vlist.from_text_helper(t,lemmas_file,freq_file,thresholds)
-    $stderr.print "vl.total_entries=#{vl.total_entries}\n" # qwe
-    if vl.total_entries<=max_entries then $stderr.print "===#{thresholds}\n" end # qwe
-    if vl.total_entries<=max_entries then return vl end
-    vl.console_messages = nil # ... will also have had the side-effect of writing a bunch of files to help_gloss
-    thresholds[1] = (thresholds[1]*1.5).round+1
-    thresholds[2] = (thresholds[2]*1.5).round+1
-  end
-end
-
-def Vlist.from_text_helper(t,lemmas_file,freq_file,thresholds)
   lemmas = json_from_file_or_die(lemmas_file)
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -58,6 +46,11 @@ def Vlist.from_text_helper(t,lemmas_file,freq_file,thresholds)
     rank += 1
   }
 
+  threshold_difficult = thresholds[0] # words ranked lower than this may be glossed if they're difficult forms to recognize
+  threshold_no_gloss = thresholds[1] # words ranked higher than this are not normally glossed
+  threshold = thresholds[2] # words ranked higher than this are listed as common
+  threshold2 = thresholds[3] # words ranked lower than this get ransom notes
+
   result = []
   did_lemma = {}
   warn_ambig = {}
@@ -75,31 +68,31 @@ def Vlist.from_text_helper(t,lemmas_file,freq_file,thresholds)
     did_lemma[lemma] = 1
     rank = freq_rank[lemma]
     f = freq[lemma]
-    entry = word_raw,word,lemma,rank,f,pos # word and word_raw are not super useful, in many cases will be just the first example in this passage
+    is_3rd_decl = guess_whether_third_declension(word_raw,lemma,pos)
+    difficult_to_recognize = is_3rd_decl
+    next unless rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize)
+    misc = {}
+    if is_3rd_decl then misc['is_3rd_decl']=true end
+    entry = word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc
+    # ... word and word_raw are not super useful, in many cases will be just the first example in this passage
     #$stderr.print "entry=#{entry}\n"
     result.push(entry)
   }
 
   result.sort! { |a,b| b[4] <=> a[4] } # descending order by frequency
+  while result.length>max_entries do result.shift end  
 
   gloss_help = []
-  threshold_difficult = thresholds[0] # words ranked lower than this may be glossed if they're difficult forms to recognize
-  threshold_no_gloss = thresholds[1] # words ranked higher than this are not normally glossed
-  threshold = thresholds[2] # words ranked higher than this are listed as common
-  threshold2 = thresholds[3] # words ranked lower than this get ransom notes
   result2 = []
   ambig_warnings = []
   0.upto(2) { |commonness|
     this_part_of_result2 = []
     result.sort { |a,b| a[1] <=> b[1] } .each { |entry|
-      word_raw,word,lemma,rank,f,pos = entry
+      word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc = entry
       next if Ignore_words.patch(word) || Ignore_words.patch(lemma)
       next unless rank>=threshold_difficult
-      is_3rd_decl = guess_whether_third_declension(word_raw,lemma,pos)
-      difficult_to_recognize = is_3rd_decl
       next if rank<threshold_no_gloss && !difficult_to_recognize      
       next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
-      #if lemma=~/(κύων|χείρ)/i then $stderr.print "============= doggies! is_3rd_decl=#{is_3rd_decl}, word_raw=#{word_raw}\n" end
       key1 = remove_accents(word).downcase
       key2 = remove_accents(lemma).downcase
       filename1 = "glosses/#{key1}"
@@ -125,7 +118,7 @@ def Vlist.from_text_helper(t,lemmas_file,freq_file,thresholds)
         whine.push("no glossary entry for #{filename2} , see gloss help file")
       end
       if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end
-      this_part_of_result2.push([word,lemma,{'is_3rd_decl' => is_3rd_decl}])
+      this_part_of_result2.push([word,lemma,misc])
     }
     result2.push(this_part_of_result2)
   }
@@ -138,7 +131,7 @@ def Vlist.from_text_helper(t,lemmas_file,freq_file,thresholds)
   end
   if gloss_help.length>0 then Vlist.give_gloss_help(gloss_help) end
   vl = Vlist.new(result2)
-  vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n"
+  if whine.length>0 then vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n" end
   return vl
 end
 
