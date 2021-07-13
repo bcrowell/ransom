@@ -24,7 +24,7 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entries:55)
+def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entries:58)
   lemmas = json_from_file_or_die(lemmas_file)
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
