@@ -7,7 +7,7 @@
 % Bindingoffset refers to the gutter.
 
 \RequirePackage{graphicx} % needed for \resizebox
-\RequirePackage{multicol,xcolor,calc,titlesec}
+\RequirePackage{multicol,xcolor,calc,titlesec,fancyhdr}
 \RequirePackage{parskip} % disables indentation at the beginning of a paragraph
 \RequirePackage[absolute,overlay]{textpos}
 
@@ -29,6 +29,23 @@
 \titlespacing*{\chapter}{0pt}{-30pt}{10pt}
 \newcommand{\mychapter}[1]{{\Large\bfseries #1}}
 \newcommand{\myransomchapter}[1]{\begin{graytext}\mychapter{#1}\end{graytext}}
+\setlength\headheight{15pt} % https://tex.stackexchange.com/questions/327285/what-does-this-warning-mean-fancyhdr-and-headheight
+
+% https://www.overleaf.com/learn/latex/Headers_and_footers
+\newcommand{\leftheaderinfo}{}
+\newcommand{\rightheaderinfo}{}
+\newcommand{\leftheaderwhat}{}
+\newcommand{\rightheaderwhat}{}
+\newcommand{\rightheaderwhatvocab}{Λεξικόνιον}
+\newcommand{\rightheaderwhatglosses}{Σχόλια}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[CE]{ΙΛΙΑΣ \leftheaderinfo} % or Ἰλιάς
+\fancyhead[LE]{\thepage}
+\fancyhead[LO]{\rightheaderwhat}
+\fancyhead[CO]{ΙΛΙΑΣ \rightheaderinfo}
+\fancyhead[RO]{\thepage}
+\renewcommand{\headrulewidth}{0pt}
 
 % A symbol to be used like κύνεσσιν < κύων, to show A is an inflected form of B.
 %%%% \newcommand{\from}{$\prec$\hardspace{0.2em}} % or \textless

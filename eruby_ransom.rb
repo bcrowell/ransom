@@ -16,10 +16,14 @@ def four_page_layout(stuff,g1,g2,t1,t2,start_chapter:nil)
   first_line_number = g1[1]
   greek_text = greek.extract(rg1,rg2)
   v = vocab(Vlist.from_text(greek_text,lemmas_file,freq_file))
+  print "\\renewcommand{\\rightheaderinfo}{#{g1[0]}.#{g1[1]}}%\n"
+  print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatvocab}%\n"
   print "\\pagebreak\n\n"
+  print "\\renewcommand{\\leftheaderinfo}{#{g1[0]}.#{g1[1]}}%\n"
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print foreign(greek_text,first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
+  print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatglosses}%\n"
   print ransom(greek_text,v,first_line_number),"\n\n"
   rt1,rt2 = translation.word_glob_to_hard_ref(t1)[0],translation.word_glob_to_hard_ref(t2)[0]
   if rt1.nil? || rt2.nil? then raise "bad word glob, #{t1}->#{rt1} or #{t2}->#{rt2}" end

@@ -4,7 +4,10 @@ GENERIC = "pos_file":"$(POS)"
 COMPILE = xelatex $(BOOK) | ruby filter_latex_messages.rb
 #COMPILE = xelatex $(BOOK)
 
-.PHONY: clean
+.PHONY: clean default
+
+default:
+	make --no-print-directory --assume-new iliad.rbtex $(BOOK).pdf
 
 $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex
 	@rm -f warnings
