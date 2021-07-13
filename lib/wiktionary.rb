@@ -6,13 +6,13 @@ filename = "wiktextract/grc_en.json"
 if not File.exists?(filename) then
   $stderr.print "Warning: file #{filename} not found, so we won't be able to give automatic suggestions of glosses.\n"
 else  
-  $stderr.print "Reading #{filename}...\n"
+  # $stderr.print "Reading #{filename}...\n"
   IO.foreach(filename) { |line|
     x = JSON.parse(line)
     w = remove_macrons_and_breves(x['word']).downcase # should be the lexical form
     @@glosses[w] = x
   }
-  $stderr.print "...done\n"
+  # $stderr.print "...done\n"
 end
 
 # Typical entry:

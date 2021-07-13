@@ -45,6 +45,7 @@ def do_filtering(t)
   t.sub!(/Package: [^\n]+beamerposter[^\n]+\n/,'')
   # remove lines beginning with specific text
   [
+    "\)\) \*geometry\* driver: auto-detecting",
     "\\TU/GFSDidot",
     "For additional information on amsmath",
     "Document Class",

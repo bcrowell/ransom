@@ -66,6 +66,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
 
   result.sort! { |a,b| b[4] <=> a[4] } # descending order by frequency
 
+  gloss_help = []
   threshold_difficult = thresholds[0] # words ranked lower than this may be glossed if they're difficult forms to recognize
   threshold_no_gloss = thresholds[1] # words ranked higher than this are not normally glossed
   threshold = thresholds[2] # words ranked higher than this are listed as common
@@ -99,9 +100,13 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
       filename = "glosses/#{key}"
       if !(FileTest.exist?(filename)) && Options.if_render_glosses then
         if key1==key2 then foo=key1 else foo="#{key1} or #{key2}" end
-        whine.push("no glossary entry for #{filename2} -- contents would look like { \"word\":\"#{lemma}\",\"gloss\":\"\" }\n"+
-                    "  https://en.wiktionary.org/wiki/#{lemma}\n"+
-                    "  "+WiktionaryGlosses.get_glosses(lemma).join(', ')+"\n")
+        gloss_help.push({
+          'filename'=>key2,
+          'lemma'=>lemma,
+          'url'=> "https://en.wiktionary.org/wiki/#{lemma}",
+          'wikt'=> WiktionaryGlosses.get_glosses(lemma).join(', ')
+        })
+        whine.push("no glossary entry for #{filename2} , see gloss help file")
       end
       if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end
       this_part_of_result2.push([word,lemma,{'is_3rd_decl' => is_3rd_decl}])
@@ -115,6 +120,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900])
       whine.each { |complaint| f.print "#{complaint}\n" }
     }
   end
+  if gloss_help.length>0 then Vlist.give_gloss_help(gloss_help) end
   vl = Vlist.new(result2)
   vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n"
   return vl
@@ -124,6 +130,27 @@ def Vlist.get_lemma_helper(lemmas,word)
   if lemmas.has_key?(word) then return lemmas[word] end
   if lemmas.has_key?(word.downcase) then return lemmas[word.downcase] end
   return nil
+end
+
+def Vlist.give_gloss_help(gloss_help)
+  gloss_help_dir = "help_gloss"
+  unless File.directory?(gloss_help_dir) then Dir.mkdir(gloss_help_dir) end
+  $stderr.print "====writing gloss help to #{gloss_help_dir} ====\n"
+  gloss_help.each { |h|
+    File.open(dir_and_file_to_path(gloss_help_dir,h['filename']),"w") { |f|
+      x = %Q(
+        // #{h['url']}
+        // #{h['wikt']}
+        {
+          \"word\":\"#{h['lemma']}\",
+          \"gloss\":\"#{h['wikt']}\"
+        }
+      )
+      x.gsub!(/\A\n/,'')
+      x.gsub!(/^        /,'')
+      f.print x
+    }
+  }
 end
 
 end # class Vlist
