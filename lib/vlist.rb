@@ -170,11 +170,13 @@ class Ignore_words
   # First line is proper names.
   @@index = %q{
     Λετω ολυμπος Ὀλύμπιος Ἄργος Πρίαμος Ἀγαμέμνων λητους διος πηληιαδεω ατρειδα ατρειδης απολλων αιδι Χρύση Χρύσης αχιλλευς τενεδος
+    Δαναοι Ηρα
     η τα τον ο τους αυτους εμος αυτου σος
     ειμι
     επι ανα μετα
     δυω πολλας δη
     κακος ευ παρα
+    οτι πως
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Ignore_words.patch(word)
     w = remove_accents(word).downcase

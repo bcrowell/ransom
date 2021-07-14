@@ -22,7 +22,8 @@ breaks = [
   [ [1,1], "sing goddess" ],
   [ [1,17], "greaved heavenly dwellings" ],
   [ [1,33], "irritate me not|" ],
-  [ [1,50], "first attacked mules" ]
+  [ [1,50], "first attacked mules" ],
+  [ [1,66], "thus having spoken sat down" ]
 ]
 
 0.upto(breaks.length-2) { |i|
