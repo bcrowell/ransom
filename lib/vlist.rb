@@ -175,9 +175,9 @@ class Ignore_words
     ειμι
     επι ανα μετα απο δια
     δυω πολλας δη
-    κακος ευ παρα
-    οτι πως
-    ειπον
+    κακος ευ παρα περ
+    οτι πως εαν οτε ουδε τοτε
+    ειπον μα
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Ignore_words.patch(word)
     w = remove_accents(word).downcase
