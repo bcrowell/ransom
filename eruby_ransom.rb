@@ -130,7 +130,7 @@ def get_gloss_helper(key)
 end
 
 def foreign(t,first_line_number)
-  foreign_helper(t,false,first_line_number)
+  foreign_helper(t,false,first_line_number,left_page_verse:true)
 end
 
 def ransom(t,v,first_line_number)
@@ -138,7 +138,7 @@ def ransom(t,v,first_line_number)
   foreign_helper(t,true,first_line_number,gloss_these:rare)
 end
 
-def foreign_helper(t,ransom,first_line_number,gloss_these:[])
+def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:false)
   # If gloss_these isn't empty, then we assume it contains a list of rare lemmatized forms.
   gloss_code = ''
   main_code = "\\begin{foreignpage}\n"
@@ -194,7 +194,7 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[])
       }
     }
   end
-  main_code = main_code + verse_lines_to_latex(lines,first_line_number) + "\n\n"
+  main_code = main_code + verse_lines_to_latex(lines,first_line_number,left_page_verse) + "\n\n"
   if ransom then main_code = main_code + "\\end{graytext}\n" end
   gloss_code = "\n{\\linespread{1.0}\\footnotesize #{gloss_code} }\n"
   code = main_code + gloss_code + "\\end{foreignpage}\n"
@@ -208,15 +208,22 @@ def clean_up_unicode(s)
   return s
 end
 
-def verse_lines_to_latex(lines,first_line_number)
+def verse_lines_to_latex(lines,first_line_number,left_page_verse)
   cooked = []
   0.upto(lines.length-1) { |i|
     line_number = first_line_number+i
     c = clown(lines[i])
-    if line_number%5==0 then c=c+"\\hfill{}\\linenumber{#{line_number}}" end
+    want_line_number = (line_number%5==0)
+    if left_page_verse then
+      if want_line_number && c.length<53 then n=line_number.to_s else n='' end
+      c = "\\leftpageverseline{#{n}}{#{c}}"
+    else
+      if want_line_number then c=c+"\\hfill{}\\linenumber{#{line_number}}" end
+      c = c+"\\\\"
+    end
     cooked.push(c)
   }
-  return cooked.join("\\\\\n")
+  return cooked.join("\n")
 end
 
 def to_key(word)

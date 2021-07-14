@@ -67,6 +67,7 @@
 \newenvironment{whitetext}{\color{white}}{}
 
 \newcommand{\linenumber}[1]{\begin{mediumgraytext}{\footnotesize{}#1}\end{mediumgraytext}}
+\newcommand{\leftpageverseline}[2]{\noindent\rlap{#1}\hskip 20mm minus 16mm \hbox{#2}\\}
 
 % The following need to be in their own separate paragraphs.
 \newcommand{\bigseparator}{
