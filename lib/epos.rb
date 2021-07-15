@@ -81,16 +81,39 @@ class Epos
       x = word_glob_to_hard_ref_helper2($1)
       return [self.next_chunk(x[0]),x[1]]
     end
+    if glob=~/(.*)\|(.*)/ then
+      left,right = $1,$2
+      basic = "#{left} #{right}"
+      r1,non_unique = word_glob_to_hard_ref_helper2(basic) # ref to beginning of chunk
+      if r1.nil? then return [nil,nil] end
+      r2,garbage = word_glob_to_hard_ref_helper("#{basic} >") # ref to end (recurse because helper2 doesn't support >)
+      t = extract(r1,r2,remove_numerals:false)
+      left_regex = plain_glob_to_regex(left)
+      raise "internal error, left=#{left}" unless t=~/(#{left_regex})/ # shouldn't happen, because r1 was not nil
+      left_match = $1
+      offset = t.index(left_match)
+      return [r1[0],r1[1]+offset]
+    end
     return word_glob_to_hard_ref_helper2(glob)
+  end
+
+  def whole_word_regex(word)
+    return "(?<![[:alpha:]])"+word+"(?![[:alpha:]])" # negative lookahead and lookbehind so it's an isolated word
+  end
+
+  def regex_no_splitters
+    spl = self.splitters
+    return "[^#{spl}@]*" # The @ is a convenience for word_glob_to_hard_ref_helper2 when it calls matches_without_containing_paragraph_break.
+  end
+
+  def plain_glob_to_regex(glob)
+    # glob can't contain special characters like | or >
+    return glob.split(/[\-\s]+/).map { |key| whole_word_regex(key) }.join(regex_no_splitters())
   end
 
   def word_glob_to_hard_ref_helper2(glob)
     # Does the actual work for word_glob_to_hard_ref(). Glob must not contain stuff like >.
-    keys = glob.split(/[\-\s]+/)
-    spl = self.splitters
-    regex_no_splitters = "[^#{spl}@]*" # The @ is a convenience for when we call matches_without_containing_paragraph_break.
-    word_regexen = keys.map { |key| "(?<![[:alpha:]])"+key+"(?![[:alpha:]])" } # negative lookahead and lookbehind so it's an isolated word
-    whole_regex = word_regexen.join(regex_no_splitters)
+    whole_regex = plain_glob_to_regex(glob)
     c = self.get_contents
     non_unique = false
     found = false
@@ -147,6 +170,7 @@ class Epos
   end
 
   def increment_ref(ref)
+    # increments it by one character (not one chunk)
     # if used at the end of the last file, can return a reference to a first character of a fictitious next file
     s = self.get_contents[ref[0]]
     i = ref[1]
