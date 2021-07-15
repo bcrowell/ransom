@@ -28,6 +28,8 @@ class Epos
     # if it's verse, then the result has exactly one trailing newline.
     # One-liner for testing:
     #   ruby -e 'require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); r1=e.word_glob_to_hard_ref("μῆνιν-ἄειδε")[0]; r2=e.word_glob_to_hard_ref("ἐϋκνήμιδες-Ἀχαιοί")[0]; print e.extract(r1,r2)'
+    sanity_check_ref(r1)
+    sanity_check_ref(r2)
     c = self.get_contents
     if r1[0]==r2[0] then
       result = c[r1[0]][r1[1]..(r2[1]-1)]
@@ -42,6 +44,18 @@ class Epos
     if self.is_verse then result=result+"\n" end
     if remove_numerals then result.gsub!(/\s+\d+/,'') end
     return result
+  end
+
+  def sanity_check_ref(r,die_if_bad:true)
+    # checks a hard ref, dies if not ok
+    ok = true
+    reason = nil
+    if r.nil? then ok=false; reason="nil" end
+    if ok && !(r.kind_of?(Array)) then ok=false; reason="not an array" end
+    if ok && !(r.length==2) then ok=false; reason="length=#{r.length}" end
+    if ok && !(r[0].class==1.class && r[1].class==1.class) then ok=false; reason="ref=#{ref}, elements not integers" end
+    if !ok && die_if_bad then raise reason end
+    return [ok,reason]    
   end
 
   def strip_whitespace(s)
@@ -92,7 +106,8 @@ class Epos
       raise "internal error, left=#{left}" unless t=~/(#{left_regex})/ # shouldn't happen, because r1 was not nil
       left_match = $1
       offset = t.index(left_match)
-      return [r1[0],r1[1]+offset]
+      result = [r1[0],r1[1]+offset]
+      return [result,non_unique]
     end
     return word_glob_to_hard_ref_helper2(glob)
   end
@@ -128,7 +143,6 @@ class Epos
       end
       if m.length>1 then non_unique=true; break end
     }
-    #if glob=~/greaved/ then raise "glob=#{glob}, result=#{result}\n" end # qwe
     if result.nil? then
       raise "failed match for #{glob}"
       return [nil,nil]
