@@ -1,3 +1,83 @@
+=begin
+
+This is a general-purpose library for use in selecting or referring to
+portions of a text file.  The name Epos is from the Greek word επος,
+meaning a word or speech. In the past, people have usually accomplished
+such tasks either using line number references (e.g., Iliad 1.33)
+or, in efforts such as Project Perseus, by massive XML markup projects,
+which are extremely complex and time-consuming. Epos makes this
+easier.
+
+The text should be in one or more files on disk, but in the present
+implementation is always read into memory. Additional data files will
+be created automatically with names based on the name of the directory
+or file containing the text.
+
+The user supplies a string that defines a certain spot in the
+text. This is called a soft reference. A soft reference can be
+ambiguous, and it is meant to be as robust as possible against editing
+of the file. The library provides routines that convert a soft
+reference to a hard reference, which is just a numerical pointer to a
+position in a file.
+
+A soft reference can be either a word glob or line reference. 
+
+Line references are simple: you just give a book and a line number,
+e.g., by calling iliad.line_to_hard_ref(1,33).  They are actually not
+very robust, although changing the file for book 7 will not affect
+line numbers in book 12.
+
+A word glob basically is a set of keywords that are meant to occur
+in order, within one sentence. The keywords can be separated by whitespace
+or by the character -. For example, the word glob "sing-wrath-achilles"
+will match the first sentence of Buckley's translation of the Iliad,
+which is "Sing, O goddess, the destructive wrath of Achilles, ..."
+
+The true linguistic notion of a sentence is actually complicated, because
+you can have quoted speech with sentences within sentences, and also
+speech tags that are not themselves complete sentences, and quoted speech
+that spans paragraphs. Therefore instead of sentences, Epos actually defines
+"chunks" instead. 
+
+A chunk is a contiguous portion of the text that doesn't contain
+certain chunk-ending characters and doesn't span files.  For verse,
+the only chunk-ending character is \n. For latin-script prose, they're
+. ? ; and \n\n.  An example where the \n\n rule matters is near the
+beginning of Buckley, where a paragraph ends with a colon setting off
+quoted speech.
+
+The API is structured so that usually we think of a chunk as a pointer
+to just before its own first character.  A string like "irritate me
+not>", with a > at the end, produces a ref to the end of this chunk,
+i.e., it's as if you were referencing the following chunk.
+
+One can also refer to spots within a chunk using the | character. For
+example, "withhold heavy hands | pestilence" refers to the spot
+immediately after the word "hands."
+
+Because locating a word glob can be an expensive operation, the
+library automatically caches the resulting hard refs on disk for
+later use, in files ending with the extensions .cache.pag and .cache.dir.
+If the software changes and you need to test whether it's still
+actually working, you need to delete these files, and likewise if
+you make any changes to the text.
+
+A text may contain material like footnotes that we want to pretend are
+not there. This is done using the postfilter facility. Example:
+Epos.new("text/buckley_iliad.txt","latin",false,postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
+
+To do:
+
+Allow disambiguation with a syntax such as "47 % rosy fingered dawn",
+meaning whichever match is closest to lying 47% of the way through the
+entire text, or "book 7 % well greaved achaians" to restrict it to one
+book.
+
+Given a word glob, suggest an alternative glob that is less ambiguous
+or less verbose.
+
+=end
+
 class Epos
 
   def initialize(text,script,is_verse,postfilter:nil)
@@ -65,12 +145,6 @@ class Epos
   def word_glob_to_hard_ref(glob)
     # Glob is a string such as "sing-destructive-wrath" (with hyphens or whitespace). It defines a chunk in which these three words occur in this order,
     # but possibly with other words in between. Case-insensitive.
-    # A chunk is a contiguous portion of the text that doesn't contain certain chunk-ending characters and doesn't span files.
-    # For verse, the only chunk-ending character is \n. For latin-script prose, they're . ? ; and \n\n.
-    # An example where the \n\n matters is near the beginning of Buckley, where a paragraph ends with a colon setting off quoted speech.
-    # The API is structured so that usually we think of a chunk as a pointer to just before its own first character.
-    # A string like "irritate me not>", with a > at the end, produces a ref to the end of this chunk, i.e., it's as if you were
-    # referencing the following chunk.
     # Example:
     #   rm -f text/ιλιας.cache* && ruby -e 'require "sdbm"; require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); print e.word_glob_to_hard_ref("μῆνιν-ἄειδε")'
     #   For a non-unique match, try ῥοδοδάκτυλος-Ἠώς.
