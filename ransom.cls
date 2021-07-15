@@ -67,7 +67,12 @@
 \newenvironment{whitetext}{\color{white}}{}
 
 \newcommand{\linenumber}[1]{\begin{mediumgraytext}{\footnotesize{}#1}\end{mediumgraytext}}
-\newcommand{\leftpageverseline}[2]{\noindent\rlap{#1}\hskip 20mm minus 16mm \hbox{#2}\\}
+\newcommand{\leftpageverseline}[2]{\noindent\rlap{#1}\hskip 20mm minus 20mm \hbox{#2}\\}
+% ... https://tex.stackexchange.com/a/605040/6853
+%     The "minus 20mm" allows the text to push all the way to the left margin if necessary; to avoid making this
+%     run into the line number, I have logic in verse_lines_to_latex that counts characters and omits the line
+%     number on exceptionally long lines (more than max_len_for_num characters).
+%     If changing the 20mm, should also change max_len_for_num in the ruby code.
 
 % The following need to be in their own separate paragraphs.
 \newcommand{\bigseparator}{
