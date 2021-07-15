@@ -4,9 +4,9 @@
 
 \begin{document}
 
-\input{cover-iliad}
+\input{iliad/cover}
 
-\input{intro-iliad}
+\input{iliad/intro}
 
 <%
 
