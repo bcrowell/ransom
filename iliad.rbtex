@@ -16,7 +16,7 @@ translation = Epos.new("text/buckley_iliad.txt","latin",false,postfilter:lambda 
 notes = {
   "1.25" => {
     'about_what'    => %q{ἐπὶ \ldots ἔτελλε},
-    'explain'       => %q{ἐπὶ τέλλω: command (lit.~``accomplish on'')},
+    'explain'       => %q{ἐπὶ τέλλω: to command (lit.~``accomplish on'')},
     'prevent_gloss' =>['τέλλω']
   },
 }

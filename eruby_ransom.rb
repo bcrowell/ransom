@@ -46,18 +46,42 @@ def four_page_layout(stuff,g1,g2,t1,t2,start_chapter:nil)
   translation_text = Patch_names.patch(translation_text)
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print translation_text
+  print notes_to_latex(g1,g2,notes)
+end
+
+def notes_to_latex(lineref1,lineref2,notes)
+  stuff = []
+  find_notes(lineref1,lineref2,notes).each { |key,note|
+    next if !(note.has_key?('explain'))
+    this_note = "#{note['line']} \\textbf{#{note['about_what']}}: #{note['explain']}"
+    stuff.push(this_note)
+  }
+  if stuff.length==0 then return '' end
+  return %Q{
+    \\par
+    \\textit{notes}\\\\
+    #{stuff.join("\\\\")}
+    }
 end
 
 def list_exclude_glosses(lineref1,lineref2,notes)
   result = []
+  find_notes(lineref1,lineref2,notes).each { |key,note|
+    next if !(note.has_key?('prevent_gloss'))
+    result = result+note['prevent_gloss'].map { |x| remove_accents(x).downcase}
+  }
+  return result
+end
+
+def find_notes(lineref1,lineref2,notes)
   raise "four-page layout spans books" if lineref1[0]!=lineref2[0]
   book = lineref1[0]
+  result = {}
   lineref1[1].upto(lineref2[1]) { |line|
     key = "#{book}.#{line}"
     next if !(notes.has_key?(key))
-    note = notes[key]
-    next if !(note.has_key?('prevent_gloss'))
-    result = result+note['prevent_gloss'].map { |x| remove_accents(x).downcase}
+    notes[key]['line'] = line
+    result[key] = notes[key]
   }
   return result
 end
