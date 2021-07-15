@@ -14,10 +14,24 @@ greek = Epos.new("text/ιλιας","greek",true)
 translation = Epos.new("text/buckley_iliad.txt","latin",false,postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
 
 notes = {
+  "1.9" => {
+    'about_what'    => %q{Λητοῦς καὶ Διὸς υἱός},
+    'explain'       => %q{Apollo}
+  },
   "1.25" => {
     'about_what'    => %q{ἐπὶ \ldots ἔτελλε},
     'explain'       => %q{ἐπὶ τέλλω: to command (lit.~``accomplish on'')},
     'prevent_gloss' =>['τέλλω']
+  },
+  "1.28" => {
+    'about_what'    => %q{χραίσμῃ},
+    'explain'       => %q{singular verb whose subject is ``staff and fillet''}
+  },
+  "1.39" => {
+    'about_what'    => %q{Σμινθεῦ},
+    'explain'       => %q{The meaning of this epithet for Apollo is unknown, and traditional interpretations such as ``mouse'' or ``mouse-killer''
+                          are attempts to explain this verse in Homer. },
+    'prevent_gloss' =>['Σμινθεῦ']
   },
 }
 

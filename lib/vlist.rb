@@ -65,7 +65,9 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entri
     end
     if lemma.nil? then whine.push("lemma is nil for #{word} in lemmas file"); next end
     next if did_lemma.has_key?(lemma)
-    next if exclude_glosses.include?(remove_accents(lemma).downcase)
+    excl = false
+    [lemma,word].each { |x| excl = excl || exclude_glosses.include?(remove_accents(x).downcase) }
+    next if excl
     did_lemma[lemma] = 1
     rank = freq_rank[lemma]
     f = freq[lemma]
