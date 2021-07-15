@@ -12,7 +12,16 @@ lemmas_file = "lemmas/homer_lemmas.json"
 freq_file = "lemmas/homer_freq.json"
 greek = Epos.new("text/ιλιας","greek",true)
 translation = Epos.new("text/buckley_iliad.txt","latin",false,postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
-stuff = lemmas_file,freq_file,greek,translation
+
+notes = {
+  "1.25" => {
+    'about_what'    => %q{ἐπὶ \ldots ἔτελλε},
+    'explain'       => %q{ἐπὶ τέλλω: command (lit.~``accomplish on'')},
+    'prevent_gloss' =>['τέλλω']
+  },
+}
+
+stuff = lemmas_file,freq_file,greek,translation,notes
 
 %>
 

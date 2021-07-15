@@ -24,7 +24,7 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entries:58)
+def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entries:58,exclude_glosses:[])
   lemmas = json_from_file_or_die(lemmas_file)
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -64,7 +64,8 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entri
       warn_ambig[word]= "warning: lemma for #{word_raw} is ambiguous, taking most common one; #{ambig}"
     end
     if lemma.nil? then whine.push("lemma is nil for #{word} in lemmas file"); next end
-    if did_lemma.has_key?(lemma) then next end
+    next if did_lemma.has_key?(lemma)
+    next if exclude_glosses.include?(remove_accents(lemma).downcase)
     did_lemma[lemma] = 1
     rank = freq_rank[lemma]
     f = freq[lemma]

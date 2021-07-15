@@ -25,11 +25,12 @@ if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, 
 def four_page_layout(stuff,g1,g2,t1,t2,start_chapter:nil)  
   # g1 and g2 are line refs of the form [book,line]
   # t1 and t2 are word globs
-  lemmas_file,freq_file,greek,translation = stuff
+  lemmas_file,freq_file,greek,translation,notes = stuff
   rg1,rg2 = greek.line_to_hard_ref(g1[0],g1[1]),greek.line_to_hard_ref(g2[0],g2[1])
+  raise "four-page layout spans books" if rg1[0]!=rg2[0] # will cause all kinds of problems, including with notes
   first_line_number = g1[1]
   greek_text = greek.extract(rg1,rg2)
-  v = vocab(Vlist.from_text(greek_text,lemmas_file,freq_file))
+  v = vocab(Vlist.from_text(greek_text,lemmas_file,freq_file,exclude_glosses:list_exclude_glosses(g1,g2,notes)))
   print "\\renewcommand{\\rightheaderinfo}{#{g1[0]}.#{g1[1]}}%\n"
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatvocab}%\n"
   print "\\pagebreak\n\n"
@@ -45,6 +46,20 @@ def four_page_layout(stuff,g1,g2,t1,t2,start_chapter:nil)
   translation_text = Patch_names.patch(translation_text)
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print translation_text
+end
+
+def list_exclude_glosses(lineref1,lineref2,notes)
+  result = []
+  raise "four-page layout spans books" if lineref1[0]!=lineref2[0]
+  book = lineref1[0]
+  lineref1[1].upto(lineref2[1]) { |line|
+    key = "#{book}.#{line}"
+    next if !(notes.has_key?(key))
+    note = notes[key]
+    next if !(note.has_key?('prevent_gloss'))
+    result = result+note['prevent_gloss'].map { |x| remove_accents(x).downcase}
+  }
+  return result
 end
 
 def vocab(vl)
