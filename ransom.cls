@@ -26,6 +26,7 @@
 \newcommand{\myransomchapter}[1]{\begin{graytext}\mychapter{#1}\end{graytext}}
 \setlength\headheight{15pt} % https://tex.stackexchange.com/questions/327285/what-does-this-warning-mean-fancyhdr-and-headheight
 
+%--- fancyhdr ---
 % https://www.overleaf.com/learn/latex/Headers_and_footers
 \newcommand{\leftheaderinfo}{}
 \newcommand{\rightheaderinfo}{}

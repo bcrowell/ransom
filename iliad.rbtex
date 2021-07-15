@@ -4,6 +4,8 @@
 
 \begin{document}
 
+\input{cover-iliad}
+
 \input{intro-iliad}
 
 <%
