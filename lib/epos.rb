@@ -76,11 +76,16 @@ class Epos
   end
 
   def word_glob_to_hard_ref_helper(glob)
-    # Does the actual work for word_glob_to_hard_ref(), in the case where the result is not cached.
-    if glob=~/(.*)\>[^[:alpha:]]*$/ then
-      x = word_glob_to_hard_ref_helper($1)
+    # Handles the case where the result is not cached.
+    if glob=~/(.*)\>\s*$/ then
+      x = word_glob_to_hard_ref_helper2($1)
       return [self.next_chunk(x[0]),x[1]]
     end
+    return word_glob_to_hard_ref_helper2(glob)
+  end
+
+  def word_glob_to_hard_ref_helper2(glob)
+    # Does the actual work for word_glob_to_hard_ref(). Glob must not contain stuff like >.
     keys = glob.split(/[\-\s]+/)
     spl = self.splitters
     regex_no_splitters = "[^#{spl}@]*" # The @ is a convenience for when we call matches_without_containing_paragraph_break.
