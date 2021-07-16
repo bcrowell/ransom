@@ -19,10 +19,14 @@
 \RequirePackage{parskip} % disables indentation at the beginning of a paragraph
 \RequirePackage[absolute,overlay]{textpos}
 
+\newcommand{\formatlikechapter}[1]{{\Large\textbf{#1}}}
+\newcommand{\formatlikesection}[1]{{\large\textbf{#1}}}
+\newcommand{\formatlikesubsection}[1]{\textbf{#1}}
+\newcommand{\formatlikesubsubsection}[1]{\textit{#1}}
 \titleformat{\chapter}{\Large\bfseries}{}{}{}{}
 \titleformat{\section}{\large\bfseries}{}{}{}{}
 \titlespacing*{\chapter}{0pt}{-30pt}{10pt}
-\newcommand{\mychapter}[1]{{\Large\bfseries #1}}
+\newcommand{\mychapter}[1]{\formatlikechapter{#1}}
 \newcommand{\myransomchapter}[1]{\begin{graytext}\mychapter{#1}\end{graytext}}
 \setlength\headheight{15pt} % https://tex.stackexchange.com/questions/327285/what-does-this-warning-mean-fancyhdr-and-headheight
 
