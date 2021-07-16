@@ -6,6 +6,8 @@
 
 \input{iliad/cover}
 
+\pagestyle{fancy}
+
 \input{iliad/intro}
 
 <%

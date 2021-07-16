@@ -114,9 +114,6 @@ def vocab_helper(commonness,vl,lo,hi)
     vl.list[i].each { |entry|
       word,lexical,data = entry
       if data.nil? then data={} end
-      #is_3rd_decl = (data.has_key?('is_3rd_decl') && data[is_3rd_decl])
-      #if lexical=='κύων' then $stderr.print "doggies in vocab_helper, data=#{data}, #{data.keys} word=#{word} is_3rd_decl=#{is_3rd_decl}\n" end
-      #if is_3rd_decl then $stderr.print "doggies in vocab_helper, data=#{data}, #{data.keys} word=#{word} is_3rd_decl=#{is_3rd_decl}\n" end
       g = get_gloss(lexical,word)
       next if g.nil?
       file_under = g['file_under']

@@ -24,7 +24,7 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entries:58,exclude_glosses:[])
+def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,900],max_entries:58,exclude_glosses:[])
   lemmas = json_from_file_or_die(lemmas_file)
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -72,10 +72,12 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entri
     rank = freq_rank[lemma]
     f = freq[lemma]
     is_3rd_decl = guess_whether_third_declension(word_raw,lemma,pos)
-    difficult_to_recognize = is_3rd_decl && !alpha_equal(word_raw,lemma)
+    is_epic = Epic_form.is(word_raw)
+    difficult_to_recognize = (is_3rd_decl || is_epic) && !alpha_equal(word_raw,lemma)
     next unless rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize)
     misc = {}
     if is_3rd_decl then misc['is_3rd_decl']=true end
+    if is_epic then misc['is_epic']=true end
     entry = word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc
     # ... word and word_raw are not super useful, in many cases will be just the first example in this passage
     #$stderr.print "entry=#{entry}\n"
@@ -83,7 +85,18 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entri
   }
 
   result.sort! { |a,b| b[4] <=> a[4] } # descending order by frequency
-  while result.length>max_entries do result.shift end  
+  while result.length>max_entries do
+    kill_em = nil
+    count = 0
+    result.each { |entry|
+      word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc = entry
+      if !difficult_to_recognize then kill_em=count; break end
+      count += 1
+    }
+    if kill_em.nil? then break end # couldn't find anything to kill off, don't spin forever
+    # killing off ἄμμε, entry=["ἄμμε", "ἄμμε", "ἐγώ", 5, 2870, "p-p---ma-", true, {"is_epic"=>true}]
+    result.delete_at(kill_em)
+  end  
 
   gloss_help = []
   result2 = []
@@ -92,7 +105,8 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entri
     this_part_of_result2 = []
     result.sort { |a,b| a[1] <=> b[1] } .each { |entry|
       word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc = entry
-      next if Ignore_words.patch(word) || Ignore_words.patch(lemma)
+      if alpha_equal(word_raw,"αμμε") then $stderr.print "200 word_raw=#{word_raw} lemma=#{lemma} rank=#{rank} diff=#{difficult_to_recognize}\n" end # qwe
+      next if Ignore_words.patch(word) || (Ignore_words.patch(lemma) && !difficult_to_recognize)
       next unless rank>=threshold_difficult
       next if rank<threshold_no_gloss && !difficult_to_recognize      
       next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
@@ -166,6 +180,16 @@ def Vlist.give_gloss_help(gloss_help)
 end
 
 end # class Vlist
+
+class Epic_form
+  @@index = %q{
+    αμμε ρα
+  }
+  def Epic_form.is(word)
+    w = remove_accents(word).downcase
+    return @@index.include?(w)
+  end
+end
 
 class Ignore_words
   # Words in the following list can be accented or unaccented, lemmatized or inflected. Case is nor significant. Accents are stripped.

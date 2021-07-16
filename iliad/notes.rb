@@ -62,6 +62,11 @@ class IliadNotes
     'explain'       => %q{completely},
     'cite'          => "Anthon, p. 135"
   }],
+  ["1.56" , {
+    'about_what'    => %q{ὅτι ῥα},
+    'explain'       => %q{epic form of ὅτι ἄρα, because},
+    'cite'          => "Anthon, p. 138"
+  }],
 ]
 
 def IliadNotes.notes
