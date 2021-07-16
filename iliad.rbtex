@@ -35,7 +35,7 @@ breaks = [
   [ [1,50], "first attacked mules" ],
   [ [1,66], "| and whether haply he may be willing" ],
   [ [1,80], "for king more powerful" ],
-  [ [1,96], "withhold heavy hands pestilence" ],
+  [ [1,96], "nor did he receive her ransom>" ],
 ]
 
 0.upto(breaks.length-2) { |i|

@@ -77,6 +77,11 @@ class IliadNotes
     'explain'       => %q{ἀπὸ is an adverb modifying ἡμῖν, not a preposition modifying λοιγὸν},
     'cite'          => "Anthon, p. 141"
   }],
+  ["1.82" , {
+    'about_what'    => %q{καταπέψῃ},
+    'explain'       => %q{Literally, digest. Metaphorically, to keep down one's resentment.},
+    'cite'          => "Anthon, p. 142"
+  }],
 ]
 
 def IliadNotes.notes
