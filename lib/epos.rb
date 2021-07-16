@@ -180,7 +180,7 @@ class Epos
       raise "internal error, left=#{left}" unless t=~/(#{left_regex})/ # shouldn't happen, because r1 was not nil
       left_match = $1
       offset = t.index(left_match)
-      result = [r1[0],r1[1]+offset]
+      result = [r1[0],r1[1]+offset+left_match.length+1]
       return [result,non_unique]
     end
     return word_glob_to_hard_ref_helper2(glob)

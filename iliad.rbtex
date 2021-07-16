@@ -36,6 +36,7 @@ breaks = [
   [ [1,66], "| and whether haply he may be willing" ],
   [ [1,80], "for king more powerful" ],
   [ [1,96], "nor did he receive her ransom>" ],
+  [ [1,112], "splendid ransom | of the virgin daughter of Chryses" ],
 ]
 
 0.upto(breaks.length-2) { |i|
