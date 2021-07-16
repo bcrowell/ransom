@@ -51,9 +51,10 @@ end
 
 def notes_to_latex(lineref1,lineref2,notes)
   stuff = []
-  find_notes(lineref1,lineref2,notes).each { |key,note|
-    next if !(note.has_key?('explain'))
-    this_note = "#{note['line']} \\textbf{#{note['about_what']}}: #{note['explain']}"
+  find_notes(lineref1,lineref2,notes).each { |note|
+    h = note[1]
+    next if !(h.has_key?('explain'))
+    this_note = "#{note[0][0]}.#{note[0][1]} \\textbf{#{h['about_what']}}: #{h['explain']}"
     stuff.push(this_note)
   }
   if stuff.length==0 then return '' end
@@ -66,24 +67,31 @@ end
 
 def list_exclude_glosses(lineref1,lineref2,notes)
   result = []
-  find_notes(lineref1,lineref2,notes).each { |key,note|
-    next if !(note.has_key?('prevent_gloss'))
-    result = result+note['prevent_gloss'].map { |x| remove_accents(x).downcase}
+  find_notes(lineref1,lineref2,notes).each { |note|
+    h = note[1]
+    next if !(h.has_key?('prevent_gloss'))
+    result = result+h['prevent_gloss'].map { |x| remove_accents(x).downcase}
   }
   return result
 end
 
 def find_notes(lineref1,lineref2,notes)
+  # Finds notes that apply to the given range of linerefs. Converts the 0th element from a string into [book,line]. 
+  # Sorts the results.
   raise "four-page layout spans books" if lineref1[0]!=lineref2[0]
   book = lineref1[0]
-  result = {}
-  lineref1[1].upto(lineref2[1]) { |line|
-    key = "#{book}.#{line}"
-    next if !(notes.has_key?(key))
-    notes[key]['line'] = line
-    result[key] = notes[key]
+  result = []
+  notes.each { |note|
+    note[0] =~ /(.*)\.(.*)/
+    next if $1.to_i!=book
+    line = $2.to_i
+    if lineref1[1]<=line && line<=lineref2[1] then
+      note = clown(note)
+      note[0] = [book,line]
+      result.push(note)
+    end
   }
-  return result
+  return result.sort { |a,b| a[0] <=> b[0] } # array comparison is lexical
 end
 
 def vocab(vl)
