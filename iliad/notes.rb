@@ -67,6 +67,16 @@ class IliadNotes
     'explain'       => %q{epic form of ὅτι ἄρα, because},
     'cite'          => "Anthon, p. 138"
   }],
+  ["1.60" , {
+    'about_what'    => %q{εἴ κεν \\ldots γε},
+    'explain'       => %q{if perchance \\ldots at least},
+    'cite'          => "Anthon, p. 139"
+  }],
+  ["1.67" , {
+    'about_what'    => %q{ἡμῖν ἀπὸ},
+    'explain'       => %q{ἀπὸ is an adverb modifying ἡμῖν, not a preposition modifying λοιγὸν},
+    'cite'          => "Anthon, p. 141"
+  }],
 ]
 
 def IliadNotes.notes

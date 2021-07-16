@@ -261,7 +261,7 @@ def verse_lines_to_latex(lines,first_line_number,left_page_verse)
     if left_page_verse then
       max_len_for_num = 53 # if longer than this, make sure text won't run into number; only 2 of the 1st 500 lines are this long
       if want_line_number && c.length<max_len_for_num then n=line_number.to_s else n='' end
-      c = "\\leftpageverseline{#{n}}{#{c}}"
+      c = "\\leftpageverseline{\\linenumber{#{n}}}{#{c}}"
     else
       if want_line_number then c=c+"\\hfill{}\\linenumber{#{line_number}}" end
       c = c+"\\\\"
