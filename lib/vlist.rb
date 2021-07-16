@@ -72,7 +72,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[30,50,700,900],max_entri
     rank = freq_rank[lemma]
     f = freq[lemma]
     is_3rd_decl = guess_whether_third_declension(word_raw,lemma,pos)
-    difficult_to_recognize = is_3rd_decl
+    difficult_to_recognize = is_3rd_decl && !alpha_equal(word_raw,lemma)
     next unless rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize)
     misc = {}
     if is_3rd_decl then misc['is_3rd_decl']=true end
@@ -173,7 +173,7 @@ class Ignore_words
   # First line is proper names.
   @@index = %q{
     Λετω ολυμπος Ὀλύμπιος Ἄργος Πρίαμος Ἀγαμέμνων λητους διος πηληιαδεω ατρειδα ατρειδης απολλων αιδι Χρύση Χρύσης αχιλλευς τενεδος
-    Δαναοι Ηρα αργειος ζευς θεστοριδης ιλιος καλχας
+    Δαναοι Ηρα αργειος ζευς θεστοριδης ιλιος καλχας κιλλα
     η τα τον ο τους αυτους εμος αυτου σος ω
     ειμι
     επι ανα μετα απο δια

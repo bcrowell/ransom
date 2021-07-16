@@ -107,6 +107,10 @@ def alpha_sort(l)
   return l.sort { |a,b| alpha_compare(a,b) }
 end
 
+def alpha_equal(a,b)
+  return (alpha_compare(a,b)==0)
+end
+
 def alpha_compare(a,b)
   return (remove_accents(a).downcase <=> remove_accents(b).downcase)
 end
