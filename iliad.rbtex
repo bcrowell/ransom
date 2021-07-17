@@ -36,7 +36,16 @@ breaks = [
   [ [1,66], "| and whether haply he may be willing" ],
   [ [1,80], "for king more powerful" ],
   [ [1,96], "nor did he receive her ransom>" ],
-  [ [1,112], "splendid ransom | of the virgin daughter of Chryses" ],
+  [ [1,113], "I much prefer | to have her at home" ],
+  [ [1,130], "Do not thus godlike Achilles practise deceit in thy mind" ],
+  [ [1,147], "most terrible of all men | that thou mayest" ],
+  [ [1,163], "Whenever the Greeks sacked" ],
+  [ [1,180], "thy companions | rule over the Myrmidons"],
+  [ [1,197], "And she stood behind"],
+  [ [1,214], "thrice as many splendid gifts |"],
+  [ [1,231], "people devouring king"],
+  [ [1,247], "But on the other hand the son of Atreus was enraged"],
+  [ [1,263], "nor shall I see such men as | Pirithous"],
 ]
 
 0.upto(breaks.length-2) { |i|
