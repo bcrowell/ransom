@@ -105,6 +105,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,900],max_entrie
     this_part_of_result2 = []
     result.sort { |a,b| a[1] <=> b[1] } .each { |entry|
       word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc = entry
+      if alpha_equal(word_raw,"αμμε") then $stderr.print "200 word_raw=#{word_raw} lemma=#{lemma} rank=#{rank} diff=#{difficult_to_recognize}\n" end # qwe
       next if Ignore_words.patch(word) || (Ignore_words.patch(lemma) && !difficult_to_recognize)
       next unless rank>=threshold_difficult
       next if rank<threshold_no_gloss && !difficult_to_recognize      
