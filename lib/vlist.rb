@@ -181,9 +181,9 @@ def Vlist.give_gloss_help(gloss_help)
   File.open(dir_and_file_to_path(gloss_help_dir,"__links.html"),"a") { |f|
     gloss_help.each { |h|
       next if h['wikt'].to_s!=''
-      f.print "<p>\n"
+      f.print "<p>#{remove_accents(h['lemma']).downcase} "
       h['url'].scan(/http[^\s]+/).each { |url|
-        f.print "  <a href=\"#{url}\">#{h['lemma']}</a>\n"
+        f.print "  <a href=\"#{url}\">#{h['lemma']}</a> " unless url=~/wiktionary/
       }
       f.print "</p>\n"
     }

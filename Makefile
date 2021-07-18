@@ -18,6 +18,7 @@ $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex
 	@$(COMPILE)
 	@fruby $(BOOK).rbtex '{$(GENERIC),"render_glosses":true}' >$(BOOK).tex
 	@$(COMPILE)
+	@sort help_gloss/__links.html >a.a && mv a.a help_gloss/__links.html
 
 booklet: $(BOOK).pdf
 	pdfbook2 $(BOOK).pdf
