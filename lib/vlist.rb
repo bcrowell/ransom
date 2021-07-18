@@ -223,7 +223,9 @@ end
 class Ignore_words
   # Words in the following list can be accented or unaccented, lemmatized or inflected. Case is nor significant. Accents are stripped.
   # If an inflected form is given here, then it will only match that inflected form.
+  # The words οτηερ and υνκνοων are English "other" and "unknown," processed incorrectly as if they were beta code.
   @@index = %q{
+    οτηερ υνκνοων
     η τα τον ο τους αυτους εμος αυτου σος ω ουτος τοιος εγω
     ειμι
     επι ανα μετα απο δια προς συν εις αμα
