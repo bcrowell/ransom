@@ -10,7 +10,7 @@ default:
 	@make --no-print-directory --assume-new iliad.rbtex $(BOOK).pdf
 
 $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex
-	@rm -f warnings
+	@rm -f warnings help_gloss/__links.html
 	@make figures # renders any figure whose pdf is older than its svg
 	@fruby $(BOOK).rbtex '{$(GENERIC),"clean":true}' >$(BOOK).tex
 	@$(COMPILE)

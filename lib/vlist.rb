@@ -105,9 +105,8 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,900],max_entrie
     this_part_of_result2 = []
     result.sort { |a,b| a[1] <=> b[1] } .each { |entry|
       word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc = entry
-      #if alpha_equal(word_raw,"αμμε") then $stderr.print "200 word_raw=#{word_raw} lemma=#{lemma} rank=#{rank} diff=#{difficult_to_recognize}\n" end
-      next if Proper_noun.is(word_raw) # ... use word_raw to preserve capitalization, since some proper nouns have the same letters as other words
-      next if Ignore_words.patch(word) || (Ignore_words.patch(lemma) && !difficult_to_recognize)
+      next if Proper_noun.is(word_raw,lemma) # ... use word_raw to preserve capitalization, since some proper nouns have the same letters as other words
+      next if Ignore_words.patch(word) || Ignore_words.patch(lemma)
       next unless rank>=threshold_difficult
       next if rank<threshold_no_gloss && !difficult_to_recognize      
       next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
@@ -124,6 +123,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,900],max_entrie
           key=key1
         end
       end
+      if key2=="ζευς" then $stderr.print "200 word_raw=#{word_raw} lemma=#{lemma} proper=#{Proper_noun.is(word_raw)}\n" end
       filename = "glosses/#{key}"
       if !(FileTest.exist?(filename)) && Options.if_render_glosses then
         if key1==key2 then foo=key1 else foo="#{key1} or #{key2}" end
@@ -178,6 +178,16 @@ def Vlist.give_gloss_help(gloss_help)
       f.print x
     }
   }
+  File.open(dir_and_file_to_path(gloss_help_dir,"__links.html"),"a") { |f|
+    gloss_help.each { |h|
+      next if h['wikt'].to_s!=''
+      f.print "<p>\n"
+      h['url'].scan(/http[^\s]+/).each { |url|
+        f.print "  <a href=\"#{url}\">#{h['lemma']}</a>\n"
+      }
+      f.print "</p>\n"
+    }
+  }
 end
 
 end # class Vlist
@@ -198,12 +208,14 @@ class Proper_noun
   @@index = %q{
     Λετω ολυμπος Ὀλύμπιος Ἄργος Πρίαμος Ἀγαμέμνων λητους διος πηληιαδεω ατρειδα ατρειδης απολλων αιδι Χρύση Χρύσης αχιλλευς τενεδος
     Δαναοι Ηρα αργειος ζευς θεστοριδης ιλιος καλχας κιλλα καλχας καρδια κλυταιμνηστρη λητω καλχας καρδια μενελαος Μυρμιδών νεστωρ
-    οδυσσευς παλλας Πηλείδης Πηλείων πλοῦτος πυλιος Πύλος τενεδος τροια τρως φθια Χρυσηίς
+    οδυσσευς παλλας Πηλείδης Πηλείων πλοῦτος πυλιος Πύλος τενεδος τροια τρως φθια Χρυσηίς αγαμεμνων αιας απολλων αργος βρισηις ατρειδης
+    Μυρμιδών αχαιις
+    εκτωρ
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
-  def Proper_noun.is(word,require_cap:true)
+  def Proper_noun.is(word,lemma,require_cap:true)
     if require_cap && word[0].downcase==word[0] then return false end
-    w = remove_accents(word).downcase
-    return @@index.include?(w)
+    w,l = remove_accents(word).downcase,remove_accents(lemma).downcase
+    return @@index.include?(w) || @@index.include?(l)
   end
 
 end
@@ -212,13 +224,13 @@ class Ignore_words
   # Words in the following list can be accented or unaccented, lemmatized or inflected. Case is nor significant. Accents are stripped.
   # If an inflected form is given here, then it will only match that inflected form.
   @@index = %q{
-    η τα τον ο τους αυτους εμος αυτου σος ω ουτος τοιος
+    η τα τον ο τους αυτους εμος αυτου σος ω ουτος τοιος εγω
     ειμι
-    επι ανα μετα απο δια προς συν
+    επι ανα μετα απο δια προς συν εις αμα
     δυω πολλας δη πατηρ πολυ τρις
     κακος ευ παρα περ χειρ
     οτι πως εαν οτε ουδε τοτε οπως ουτε που ωδε
-    ειπον μα
+    ειπον μα αλλη
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Ignore_words.patch(word)
     w = remove_accents(word).downcase
