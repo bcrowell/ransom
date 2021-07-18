@@ -105,7 +105,8 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,900],max_entrie
     this_part_of_result2 = []
     result.sort { |a,b| a[1] <=> b[1] } .each { |entry|
       word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc = entry
-      if alpha_equal(word_raw,"αμμε") then $stderr.print "200 word_raw=#{word_raw} lemma=#{lemma} rank=#{rank} diff=#{difficult_to_recognize}\n" end # qwe
+      #if alpha_equal(word_raw,"αμμε") then $stderr.print "200 word_raw=#{word_raw} lemma=#{lemma} rank=#{rank} diff=#{difficult_to_recognize}\n" end
+      next if Proper_noun.is(word_raw) # ... use word_raw to preserve capitalization, since some proper nouns have the same letters as other words
       next if Ignore_words.patch(word) || (Ignore_words.patch(lemma) && !difficult_to_recognize)
       next unless rank>=threshold_difficult
       next if rank<threshold_no_gloss && !difficult_to_recognize      
@@ -191,14 +192,26 @@ class Epic_form
   end
 end
 
-class Ignore_words
-  # Words in the following list can be accented or unaccented, lemmatized or inflected. Case is nor significant. Accents are stripped.
+class Proper_noun
+  # Words in the following list can be accented or unaccented, lemmatized or inflected, upper or lowercase. Accents are stripped.
   # If an inflected form is given here, then it will only match that inflected form.
-  # First line is proper names.
   @@index = %q{
     Λετω ολυμπος Ὀλύμπιος Ἄργος Πρίαμος Ἀγαμέμνων λητους διος πηληιαδεω ατρειδα ατρειδης απολλων αιδι Χρύση Χρύσης αχιλλευς τενεδος
     Δαναοι Ηρα αργειος ζευς θεστοριδης ιλιος καλχας κιλλα καλχας καρδια κλυταιμνηστρη λητω καλχας καρδια μενελαος Μυρμιδών νεστωρ
-    οδυσσευς παλλας Πηλείδης Πηλείων πλοῦτος πυλιος Πύλος τενεδος τροια τρως
+    οδυσσευς παλλας Πηλείδης Πηλείων πλοῦτος πυλιος Πύλος τενεδος τροια τρως φθια
+  }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
+  def Proper_noun.is(word,require_cap:true)
+    if require_cap && word[0].downcase==word[0] then return false end
+    w = remove_accents(word).downcase
+    return @@index.include?(w)
+  end
+
+end
+
+class Ignore_words
+  # Words in the following list can be accented or unaccented, lemmatized or inflected. Case is nor significant. Accents are stripped.
+  # If an inflected form is given here, then it will only match that inflected form.
+  @@index = %q{
     η τα τον ο τους αυτους εμος αυτου σος ω ουτος τοιος
     ειμι
     επι ανα μετα απο δια προς συν
