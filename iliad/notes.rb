@@ -82,6 +82,21 @@ class IliadNotes
     'explain'       => %q{Literally, digest. Metaphorically, to keep down one's resentment.},
     'cite'          => "Anthon, p. 142"
   }],
+  ["1.100" , {
+    'about_what'    => %q{πεπίθοιμεν},
+    'explain'       => %q{Epic reduplicated form of πείθω, optative.},
+    'cite'          => "https://en.wiktionary.org/wiki/%CF%80%CE%B5%CE%AF%CE%B8%CF%89"
+  }],
+  ["1.104" , {
+    'about_what'    => %q{ἐΐκτην},
+    'explain'       => %q{Pluperfect dual of ἔοικα. The perfect and pluperfect of this verb mean ``to be like'' (here) or ``to beseem.''},
+    'cite'          => "https://en.wiktionary.org/wiki/%E1%BC%94%CE%BF%CE%B9%CE%BA%CE%B1"
+  }],
+  ["1.104" , {
+    'about_what'    => %q{ἕλωμαι},
+    'explain'       => %q{Middle voice of εἷλον, aorist of αἱρέω, to take, seize. The middle suggests that the taking is a personal choice or for oneself. Cognate with ἑλώριον, booty, spoils.},
+    'cite'          => "https://en.wiktionary.org/wiki/%E1%BC%94%CE%BF%CE%B9%CE%BA%CE%B1"
+  }],
 ]
 
 def IliadNotes.notes

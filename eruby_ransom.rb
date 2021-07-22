@@ -143,7 +143,7 @@ def vocab1(stuff)
 end
 
 def word_to_filename(s)
-  return remove_accents(s).downcase
+  return remove_accents(s).downcase.sub(/᾽/,'')
 end
 
 def get_gloss(lexical,word)

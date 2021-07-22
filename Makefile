@@ -12,11 +12,11 @@ default:
 $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex
 	@rm -f warnings help_gloss/__links.html
 	@make figures # renders any figure whose pdf is older than its svg
-	@fruby $(BOOK).rbtex '{$(GENERIC),"clean":true}' >$(BOOK).tex
+	@./fruby $(BOOK).rbtex '{$(GENERIC),"clean":true}' >$(BOOK).tex
 	@$(COMPILE)
-	@fruby $(BOOK).rbtex '{$(GENERIC),"write_pos":true}' >$(BOOK).tex
+	@./fruby $(BOOK).rbtex '{$(GENERIC),"write_pos":true}' >$(BOOK).tex
 	@$(COMPILE)
-	@fruby $(BOOK).rbtex '{$(GENERIC),"render_glosses":true}' >$(BOOK).tex
+	@./fruby $(BOOK).rbtex '{$(GENERIC),"render_glosses":true}' >$(BOOK).tex
 	@$(COMPILE)
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 
