@@ -2,6 +2,7 @@
 // threshold, road, path, way, journey, trip, expedition, The way, means, or manner to some end, method
 {
   "word":"ὁδός",
-  "gloss":"threshold, road, journey"
+  "gloss":"threshold, road, journey",
+  "short":"road"
 }
       
