@@ -112,7 +112,6 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,900],max_entrie
       next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
       key1 = remove_accents(word).downcase.sub(/᾽/,'')
       key2 = remove_accents(lemma).downcase
-      if key1=~/εσπομ/ then $stderr.print "#{key1} #{key2}\n" end # qwe
       filename1 = "glosses/#{key1}"
       filename2 = "glosses/#{key2}"
       if FileTest.exist?(filename1) then
@@ -125,7 +124,6 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,900],max_entrie
         end
       end
       filename = "glosses/#{key}"
-      if key1=~/εσπομ/ then $stderr.print "#{key1} #{key2} #{filename}, #{[word,lemma,misc]}\n" end # qwe
       if !(FileTest.exist?(filename)) && Options.if_render_glosses then
         if key1==key2 then foo=key1 else foo="#{key1} or #{key2}" end
         gloss_help.push({

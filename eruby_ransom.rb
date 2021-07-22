@@ -218,6 +218,8 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
           if Options.if_render_glosses then
             pos = Init.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
             x,y,width,height = pos['x'],pos['y'],pos['width'],pos['height'] # all floats in units of pts
+            if x>254.0 then width=355.0-x end 
+            # ... likely to be the last glossed word on line, so extend it; kludge, fixme: hardcoded numbers, guessing whether last word
             a =                 %q(\parbox[b]{WIDTH}{CONTENTS})  # https://en.wikibooks.org/wiki/LaTeX/Boxes
             a.sub!(/WIDTH/,     "#{width}pt"  )
             a.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
