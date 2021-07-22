@@ -146,12 +146,12 @@ def word_to_filename(s)
   return remove_accents(s).downcase.sub(/᾽/,'')
 end
 
-def get_gloss(lexical,word)
+def get_gloss(lexical,word,prefer_short:false)
   # It doesn't matter whether the inputs have accents or not. We immediately strip them off.
   # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
   # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
-  entry_lexical   = get_gloss_helper(word_to_filename(lexical))
-  entry_inflected = get_gloss_helper(word_to_filename(word))
+  entry_lexical   = get_gloss_helper(word_to_filename(lexical),prefer_short)
+  entry_inflected = get_gloss_helper(word_to_filename(word),prefer_short)
   if entry_inflected.nil? then
     entry = entry_lexical
     file_under = lexical
@@ -163,11 +163,13 @@ def get_gloss(lexical,word)
   return entry
 end
 
-def get_gloss_helper(key)
+def get_gloss_helper(key,prefer_short)
   path = "glosses/#{key}"
   if FileTest.exist?(path) then
-    return json_from_file_or_die(path)
+    x = json_from_file_or_die(path)
     # {  "word": "ἔθηκε",  "gloss": "put, put in a state",  "lexical": "τίθημι" }
+    if prefer_short && x.has_key?('short') then x['gloss']=x['short'] end
+    return x
   else
     return nil
   end
@@ -200,7 +202,7 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
           j = ww.index(x)
           word = w[j] # original inflected form
           key = to_key(x)
-          entry = get_gloss(x,word) # it doesn't matter whether inputs have accents
+          entry = get_gloss(x,word,prefer_short:true) # it doesn't matter whether inputs have accents
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil
@@ -221,7 +223,7 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
             if x>254.0 then
               width=355.0-x
             else
-              if x>235.0 && width<42.0 then width=42.0 end # less aggressive extension, for cases where the width is super narrow
+              if x>235.0 && width<42.0 then width=42.0 end # less aggressive, for cases where the width is super narrow, and we're fairly far to the right
             end
             # ... Likely to be the last glossed word on line, so extend its width.
             #     Kludge, fixme: hardcoded numbers, guessing whether last glossed word on line.
