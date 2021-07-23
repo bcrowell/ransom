@@ -27,6 +27,8 @@ class Vform
 
 end
 
+class Verb_conj
+
 def regular_conj(lemma,f,principal_parts:{},do_archaic_forms:false)
   # lemma may be fully accented or omit the acute accent
   # f is a Vform object
@@ -83,11 +85,11 @@ def regular_conj(lemma,f,principal_parts:{},do_archaic_forms:false)
   results = []
   endings.each { |e|
     form = stem+e
-    form = form.gsub(/ς/,'σ').sub(/σ$/,'ς')
+    form = Verb_conj.respell_sigmas(form)
     # recessive accent (fixme: not for participles)
-    if long_ultima(form) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
-    accent_syll = [accent_syll,n_syll(form)].min
-    form = accentuate(form,accent_syll)
+    if Verb_conj.long_ultima(form) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
+    accent_syll = [accent_syll,Verb_conj.n_syll(form)].min
+    form = Verb_conj.accentuate(form,accent_syll)
     results.push(form)
     results.push(form+'ν') if movable_nu
   }
@@ -95,7 +97,11 @@ def regular_conj(lemma,f,principal_parts:{},do_archaic_forms:false)
   return [results,false,nil,nil]  
 end
 
-def accentuate(w,n)
+def Verb_conj.respell_sigmas(w)
+  return gsub(/ς/,'σ').sub(/σ$/,'ς')
+end
+
+def Verb_conj.accentuate(w,n)
   if n==1 then
     return w.sub(/[αειουηω](?=[^αειουηω]*)$/) { |x| $1.tr('αειουηω','άέίόύήώ') }
   else
@@ -104,30 +110,30 @@ def accentuate(w,n)
   end
 end
 
-def n_syll(w)
+def Verb_conj.n_syll(w)
   if penult(w)=='' then return 1 end
   a,b,c = ultima(w)
   return 1+n_syll(a+b)
 end
 
-def long_ultima(w)
+def Verb_conj.long_ultima(w)
   a,b,c = ultima(form)
   return ( b=~/[ηω]/ || (b.length==2 && !(b=~/(αι|οι)/)) || b.length>=3 )
 end
 
-def antepenult(w)
+def Verb_conj.antepenult(w)
   a,b,c = ultima(w)
   if a=='' then return '' end
   d,e,f = ultima(a)
   if d=='' then return '' else return ultima(d) end
 end
 
-def penult(w)
+def Verb_conj.penult(w)
   a,b,c = ultima(w)
   if a=='' then return '' else return ultima(a) end
 end
 
-def ultima(w)
+def Verb_conj.ultima(w)
   # returns [beginning,vowel,cons]
   # strips all accents
   w = remove_accents(w)
@@ -136,5 +142,11 @@ def ultima(w)
   w=~/(.*)#{b}#{c}/
   a = $1
   if a.nil? then a='' end
-  return [$1,$2,$3]
+  return [a,b,c]
 end
+
+def Verb_conj.test
+  unless Verb_conj.ultima('α')[1]=='α' then raise "failed" end
+end
+
+end # Verb_conj
