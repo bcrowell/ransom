@@ -5,8 +5,8 @@ require_relative "lib/file_util"
 require_relative "lib/string_util"
 require_relative "lib/epos"
 require_relative "lib/vlist"
-require_relative "lib/linguistics"
 require_relative "lib/clown"
+require_relative "greek/nouns"
 
 class Options
   if ARGV.length<1 then die("no command-line argument supplied") end
