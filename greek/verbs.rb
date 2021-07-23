@@ -66,7 +66,7 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false)
 
   # == Personal ending.
   # -- Active primary.
-  if f.singular then endings=[['ω'],['εισ'],['ει']][f.person-1] end
+  if f.singular then endings=[['ω'],['ισ'],['ι']][f.person-1] end
   if f.dual     then endings=[nil,['τον'],['τον']][f.person-1] end
   if f.plural   then endings=[['μεν'],['τε'],['σι']][f.person-1] end
   if endings.nil? then return [[],false,nil,"Active dual first-person forms don't exist."] end
@@ -84,7 +84,6 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false)
     # recessive accent (fixme: not for participles, and see other exceptions, Pharr p. 330)
     if Verb_conj.long_ultima(form) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
     accent_syll = [accent_syll,Verb_conj.n_syll(form)].min
-    print "accent_syll=#{accent_syll}\n" # qwe
     form = Verb_conj.accentuate(form,accent_syll)
     results.push(form)
     results.push(form+'ν') if movable_nu
@@ -108,13 +107,11 @@ def Verb_conj.respell_sigmas(w)
 end
 
 def Verb_conj.accentuate(w,n)
-  print "w=#{w}, n=#{n}\n" # qwe
   if n==1 then
     w=~/(.*)([αειουηω])([^αειουηω]*)/
     return $1+$2.tr('αειουηω','άέίόύήώ')+$3
   else
     a,b,c = ultima(w)
-    print "a,b,c=#{[a,b,c]}\n" # qwe
     return Verb_conj.accentuate(a,n-1)+b+c
   end
 end
@@ -172,7 +169,25 @@ def Verb_conj.test
   unless Verb_conj.long_ultima('κτίνει')==true then raise "failed" end
   unless Verb_conj.long_ultima('ἔκτινα')==false then raise "failed" end
   unless Verb_conj.long_ultima('βαι')==false then raise "failed" end
-  unless Verb_conj.accentuate('κλεπτω',2)!='κλέπτω' then raise "failed #{Verb_conj.accentuate('κλεπτω',2)}" end
+  unless Verb_conj.accentuate('κλεπτω',2)=='κλέπτω' then raise "failed #{Verb_conj.accentuate('κλεπτω',2)}" end
+  Verb_conj.test_helper('κλέπτω','v1spia','κλέπτω')
+  Verb_conj.test_helper('κλέπτω','v2spia','κλέπτεις')
+  Verb_conj.test_helper('κλέπτω','v3spia','κλέπτει')
+  Verb_conj.test_helper('κλέπτω','v1ppia','κλέπτομεν')
+  Verb_conj.test_helper('κλέπτω','v2ppia','κλέπτετε')
+  Verb_conj.test_helper('κλέπτω','v3ppia','κλέπτουσι')
+  Verb_conj.test_helper('κλέπτω','v3ppia','κλέπτουσιν',version:1)
+end
+
+def Verb_conj.test_helper(verb,which,expect,version:0)
+  f = Vform.new(which)
+  c = Verb_conj.regular(verb,f)[0][version]
+  Verb_conj.test_helper2(c,expect)
+  print "passed #{verb} #{which} (#{version}) #{expect}\n"
+end
+
+def Verb_conj.test_helper2(x,y)
+  if x!=y then raise "failed, #{x} != #{y}" end
 end
 
 end # Verb_conj
