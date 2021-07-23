@@ -98,7 +98,7 @@ def regular_conj(lemma,f,principal_parts:{},do_archaic_forms:false)
 end
 
 def Verb_conj.respell_sigmas(w)
-  return gsub(/ς/,'σ').sub(/σ$/,'ς')
+  return w.gsub(/ς/,'σ').sub(/σ$/,'ς')
 end
 
 def Verb_conj.accentuate(w,n)
@@ -111,26 +111,14 @@ def Verb_conj.accentuate(w,n)
 end
 
 def Verb_conj.n_syll(w)
-  if penult(w)=='' then return 1 end
   a,b,c = ultima(w)
-  return 1+n_syll(a+b)
+  if a=='' then return 1 end
+  return 1+n_syll(a)
 end
 
 def Verb_conj.long_ultima(w)
   a,b,c = ultima(form)
   return ( b=~/[ηω]/ || (b.length==2 && !(b=~/(αι|οι)/)) || b.length>=3 )
-end
-
-def Verb_conj.antepenult(w)
-  a,b,c = ultima(w)
-  if a=='' then return '' end
-  d,e,f = ultima(a)
-  if d=='' then return '' else return ultima(d) end
-end
-
-def Verb_conj.penult(w)
-  a,b,c = ultima(w)
-  if a=='' then return '' else return ultima(a) end
 end
 
 def Verb_conj.ultima(w)
@@ -146,7 +134,20 @@ def Verb_conj.ultima(w)
 end
 
 def Verb_conj.test
+  # ruby -e 'require "./lib/string_util.rb"; require "./greek/verbs.rb"; Verb_conj.test'
   unless Verb_conj.ultima('α')[1]=='α' then raise "failed" end
+  unless Verb_conj.ultima('αβ')[1]=='α' then raise "failed" end
+  unless Verb_conj.ultima('εβαβ')[1]=='α' then raise "failed" end
+  unless Verb_conj.ultima('α')[2]=='' then raise "failed" end
+  unless Verb_conj.ultima('αβ')[2]=='β' then raise "failed" end
+  unless Verb_conj.ultima('εβαβ')[2]=='β' then raise "failed" end
+  unless Verb_conj.ultima('α')[0]=='' then raise "failed" end
+  unless Verb_conj.n_syll('α')==1 then raise "failed" end
+  unless Verb_conj.n_syll('αβ')==1 then raise "failed" end
+  unless Verb_conj.n_syll('εβαβ')==2 then raise "failed" end
+  unless Verb_conj.respell_sigmas('σ')=='ς' then raise "failed" end
+  unless Verb_conj.respell_sigmas('ς')=='ς' then raise "failed" end
+  unless Verb_conj.respell_sigmas('σασ')=='σας' then raise "failed" end
 end
 
 end # Verb_conj
