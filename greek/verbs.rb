@@ -29,7 +29,7 @@ end
 
 class Verb_conj
 
-def regular_conj(lemma,f,principal_parts:{},do_archaic_forms:false)
+def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false)
   # lemma may be fully accented or omit the acute accent
   # f is a Vform object
   # principal_parts is a hash whose keys are strings such as '2' for the second principle part, etc.
@@ -73,12 +73,7 @@ def regular_conj(lemma,f,principal_parts:{},do_archaic_forms:false)
 
   # -- Thematic vowel.
   if thematic then
-    if !f.aorist then
-      endings = endings.map { |x| if x=~/^[μν]/ then 'ο'+x else 'ε'+x end }
-    else
-      if f.singular && f.person==3 then t='ε' else t='α' end
-      endings = endings.map { |x| t+x }
-    end
+    endings = endings.map { |x| Verb_conj.thematic_vowel(f,x)+x }
   end
 
   #-- Postprocessing.
@@ -86,9 +81,10 @@ def regular_conj(lemma,f,principal_parts:{},do_archaic_forms:false)
   endings.each { |e|
     form = stem+e
     form = Verb_conj.respell_sigmas(form)
-    # recessive accent (fixme: not for participles)
+    # recessive accent (fixme: not for participles, and see other exceptions, Pharr p. 330)
     if Verb_conj.long_ultima(form) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
     accent_syll = [accent_syll,Verb_conj.n_syll(form)].min
+    print "accent_syll=#{accent_syll}\n" # qwe
     form = Verb_conj.accentuate(form,accent_syll)
     results.push(form)
     results.push(form+'ν') if movable_nu
@@ -97,28 +93,44 @@ def regular_conj(lemma,f,principal_parts:{},do_archaic_forms:false)
   return [results,false,nil,nil]  
 end
 
+def Verb_conj.thematic_vowel(f,ending)
+  if ending=='ω' then return '' end
+  if ending=~/σι/ then return 'ου' end
+  if !f.aorist then
+    if ending=~/^[μν]/ then return 'ο' else return 'ε' end
+  else
+    if f.singular && f.person==3 then return 'ε' else return 'α' end
+  end
+end
+
 def Verb_conj.respell_sigmas(w)
   return w.gsub(/ς/,'σ').sub(/σ$/,'ς')
 end
 
 def Verb_conj.accentuate(w,n)
+  print "w=#{w}, n=#{n}\n" # qwe
   if n==1 then
-    return w.sub(/[αειουηω](?=[^αειουηω]*)$/) { |x| $1.tr('αειουηω','άέίόύήώ') }
+    w=~/(.*)([αειουηω])([^αειουηω]*)/
+    return $1+$2.tr('αειουηω','άέίόύήώ')+$3
   else
     a,b,c = ultima(w)
-    return accentuate(a+b,n-1)+c
+    print "a,b,c=#{[a,b,c]}\n" # qwe
+    return Verb_conj.accentuate(a,n-1)+b+c
   end
 end
 
 def Verb_conj.n_syll(w)
   a,b,c = ultima(w)
+  if b=='' then return 0 end
   if a=='' then return 1 end
+  #print "abc=#{[a,b,c]}\n"
   return 1+n_syll(a)
 end
 
 def Verb_conj.long_ultima(w)
-  a,b,c = ultima(form)
-  return ( b=~/[ηω]/ || (b.length==2 && !(b=~/(αι|οι)/)) || b.length>=3 )
+  a,b,c = ultima(w)
+  if b=~/[ηω]/ then return true end
+  return (b.length==2 && !(b=~/(αι|οι)/)) || b.length>=3
 end
 
 def Verb_conj.ultima(w)
@@ -127,9 +139,15 @@ def Verb_conj.ultima(w)
   w = remove_accents(w)
   w=~/([αειουηω]+)([^αειουηω]*)$/
   b,c = [$1,$2]
+  if b.nil? then b='' end
+  if c.nil? then c='' end
   w=~/(.*)#{b}#{c}/
   a = $1
   if a.nil? then a='' end
+  while b.length>1 && !(b=~/^(αι|αυ|ει|ευ|ηυ|οι|ου|υι|ωυ)$/) do # Pharr, p. 268
+    a = a+b[0]
+    b = b[1..-1]
+  end
   return [a,b,c]
 end
 
@@ -145,9 +163,16 @@ def Verb_conj.test
   unless Verb_conj.n_syll('α')==1 then raise "failed" end
   unless Verb_conj.n_syll('αβ')==1 then raise "failed" end
   unless Verb_conj.n_syll('εβαβ')==2 then raise "failed" end
+  unless Verb_conj.n_syll('κλέπτω')==2 then raise "failed" end
   unless Verb_conj.respell_sigmas('σ')=='ς' then raise "failed" end
   unless Verb_conj.respell_sigmas('ς')=='ς' then raise "failed" end
   unless Verb_conj.respell_sigmas('σασ')=='σας' then raise "failed" end
+  unless Verb_conj.long_ultima('κτίνω')==true then raise "failed" end
+  unless Verb_conj.long_ultima('κτίνετε')==false then raise "failed" end
+  unless Verb_conj.long_ultima('κτίνει')==true then raise "failed" end
+  unless Verb_conj.long_ultima('ἔκτινα')==false then raise "failed" end
+  unless Verb_conj.long_ultima('βαι')==false then raise "failed" end
+  unless Verb_conj.accentuate('κλεπτω',2)!='κλέπτω' then raise "failed #{Verb_conj.accentuate('κλεπτω',2)}" end
 end
 
 end # Verb_conj
