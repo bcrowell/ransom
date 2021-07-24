@@ -51,16 +51,21 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false)
   # Irregular verbs are usually irregular only in the formation of their principal parts, not in the
   # conjugation based on those parts. So if a non-empty principal_parts argument is supplied, then
   # this routine should in most cases actually give the correct conjugation in *irregular* cases.
+  # This routine doesn't know which verbs are contract verbs, so it defines those as irregular.
 
-  if f.imperative && f.person==1 then return [[],false,nil,"First-person imperative forms don't exist."] end
+  if f.imperative && f.person==1 then return [[],false,nil,"First-person imperative forms don't exist.",nil] end
   lemma = remove_acute_and_grave(lemma)
 
-  if lemma=~/μαι/ then return [nil,true,nil,"Lemmas in -μαι are not implemented."] end
+  if lemma=~/μαι/ then return [nil,true,"Lemmas in -μαι are not implemented.",nil] end
 
   # -- Thematic/athematic,
   thematic = nil
   if lemma=~/(.*)ω$/ then thematic=true; stem=$1 end
   if lemma=~/(.*)μι$/ then thematic=false; stem=$1 end
+  if lemma=~/(.*)α$/ then return [nil,true,'Verbs like ἄνωγα, with the perfect used as the present, are not implemented.',nil] end
+  if lemma=~/(.*)ον$/ then return [nil,true,'Verbs like τέτμον, with the epic aorist used as the present, are not implemented.',nil] end
+  if lemma=~/(.*)ῶ$/ then return [nil,true,'The software does not implement conjugation given an already-contracted lemma like ζῶ.',nil] end
+  if remove_accents(lemma)=~/^(δει|χρη)$/  then return [nil,true,'Impersonal verbs like δεῖ and χρή are not implemented.',nil] end
   if thematic.nil? then return [nil,false,"unable to recognize lemma #{lemma} as -ω or -μι",nil] end
   if !thematic then return [nil,true,'Athematic verbs are not implemented.',nil] end
 
@@ -197,7 +202,8 @@ def Verb_conj.test
   Verb_conj.test_helper('κλέπτω','v3ppia','κλέπτουσι')
   Verb_conj.test_helper('κλέπτω','v3ppia','κλέπτουσιν',version:1)
   homer = json_from_file_or_die("greek/homer_conjugations.json",how_to_die:lambda { |err| raise err})
-  Verb_conj.stats(homer,'v1spia---')
+  #Verb_conj.stats(homer,'v1spia---')
+  Verb_conj.stats(homer,'v3spia---')
 end
 
 def Verb_conj.stats(homer,pos)
@@ -210,7 +216,7 @@ def Verb_conj.stats(homer,pos)
     next if unimplemented
     if !(error_message.nil?) then raise error_message end
     if regular_forms.nil? then raise "pos=#{pos}, lemma=#{lemma}, regular_forms=nil" end
-    if real_forms[0]==regular_forms[0] then print "equal, #{real_forms[0]}\n" else print "unequal, reg,real = #{regular_forms[0]} #{real_forms[0]} \n" end
+    if real_forms[0]==regular_forms[0] then print "equal, #{real_forms[0]}\n" else print "unequal, lemma=#{lemma} reg,real = #{regular_forms[0]} #{real_forms[0]} \n" end
   }
 end
 
