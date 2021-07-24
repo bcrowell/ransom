@@ -59,7 +59,7 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false)
   thematic = nil
   if lemma=~/(.*)ω$/ then thematic=true; stem=$1 end
   if lemma=~/(.*)μι$/ then thematic=false; stem=$1 end
-  if thematic.nil? then return [nil,false,'unable to recognize lemma #{lemma} as -ω or -μι',nil] end
+  if thematic.nil? then return [nil,false,"unable to recognize lemma #{lemma} as -ω or -μι",nil] end
   if !thematic then return [nil,true,'Athematic verbs are not implemented.',nil] end
 
   # --
@@ -205,6 +205,7 @@ def Verb_conj.stats(homer,pos)
     real_forms = x[lemma]
     regular_forms,unimplemented,error_message,explanation = regular(lemma,f)
     next if unimplemented
+    if !(error_message.nil?) then raise error_message end
     if regular_forms.nil? then raise "pos=#{pos}, lemma=#{lemma}, regular_forms=nil" end
     if real_forms[0]==regular_forms[0] then print "equal, #{real_forms[0]}\n" else print "unequal, #{real_forms[0]} #{regular_forms[0]}\n" end
   }
