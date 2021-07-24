@@ -5,6 +5,9 @@ I have code that generates both a json file and an sdbm file.
 I commented out the code to generate the sdbm file, because it's super huge, and
 reading the json file is actually pretty efficient.
 
+The file homer_lemmas.json is created by to_db.rb, and comments in that program
+define its format.
+
 Oops, in the following I used their version 1, but later versions have already been converted
 to unicode; see treebank_data/v2.1/Greek/texts/
 

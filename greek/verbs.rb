@@ -1,8 +1,9 @@
 class Vform
   def initialize(perseus_pos)
     # definition of perseus 9-character pos tags: https://github.com/cltk/greek_treebank_perseus
-    # first character has to be there as a placeholder, but is ignored
-    # final three characters are optional
+    # First character has to be there as a placeholder, but is ignored.
+    # Final three characters are optional, ignored.
+    # To get back a complete 9-character perseus tag, use the method get_perseus_tag().
     @person = perseus_pos[1].to_i # 1, 2, or 3
     @number = perseus_pos[2] # 's', 'd', or 'p'
     @tense = perseus_pos[3] # paif = present,aorist,imperfect,future; rlt = perfect,pluperfect,future perfect
@@ -11,6 +12,11 @@ class Vform
   end
 
   attr_reader :person,:number,:tense,:mood,:voice
+
+  def get_perseus_tag
+    if self.participle() then c0='t' else c0='v' end
+    return c0+@person.to_s+@number+@tense+@mood+@voice+'---'
+  end
 
   def indicative() return (@mood=='i') end
   def imperative() return (@mood=='m') end
@@ -24,6 +30,7 @@ class Vform
   def past() return (@tense=~/[ail]/) end
   def present() return (@tense=='p') end
   def aorist() return (@tense=='a') end
+  def participle() return (@mood=='p') end
 
 end
 
@@ -73,7 +80,7 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false)
 
   # -- Thematic vowel.
   if thematic then
-    endings = endings.map { |x| Verb_conj.thematic_vowel(f,x)+x }
+    endings = endings.map { |x| thematic_vowel(f,x)+x }
   end
 
   #-- Postprocessing.
@@ -111,21 +118,21 @@ def Verb_conj.accentuate(w,n)
     w=~/(.*)([αειουηω])([^αειουηω]*)/
     return $1+$2.tr('αειουηω','άέίόύήώ')+$3
   else
-    a,b,c = ultima(w)
+    a,b,c = Verb_conj.ultima(w)
     return Verb_conj.accentuate(a,n-1)+b+c
   end
 end
 
 def Verb_conj.n_syll(w)
-  a,b,c = ultima(w)
+  a,b,c = Verb_conj.ultima(w)
   if b=='' then return 0 end
   if a=='' then return 1 end
   #print "abc=#{[a,b,c]}\n"
-  return 1+n_syll(a)
+  return 1+Verb_conj.n_syll(a)
 end
 
 def Verb_conj.long_ultima(w)
-  a,b,c = ultima(w)
+  a,b,c = Verb_conj.ultima(w)
   if b=~/[ηω]/ then return true end
   return (b.length==2 && !(b=~/(αι|οι)/)) || b.length>=3
 end
@@ -181,7 +188,7 @@ end
 
 def Verb_conj.test_helper(verb,which,expect,version:0)
   f = Vform.new(which)
-  c = Verb_conj.regular(verb,f)[0][version]
+  c = regular(verb,f)[0][version]
   Verb_conj.test_helper2(c,expect)
   print "passed #{verb} #{which} (#{version}) #{expect}\n"
 end
