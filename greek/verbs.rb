@@ -55,6 +55,8 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false)
   if f.imperative && f.person==1 then return [[],false,nil,"First-person imperative forms don't exist."] end
   lemma = remove_acute_and_grave(lemma)
 
+  if lemma=~/μαι/ then return [nil,true,nil,"Lemmas in -μαι are not implemented."] end
+
   # -- Thematic/athematic,
   thematic = nil
   if lemma=~/(.*)ω$/ then thematic=true; stem=$1 end
