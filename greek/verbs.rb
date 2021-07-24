@@ -40,17 +40,17 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false)
   # lemma may be fully accented or omit the acute accent
   # f is a Vform object
   # principal_parts is a hash whose keys are strings such as '2' for the second principle part, etc.
-  # This function is supposed to return a string that is what the conjugation *would* be if the verb were 
-  # regular. For example, if you want to determine whether a certain form is or is not regular, you can
-  # compare the actual form against the one returned by this routine.
-  # Irregular verbs are usually irregular only in the formation of their principal parts, not in the
-  # conjugation based on those parts. So if a non-empty principal_parts argument is supplied, then
-  # this routine should in most cases actually give the correct conjugation in *irregular* cases.
   # Returns [conjugated verb,unimplemented,error message,explanation].
   # Conjugated verb is a list, usually a singleton. If the form doesn't exist, e.g., 1st-person imperative, then this is an empty list.
   # If there's an error or the conjugation is unimplemented, then conjugated verb is nil.
   # The unimplemented flag says that the user didn't do anything wrong, but the relevant feature just isn't implemented yet.
   # Explanation is a list of strings explaining any non-obvious rules used.
+  # Conjugated verb is supposed to be a string that is what the conjugation *would* be if the verb were 
+  # regular. For example, if you want to determine whether a certain form is or is not regular, you can
+  # compare the actual form against the one returned by this routine.
+  # Irregular verbs are usually irregular only in the formation of their principal parts, not in the
+  # conjugation based on those parts. So if a non-empty principal_parts argument is supplied, then
+  # this routine should in most cases actually give the correct conjugation in *irregular* cases.
 
   if f.imperative && f.person==1 then return [[],false,nil,"First-person imperative forms don't exist."] end
   lemma = remove_acute_and_grave(lemma)
@@ -116,7 +116,6 @@ end
 def Verb_conj.accentuate(w,n)
   if n==1 then
     remove_accents(w)=~/(.*)([αειουηω])([^αειουηω]*)/
-    if $2.nil? then print "w=#{w}, 1=#{$1}, 2=#{$2}, 3=#{$3}, 3.nil?=#{$3.nil?}\n" end # qwe
     a,b,c = Verb_conj.three_analogous_pieces(remove_acute_and_grave(w),$1,$2,$3)
     return a+b.tr('αειουηω','άέίόύήώ')+c
   else
@@ -204,7 +203,9 @@ def Verb_conj.stats(homer,pos)
   if x.nil? then x={} end
   x.keys.each { |lemma|
     real_forms = x[lemma]
-    regular_forms = regular(lemma,f)[0]
+    regular_forms,unimplemented,error_message,explanation = regular(lemma,f)
+    next if unimplemented
+    if regular_forms.nil? then raise "pos=#{pos}, lemma=#{lemma}, regular_forms=nil" end
     if real_forms[0]==regular_forms[0] then print "equal, #{real_forms[0]}\n" else print "unequal, #{real_forms[0]} #{regular_forms[0]}\n" end
   }
 end
