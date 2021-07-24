@@ -119,7 +119,7 @@ def Verb_conj.accentuate(w,n)
   if n==1 then
     remove_accents(w)=~/(.*)([αειουηω])([^αειουηω]*)/
     a,b,c = Verb_conj.three_analogous_pieces(remove_acute_and_grave(w),$1,$2,$3)
-    return a+b.tr('αειουηω','άέίόύήώ')+c
+    return a+add_acute(b)+c
   else
     a,b,c = Verb_conj.ultima(w)
     return Verb_conj.accentuate(a,n-1)+b+c
@@ -188,6 +188,7 @@ def Verb_conj.test
   unless Verb_conj.long_ultima('ἔκτινα')==false then raise "failed" end
   unless Verb_conj.long_ultima('βαι')==false then raise "failed" end
   unless Verb_conj.accentuate('κλεπτω',2)=='κλέπτω' then raise "failed #{Verb_conj.accentuate('κλεπτω',2)}" end
+  unless Verb_conj.accentuate('ἱκω',2)=='ἵκω' then raise "failed #{Verb_conj.accentuate('ἱκω',2)}" end
   Verb_conj.test_helper('κλέπτω','v1spia','κλέπτω')
   Verb_conj.test_helper('κλέπτω','v2spia','κλέπτεις')
   Verb_conj.test_helper('κλέπτω','v3spia','κλέπτει')
@@ -209,7 +210,7 @@ def Verb_conj.stats(homer,pos)
     next if unimplemented
     if !(error_message.nil?) then raise error_message end
     if regular_forms.nil? then raise "pos=#{pos}, lemma=#{lemma}, regular_forms=nil" end
-    if real_forms[0]==regular_forms[0] then print "equal, #{real_forms[0]}\n" else print "unequal, #{real_forms[0]} #{regular_forms[0]}\n" end
+    if real_forms[0]==regular_forms[0] then print "equal, #{real_forms[0]}\n" else print "unequal, reg,real = #{regular_forms[0]} #{real_forms[0]} \n" end
   }
 end
 
