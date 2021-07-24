@@ -53,7 +53,7 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false)
   # Explanation is a list of strings explaining any non-obvious rules used.
 
   if f.imperative && f.person==1 then return [[],false,nil,"First-person imperative forms don't exist."] end
-  lemma = remove_accents(lemma)
+  lemma = remove_acute_and_grave(lemma)
 
   # -- Thematic/athematic,
   thematic = nil
@@ -115,8 +115,10 @@ end
 
 def Verb_conj.accentuate(w,n)
   if n==1 then
-    w=~/(.*)([αειουηω])([^αειουηω]*)/
-    return $1+$2.tr('αειουηω','άέίόύήώ')+$3
+    remove_accents(w)=~/(.*)([αειουηω])([^αειουηω]*)/
+    if $2.nil? then print "w=#{w}, 1=#{$1}, 2=#{$2}, 3=#{$3}, 3.nil?=#{$3.nil?}\n" end # qwe
+    a,b,c = Verb_conj.three_analogous_pieces(remove_acute_and_grave(w),$1,$2,$3)
+    return a+b.tr('αειουηω','άέίόύήώ')+c
   else
     a,b,c = Verb_conj.ultima(w)
     return Verb_conj.accentuate(a,n-1)+b+c
@@ -138,8 +140,16 @@ def Verb_conj.long_ultima(w)
 end
 
 def Verb_conj.ultima(w)
-  # returns [beginning,vowel,cons]
-  # strips all accents
+  a,b,c = Verb_conj.ultima_helper(w)
+  return Verb_conj.three_analogous_pieces(w,a,b,c)
+end
+
+def Verb_conj.three_analogous_pieces(w,a,b,c)
+  return [ substr(w,0,a.length) , substr(w,a.length,b.length), substr(w,a.length+b.length,c.length) ]
+end
+
+def Verb_conj.ultima_helper(w)
+  # returns [beginning,vowel,cons], removing all accents (including breathing, etc.)
   w = remove_accents(w)
   w=~/([αειουηω]+)([^αειουηω]*)$/
   b,c = [$1,$2]
@@ -184,6 +194,19 @@ def Verb_conj.test
   Verb_conj.test_helper('κλέπτω','v2ppia','κλέπτετε')
   Verb_conj.test_helper('κλέπτω','v3ppia','κλέπτουσι')
   Verb_conj.test_helper('κλέπτω','v3ppia','κλέπτουσιν',version:1)
+  homer = json_from_file_or_die("greek/homer_conjugations.json",how_to_die:lambda { |err| raise err})
+  Verb_conj.stats(homer,'v1spia---')
+end
+
+def Verb_conj.stats(homer,pos)
+  f = Vform.new(pos)
+  x = homer[pos]
+  if x.nil? then x={} end
+  x.keys.each { |lemma|
+    real_forms = x[lemma]
+    regular_forms = regular(lemma,f)[0]
+    if real_forms[0]==regular_forms[0] then print "equal, #{real_forms[0]}\n" else print "unequal, #{real_forms[0]} #{regular_forms[0]}\n" end
+  }
 end
 
 def Verb_conj.test_helper(verb,which,expect,version:0)

@@ -18,14 +18,14 @@ def slurp_file_with_detailed_error_reporting(file)
   end
 end
 
-def json_from_file_or_die(file)
+def json_from_file_or_die(file,how_to_die:lambda { |err| raise err})
   # automatically does unicode_normalize(:nfc)
   json,err = slurp_file_with_detailed_error_reporting(file)
-  if !(err.nil?) then die(err) end
+  if !(err.nil?) then how_to_die.call(err) end
   begin
     return JSON.parse(json)
   rescue
-    die("error parsing JSON in file #{file}")
+    how_to_die.call("error parsing JSON in file #{file}")
   end
 end
 
