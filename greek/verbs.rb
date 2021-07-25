@@ -203,6 +203,7 @@ def Verb_conj.ultima(w)
 end
 
 def Verb_conj.three_analogous_pieces(w,a,b,c)
+  $stderr.print [a,b,c],"\n" # qwe
   return [ substr(w,0,a.length) , substr(w,a.length,b.length), substr(w,a.length+b.length,c.length) ]
 end
 
