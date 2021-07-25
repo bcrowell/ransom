@@ -107,9 +107,10 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
     stem,e,flags = x
     form = stem+e # gets redone later if there's a contraction
     form = Verb_conj.respell_sigmas(form)
+    bc = flags['form_before_contraction']
     # recessive accent (fixme: not for participles, and see other exceptions, Pharr p. 330)
-    if Verb_conj.long_ultima(form) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
-    accent_syll = [accent_syll,Verb_conj.n_syll(flags['form_before_contraction'])].min
+    if Verb_conj.long_ultima(bc) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
+    accent_syll = [accent_syll,Verb_conj.n_syll(bc)].min
     n_syll_ending = Verb_conj.n_syll(e)
     $stderr.print "---- x=#{x} #{flags['contracted']}\n" if stem=~/ταρ/ # qwe
     did_accentuation = false
