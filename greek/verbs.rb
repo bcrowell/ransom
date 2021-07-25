@@ -95,7 +95,7 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
       forms.push([stem,t+e,flags.merge({'contracted'=>false})])
       if include_contracted then
         c = Verb_conj.contract(stem,f,t,e,Verb_conj.n_syll(lemma)==2)
-        if !c.nil? then print "............... t=#{t} e=#{e} c=#{c}\n" end # qwe
+        # if !c.nil? then print "............... t=#{t} e=#{e} c=#{c}\n" end
         if !(c.nil?) then forms.push([c[0],c[1],flags.merge({'contracted'=>true})]) end
       end
     }
@@ -112,12 +112,12 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
     if Verb_conj.long_ultima(bc) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
     accent_syll = [accent_syll,Verb_conj.n_syll(bc)].min
     n_syll_ending = Verb_conj.n_syll(e)
-    $stderr.print "---- x=#{x} #{flags['contracted']}\n" if stem=~/ταρ/ # qwe
+    # $stderr.print "---- x=#{x} #{flags['contracted']}\n" if stem=~/ταρ/
     did_accentuation = false
     if flags['contracted']==true then
       # Is this sometimes wrong? https://ancientgreek.pressbooks.com/chapter/17/ has unclear ref to 
       # "the accent rules that apply to vowel contractions, learned earlier."
-      $stderr.print "---- contraction lemma=#{lemma} e=#{e}, accent_syll=#{accent_syll}, stem=#{stem}\n" # qwe
+      # $stderr.print "---- contraction lemma=#{lemma} e=#{e}, accent_syll=#{accent_syll}, stem=#{stem}\n"
       e2 = Verb_conj.accentuate(e,accent_syll-1,type_of_accent:'circ') # contractions all contract two syllables to 1
       form = stem+e2
       did_accentuation = true        
@@ -138,9 +138,11 @@ def Verb_conj.contract(stem,f,t,e,disyllabic)
   ee = t+e
   result = nil
   if f.present && f.indicative && f.active
-    if s=='ε' && !disyllabic then
-      if ee=~/^(ω|ει|ου)$/ then result = ee end
-      if ee=~/^(ο|ε)$/ then result = {'ο'=>'ου','ε'=>'ει'}[ee] end
+    if s=='ε' then
+      if !(disyllabic && ee=~/^(ο|ω)$/) then
+        if ee=~/^(ω|ει|ου)$/ then result = ee end
+        if ee=~/^(ο|ε)$/ then result = {'ο'=>'ου','ε'=>'ει'}[ee] end
+      end
     end
     if s=='α' then
       if ee=~/^(ω)$/ then result = ee end
