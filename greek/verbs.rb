@@ -91,25 +91,59 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   if thematic then
     endings.each { |x|
       t = thematic_vowel(f,x)
-      endings2.push(t+x)
+      endings2.push([t+x,{'contracted':false}])
+      if include_contracted then
+        c = Verb_conj.contract(f,t,x,Verb_conj.n_syll(lemma)==2)
+        if !(c.nil?) then endings2.push([c,{'contracted':true}]) end
+      end
     }
   end
-  endings = endings2
 
   #-- Postprocessing.
   results = []
-  endings.each { |e|
-    form = stem+e
+  endings2.each { |x|
+    e,flags = x
+    form = stem+e # gets redone later if there's a contraction
     form = Verb_conj.respell_sigmas(form)
     # recessive accent (fixme: not for participles, and see other exceptions, Pharr p. 330)
     if Verb_conj.long_ultima(form) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
     accent_syll = [accent_syll,Verb_conj.n_syll(form)].min
-    form = Verb_conj.accentuate(form,accent_syll)
+    n_syll_ending = Verb_conj.n_syll(e)
+    did_accentuation = false
+    if flags['contracted']==true && accent_syll==n_syll_ending then
+      # Is this sometimes wrong? https://ancientgreek.pressbooks.com/chapter/17/ has unclear ref to 
+      #"the accent rules that apply to vowel contractions, learned earlier."
+      e2 = Verb_conj.accentuate(e,n_syll_ending)
+      form = stem+e2
+      did_accentuation = true        
+    end
+    if !did_accentuation then form = Verb_conj.accentuate(form,accent_syll) end
     results.push(form)
     results.push(form+'ν') if movable_nu
   }
 
   return [results,false,nil,nil]  
+end
+
+def Verb_conj.contract(f,t,e,disyllabic)
+  # f,t,e = form, thematic vowel, ending
+  # returns contracted form of ending, or nil if there is no contraction
+  # https://ancientgreek.pressbooks.com/chapter/17/
+  if f.present && f.indicative && f.active
+    if t=='ε' && !disyllabic then
+      if e=~/^(ω|ει|ου)$/ then return e end
+      if e=~/^(ο|ε)$/ then return {'ο'=>'ου','ε'=>'ει'}[e] end
+    end
+    if t=='α' then
+      if e=~/^(ω)$/ then return e end
+      if e=~/^(ει|ο|ε|ου)$/ then return {'ει'=>'ᾳ','ο'=>'ω','ε'=>'α','ου'=>'ω'}[e] end
+    end
+    if t=='ο' then
+      if e=~/^(ω)$/ then return e end
+      if e=~/^(ει|ο|ε|ου)$/ then return {'ει'=>'οι','ο'=>'ου','ε'=>'ου','ου'=>'ου'}[e] end
+    end
+  end
+  return nil
 end
 
 def Verb_conj.thematic_vowel(f,ending)
@@ -126,10 +160,14 @@ def Verb_conj.respell_sigmas(w)
   return w.gsub(/ς/,'σ').sub(/σ$/,'ς')
 end
 
-def Verb_conj.accentuate(w,n)
+def Verb_conj.accentuate(w,n,type_of_accent:'acute')
+  # n is the syllable to accentuate, counting back from end, 1-based
+  # type_of_accent can be 'acute' or 'circ'
   if n==1 then
     remove_accents(w)=~/(.*)([αειουηω])([^αειουηω]*)/
     a,b,c = Verb_conj.three_analogous_pieces(remove_acute_and_grave(w),$1,$2,$3)
+    if type_of_accent=='acute' then b=add_acute(b) end
+    if type_of_accent=='circ' then b=b.tr('αειουηω','ᾶῖῦῆῶ') end # fixme, won't work correctly on stuff like iota subscripts
     return a+add_acute(b)+c
   else
     a,b,c = Verb_conj.ultima(w)
