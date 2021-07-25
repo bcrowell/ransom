@@ -91,11 +91,11 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   if thematic then
     endings.each { |e|
       t = thematic_vowel(f,e)
-      forms.push([stem,t+e,{'contracted':false}])
+      forms.push([stem,t+e,{'contracted'=>false}])
       if include_contracted then
         c = Verb_conj.contract(stem,f,t,e,Verb_conj.n_syll(lemma)==2)
-        print "............... t=#{t} e=#{e} c=#{c}\n"
-        if !(c.nil?) then forms.push([c[0],c[1],{'contracted':true}]) end
+        if !c.nil? then print "............... t=#{t} e=#{e} c=#{c}\n" end # qwe
+        if !(c.nil?) then forms.push([c[0],c[1],{'contracted'=>true}]) end
       end
     }
   end
@@ -110,11 +110,13 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
     if Verb_conj.long_ultima(form) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
     accent_syll = [accent_syll,Verb_conj.n_syll(form)].min
     n_syll_ending = Verb_conj.n_syll(e)
+    $stderr.print "---- x=#{x} #{flags['contracted']}\n" if stem=~/ταρ/ # qwe
     did_accentuation = false
-    if flags['contracted']==true && accent_syll==n_syll_ending then
+    if flags['contracted']==true then
       # Is this sometimes wrong? https://ancientgreek.pressbooks.com/chapter/17/ has unclear ref to 
       # "the accent rules that apply to vowel contractions, learned earlier."
-      e2 = Verb_conj.accentuate(e,n_syll_ending)
+      $stderr.print "---- contraction\n" # qwe
+      e2 = Verb_conj.accentuate(e,accent_syll-1,type_of_accent:'circ') # contractions all contract two syllables to 1
       form = stem+e2
       did_accentuation = true        
     end
@@ -147,8 +149,8 @@ def Verb_conj.contract(stem,f,t,e,disyllabic)
       if ee=~/^(ει|ο|ε|ου)$/ then result = {'ει'=>'οι','ο'=>'ου','ε'=>'ου','ου'=>'ου'}[ee] end
     end
   end
-  if result.nil? then return [shorter,result] end
-  return shorter+result
+  if result.nil? then return nil end
+  return [shorter,result]
 end
 
 def Verb_conj.thematic_vowel(f,ending)
@@ -168,11 +170,12 @@ end
 def Verb_conj.accentuate(w,n,type_of_accent:'acute')
   # n is the syllable to accentuate, counting back from end, 1-based
   # type_of_accent can be 'acute' or 'circ'
+  if n==0 then raise "n=0" end
   if n==1 then
     remove_accents(w)=~/(.*)([αειουηω])([^αειουηω]*)/
     a,b,c = Verb_conj.three_analogous_pieces(remove_acute_and_grave(w),$1,$2,$3)
     if type_of_accent=='acute' then b=add_acute(b) end
-    if type_of_accent=='circ' then b=b.tr('αειουηω','ᾶῖῦῆῶ') end # fixme, won't work correctly on stuff like iota subscripts
+    if type_of_accent=='circ' then b=b.tr('αιυηωᾳ','ᾶῖῦῆῶᾷ') end # this probably covers all cases of interest for contract verbs
     return a+add_acute(b)+c
   else
     a,b,c = Verb_conj.ultima(w)
@@ -265,7 +268,7 @@ def Verb_conj.stats(homer,pos)
     next if unimplemented
     if !(error_message.nil?) then raise error_message end
     if regular_forms.nil? then raise "pos=#{pos}, lemma=#{lemma}, regular_forms=nil" end
-    if regular_forms.include?(real_forms[0]) then print "equal, #{real_forms[0]}\n" else print "unequal, lemma=#{lemma} reg,real = #{regular_forms} #{real_forms} \n" end
+    if regular_forms.include?(real_forms[0]) then print "equal, lemma=#{lemma} #{real_forms[0]}\n" else print "unequal, lemma=#{lemma} reg,real = #{regular_forms} #{real_forms} \n" end
   }
 end
 
