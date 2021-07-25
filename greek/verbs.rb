@@ -36,7 +36,7 @@ end
 
 class Verb_conj
 
-def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false)
+def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_contracted:true)
   # lemma may be fully accented or omit the acute accent
   # f is a Vform object
   # principal_parts is a hash whose keys are strings such as '2' for the second principle part, etc.
@@ -80,9 +80,10 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false)
 
   # == Personal ending.
   # -- Active primary.
-  if f.singular then endings=[['ω'],['ισ'],['ι']][f.person-1] end
-  if f.dual     then endings=[nil,['τον'],['τον']][f.person-1] end
-  if f.plural   then endings=[['μεν'],['τε'],['σι']][f.person-1] end
+  if f.singular then ee='ω ισ ι' end
+  if f.dual     then ee='@ τον τον' end
+  if f.plural   then ee='μεν τε σι' end
+  endings = ee.split(/\s+/)[f.person-1].split(/\//).map { |x| if x=='@' then nil else x end}
   if endings.nil? then return [[],false,nil,"Active dual first-person forms don't exist."] end
 
   # -- Thematic vowel.
