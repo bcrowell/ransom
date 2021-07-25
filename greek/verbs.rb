@@ -87,22 +87,23 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   if endings.nil? then return [[],false,nil,"Active dual first-person forms don't exist."] end
 
   # -- Thematic vowel.
-  endings2 = []
+  forms = []
   if thematic then
-    endings.each { |x|
-      t = thematic_vowel(f,x)
-      endings2.push([t+x,{'contracted':false}])
+    endings.each { |e|
+      t = thematic_vowel(f,e)
+      forms.push([stem,t+e,{'contracted':false}])
       if include_contracted then
-        c = Verb_conj.contract(f,t,x,Verb_conj.n_syll(lemma)==2)
-        if !(c.nil?) then endings2.push([c,{'contracted':true}]) end
+        c = Verb_conj.contract(stem,f,t,e,Verb_conj.n_syll(lemma)==2)
+        print "............... t=#{t} e=#{e} c=#{c}\n"
+        if !(c.nil?) then forms.push([c[0],c[1],{'contracted':true}]) end
       end
     }
   end
 
   #-- Postprocessing.
   results = []
-  endings2.each { |x|
-    e,flags = x
+  forms.each { |x|
+    stem,e,flags = x
     form = stem+e # gets redone later if there's a contraction
     form = Verb_conj.respell_sigmas(form)
     # recessive accent (fixme: not for participles, and see other exceptions, Pharr p. 330)
@@ -112,7 +113,7 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
     did_accentuation = false
     if flags['contracted']==true && accent_syll==n_syll_ending then
       # Is this sometimes wrong? https://ancientgreek.pressbooks.com/chapter/17/ has unclear ref to 
-      #"the accent rules that apply to vowel contractions, learned earlier."
+      # "the accent rules that apply to vowel contractions, learned earlier."
       e2 = Verb_conj.accentuate(e,n_syll_ending)
       form = stem+e2
       did_accentuation = true        
@@ -125,25 +126,29 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   return [results,false,nil,nil]  
 end
 
-def Verb_conj.contract(f,t,e,disyllabic)
+def Verb_conj.contract(stem,f,t,e,disyllabic)
   # f,t,e = form, thematic vowel, ending
-  # returns contracted form of ending, or nil if there is no contraction
+  # returns contracted form as [stem,ending], or nil if there is no contraction
   # https://ancientgreek.pressbooks.com/chapter/17/
+  if stem=~/^(.*)(ε|α|ο)$/ then shorter,s=[$1,$2] else return nil end # find final vowel of stem
+  ee = t+e
+  result = nil
   if f.present && f.indicative && f.active
-    if t=='ε' && !disyllabic then
-      if e=~/^(ω|ει|ου)$/ then return e end
-      if e=~/^(ο|ε)$/ then return {'ο'=>'ου','ε'=>'ει'}[e] end
+    if s=='ε' && !disyllabic then
+      if ee=~/^(ω|ει|ου)$/ then result = ee end
+      if ee=~/^(ο|ε)$/ then result = {'ο'=>'ου','ε'=>'ει'}[ee] end
     end
-    if t=='α' then
-      if e=~/^(ω)$/ then return e end
-      if e=~/^(ει|ο|ε|ου)$/ then return {'ει'=>'ᾳ','ο'=>'ω','ε'=>'α','ου'=>'ω'}[e] end
+    if s=='α' then
+      if ee=~/^(ω)$/ then result = ee end
+      if ee=~/^(ει|ο|ε|ου)$/ then result = {'ει'=>'ᾳ','ο'=>'ω','ε'=>'α','ου'=>'ω'}[ee] end
     end
-    if t=='ο' then
-      if e=~/^(ω)$/ then return e end
-      if e=~/^(ει|ο|ε|ου)$/ then return {'ει'=>'οι','ο'=>'ου','ε'=>'ου','ου'=>'ου'}[e] end
+    if s=='ο' then
+      if ee=~/^(ω)$/ then result = ee end
+      if ee=~/^(ει|ο|ε|ου)$/ then result = {'ει'=>'οι','ο'=>'ου','ε'=>'ου','ου'=>'ου'}[ee] end
     end
   end
-  return nil
+  if result.nil? then return [shorter,result] end
+  return shorter+result
 end
 
 def Verb_conj.thematic_vowel(f,ending)
@@ -260,7 +265,7 @@ def Verb_conj.stats(homer,pos)
     next if unimplemented
     if !(error_message.nil?) then raise error_message end
     if regular_forms.nil? then raise "pos=#{pos}, lemma=#{lemma}, regular_forms=nil" end
-    if real_forms[0]==regular_forms[0] then print "equal, #{real_forms[0]}\n" else print "unequal, lemma=#{lemma} reg,real = #{regular_forms[0]} #{real_forms[0]} \n" end
+    if regular_forms.include?(real_forms[0]) then print "equal, #{real_forms[0]}\n" else print "unequal, lemma=#{lemma} reg,real = #{regular_forms} #{real_forms} \n" end
   }
 end
 
