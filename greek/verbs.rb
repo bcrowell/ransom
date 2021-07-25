@@ -87,9 +87,14 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   if endings.nil? then return [[],false,nil,"Active dual first-person forms don't exist."] end
 
   # -- Thematic vowel.
+  endings2 = []
   if thematic then
-    endings = endings.map { |x| thematic_vowel(f,x)+x }
+    endings.each { |x|
+      t = thematic_vowel(f,x)
+      endings2.push(t+x)
+    }
   end
+  endings = endings2
 
   #-- Postprocessing.
   results = []
