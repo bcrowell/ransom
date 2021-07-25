@@ -91,11 +91,12 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   if thematic then
     endings.each { |e|
       t = thematic_vowel(f,e)
-      forms.push([stem,t+e,{'contracted'=>false}])
+      flags = {'form_before_contraction'=>stem+t+e}
+      forms.push([stem,t+e,flags.merge({'contracted'=>false})])
       if include_contracted then
         c = Verb_conj.contract(stem,f,t,e,Verb_conj.n_syll(lemma)==2)
         if !c.nil? then print "............... t=#{t} e=#{e} c=#{c}\n" end # qwe
-        if !(c.nil?) then forms.push([c[0],c[1],{'contracted'=>true}]) end
+        if !(c.nil?) then forms.push([c[0],c[1],flags.merge({'contracted'=>true})]) end
       end
     }
   end
@@ -108,14 +109,14 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
     form = Verb_conj.respell_sigmas(form)
     # recessive accent (fixme: not for participles, and see other exceptions, Pharr p. 330)
     if Verb_conj.long_ultima(form) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
-    accent_syll = [accent_syll,Verb_conj.n_syll(form)].min
+    accent_syll = [accent_syll,Verb_conj.n_syll(flags['form_before_contraction'])].min
     n_syll_ending = Verb_conj.n_syll(e)
     $stderr.print "---- x=#{x} #{flags['contracted']}\n" if stem=~/ταρ/ # qwe
     did_accentuation = false
     if flags['contracted']==true then
       # Is this sometimes wrong? https://ancientgreek.pressbooks.com/chapter/17/ has unclear ref to 
       # "the accent rules that apply to vowel contractions, learned earlier."
-      $stderr.print "---- contraction\n" # qwe
+      $stderr.print "---- contraction lemma=#{lemma} e=#{e}, accent_syll=#{accent_syll}, stem=#{stem}\n" # qwe
       e2 = Verb_conj.accentuate(e,accent_syll-1,type_of_accent:'circ') # contractions all contract two syllables to 1
       form = stem+e2
       did_accentuation = true        
@@ -171,6 +172,8 @@ def Verb_conj.accentuate(w,n,type_of_accent:'acute')
   # n is the syllable to accentuate, counting back from end, 1-based
   # type_of_accent can be 'acute' or 'circ'
   if n==0 then raise "n=0" end
+  if w=='' then raise "w is null string" end
+  if n>Verb_conj.n_syll(w) then raise "n=#{n}, w=#{w}, n too high" end
   if n==1 then
     remove_accents(w)=~/(.*)([αειουηω])([^αειουηω]*)/
     a,b,c = Verb_conj.three_analogous_pieces(remove_acute_and_grave(w),$1,$2,$3)
@@ -203,7 +206,6 @@ def Verb_conj.ultima(w)
 end
 
 def Verb_conj.three_analogous_pieces(w,a,b,c)
-  $stderr.print [a,b,c],"\n" # qwe
   return [ substr(w,0,a.length) , substr(w,a.length,b.length), substr(w,a.length+b.length,c.length) ]
 end
 
