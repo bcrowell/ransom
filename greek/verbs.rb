@@ -30,6 +30,7 @@ class Vform
   def past() return (@tense=~/[ail]/) end
   def present() return (@tense=='p') end
   def aorist() return (@tense=='a') end
+  def imperfect() return (@tense=='i') end
   def participle() return (@mood=='p') end
 
 end
@@ -71,7 +72,7 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   if !thematic then return [nil,true,'Athematic verbs are not implemented.',nil] end
 
   # --
-  if !(f.present || f.aorist) then return [nil,true,'Tenses other than the present and aorist are not implemented.',nil] end
+  if !(f.present || f.aorist || f.imperfect) then return [nil,true,'Tenses other than the present, imperfect, and aorist are not implemented.',nil] end
   if !f.indicative then return [nil,true,'Moods other than the indicative are not implemented.',nil] end
   if !f.active then return [nil,true,'Voices other than the active are not implemented.',nil] end
 
@@ -80,13 +81,18 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   movable_nu = f.person==3 && ((f.plural && (f.present || f.future)) || (f.singular && (f.perfect || f.past || (f.present && !thematic))))
 
   # == Personal ending.
-  if f.present then
+  if f.present || f.future then
     if f.singular then ee='ω ισ ι' end
     if f.dual     then ee='@ τον τον' end
     if f.plural   then ee='μεν τε σι' end
   end
+  if f.imperfect then
+    if f.singular then ee='ν σ -' end
+    if f.dual     then ee='@ τον τον' end # fixme: this may be wrong
+    if f.plural   then ee='μεν τε ν' end
+  end
   if f.aorist then
-    if f.singular then ee='α σ -' end
+    if f.singular then ee='- σ -' end
     if f.dual     then ee='@ τον την' end
     if f.plural   then ee='μεν τε ν' end
   end
@@ -168,7 +174,7 @@ end
 def Verb_conj.thematic_vowel(f,ending)
   if ending=='ω' then return '' end
   if ending=~/σι/ then return 'ου' end
-  if !f.aorist then
+  if !(f.aorist) then # This handles present, future, thematic 2nd aorist, and imperfect, provided that the correct ending is supplied.
     if ending=~/^[μν]/ then return 'ο' else return 'ε' end
   else
     if f.singular && f.person==3 then return 'ε' else return 'α' end
