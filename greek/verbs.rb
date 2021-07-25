@@ -51,7 +51,8 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   # Irregular verbs are usually irregular only in the formation of their principal parts, not in the
   # conjugation based on those parts. So if a non-empty principal_parts argument is supplied, then
   # this routine should in most cases actually give the correct conjugation in *irregular* cases.
-  # This routine doesn't know which verbs are contract verbs, so it defines those as irregular.
+  # This routine doesn't know which verbs are contract verbs, but if include_contracted is true (the
+  # default) then it will include contracted forms as possibilities.
 
   if f.imperative && f.person==1 then return [[],false,nil,"First-person imperative forms don't exist.",nil] end
   lemma = remove_acute_and_grave(lemma)
@@ -70,7 +71,7 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   if !thematic then return [nil,true,'Athematic verbs are not implemented.',nil] end
 
   # --
-  if !f.present then return [nil,true,'Tenses other than the present are not implemented.',nil] end
+  if !(f.present || f.aorist) then return [nil,true,'Tenses other than the present and aorist are not implemented.',nil] end
   if !f.indicative then return [nil,true,'Moods other than the indicative are not implemented.',nil] end
   if !f.active then return [nil,true,'Voices other than the active are not implemented.',nil] end
 
@@ -79,12 +80,19 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   movable_nu = f.person==3 && ((f.plural && (f.present || f.future)) || (f.singular && (f.perfect || f.past || (f.present && !thematic))))
 
   # == Personal ending.
-  # -- Active primary.
-  if f.singular then ee='ω ισ ι' end
-  if f.dual     then ee='@ τον τον' end
-  if f.plural   then ee='μεν τε σι' end
-  endings = ee.split(/\s+/)[f.person-1].split(/\//).map { |x| if x=='@' then nil else x end}
-  if endings.nil? then return [[],false,nil,"Active dual first-person forms don't exist."] end
+  if f.present then
+    if f.singular then ee='ω ισ ι' end
+    if f.dual     then ee='@ τον τον' end
+    if f.plural   then ee='μεν τε σι' end
+  end
+  if f.aorist then
+    if f.singular then ee='α σ -' end
+    if f.dual     then ee='@ τον την' end
+    if f.plural   then ee='μεν τε ν' end
+  end
+  endings = ee.split(/\s+/)[f.person-1].split(/\//).map { |x| if x=~/[@\-]/ then {'@'=>nil,'-'=>''}[x] else x end}
+  if f.active && f.dual && f.person==1 then return [[],false,nil,"Active dual first-person forms don't exist."] end
+  if endings.nil? then return [[],false,nil,"endings not implemented for #{f.get_perseus_tag}"] end
 
   # -- Thematic vowel.
   forms = []
