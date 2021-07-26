@@ -60,16 +60,22 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
 
   if lemma=~/μαι/ then return [nil,true,"Lemmas in -μαι are not implemented.",nil] end
 
-  # -- Thematic/athematic,
+  # -- Thematic/athematic, present stem.
   thematic = nil
-  if lemma=~/(.*)ω$/ then thematic=true; stem=$1 end
-  if lemma=~/(.*)μι$/ then thematic=false; stem=$1 end
+  if lemma=~/(.*)ω$/ then thematic=true; present_stem=$1 end
+  if lemma=~/(.*)μι$/ then thematic=false; present_stem=$1 end
   if lemma=~/(.*)α$/ then return [nil,true,'Verbs like ἄνωγα, with the perfect used as the present, are not implemented.',nil] end
   if lemma=~/(.*)ον$/ then return [nil,true,'Verbs like τέτμον, with the epic aorist used as the present, are not implemented.',nil] end
   if lemma=~/(.*)ῶ$/ then return [nil,true,'The software does not implement conjugation given an already-contracted lemma like ζῶ.',nil] end
   if remove_accents(lemma)=~/^(δει|χρη)$/  then return [nil,true,'Impersonal verbs like δεῖ and χρή are not implemented.',nil] end
   if thematic.nil? then return [nil,false,"unable to recognize lemma #{lemma} as -ω or -μι",nil] end
   if !thematic then return [nil,true,'Athematic verbs are not implemented.',nil] end
+
+  # -- Stem.
+  stem = present_stem
+  desired_principal_part = '1'
+  if f.aorist then desired_principal_part='3'; stem='ἐ'+present_stem+'σ' end # fixme -- wrong in most cases
+  if principal_parts.has_key?(desired_principal_part) then stem=principal_parts[desired_principal_part] end
 
   # --
   if !(f.present || f.aorist || f.imperfect) then return [nil,true,'Tenses other than the present, imperfect, and aorist are not implemented.',nil] end
@@ -100,7 +106,7 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   if f.active && f.dual && f.person==1 then return [[],false,nil,"Active dual first-person forms don't exist."] end
   if endings.nil? then return [[],false,nil,"endings not implemented for #{f.get_perseus_tag}"] end
 
-  # -- Thematic vowel.
+  # -- Thematic vowel, contraction.
   forms = []
   if thematic then
     endings.each { |e|
