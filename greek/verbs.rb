@@ -178,7 +178,7 @@ end
 def Verb_conj.aorist_stem(present_stem)
   augmented_stem,optional_doubled_sigma,optional_unaugmented_stem = [nil,nil,nil]
   0.upto(1) { |do_augment|
-    stem,x = Verb_conj.aorist_stem_final_cons_helper(present_stem+'σ')
+    stem,x = Verb_conj.aorist_stem_final_cons_helper(present_stem)
     if do_augment==1 then
       augmented_stem = 'ἐ'+stem
       optional_doubled_sigma = x
@@ -194,12 +194,12 @@ def Verb_conj.aorist_stem_final_cons_helper(stem)
   if stem=~/^(.*)([πβφκγχτδθ])$/ then
     # Pharr, p. 325
     a,b = $1,$2
-    if b=~/πβφ/ then b='ψ' end
-    if b=~/κγχ/ then b='ξ' end
-    if b=~/τδθ/ then b='' end
+    if b=~/[πβφ]/ then b='ψ' end
+    if b=~/[κγχ]/ then b='ξ' end
+    if b=~/[τδθ]/ then b='' end
     return [a+b,false]
   end
-  return [stem,true]
+  return [stem+'σ',true]
 end
 
 def Verb_conj.contract(stem,f,t,e,disyllabic)
