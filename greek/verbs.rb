@@ -64,6 +64,7 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   thematic = nil
   if lemma=~/(.*)ω$/ then thematic=true; present_stem=$1 end
   if lemma=~/(.*)μι$/ then thematic=false; present_stem=$1 end
+  if lemma=~/(.*)εῖν$/ then return [nil,true,'Verbs like φαγεῖν, which have no present tense, are not implemented.',nil] end
   if lemma=~/(.*)α$/ then return [nil,true,'Verbs like ἄνωγα, with the perfect used as the present, are not implemented.',nil] end
   if lemma=~/(.*)ον$/ then return [nil,true,'Verbs like τέτμον, with the epic aorist used as the present, are not implemented.',nil] end
   if lemma=~/(.*)ῶ$/ then return [nil,true,'The software does not implement conjugation given an already-contracted lemma like ζῶ.',nil] end
@@ -281,7 +282,8 @@ def Verb_conj.test
   Verb_conj.test_helper('κλέπτω','v3ppia','κλέπτουσιν',version:1)
   homer = json_from_file_or_die("greek/homer_conjugations.json",how_to_die:lambda { |err| raise err})
   #Verb_conj.stats(homer,'v1spia---')
-  Verb_conj.stats(homer,'v3spia---')
+  #Verb_conj.stats(homer,'v3spia---')
+  Verb_conj.stats(homer,'v1saia---')
 end
 
 def Verb_conj.stats(homer,pos)
