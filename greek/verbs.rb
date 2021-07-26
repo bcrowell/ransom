@@ -75,7 +75,12 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   # -- Stem.
   stem = present_stem
   desired_principal_part = '1'
-  if f.aorist then desired_principal_part='3'; stem='ἐ'+present_stem+'σ' end # fixme -- wrong in most cases
+  optional_doubled_sigma = false # principal parts like -σα can also be -σσα, Pharr, p. 324
+  optional_unaugmented_stem = nil # augments are optional in Homer
+  if f.aorist then
+    desired_principal_part='3'
+    stem,optional_doubled_sigma,optional_unaugmented_stem = Verb_conj.aorist_stem(present_stem)
+  end
   if principal_parts.has_key?(desired_principal_part) then stem=principal_parts[desired_principal_part] end
 
   # --
@@ -126,29 +131,49 @@ def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_
   results = []
   forms.each { |x|
     stem,e,flags = x
-    form = stem+e # gets redone later if there's a contraction
-    form = Verb_conj.respell_sigmas(form)
-    bc = flags['form_before_contraction']
-    # recessive accent (fixme: not for participles, and see other exceptions, Pharr p. 330)
-    if Verb_conj.long_ultima(bc) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
-    accent_syll = [accent_syll,Verb_conj.n_syll(bc)].min
-    n_syll_ending = Verb_conj.n_syll(e)
-    # $stderr.print "---- x=#{x} #{flags['contracted']}\n" if stem=~/ταρ/
-    did_accentuation = false
-    if flags['contracted']==true then
-      # Is this sometimes wrong? https://ancientgreek.pressbooks.com/chapter/17/ has unclear ref to 
-      # "the accent rules that apply to vowel contractions, learned earlier."
-      # $stderr.print "---- contraction lemma=#{lemma} e=#{e}, accent_syll=#{accent_syll}, stem=#{stem}\n"
-      e2 = Verb_conj.accentuate(e,accent_syll-1,type_of_accent:'circ') # contractions all contract two syllables to 1
-      form = stem+e2
-      did_accentuation = true        
-    end
-    if !did_accentuation then form = Verb_conj.accentuate(form,accent_syll) end
-    results.push(form)
-    results.push(form+'ν') if movable_nu
+    0.upto(1) { |doubled_sigma|
+      next if doubled_sigma==1 && !optional_doubled_sigma
+      0.upto(1) { |unaugmented_stem|
+        next if unaugmented_stem==1 && optional_unaugmented_stem.nil?
+        0.upto(1) { |do_movable_nu|
+          next if do_movable_nu==1 && !movable_nu
+          if unaugmented_stem==0 then s=stem.dup else s=optional_unaugmented_stem.dup end
+          if doubled_sigma==1 then s=s+'σ' end
+          form = Verb_conj.accentuation_helper(stem,e,flags['form_before_contraction'],flags['contracted'])
+          if do_movable_nu==1 then form=form+'ν' end
+          form = Verb_conj.respell_sigmas(form)
+          results.push(form)
+        }
+      }
+    }
   }
 
   return [results,false,nil,nil]  
+end
+
+def Verb_conj.accentuation_helper(stem,e,before_contraction,if_contracted)
+  # recessive accent (fixme: not for participles, and see other exceptions, Pharr p. 330)
+  if Verb_conj.long_ultima(before_contraction) then accent_syll=2 else accent_syll=3 end # counting back from end, 1-based
+  accent_syll = [accent_syll,Verb_conj.n_syll(before_contraction)].min
+  n_syll_ending = Verb_conj.n_syll(e)
+  did_accentuation = false
+  if if_contracted==true then
+    # Is this sometimes wrong? https://ancientgreek.pressbooks.com/chapter/17/ has unclear ref to 
+    # "the accent rules that apply to vowel contractions, learned earlier."
+    # $stderr.print "---- contraction lemma=#{lemma} e=#{e}, accent_syll=#{accent_syll}, stem=#{stem}\n"
+    e2 = Verb_conj.accentuate(e,accent_syll-1,type_of_accent:'circ') # contractions all contract two syllables to 1
+    form = stem+e2
+    did_accentuation = true        
+  end
+  if !did_accentuation then form = Verb_conj.accentuate(stem+e,accent_syll) end
+  return form  
+end
+
+def Verb_conj.aorist_stem(present_stem)
+  stem='ἐ'+present_stem+'σ'
+  optional_doubled_sigma = true
+  optional_unaugmented_stem = present_stem
+  return [stem,optional_doubled_sigma,optional_unaugmented_stem]
 end
 
 def Verb_conj.contract(stem,f,t,e,disyllabic)
@@ -282,8 +307,8 @@ def Verb_conj.test
   Verb_conj.test_helper('κλέπτω','v3ppia','κλέπτουσιν',version:1)
   homer = json_from_file_or_die("greek/homer_conjugations.json",how_to_die:lambda { |err| raise err})
   #Verb_conj.stats(homer,'v1spia---')
-  #Verb_conj.stats(homer,'v3spia---')
-  Verb_conj.stats(homer,'v1saia---')
+  Verb_conj.stats(homer,'v3spia---')
+  #Verb_conj.stats(homer,'v1saia---')
 end
 
 def Verb_conj.stats(homer,pos)
