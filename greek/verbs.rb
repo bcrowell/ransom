@@ -191,8 +191,15 @@ end
 
 def Verb_conj.aorist_stem_final_cons_helper(stem)
   # returns [stem,optional_doubled_sigma]
+  if stem=~/^(.*)([εα])([λρμν])$/ then
+    # Pharr, p. 326, # 856
+    a,b,c = $1,$2,$3
+    if b=='ε' then b='ει' end
+    if b=='α' then b='η' end
+    return [a+b+c,false]
+  end
   if stem=~/^(.*)([πβφκγχτδθ])$/ then
-    # Pharr, p. 325
+    # Pharr, p. 325, # 850
     a,b = $1,$2
     if b=~/[πβφ]/ then b='ψ' end
     if b=~/[κγχ]/ then b='ξ' end
