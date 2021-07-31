@@ -47,8 +47,9 @@ class IliadNotes
   }],
   ["1.39" , {
     'about_what'    => %q{Σμινθεῦ},
-    'explain'       => %q{The meaning of this epithet for Apollo is unknown, and traditional interpretations such as ``mouse'' or ``mouse-killer''
-                          are attempts to explain this verse in Homer. },
+    'explain'       => %q{The meaning of this epithet for Apollo is unknown, and traditional interpretations such as ``mouse-killer''
+                          are attempts to explain this verse in Homer. Σμίνθος=mouse, Σμίνθη=place name. The suffix -ευς indicates a person
+                          related to a thing.},
     'prevent_gloss' =>['Σμινθεῦ'],
     'cite'          =>"https://en.wikipedia.org/wiki/Hamaxitus#Apollo_Smintheus"
   }],

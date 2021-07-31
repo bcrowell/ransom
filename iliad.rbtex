@@ -44,6 +44,10 @@ breaks = [
   [ [1,231], "people devouring king"],
   [ [1,247], "But on the other hand the son of Atreus was enraged"],
   [ [1,263], "nor shall I see such men as | Pirithous"],
+  [ [1,280], "But though thou be of superior strength"],
+  [ [1,297], "But another thing will I tell thee"],
+  [ [1,314], "They then embarking sailed"],
+  [ [1,331], "But they confused and reverencing the king"],
 ]
 
 0.upto(breaks.length-2) { |i|
