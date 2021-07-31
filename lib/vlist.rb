@@ -231,7 +231,7 @@ class Ignore_words
     δυω πολλας δη πατηρ πολυ τρις
     κακος ευ παρα περ χειρ
     οτι πως εαν οτε ουδε τοτε οπως ουτε που ωδε δυο
-    ειπον μα αλλη αμφω
+    ειπον μα αλλη αμφω εκεινος
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Ignore_words.patch(word)
     w = remove_accents(word).downcase
