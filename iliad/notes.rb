@@ -98,6 +98,10 @@ class IliadNotes
     'explain'       => %q{Middle voice of εἷλον, aorist of αἱρέω, to take, seize. The middle suggests that the taking is a personal choice or for oneself. Cognate with ἑλώριον, booty, spoils.},
     'cite'          => "https://en.wiktionary.org/wiki/%E1%BC%94%CE%BF%CE%B9%CE%BA%CE%B1"
   }],
+  ["1.371" , {
+    'about_what'    => %q{},
+    'explain'       => %q{Nine lines are repeated verbatim from 1.12-25.}
+  }],
 ]
 
 def IliadNotes.notes

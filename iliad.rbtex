@@ -48,6 +48,13 @@ breaks = [
   [ [1,297], "But another thing will I tell thee"],
   [ [1,314], "They then embarking sailed"],
   [ [1,331], "But they confused and reverencing the king"],
+  [ [1,348], "But the woman went with them reluctantly"],
+  [ [1,365], "But her sighing deeply swift footed Achilles addressed |"],
+  [ [1,382], "And he sent a destructive arrow"],
+  [ [1,399], "cloud collecting son of Saturn | when the"],
+  [ [1,415], "wherefore have I reared thee | having brought thee"],
+  [ [1,432], "But they, when they had entered the deep haven"],
+
 ]
 
 0.upto(breaks.length-2) { |i|
