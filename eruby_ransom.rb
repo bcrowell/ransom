@@ -22,15 +22,20 @@ end
 
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
 
-def four_page_layout(stuff,g1,g2,t1,t2,start_chapter:nil)  
+def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil)  
   # g1 and g2 are line refs of the form [book,line]
   # t1 and t2 are word globs
+  # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
+  ch = g1[0]
   lemmas_file,freq_file,greek,translation,notes = stuff
   rg1,rg2 = greek.line_to_hard_ref(g1[0],g1[1]),greek.line_to_hard_ref(g2[0],g2[1])
   raise "four-page layout spans books" if rg1[0]!=rg2[0] # will cause all kinds of problems, including with notes
   first_line_number = g1[1]
   greek_text = greek.extract(rg1,rg2)
-  v = vocab(Vlist.from_text(greek_text,lemmas_file,freq_file,exclude_glosses:list_exclude_glosses(g1,g2,notes)))
+  vl = Vlist.from_text(greek_text,lemmas_file,freq_file,exclude_glosses:list_exclude_glosses(g1,g2,notes))
+  if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
+  vocab_by_chapter[ch] = alpha_sort((vocab_by_chapter[ch]+vl.all_lexicals).uniq)
+  v = vocab(vl) # prints
   print "\\renewcommand{\\rightheaderinfo}{#{g1[0]}.#{g1[1]}}%\n"
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatvocab}%\n"
   print "\\pagebreak\n\n"

@@ -20,6 +20,14 @@ def to_s
   return a.join("\n")
 end
 
+def all_lexicals
+  result = []
+  @list.each { |l|
+    result = result + l.map { |a| a[1] }
+  }
+  return alpha_sort(result)
+end
+
 def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
