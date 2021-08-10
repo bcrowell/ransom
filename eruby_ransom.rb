@@ -137,7 +137,7 @@ def vocab1(stuff)
   file_under,word,lexical,data = stuff
   entry = get_gloss(lexical,word)
   return if entry.nil?
-  word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
+  word2,gloss,lexical2 = entry['word'],entry['medium'],entry['lexical']
   if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
   if entry.has_key?('lexical') || (data.has_key?('is_3rd_decl') && data['is_3rd_decl'] && !alpha_equal(word,lexical)) then
     s = "\\vocabinflection{#{word.downcase}}{#{lexical}}{#{gloss}}"
@@ -154,7 +154,7 @@ end
 def get_gloss(lexical,word,prefer_short:false)
   # It doesn't matter whether the inputs have accents or not. We immediately strip them off.
   # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
-  # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
+  # {  "word"=> "ἔθηκε",  "medium"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
   entry_lexical   = get_gloss_helper(word_to_filename(lexical),prefer_short)
   entry_inflected = get_gloss_helper(word_to_filename(word),prefer_short)
   if entry_inflected.nil? then
@@ -172,8 +172,8 @@ def get_gloss_helper(key,prefer_short)
   path = "glosses/#{key}"
   if FileTest.exist?(path) then
     x = json_from_file_or_die(path)
-    # {  "word": "ἔθηκε",  "gloss": "put, put in a state",  "lexical": "τίθημι" }
-    if prefer_short && x.has_key?('short') then x['gloss']=x['short'] end
+    # {  "word": "ἔθηκε",  "medium": "put, put in a state",  "lexical": "τίθημι" }
+    if prefer_short && x.has_key?('short') then x['medium']=x['short'] end
     return x
   else
     return nil
@@ -208,7 +208,7 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
           word = w[j] # original inflected form
           key = to_key(x)
           entry = get_gloss(x,word,prefer_short:true) # it doesn't matter whether inputs have accents
-          if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
+          if !(entry.nil?) then gloss=entry['medium'] else gloss="??" end
           code = nil
           new_gloss_code = nil
           if Options.if_write_pos then

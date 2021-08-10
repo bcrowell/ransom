@@ -177,7 +177,7 @@ def Vlist.give_gloss_help(gloss_help)
         // #{h['wikt']}
         {
           \"word\":\"#{h['lemma']}\",
-          \"gloss\":\"#{h['wikt']}\"
+          \"medium\":\"#{h['wikt']}\"
         }
       )
       x.gsub!(/\A\n/,'')
