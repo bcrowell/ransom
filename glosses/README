@@ -5,6 +5,7 @@ medium
 
 optional:
 
+pos ["verb","noun","adj","adv",...]
 short
 long
 
@@ -13,7 +14,7 @@ cog
 syn
 notes
 
-gender
+gender ["m","f","n"]
 genitive [for nouns]
 princ [for verbs]
 

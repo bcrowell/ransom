@@ -2,6 +2,8 @@
 // exchange, pass in or out of a house, do in turn or alternately, alternate, move crosswise, reply, answer, repay, requite
 {
   "word":"ἀμείβω",
-  "medium":"exchange, answer"
+  "medium":"answer, exchange",
+  "long":"answer, take turns, exchange, have dialog, repay, requite",
+  "cog":"amoeba"
 }
       
