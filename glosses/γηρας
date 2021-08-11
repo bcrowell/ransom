@@ -1,1 +1,6 @@
-{ "word":"γῆρας","medium":"old age" }
+{
+  "word":"γῆρας",
+  "genitive":"γήραος",
+  "medium":"old age",
+  "cog":"γέρας"
+}
