@@ -2,6 +2,7 @@
 // missile, arrow, dart, weapon, something quickly moving, artillery
 {
   "word":"βέλος",
-  "medium":"missile"
+  "medium":"missile",
+  "cog":"βάλλω"
 }
       
