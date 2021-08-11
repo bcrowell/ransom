@@ -2,6 +2,8 @@
 // speak in the assembly, say, speak, proclaim
 {
   "word":"ἀγορεύω",
-  "medium":"speak in the assembly"
+  "short":"speak",
+  "medium":"speak in assembly",
+  "long":"speak in the assembly, proclaim, harangue"
 }
       
