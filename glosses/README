@@ -1,0 +1,32 @@
+mandatory keys:
+
+word
+medium
+
+optional:
+
+short
+long
+
+etym
+cog
+syn
+notes
+
+gender
+genitive [for nouns]
+princ [for verbs]
+
+proper_noun
+
+logdiff [+1 means consider it as difficult as a word whose freq
+     rank is 10x greater]
+
+
+
+
+
+
+
+
+

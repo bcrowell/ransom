@@ -1,4 +1,7 @@
 {
   "word": "ἄλγος",
-  "medium": "woe"
+  "short": "woe",
+  "medium": "woe, grief",
+  "long": "woe, pain, suffering, grief",
+  "gender":"n"
 }
