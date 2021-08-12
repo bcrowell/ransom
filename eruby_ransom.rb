@@ -138,7 +138,7 @@ def vocab1(stuff)
   file_under,word,lexical,data = stuff
   entry = Gloss.get(lexical,word)
   return if entry.nil?
-  word2,gloss,lexical2 = entry['word'],entry['medium'],entry['lexical']
+  word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
   if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
   if entry.has_key?('lexical') || (data.has_key?('is_3rd_decl') && data['is_3rd_decl'] && !alpha_equal(word,lexical)) then
     s = "\\vocabinflection{#{word.downcase}}{#{lexical}}{#{gloss}}"
@@ -177,7 +177,7 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
           word = w[j] # original inflected form
           key = to_key(x)
           entry = Gloss.get(x,word,prefer_short:true) # it doesn't matter whether inputs have accents
-          if !(entry.nil?) then gloss=entry['medium'] else gloss="??" end
+          if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil
           if Options.if_write_pos then
