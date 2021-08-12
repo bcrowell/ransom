@@ -4,7 +4,7 @@ GENERIC = "pos_file":"$(POS)"
 COMPILE = xelatex $(BOOK) | ruby filter_latex_messages.rb
 #COMPILE = xelatex $(BOOK)
 
-.PHONY: clean default
+.PHONY: clean default check check_glosses
 
 default:
 	@make --no-print-directory --assume-new iliad.rbtex $(BOOK).pdf
@@ -31,6 +31,9 @@ booklet: $(BOOK).pdf
 # For this to work, the scripts in the scripts directory need to be executable.
 # Inkscape 0.47 or later is required.
 # To force rendering of all figures, even if they seem up to date, do FORCE=1 make figures
+
+check:
+	make check_glosses
 
 check_glosses:
 	./scripts/check_glosses.rb
