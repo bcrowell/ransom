@@ -1,3 +1,7 @@
+Sometimes two words have the same key, e.g.,
+δαίς and δάϊς. Then the data structure inside
+the file is an array containing the two entries.
+
 mandatory keys:
 
 word

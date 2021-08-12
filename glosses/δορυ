@@ -2,6 +2,7 @@
 // wood, tree, stem, spear shaft, spear, lance, pole, lance
 {
   "word":"δόρυ",
-  "medium":"spear, plank"
+  "short":"spear"
+  "medium":"spear shaft, plank"
 }
       

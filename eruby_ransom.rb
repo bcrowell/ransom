@@ -155,8 +155,8 @@ def get_gloss(lexical,word,prefer_short:false)
   # It doesn't matter whether the inputs have accents or not. We immediately strip them off.
   # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
   # {  "word"=> "ἔθηκε",  "medium"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
-  entry_lexical   = get_gloss_helper(word_to_filename(lexical),prefer_short)
-  entry_inflected = get_gloss_helper(word_to_filename(word),prefer_short)
+  entry_lexical   = get_gloss_helper(lexical,word_to_filename(lexical),prefer_short)
+  entry_inflected = get_gloss_helper(word,word_to_filename(word),prefer_short)
   if entry_inflected.nil? then
     entry = entry_lexical
     file_under = lexical
@@ -168,10 +168,26 @@ def get_gloss(lexical,word,prefer_short:false)
   return entry
 end
 
-def get_gloss_helper(key,prefer_short)
+def get_gloss_helper(word,key,prefer_short)
   path = "glosses/#{key}"
   if FileTest.exist?(path) then
     x = json_from_file_or_die(path)
+    if x.kind_of?(Array) then
+      # words like δαίς/δάϊς that have the same key
+      found = false
+      entry_found = nil
+      x.each { |entry|
+        if entry['word']==word then
+          found = true
+          entry_found = entry
+        end
+      }
+      if found then
+        x = entry_found
+      else
+        return nil
+      end
+    end
     # {  "word": "ἔθηκε",  "medium": "put, put in a state",  "lexical": "τίθημι" }
     if prefer_short && x.has_key?('short') then x['medium']=x['short'] end
     return x

@@ -1,7 +1,17 @@
-// https://en.wiktionary.org/wiki/δαίς https://logeion.uchicago.edu/δαίς
-// feast, banquet
+[
 {
   "word":"δαίς",
-  "medium":"feast"
+  "genitive":"δαιτός",
+  "gender":"f",
+  "short":"feast",
+  "medium":"feast, banquet",
+  "cog":"δαίμων, δαίνυμι",
+  "etym":"share, divide"
+},
+{
+  "word":"δάϊς",
+  "medium":"war, battle",
+  "etym":"unknown"
 }
+]
       

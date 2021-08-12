@@ -2,6 +2,8 @@
 // terrible, horrible, fearful, astounding, danger, marvelous, mighty, powerful, wondrous, strange, able, skillful, clever, shamefully timid, cowardly
 {
   "word":"δεινός",
-  "medium":"terrible"
+  "short":"terrible",
+  "medium":"terrible, great",
+  "cog":"dinosaur"
 }
       
