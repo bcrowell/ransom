@@ -62,6 +62,9 @@ def Gloss.validate(key)
   }
   a.each { |entry|
     if !(entry.keys.to_set.subset?(allowed_keys.to_set)) then return [true,"illegal key(s): #{entry.keys.to_set-allowed_keys.to_set}"] end
+    if entry.has_key?('gender') then
+      if !(['m','f','n'].to_set.include?(entry['gender'])) then return [true,"illegal value for gender, #{entry['gender']}, should be m, f, or n"] end
+    end
   }
   return [false,nil]
 end
