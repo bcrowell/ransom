@@ -1,3 +1,4 @@
+# coding: utf-8
 class Gloss
 
 def Gloss.get(lexical,word,prefer_short:false)
@@ -50,17 +51,17 @@ def Gloss.validate(key)
   begin
     x = JSON.parse(json)
   rescue
-    return [true,"error parsing JSON in file #{path}"]
+    return [true,"error parsing JSON in file #{path}, json=\n#{json}\n"]
   end
   if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
   n = a.length
   # Try to detect duplicate keys.
-  allowed_keys = ['word','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','proper_noun','logdiff']
+  allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','proper_noun','logdiff']
   allowed_keys.each { |key|
     if json.scan(/\"#{key}\"/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
   }
   a.each { |entry|
-    if !(entry.keys.to_set.subset?(allowed_keys.to_set)) then return [true,"illegal key(s): #{allowed_keys.to_set-entry.keys}"] end
+    if !(entry.keys.to_set.subset?(allowed_keys.to_set)) then return [true,"illegal key(s): #{entry.keys.to_set-allowed_keys.to_set}"] end
   }
   return [false,nil]
 end

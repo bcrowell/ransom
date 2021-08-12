@@ -32,6 +32,9 @@ booklet: $(BOOK).pdf
 # Inkscape 0.47 or later is required.
 # To force rendering of all figures, even if they seem up to date, do FORCE=1 make figures
 
+check_glosses:
+	./scripts/check_glosses.rb
+
 figures:
 	@perl -e 'foreach my $$f(<iliad/figs/*.svg>) {system("scripts/render_one_figure.pl $$f $(FORCE)")}'
 

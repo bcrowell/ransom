@@ -9,6 +9,9 @@ medium
 
 optional:
 
+lexical
+  E.g., for the word ἕλωμαι, lexical is αἱρέω.
+
 pos ["verb","noun","adj","adv",...]
 short
 long
