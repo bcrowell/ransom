@@ -1,7 +1,6 @@
-// https://en.wiktionary.org/wiki/δεσμός https://logeion.uchicago.edu/δεσμός
-// bond, fetter, collar, halter, bondage, imprisonment, spell, charm
 {
   "word":"δεσμός",
-  "medium":"bond"
+  "medium":"bond, latch, strap",
+  "cog":"δέω"
 }
       

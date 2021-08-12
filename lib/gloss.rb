@@ -44,7 +44,24 @@ end
 def Gloss.validate(key)
   # Returns [err,message].
   path = Gloss.key_to_path(key)
-  if !ileTest.exist?(path) then return [true,"file #{path} doesn't exist"] end
+  if !FileTest.exist?(path) then return [true,"file #{path} doesn't exist"] end
+  json,err = slurp_file_with_detailed_error_reporting(path)
+  if !(err.nil?) then return [true,err] end
+  begin
+    x = JSON.parse(json)
+  rescue
+    return [true,"error parsing JSON in file #{path}"]
+  end
+  if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
+  n = a.length
+  # Try to detect duplicate keys.
+  allowed_keys = ['word','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','proper_noun','logdiff']
+  allowed_keys.each { |key|
+    if json.scan(/\"#{key}\"/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
+  }
+  a.each { |entry|
+    if !(entry.keys.to_set.subset?(allowed_keys.to_set)) then return [true,"illegal key(s): #{allowed_keys.to_set-entry.keys}"] end
+  }
   return [false,nil]
 end
 
