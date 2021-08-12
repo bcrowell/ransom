@@ -5,6 +5,7 @@ require_relative "lib/file_util"
 require_relative "lib/string_util"
 require_relative "lib/epos"
 require_relative "lib/vlist"
+require_relative "lib/gloss"
 require_relative "lib/clown"
 require_relative "greek/nouns"
 
@@ -119,10 +120,10 @@ def vocab_helper(commonness,vl,lo,hi)
     vl.list[i].each { |entry|
       word,lexical,data = entry
       if data.nil? then data={} end
-      g = get_gloss(lexical,word)
+      g = Gloss.get(lexical,word)
       next if g.nil?
       file_under = g['file_under']
-      if file_under.nil? then raise "get_gloss = #{g}, doesn't have a file_under key" end
+      if file_under.nil? then raise "Gloss.get = #{g}, doesn't have a file_under key" end
       l.push([file_under,word,lexical,data])
     }
   }
@@ -135,7 +136,7 @@ end
 
 def vocab1(stuff)
   file_under,word,lexical,data = stuff
-  entry = get_gloss(lexical,word)
+  entry = Gloss.get(lexical,word)
   return if entry.nil?
   word2,gloss,lexical2 = entry['word'],entry['medium'],entry['lexical']
   if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
@@ -147,54 +148,6 @@ def vocab1(stuff)
   print clean_up_unicode("#{s}\\\\")
 end
 
-def word_to_filename(s)
-  return remove_accents(s).downcase.sub(/᾽/,'')
-end
-
-def get_gloss(lexical,word,prefer_short:false)
-  # It doesn't matter whether the inputs have accents or not. We immediately strip them off.
-  # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
-  # {  "word"=> "ἔθηκε",  "medium"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
-  entry_lexical   = get_gloss_helper(lexical,word_to_filename(lexical),prefer_short)
-  entry_inflected = get_gloss_helper(word,word_to_filename(word),prefer_short)
-  if entry_inflected.nil? then
-    entry = entry_lexical
-    file_under = lexical
-  else
-    entry = entry_inflected
-    file_under = word
-  end
-  if !(entry.nil?) then entry = entry.merge({'file_under'=>file_under}) end
-  return entry
-end
-
-def get_gloss_helper(word,key,prefer_short)
-  path = "glosses/#{key}"
-  if FileTest.exist?(path) then
-    x = json_from_file_or_die(path)
-    if x.kind_of?(Array) then
-      # words like δαίς/δάϊς that have the same key
-      found = false
-      entry_found = nil
-      x.each { |entry|
-        if entry['word']==word then
-          found = true
-          entry_found = entry
-        end
-      }
-      if found then
-        x = entry_found
-      else
-        return nil
-      end
-    end
-    # {  "word": "ἔθηκε",  "medium": "put, put in a state",  "lexical": "τίθημι" }
-    if prefer_short && x.has_key?('short') then x['medium']=x['short'] end
-    return x
-  else
-    return nil
-  end
-end
 
 def foreign(t,first_line_number)
   foreign_helper(t,false,first_line_number,left_page_verse:true)
@@ -223,7 +176,7 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
           j = ww.index(x)
           word = w[j] # original inflected form
           key = to_key(x)
-          entry = get_gloss(x,word,prefer_short:true) # it doesn't matter whether inputs have accents
+          entry = Gloss.get(x,word,prefer_short:true) # it doesn't matter whether inputs have accents
           if !(entry.nil?) then gloss=entry['medium'] else gloss="??" end
           code = nil
           new_gloss_code = nil
