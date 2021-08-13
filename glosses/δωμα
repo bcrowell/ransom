@@ -1,1 +1,10 @@
-{ "word":"δῶμα","medium":"hall, house" }
+{
+  "word":"δῶμα",
+  "gender":"n",
+  "genitive":"δώματος",
+  "medium":"hall, house",
+  "long":"hall, house, household, family",
+  "cog":"domicile, δεσπότης",
+  "syn":"δόμος, δῶ",
+  "notes":"Δῶμα and δόμος are roughly equal in frequency and have somewhat different sets of meanings. There is also an indeclinable form δῶ."
+}

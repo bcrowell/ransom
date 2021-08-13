@@ -2,6 +2,9 @@
 // act (as opposed to speaking or being acted on), do, perform, perform sacrifices, do something to someone (with two accusatives)
 {
   "word":"ἔρδω",
-  "medium":"do"
+  "short":"do",
+  "medium":"do, perform",
+  "long":"act, do, perform, perform a sacrifice, do something to someone (+2 acc)",
+  "cog":"ῥέζω, erg"
 }
       

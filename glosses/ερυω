@@ -2,6 +2,8 @@
 // draw, drag, pull
 {
   "word":"ἐρύω",
-  "medium":"pull"
+  "medium":"pull, drag, guard",
+  "syn":"ἕλκω",
+  "notes":"Homeric, poetic"
 }
       

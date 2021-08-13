@@ -25,4 +25,4 @@ end
 
 print "File #{key} does not exist.\n"
 
-print `grep #{w} ../lemmas/homer_lemmas.json | head -3`
+print `grep \\"#{w}\\" ../lemmas/homer_lemmas.json | head -3`
