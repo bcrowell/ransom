@@ -2,6 +2,9 @@
 // fence, enclosure, courtyard of houses, fence, enclosure, wall for defence; the defence itself, fence, enclosure, a net, a toil for birds
 {
   "word":"ἕρκος",
-  "medium":"fence"
+  "genitive":"ἕρκεος, ἕρκους",
+  "medium":"fence",
+  "cog":"ὅρκος, oath; sartorial",
+  "etym":"PIE serk, to mend; Latin sarcio"
 }
       

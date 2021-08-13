@@ -2,7 +2,9 @@
 // the object by which one swears, the witness of an oath, as the Styx was among the gods, or as Zeus was among mortals, an oath
 {
   "word":"ὅρκος",
+  "short":"oath",
   "medium":"what is sworn by, witness, oath",
-  "short":"what is sworn by"
+  "cog":"ἕρκος, fence; sartorial",
+  "etym":"PIE serk, to mend; Latin sarcio"
 }
       

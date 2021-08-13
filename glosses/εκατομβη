@@ -2,6 +2,9 @@
 // hecatomb, animal sacrifice
 {
   "word":"ἑκατόμβη",
-  "medium":"hecatomb"
+  "genitive":"ἑκατόμβης",
+  "medium":"hecatomb",
+  "long":"an offering of 100 oxen, or another animal sacrifice",
+  "etym":"βοῦς"
 }
       
