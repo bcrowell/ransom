@@ -2,6 +2,8 @@
 // something spoken: speech, story, song, one's word, promise, something spoken: speech, story, song, word as opposed to deed, something spoken: speech, story, song, subject, something spoken: speech, story, song, a line of poetry, something spoken: speech, story, song, an individual word, epic poetry, so to speak, roughly speaking, almost, word by word
 {
   "word":"ἔπος",
-  "medium":"speech, story"
+  "medium":"speech, story",
+  "long":"speech, story, song, epic",
+  "syn":"μῦθος"
 }
       

@@ -2,6 +2,8 @@
 // first-person singular future active indicative uncontracted of εἴρω (eírō) and λέγω (légō)
 {
   "word":"ἐρέω",
-  "medium":"ask; will say"
+  "medium":"ask; will say",
+  "syn":"ἐρωτάω, ἔρομαι",
+  "notes":"epic and Ionic form of ἔρομαι"
 }
       

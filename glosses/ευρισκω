@@ -2,6 +2,8 @@
 // happen upon by chance, find, find out, discover, acquire, fetch, obtain
 {
   "word":"εὑρίσκω",
-  "medium":"find"
+  "short":"find",
+  "medium":"chance upon, find out, obtain",
+  "cog":"heuristic, eureka"
 }
       
