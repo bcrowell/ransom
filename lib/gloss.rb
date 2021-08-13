@@ -29,7 +29,7 @@ notes
 
 gender ["m","f","n"]
 genitive [for nouns]
-princ [for verbs]
+princ [for verbs]: future and aorist, e.g., for ἔρχομαι, "ἐλεύσομαι,ἤλυθον"
 
 proper_noun
 
@@ -92,7 +92,7 @@ def Gloss.validate(key)
   if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
   n = a.length
   mandatory_keys = ['word','medium']
-  allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','proper_noun','logdiff']
+  allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff']
   # Try to detect duplicate keys.
   allowed_keys.each { |key|
     if json.scan(/\"#{key}\"/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
