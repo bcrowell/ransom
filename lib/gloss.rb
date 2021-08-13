@@ -1,6 +1,42 @@
 # coding: utf-8
 class Gloss
 
+=begin
+Format of glossary files:
+
+Sometimes two words have the same key, e.g.,
+δαίς and δάϊς. Then the data structure inside
+the file is an array containing the two entries.
+
+mandatory keys:
+
+word
+medium
+
+optional:
+
+lexical
+  E.g., for the word ἕλωμαι, lexical is αἱρέω.
+
+pos ["verb","noun","adj","adv",...]
+short
+long
+
+etym
+cog
+syn
+notes
+
+gender ["m","f","n"]
+genitive [for nouns]
+princ [for verbs]
+
+proper_noun
+
+logdiff [+1 means consider it as difficult as a word whose freq
+     rank is 10x greater]
+=end
+
 def Gloss.get(lexical,word,prefer_short:false)
   # It doesn't matter whether the inputs have accents or not. We immediately strip them off.
   # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
