@@ -55,13 +55,16 @@ def Gloss.validate(key)
   end
   if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
   n = a.length
-  # Try to detect duplicate keys.
+  mandatory_keys = ['word','medium']
   allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','proper_noun','logdiff']
+  # Try to detect duplicate keys.
   allowed_keys.each { |key|
     if json.scan(/\"#{key}\"/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
   }
   a.each { |entry|
-    if !(entry.keys.to_set.subset?(allowed_keys.to_set)) then return [true,"illegal key(s): #{entry.keys.to_set-allowed_keys.to_set}"] end
+    eks = entry.keys.to_set
+    if !(eks.subset?(allowed_keys.to_set)) then return [true,"illegal key(s): #{eks-allowed_keys.to_set}"] end
+    if !(mandatory_keys.to_set.subset?(eks)) then return [true,"required key(s) not present: #{mandatory_keys.to_set-eks}"] end
     if entry.has_key?('gender') then
       if !(['m','f','n'].to_set.include?(entry['gender'])) then return [true,"illegal value for gender, #{entry['gender']}, should be m, f, or n"] end
     end
