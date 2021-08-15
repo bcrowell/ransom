@@ -1,7 +1,13 @@
-// https://en.wiktionary.org/wiki/κῆρ
-// heart, The seat of the will, The seat of the passions
+[
 {
   "word":"κῆρ",
   "medium":"heart"
+},
+{
+  "word":"κήρ",
+  "short":"doom",
+  "medium":"doom, death, fate"
 }
+]
+
       
