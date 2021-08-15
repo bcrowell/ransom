@@ -1,5 +1,7 @@
 {
   "word": "μάχομαι",
-  "medium": "fight, contend",
-  "short":"fight"
+  "short":"fight",
+  "medium": "fight (+dat), contend",
+  "cog":"μάχη",
+  "syn":"μάρναμαι"
 }
