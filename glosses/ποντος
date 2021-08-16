@@ -2,6 +2,9 @@
 // the sea, usually the Mediterranean
 {
   "word":"πόντος",
-  "medium":"sea"
+  "short":"sea",
+  "medium":"the open sea, Mediterranean",
+  "cog":"path, Hellespont",
+  "notes":"poetic"
 }
       
