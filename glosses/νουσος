@@ -1,6 +1,11 @@
+// https://en.wiktionary.org/wiki/%CE%BD%CF%8C%CF%83%CE%BF%CF%82
 {
   "word":"νοῦσος",
   "gender":"f",
-  "medium":"island"
+  "genitive":"νούσου",
+  "short":"plague",
+  "medium":"plague, pestilence",
+  "notes":"epic and Ionian form of Attic νόσος",
+  "cog":"noisome"
 }
       
