@@ -2,6 +2,9 @@
 // destroy, make an end of, lose, perish, come to an end, be ruined, undone
 {
   "word":"ὄλλυμι",
-  "medium":"destroy"
+  "short":"destroy",
+  "medium":"destroy, kill, lose",
+  "notes":"koine ἀπόλλυμι",
+  "cog":"ὄλεθρος"
 }
       

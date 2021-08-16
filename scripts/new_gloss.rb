@@ -20,9 +20,8 @@ key = remove_accents(w)
 if FileTest.exist?(key) then
   print "File #{key} exists.\n"
   print `cat #{key}`
-  exit
+else
+  print "File #{key} does not exist.\n"
 end
-
-print "File #{key} does not exist.\n"
 
 print `grep \\"#{w}\\" ../lemmas/homer_lemmas.json | head -3`
