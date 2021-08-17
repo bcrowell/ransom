@@ -2,7 +2,8 @@
 // fill [+genitive or dative = with something], fill full, satisfy, glut, fill [+genitive or dative = with something], fill an office, fill (for) myself, am full of, am satisfied, I have enough, am full of, become pregnant
 {
   "word":"πίμπλημι",
-  "medium":"fill, glut",
-  "long":"fill, glut oneself with something (+gen)"
+  "medium":"fill oneself",
+  "long":"fill, glut oneself with something (+gen)",
+  "syn":"πλήθω"
 }
       

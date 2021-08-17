@@ -2,6 +2,9 @@
 // learn, learn (accusative) from, learn, hear or learn, learn, hear about, ask about, learn, learn that, learn, ask
 {
   "word":"πυνθάνομαι",
-  "medium":"learn, (+acc) learn from"
+  "medium":"learn, inquire",
+  "long":"learn, learn from (+acc), inquire, find out",
+  "cog":"buddha, bid, πύστις",
+  "notes":"not cognate with πιστεύω"
 }
       
