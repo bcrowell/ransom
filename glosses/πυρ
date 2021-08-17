@@ -2,6 +2,10 @@
 // a fire, a funerary fire, a fire, a sacrificial fire, lightning, a fever
 {
   "word":"πῦρ",
-  "medium":"fire, pyre"
+  "genitive":"πυρός",
+  "medium":"fire, pyre",
+  "long":"fire, a watch fire, a funeral pyre",
+  "cog":"fire, pyre, antipyretic",
+  "notes":"modern φοτιά; in later dialects, can mean lightning or a fever"
 }
       

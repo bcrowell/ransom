@@ -2,6 +2,9 @@
 // foot, leg, Greek foot or pous, the ancient Greek and Byzantine unit of length originally based upon the length of a shod foot
 {
   "word":"πούς",
-  "medium":"foot, leg"
+  "gender":"m",
+  "genitive":"ποδός",
+  "medium":"foot, leg",
+  "cog":"foot"
 }
       

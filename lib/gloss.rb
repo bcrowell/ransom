@@ -102,7 +102,8 @@ def Gloss.validate(key)
     if !(eks.subset?(allowed_keys.to_set)) then return [true,"illegal key(s): #{eks-allowed_keys.to_set}"] end
     if !(mandatory_keys.to_set.subset?(eks)) then return [true,"required key(s) not present: #{mandatory_keys.to_set-eks}"] end
     if entry.has_key?('gender') then
-      if !(['m','f','n'].to_set.include?(entry['gender'])) then return [true,"illegal value for gender, #{entry['gender']}, should be m, f, or n"] end
+      allowed_genders = ['m','f','n','m or f']
+      if !(allowed_genders.to_set.include?(entry['gender'])) then return [true,"illegal value for gender, #{entry['gender']}, should be one of #{allowed_genders}"] end
     end
   }
   return [false,nil]

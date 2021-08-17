@@ -2,6 +2,12 @@
 // shepherd, herdsman, shepherd of the people: pastor, teacher, epithet of Agamemnon
 {
   "word":"ποιμήν",
-  "medium":"shepherd"
+  "gender":"m",
+  "genitive":"ποιμένος",
+  "medium":"shepherd",
+  "long":"shepherd, herdsman, teacher; epithet of Agamemnon",
+  "cog":"food, pastor, father",
+  "etym":"The PIE root peh2 means protection.",
+  "notes":"Cf. συβώτης, swineherd."
 }
       

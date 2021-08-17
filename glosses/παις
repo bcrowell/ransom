@@ -1,1 +1,7 @@
-{ "word":"παῖς","medium":"child" }
+{
+  "word":"παῖς",
+  "gender":"m or f",
+  "genitive":"παιδός",
+  "medium":"child",
+  "cog":"pediatrician, Latin puer"
+}
