@@ -5,6 +5,7 @@ require 'set'
 
 require_relative "../lib/gloss"
 require_relative "../lib/file_util"
+require_relative "../lib/string_util"
 
 count = 0
 Dir.glob( 'glosses/*').each { |filename|

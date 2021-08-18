@@ -27,7 +27,7 @@ cog
 syn
 notes
 
-gender ["m","f","n"]
+gender ["m","f","n","m or f"]
 genitive [for nouns]
 princ [for verbs]: future and aorist, e.g., for ἔρχομαι, "ἐλεύσομαι,ἤλυθον"
 
@@ -95,7 +95,7 @@ def Gloss.validate(key)
   allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff']
   # Try to detect duplicate keys.
   allowed_keys.each { |key|
-    if json.scan(/\"#{key}\"/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
+    if json.scan(/\"#{key}\"\s*:/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
   }
   a.each { |entry|
     eks = entry.keys.to_set
@@ -105,6 +105,10 @@ def Gloss.validate(key)
       allowed_genders = ['m','f','n','m or f']
       if !(allowed_genders.to_set.include?(entry['gender'])) then return [true,"illegal value for gender, #{entry['gender']}, should be one of #{allowed_genders}"] end
     end
+    entry.keys.each { |key|
+      value = entry[key]
+      if value!=remove_macrons_and_breves(value) then return [true,"value contains macron or breve, #{value}"] end
+    }
   }
   return [false,nil]
 end
