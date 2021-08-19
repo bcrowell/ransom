@@ -2,6 +2,8 @@
 // gall, bile, bitterness, wrath, anger
 {
   "word":"χόλος",
-  "medium":"gall, anger"
+  "short":"anger",
+  "medium":"gall, anger, wrath, bitterness",
+  "cog":"χολόω"
 }
       
