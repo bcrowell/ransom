@@ -1,8 +1,10 @@
+// https://latin.stackexchange.com/questions/16658/homeric-word-for-a-tent
 {
   "word":"κλισίη",
-  "medium":"hut",
-  "long":"hut in a military camp, shepherd's hut, comfy couch",
-  "cog":"incline, recline; κλίνη, κλίνω"
-
+  "medium":"hut, tent",
+  "long":"shelter, hut or tent in a military camp, shepherd's hut or cabin, comfy couch",
+  "cog":"incline, recline; κλίνη, κλίνω",
+  "etym":"a place to lie down, κλίνω",
+  "notes":"in later dialects, σκηνή"
 }
       
