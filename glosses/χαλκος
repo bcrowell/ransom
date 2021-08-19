@@ -2,6 +2,7 @@
 // copper, or copper alloyed with tin, bronze, anything made of metal, copper, cauldron, urn, copper money, the phrase χαλκοῦ ἄνθος (khalkoû ánthos): particle thrown off by copper while cooling
 {
   "word":"χαλκός",
-  "medium":"copper, arms"
+  "medium":"bronze, arms",
+  "long":"copper, bronze, weapon made of bronze"
 }
       
