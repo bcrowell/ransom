@@ -2,6 +2,8 @@
 // speak, utter, speak to, address
 {
   "word":"αὐδάω",
-  "medium":"speak"
+  "princ":"αὐδήσω,ηὔδησα",
+  "short":"speak",
+  "medium":"speak, declare, shout"
 }
       
