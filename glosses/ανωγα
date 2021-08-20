@@ -2,6 +2,7 @@
 // order, command, bid, advise, urge, prompt
 {
   "word":"ἄνωγα",
+  "princ":"ἀνώξω,ἤνωξα",
   "short":"order",
   "medium":"to command, order",
   "pos":"verb",
