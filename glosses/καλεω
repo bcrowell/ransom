@@ -2,6 +2,7 @@
 // call, summon, invite, call, summon, invoke, call, summon, summon, sue, call, summon, demand, require, call by name, am called, my name is
 {
   "word":"καλέω",
+  "princ":"καλέω,ἐκάλεσα",
   "medium":"call"
 }
       
