@@ -1,6 +1,8 @@
 {
   "word":"φύω",
+  "princ":"φύσω,ἔφυσα/ἔφυν"
   "medium":"produce, beget",
   "cog":"physics",
-  "syn":"ἀνύω"
+  "syn":"ἀνύω",
+  "notes":"Has both a 1st aorist ἔφυσα (to cause to grow, to beget) and a 2nd aorist ἔφυν (to grow, intransitive)."
 }

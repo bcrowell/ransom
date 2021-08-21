@@ -2,6 +2,9 @@
 // make to stand, to stand, set, stop, stay, check, set up, place in the balance, weigh, stand, stand still, be set up or upright, to stand up, rise up
 {
   "word":"ἵστημι",
-  "medium":"stand"
+  "princ":"στήσω,ἔστησα/ἔστην",
+  "medium":"stand",
+  "notes":"1st aorist ἔστησα, 2nd aorist ἔστην",
+  "cog":"histamine"
 }
       
