@@ -1,8 +1,10 @@
 {
   "word":"πέρθω",
+  "princ":"πέρσω,ἔπερσα/ἔπραθον",
   "short":"sack",
   "medium":"sack, ravage, plunder",
   "syn":"ἐκπέρθω",
-  "notes":"Cf. ἁρπάζω, to carry off, seize."
+  "notes":"Cf. ἁρπάζω, to carry off, seize. The aorist also occurs without the augment in epic and poetic contexts. There is an intensified version, διαπέρθω.",
+  "cog":"διαπέρθω"
 }
       
