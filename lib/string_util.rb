@@ -132,16 +132,12 @@ def to_single_accent(w)
     c = w[i]
     if remove_acute_and_grave(c)!=c then acc.push(i) end
   }
-  if acc.length>1 then print "w=#{w}, acc=#{acc}\n" end # qwe
   if acc.length>1 then
     ww = w.dup
     1.upto(acc.length-1) { |m|
       i = acc[m]
-      #print "changed from i=#{i}, w=#{w}, ww=#{ww}, ww[i]=#{ww[i]}\n" # qwe
       ww[i] = remove_acute_and_grave(ww[i])
-      #print "changed to ww[i]=#{ww[i]}\n" # qwe
     }
-    print "#{w} -> #{ww}\n" # qwe
     return ww
   else
     return grave_to_acute(w)
