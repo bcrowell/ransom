@@ -37,6 +37,27 @@ logdiff [+1 means consider it as difficult as a word whose freq
      rank is 10x greater]
 =end
 
+def Gloss.all_lemmas(file_glob:'glosses/*')
+  lemmas = []
+  Dir.glob(file_glob).sort.each { |filename|
+    next if filename=~/~/
+    next if filename=~/README/
+    filename=~/([[:alpha:]]+)$/
+    key = $1
+    err,message = Gloss.validate(key)
+    if err then print "error in file #{key}\n  ",message,"\n" end
+    # In the following, we don't need to do error checking because any errors would have been caught by Gloss.validate().
+    path = Gloss.key_to_path(key)
+    json,err = slurp_file_with_detailed_error_reporting(path)
+    x = JSON.parse(json)
+    if x.kind_of?(Array) then a=x else a=[x] end
+    a.each { |x|
+      lemmas.push(x['word'])
+    }
+  }
+  return alpha_sort(lemmas)
+end
+
 def Gloss.get(lexical,word,prefer_short:false)
   # It doesn't matter whether the inputs have accents or not. We immediately strip them off.
   # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
