@@ -1,4 +1,5 @@
-unclear license; homepage says cc-by-sa, but file itself says nc; did they change licenses?
+based on project perseus data
+project perseus has an unclear license; homepage says cc-by-sa, but file itself says nc; did they change licenses?
   https://github.com/PerseusDL/treebank_data/issues/29
 
 I have code that generates both a json file and an sdbm file.

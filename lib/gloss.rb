@@ -58,12 +58,12 @@ def Gloss.all_lemmas(file_glob:'glosses/*')
   return alpha_sort(lemmas)
 end
 
-def Gloss.get(lexical,word,prefer_short:false)
+def Gloss.get(lexical,word,prefer_length:1)
   # It doesn't matter whether the inputs have accents or not. We immediately strip them off.
   # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
   # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
-  entry_lexical   = Gloss.helper(lexical,prefer_short)
-  entry_inflected = Gloss.helper(word,prefer_short)
+  entry_lexical   = Gloss.helper(lexical,prefer_length)
+  entry_inflected = Gloss.helper(word,prefer_length)
   if entry_inflected.nil? then
     entry = entry_lexical
     file_under = lexical
@@ -75,7 +75,7 @@ def Gloss.get(lexical,word,prefer_short:false)
   return entry
 end
 
-def Gloss.helper(word,prefer_short)
+def Gloss.helper(word,prefer_length)
   x = Gloss.get_from_file(word)
   if x.nil? then return nil end
   if x.kind_of?(Array) then
@@ -95,7 +95,9 @@ def Gloss.helper(word,prefer_short)
     end
   end
   # {  "word": "ἔθηκε",  "medium": "put, put in a state",  "lexical": "τίθημι" }
-  if prefer_short && x.has_key?('short') then x['gloss']=x['short'] else x['gloss']=x['medium'] end
+  x['gloss']=x['medium']
+  if prefer_length==0 && x.has_key?('short') then x['gloss']=x['short'] end
+  if prefer_length==2 && x.has_key?('long') then x['gloss']=x['long'] end
   return x
 end
 

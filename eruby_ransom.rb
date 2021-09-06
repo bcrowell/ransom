@@ -176,7 +176,7 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
           j = ww.index(x)
           word = w[j] # original inflected form
           key = to_key(x)
-          entry = Gloss.get(x,word,prefer_short:true) # it doesn't matter whether inputs have accents
+          entry = Gloss.get(x,word,prefer_length:0) # it doesn't matter whether inputs have accents
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil
