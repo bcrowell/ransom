@@ -2,7 +2,10 @@
 // terrible, violent, marvelous, wondrous
 {
   "word":"ἔκπαγλος",
-  "medium":"terrible, violent, wondrous",
-  "short":"terrible"
+  "short":"terrible",
+  "medium":"terrible, outrageous",
+  "etym":"Unknown. Possibly related to πλάγια (flanks of an army), πλαγγ- (send astray). Probably not related to plango, πλήσσω.",
+    // Beek, "The development of the Proto-Indo-European syllabic liquids in Greek"
+  "notes":"Epic and Ionic. After Homer, the meaning of 'wondrous, marvellous' was added. Adverb ἐκπάγλως."
 }
       

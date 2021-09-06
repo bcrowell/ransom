@@ -116,7 +116,7 @@ x.each { |word,data|
         grammatical_info = "#{voice_info} #{tense_info} #{mood_info} #{gender} #{number_info} #{case_info}"
       end
     end
-    info = "#{lemma},  #{g['gloss']}, #{grammatical_info}"
+    info = "#{lemma},  #{g['gloss']} <p> #{grammatical_info}"
     other_info_items = []
     ['princ','cog','etym','syn','notes'].each { |k|
       next unless g.has_key?(k)
