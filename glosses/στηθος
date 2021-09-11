@@ -2,6 +2,9 @@
 // breast (of both sexes), breast as the seat of emotions, feelings, ball of the foot or thumb, swelling, tumour, breast-shaped hill or mound
 {
   "word":"στῆθος",
-  "medium":"breast"
+  "gender":"n",
+  "genitive":"στήθεος",
+  "medium":"breast",
+  "notes":"Also στήθεσφιν, genitive or dative."
 }
       

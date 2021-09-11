@@ -2,6 +2,8 @@
 // godlike
 {
   "word":"ἀντίθεος",
-  "medium":"godlike"
+  "medium":"godlike",
+  "etym":"ἀντί (equivalent to)+θεός (god). Cf. Iliad 8.163, γυναικὸς ἄρ’ ἀντὶ τέτυξο, for you have become no better than a woman."
+  // My translation, based on Cunliffe's example.
 }
       

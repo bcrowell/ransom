@@ -3,10 +3,20 @@
 
 # writes the tsv formats that anki and mnemosyne can import
 # usage:
-#   create_flashcards.rb anki >a.tsv
-#   create_flashcards.rb mnemosyne >a.tsv
+#   ./greek/create_flashcards.rb vocab_ch_01.txt Iliad-01 anki >a.tsv
+#   ./greek/create_flashcards.rb vocab_ch_01.txt Iliad-01 mnemosyne >a.tsv
+# First arg is a file containing a list of lemmas that can be included if appropriate, one word per line.
+# For this purpose, you can either use the files like vocab_ch_01.txt that are automatically generated when
+# you compile the book, or you can do:
+#   ./file_to_lemmas.rb ../text/ιλιας/01 >a.txt
+# Second arg is a tag for anki. If doing mnemosyne format, then this arg is ignored, but when
+# you import the file into mnemosyne, it lets you give a list of tags.
 
-format = ARGV[0]
+vocab_list_file = ARGV[0]
+
+tag = ARGV[1]
+
+format = ARGV[2]
 if !(format=='anki' || format=='mnemosyne') then $stderr.print "format should be anki or mnemosyne\n"; exit(-1) end
 
 def italicize(format,x)
@@ -82,6 +92,11 @@ voice_code_to_word = {
 
 threshold_count = 3 # this form must occur this many times to be included
 
+vocab_list = []
+IO.foreach(vocab_list_file) {|line|
+  vocab_list.push(line.sub(/\s+/,''))
+}
+
 x = json_from_file_or_stdin_or_die("lemmas/homer_lemmas.json")
 cards = {}
 x.each { |word,data|
@@ -93,6 +108,7 @@ x.each { |word,data|
     part_of_speech,person,number,tense,mood,voice,gender,the_case,degree = pos[0],pos[1],pos[2],pos[3],pos[4],pos[5],pos[6],pos[7],pos[8]
     part_of_speech_word = part_of_speech_code_to_word[part_of_speech]
     next if lemma=='υνκνοων'  || word=~/᾽/
+    next unless vocab_list.include?(lemma)
     word = to_single_accent(word)
     if !(all_glossed_lemmas.include?(lemma)) then next end
     g = Gloss.get(lemma,word,prefer_length:2)
@@ -118,9 +134,9 @@ x.each { |word,data|
     end
     info = "#{lemma},  #{g['gloss']} <p> #{grammatical_info}"
     other_info_items = []
-    ['princ','cog','etym','syn','notes'].each { |k|
+    ['genitive','princ','cog','etym','syn','notes'].each { |k|
       next unless g.has_key?(k)
-      label = {"princ"=>"principal parts","cog"=>"cog.","etym"=>"etym.","syn"=>"syn.","notes"=>""}[k]
+      label = {"genitive"=>"gen.","princ"=>"principal parts","cog"=>"cog.","etym"=>"etym.","syn"=>"syn.","notes"=>"notes"}[k]
       if label!='' then
         item = "#{italicize(format,label+":")} #{g[k]}"
       else
@@ -132,7 +148,7 @@ x.each { |word,data|
     if format=='mnemosyne' then
       tsv_line = "#{word}\t#{info}<p>#{other_info}\n" # mnemosyne; 2 cols=> will not be language card (which I don't want, since I don't want back->front)
     else
-      tsv_line = "#{word}\t"#{info}. #{other_info}\tGreek,Homer\n" # anki: front, back, tags
+      tsv_line = "#{word}\t"#{info}. #{other_info}\tGreek,Homer,#{tag}\n" # anki: front, back, tags
     end
     tsv_line.gsub!(/ +,/,',')
     tsv_line.gsub!(/ +\./,'.')

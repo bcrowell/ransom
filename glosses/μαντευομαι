@@ -2,6 +2,7 @@
 // divine, prophesy, presage, forbode, get scent of, consult an oracle, I seek divinations, give an oracle, give an oracle
 {
   "word":"μαντεύομαι",
-  "medium":"to divine"
+  "medium":"to divine",
+  "cog":"μάντις, μαντοσύνη"
 }
       
