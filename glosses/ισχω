@@ -2,7 +2,10 @@
 // hold back, restrain, stay, stop, hold fast; keep, maintain, have
 {
   "word":"ἴσχω",
-  "medium":"hold back",
-  "syn":"ἐρύκω"
+  "short":"hold back",
+  "medium":"restrain, hold back",
+  "syn":"ἐρύκω",
+  "etym":"A reduplicated form of ἔχω.",
+  "cog":"scheme, sketch, Hector, σχέτλιος"
 }
       
