@@ -1,1 +1,6 @@
-{ "word":"πόλις","medium":"city" }
+{
+  "word":"πόλις",
+  "genitive":"πόλιος,πόληος",
+  "medium":"city",
+  "cog":"politics"
+}

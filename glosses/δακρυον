@@ -2,6 +2,8 @@
 // Alternative form of δᾰ́κρῠ (dákru, “tear”)
 {
   "word":"δάκρυον",
+  "gender":"n",
+  "genitive":"δακρύου",
   "medium":"tear"
 }
       
