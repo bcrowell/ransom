@@ -2,6 +2,9 @@
 // cause to sit, seat, place, set up, sit, sit down, sit still, am quiet, sink, settle down
 {
   "word":"ἵζω",
-  "medium":"to seat"
+  "medium":"to seat",
+  "etym":"PIE *sed, 'sit'",
+  "cog":"sit, ἕζομαι",
+  "notes":"Ἕζομαι is more specifically 'seat oneself,' whereas ἵζω can be either transitive or intransitive."
 }
       
