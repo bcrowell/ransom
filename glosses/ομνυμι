@@ -2,6 +2,8 @@
 // swear, swear a thing, affirm or confirm by oath, swear a thing, affirm or confirm by oath, swear that one will..., swear a thing, affirm or confirm by oath
 {
   "word":"ὄμνυμι",
-  "medium":"swear"
+  "princ":"ὀμέω,ὤμοσα",
+  "medium":"swear",
+  "cog":"possibly Latin amo"
 }
       

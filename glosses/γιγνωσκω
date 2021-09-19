@@ -2,8 +2,11 @@
 // am aware of; I perceive, observe, know, learn, know, understand, am aware of; I perceive, observe, know, learn, distinguish, discern, am aware of; I perceive, observe, know, learn, am aware of something, am aware of; I perceive, observe, know, learn, perceive that..., observe, form a judgment, judge, determine, think, am judged guilty, observe, form a judgment, judge, determine, think, know carnally, have sex with
 {
   "word":"γιγνώσκω",
+  "princ":"γνώσομαι,ἔγνων",
   "short":"know",
   "medium":"know, perceive",
-  "long":"know, perceive, learn, realize"
+  "long":"know, perceive, learn, realize",
+  "cog":"know, gnostic",
+  "notes":"Ἔγνων is a root aorist. The alternative aorist γνῶν, which is epic, is nearly identical in form except that it lacks the augment and is spelled with a circumflex, as if the stem γνω- has been contracted with a thematic vowel."
 }
       

@@ -2,6 +2,9 @@
 // arrive, come, come to, reach, attain, approach as a suppliant
 {
   "word":"ἱκάνω",
-  "medium":"arrive"
+  "short":"arrive",
+  "medium":"reach, arrive at",
+  "syn":"ἱκνέομαι",
+  "cog":"ἱκνέομαι, ἵκω"
 }
       

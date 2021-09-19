@@ -2,7 +2,9 @@
 // Alternative form of δήω (dḗō)
 {
   "word":"δέω",
+  "princ":"δήσω,ἔδησα",
   "medium":"bind",
-  "notes":"The meanings 'to need' and 'must' are Attic. Homeric δεύω, χράω."
+  "notes":"The meanings 'to need' and 'must' are Attic; Homeric δεύω, χράω.",
+  "syn":"δήω"
 }
       

@@ -2,6 +2,10 @@
 // man (adult male), husband, human being, as opposed to a god
 {
   "word":"ἀνήρ",
-  "medium":"man"
+  "genitive":"ἀνέρος",
+  "gender":"m",
+  "medium":"man",
+  "notes":"modern άνδρας",
+  "cog":"Nero. Probably not cognate with ἄνθρωπος."
 }
       

@@ -1,1 +1,8 @@
-{ "word":"ἱκνέομαι","medium":"reach, arrive at" }
+{ 
+  "word":"ἱκνέομαι",
+  "princ":"ἵξομαι,ἱκόμην",
+  "short":"arrive",
+  "medium":"reach, arrive at",
+  "syn":"ἱκάνω",
+  "cog":"ἱκάνω, ἵκω"
+}
