@@ -2,8 +2,10 @@
 // 
 {
   "word":"εἴλω",
+  "princ":"ἔελσα,ἔελμαι",
   "short":"pack",
-  "medium":"pack, press",
-  "long":"pack, press, enclose, jostle, roll up"
+  "medium":"pack, press, drive",
+  "long":"pack, press, enclose, drive, jostle, roll up",
+  "cog":"helix, vulgar, revolve"
 }
       
