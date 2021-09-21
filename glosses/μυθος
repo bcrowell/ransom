@@ -1,4 +1,6 @@
 {
- "word":"μῦθος","medium":"word, speech, tale",
- "syn":"ἔπος"
+  "word":"μῦθος",
+  "genitive":"μύθου",
+  "medium":"word, speech, tale",
+  "syn":"ἔπος"
 }

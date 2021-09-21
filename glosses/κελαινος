@@ -2,6 +2,9 @@
 // black, dark, swarthy, murky
 {
   "word":"κελαινός",
-  "medium":"black"
+  "short":"black",
+  "medium":"black, dark, swarthy, murky",
+  "etym":"unknown", // no known cognates?
+  "mnem":"a cold pottery kiln that looks dark inside"
 }
       

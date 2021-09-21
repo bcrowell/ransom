@@ -134,14 +134,15 @@ x.each { |word,data|
     end
     info = "#{lemma},  #{g['gloss']} <p> #{grammatical_info}"
     other_info_items = []
-    ['genitive','princ','cog','etym','syn','notes'].each { |k|
+    ['genitive','princ','cog','etym','syn','notes','mnem','proper_noun'].each { |k|
       next unless g.has_key?(k)
-      label = {"genitive"=>"gen.","princ"=>"principal parts","cog"=>"cog.","etym"=>"etym.","syn"=>"syn.","notes"=>"notes"}[k]
+      label = {"genitive"=>"gen.","princ"=>"principal parts","cog"=>"cog.","etym"=>"etym.","syn"=>"syn.","notes"=>"notes","mnem"=>"mnemonic"}[k]
       if label!='' then
         item = "#{italicize(format,label+":")} #{g[k]}"
       else
         item = g[k]
       end
+      if k=='proper_noun' then item='Proper noun.' end
       other_info_items.push(item)
     }
     other_info = other_info_items.join(", ")

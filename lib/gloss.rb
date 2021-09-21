@@ -31,10 +31,12 @@ gender ["m","f","n","m or f"]
 genitive [for nouns]
 princ [for verbs]: future and aorist, e.g., for ἔρχομαι, "ἐλεύσομαι,ἤλυθον"; for verbs that have both a 1st and a 2nd aorist: βήσω,ἔβησα/ἔβην [the slash always means this 1st/2nd aorist thing, not some other variation of form]
 
-proper_noun
+"proper_noun":1 -- indicates that it's a proper noun
 
 logdiff [+1 means consider it as difficult as a word whose freq
      rank is 10x greater]
+
+mnem -- a mnemonic; may be idiosyncratic and only of interest to me; I use these only when there is no cognate that helps
 =end
 
 def Gloss.all_lemmas(file_glob:'glosses/*')
@@ -115,7 +117,7 @@ def Gloss.validate(key)
   if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
   n = a.length
   mandatory_keys = ['word','medium']
-  allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff']
+  allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem']
   # Try to detect duplicate keys.
   allowed_keys.each { |key|
     if json.scan(/\"#{key}\"\s*:/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
