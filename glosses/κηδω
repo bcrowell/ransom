@@ -2,7 +2,9 @@
 // trouble, distress, vex, be concerned for, care for
 {
   "word":"κήδω",
-  "medium":"distress, care for",
+  "princ":"κηδήσω,ἐκήδεσα",
+  "short":"distress",
+  "medium":"distress, hurt; mp care about, be solicitous of (+gen)",
   "cog":"hate (via Grimm's law, semantically having to do with strong emotion)"
 }
       
