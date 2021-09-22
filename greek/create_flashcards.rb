@@ -137,6 +137,7 @@ x.each { |word,data|
     ['genitive','princ','cog','etym','syn','notes','mnem','proper_noun'].each { |k|
       next unless g.has_key?(k)
       label = {"genitive"=>"gen.","princ"=>"principal parts","cog"=>"cog.","etym"=>"etym.","syn"=>"syn.","notes"=>"notes","mnem"=>"mnemonic"}[k]
+      if label.nil? then label='' end
       if label!='' then
         item = "#{italicize(format,label+":")} #{g[k]}"
       else
