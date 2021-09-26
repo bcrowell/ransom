@@ -2,7 +2,10 @@
 // missile, arrow, dart, weapon, something quickly moving, artillery
 {
   "word":"βέλος",
+  "genitive":"βέλεος",
+  "gender":"n",
   "medium":"missile",
-  "cog":"βάλλω"
+  "cog":"βάλλω",
+  "notes":"The genitive can also be βέλευς. Accusative βέλος, βέλεα."
 }
       
