@@ -1,5 +1,8 @@
 {
   "word":"ἐάω",
-  "medium":"permit, allow, let go"
+  "short":"let",
+  "medium":"let someone do something (+acc+inf)",
+  "long":"let someone do something (+acc+inf); grant, agree, let go",
+  "notes":"Homer has subjenctive ἐάσομεν in place of ἐάσωμεν."
 }
       

@@ -1,5 +1,8 @@
 {
   "word":"κιχάνω",
   "short":"overtake, encounter",
-  "medium":"overtake, encounter, reach"
+  "medium":"overtake, encounter, reach",
+  "notes":"There is an athematic second aorist ἐκίχην. The present form κιχάνω arose later."
+  // https://latin.stackexchange.com/a/16906/3597
+  // http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.04.0007%3Asmythp%3D688
 }

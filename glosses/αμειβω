@@ -3,8 +3,9 @@
 {
   "word":"ἀμείβω",
   "princ":"ἀμείψω,ἤμειψα",
-  "medium":"answer, exchange",
-  "long":"answer, take turns, exchange, have dialog, repay, requite",
+  "short":"exchange, answer",
+  "medium":"exchange; mp: answer, take turns",
+  "long":"exchange; mp: answer, have dialog, take turns, repay, requite",
   "cog":"amoeba"
 }
       

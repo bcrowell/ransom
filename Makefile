@@ -38,6 +38,10 @@ check:
 check_glosses:
 	./scripts/check_glosses.rb
 
+flashcards:
+	make check_glosses
+	./greek/create_flashcards.rb ~/a.txt Iliad-01 mnemosyne >~/a.tsv
+
 figures:
 	@perl -e 'foreach my $$f(<iliad/figs/*.svg>) {system("scripts/render_one_figure.pl $$f $(FORCE)")}'
 
