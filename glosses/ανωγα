@@ -6,6 +6,10 @@
   "short":"order",
   "medium":"to command, order",
   "pos":"verb",
-  "syn":"κελεύω, κέλομαι, ἐπιτέλλω"
+  "syn":"κελεύω, κέλομαι, ἐπιτέλλω",
+  "etym":"ἀνα (intensifier) + ωγα (to say)",
+  "cog":"Negate. The root of ωγα is cognate with ἠμί and Latin aio, which forms ne+aio=nego, to deny.",
+  "mnem":"Opposite of nego, replacing the negative prefix with an intensifier.",
+  "notes":"Epic. The perfect ἄνωγα is used with present meaning. Forms like imperfect ἤνωγον, future ἀνώξει, and aorist ἤνωξεν were back-formations in which ἄνωγα was treated as if it were a present-tense form."
 }
       

@@ -3,8 +3,11 @@
 {
   "word":"δέω",
   "princ":"δήσω,ἔδησα",
-  "medium":"bind",
-  "notes":"The meanings 'to need' and 'must' are Attic; Homeric δεύω, χράω.",
-  "syn":"δήω"
+  "short":"bind, need",
+  "medium":"bind; need, beg, fail to do something, fall short",
+  "long":"bind; need, beg, fail to do something, fall short, be unsuited for",
+  "notes":"There are three etymologically separate words: 1. δέω/δεύω, need, beg; 2. δέω, bind; 3. δεύω, wet. For 1, the meaning 'need' can be active or passive, beg is always passive. Δεύω is an epic form of 1, and Homer uses δέω only for 2. Impersonal expressions involving duty are Attic or later.",
+  "syn":"δήω, χράω",
+  "cog":"None are cognate with debt, tie, or Spanish deber."
 }
       

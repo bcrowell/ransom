@@ -2,6 +2,8 @@
 // war, battle
 {
   "word":"πόλεμος",
-  "medium":"war, battle"
+  "medium":"war, battle",
+  "notes":"Epic πτόλεμος.",
+  "cog":"polemic"
 }
       
