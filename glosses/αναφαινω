@@ -2,6 +2,10 @@
 // 
 {
   "word":"ἀναφαίνω",
-  "medium":"ignite"
+  "short":"reveal, shine",
+  "medium":"reveal, shine",
+  "long":"reveal, betray, denounce, display; shine; mp: appear",
+  "etym":"ἀνά (thoroughly) + φαίνω (appear, shine)",
+  "cog":"phenomenon"
 }
       

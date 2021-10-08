@@ -2,6 +2,9 @@
 // Alternative form of πάροιθεν (pároithen)
 {
   "word":"πάροιθε",
-  "medium":"before, in the presence of"
+  "short":"before",
+  "medium":"before, in the presence of",
+  "etym":"Equivalent to παρά (beside)+θεν (place of origin). Cf. πάρος, which refers to time.",
+  "notes":"Also πάροιθεν."
 }
       

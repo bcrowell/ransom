@@ -2,6 +2,8 @@
 // defendant, the accused, culprit
 {
   "word":"αἴτιος",
-  "medium":"one accused, a culprit"
+  "medium":"guilty",
+  "cog":"etiology",
+  "etym":"One of a set of loosely semantically related words: αἴτιος, αἰτία, αἰτέω, αἴνυμαι."
 }
       

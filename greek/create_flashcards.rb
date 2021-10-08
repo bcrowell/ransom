@@ -104,11 +104,11 @@ x.each { |word,data|
   if if_ambiguous then l=ambig else l=[[lemma,glub1,pos,count].clone] end
   l.each { |entry|
     lemma,glub,pos,count = entry
-    next if count<threshold_count
+    next if count<threshold_count # Don't include very uncommon forms.
     part_of_speech,person,number,tense,mood,voice,gender,the_case,degree = pos[0],pos[1],pos[2],pos[3],pos[4],pos[5],pos[6],pos[7],pos[8]
     part_of_speech_word = part_of_speech_code_to_word[part_of_speech]
     next if lemma=='υνκνοων'  || word=~/᾽/
-    next unless vocab_list.include?(lemma)
+    next unless vocab_list.include?(lemma) # Don't include very common forms.
     word = to_single_accent(word)
     if !(all_glossed_lemmas.include?(lemma)) then next end
     g = Gloss.get(lemma,word,prefer_length:2)

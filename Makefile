@@ -1,8 +1,9 @@
 BOOK = iliad
 POS = $(BOOK).pos
 GENERIC = "pos_file":"$(POS)"
-COMPILE = xelatex $(BOOK) | ruby filter_latex_messages.rb
-#COMPILE = xelatex $(BOOK)
+#COMPILE = xelatex $(BOOK) | ruby filter_latex_messages.rb
+# ... If I do this, then error messages freeze things.
+COMPILE = xelatex $(BOOK)
 
 .PHONY: clean default check check_glosses
 
