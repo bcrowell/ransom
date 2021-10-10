@@ -2,7 +2,13 @@
 // threshold, road, path, way, journey, trip, expedition, The way, means, or manner to some end, method
 {
   "word":"ὁδός",
+  "gender":"f",
+  "short":"road",
   "medium":"threshold, road, journey",
-  "short":"road"
+  "notes":"Also Homeric οὐδός. One of a fairly small number of feminine words ending in -ος, the most common being ὁδός, νῆσος, νοῦσος. See Smyth §232.",
+  // https://latin.stackexchange.com/a/13261/3597
+  "etym":"Unknown, or possibly from *sed, and then cognate with 'sit.'",
+  // https://en.wiktionary.org/wiki/ὁδός
+  "cog":"hodoscope, episode, method, period"
 }
       

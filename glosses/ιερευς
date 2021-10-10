@@ -1,1 +1,6 @@
-{ "word":"ἱερεύς","medium":"priest" }
+{
+  "word":"ἱερεύς",
+  "medium":"priest",
+  "notes":"The declension is the standard one for nouns in -εύς."
+  // Smyth sec. 275
+}

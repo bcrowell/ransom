@@ -2,6 +2,10 @@
 // chief
 {
   "word":"ἀριστεύς",
-  "medium":"chief"
+  "genitive":"ἀριστῆος",
+  "medium":"chief",
+  "etym":"ἄριστος + εύς",
+  "notes":"Noun. The plurals ἀριστῆας (acc.) and ἀριστῆες (nom.) are are especially common in Homer, being used to refer to the most important leaders and most distinguished heroes. The declension is the standard one for nouns in -εύς, using the Epic forms in -η- (model: βασιλεύς). The genitive can also be ἀριστέος (Epic) or ἀριστέως (Attic)."
+  // Smyth sec. 275
 }
       
