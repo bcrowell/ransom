@@ -2,6 +2,10 @@
 // zealous, eager, earnest
 {
   "word":"πρόφρων",
-  "medium":"eager"
+  "short":"eager",
+  "medium":"kind, eager",
+  "etym":"πρό (motivation) + φρήν (midriff, will)",
+  "notes":"Genitive πρόφρονος."
+  // https://latin.stackexchange.com/questions/16968/what-is-the-general-ablaut-rule-that-explains-examples-like-%cf%86%cf%81%ce%ae%ce%bd-%cf%80%cf%81%cf%8c%cf%86%cf%81%cf%89%ce%bd-%cf%80%cf%81%cf%8c%cf%86%cf%81
 }
       
