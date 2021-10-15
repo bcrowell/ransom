@@ -2,7 +2,9 @@
 // woman, female, wife
 {
   "word":"γυνή",
+  "genitive":"γυναικός",
   "medium":"woman",
-  "cog":"queen, gynecology"
+  "cog":"queen, gynecology",
+  "notes":"Plural dative γυναιξίν."
 }
       

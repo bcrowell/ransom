@@ -2,6 +2,10 @@
 // companion of lower rank, comrade, attendant, aide, servant, slave
 {
   "word":"θεράπων",
-  "medium":"companion"
+  "genitive":"θεράποντος",
+  "short":"companion",
+  "medium":"helper, henchman, servant",
+  "long":"helper, henchman, servant, squire; the chariot driver  (ἡνίοχος) as distinguished from the fighter",
+  "cog":"therapy, τέραμνον"
 }
       

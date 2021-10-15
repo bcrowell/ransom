@@ -2,7 +2,10 @@
 // a mountain, hill, mountain chain, district, sector, precinct, parish, desert
 {
   "word":"ὄρος",
+  "genitive":"ὄρεος, οὔρεος",
   "medium":"mountain, hill",
-  "short":"mountain"
+  "short":"mountain",
+  "etym":"PIE h3er, to rise.",
+  "cog":"ὄρνυμι (rise, stir, spring), ὀρίνω; possily hormone, ὁρμή"
 }
       
