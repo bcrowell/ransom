@@ -1,8 +1,10 @@
 {
   "word":"κιχάνω",
+  "princ":"κιχήσομαι,ἐκιχησάμην",
   "short":"overtake, encounter",
   "medium":"overtake, encounter, reach",
-  "notes":"There is an athematic second aorist ἐκίχην. The present form κιχάνω arose later. The root κιχ- is a reduplication. There are athematic present forms such as κιχείη."
+  "notes":"There is an athematic second aorist ἐκίχην. The present form κιχάνω arose later. The root κιχ- is a reduplication. There are athematic present forms such as κιχείη.",
   // https://latin.stackexchange.com/a/16906/3597
   // http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.04.0007%3Asmythp%3D688
+  "cog":"go"
 }
