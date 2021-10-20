@@ -97,8 +97,8 @@
 
 % https://texblog.org/2011/04/19/highlight-table-rowscolumns-with-color/
 \RequirePackage{color,colortbl}
-\definecolor{TableColorA}{rgb}{1,0.8,0.8}
-\definecolor{TableColorB}{rgb}{0.9,0.9,1}
+\definecolor{TableColorA}{rgb}{1,0.725,0.725}
+\definecolor{TableColorB}{rgb}{0.875,0.875,1}
 
 \usepackage[para]{footmisc}
 % https://tex.stackexchange.com/questions/28736/footnotes-on-the-same-line

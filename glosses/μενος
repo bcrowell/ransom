@@ -2,6 +2,10 @@
 // mind, desire, ardor, wish, purpose, anger, courage, spirit, vigor, power, strength, force, violence
 {
   "word":"μένος",
-  "medium":"spirit, prowess"
+  "genitive":"μένεος or μένους",
+  "gender":"n",
+  "medium":"mind, spirit, prowess",
+  "notes":"Third declension.",
+  "cog":"mind"
 }
       
