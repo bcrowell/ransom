@@ -2,9 +2,11 @@
 // pour, shed (of tears), pour, smelt, cast (of metal), pour, become liquid, melt, dissolve, scatter, shed, throw up (of soil), scatter, shed, shower (of spears), scatter, shed, let fall, drop, scatter, shed, am heaped up, mounded, scatter, shed, move together, stream, scatter, shed, am engaged, absorbed in
 {
   "word":"χέω",
-  "princ":"χεύω,ἔχευα",
+  "princ":"χέω,ἔχεα",
   "short":"pour",
   "medium":"pour, scatter",
-  "notes":"There is an athematic second aorist ἐχύμην."
+  "long":"pour, scatter, shed, spread forth; mp: embrace, pour forth",
+  "notes":"There is an athematic second aorist ἐχύμην. There are also epic forms with an upsilon: χεύω, ἔχευα. Homer uses the forms with and without υ about equally often. There are nouns χύμα, that which is poured, and χυμός, juice.",
+  "cog":"guts, chyle"
 }
       

@@ -2,6 +2,9 @@
 // join, fasten, fit together, construct, fit, equip, furnish, make fit, make pleasing, be joined closely together, fit or suit, be fitted with, furnished with, be fitted, suiting, agreeable, pleasing
 {
   "word":"ἀραρίσκω",
-  "medium":"join together"
+  "princ":",ἦρσα/ἤραρον",
+  "medium":"join together",
+  "long":"The second aorist, middle, and perfect tenses are used intransitively: to be joined, fit, be furnished with, be agreeable.",
+  "cog":"articulate, arthritis"
 }
       

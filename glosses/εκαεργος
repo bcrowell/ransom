@@ -1,7 +1,10 @@
 // https://en.wiktionary.org/wiki/Ἑκάεργος https://logeion.uchicago.edu/Ἑκάεργος
 // far-working (epithet of Apollo and, occasionally, Artemis)
 {
-  "word":"Ἑκάεργος",
-  "medium":"far-working (epithet of Apollo)"
+  "word":"ἑκάεργος",
+  "short":"far-working",
+  "medium":"far-working (epithet of Apollo)",
+  "long":"far-working or originally free-working (epithet of Apollo)",
+  "etym":"ἑκάς+ἔργον or ἑκών+ἔργον"
 }
       
