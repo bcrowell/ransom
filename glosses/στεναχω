@@ -2,6 +2,10 @@
 // sigh, groan, roar, make a rushing sound, lament
 {
   "word":"στενάχω",
-  "medium":"sigh, groan"
+  "short":"(be)moan",
+  "medium":"moan; mp: bemoan",
+  "long":"sigh, groan; middle: to bemoan something",
+  "notes":"Also στένω. Not related to στενός, narrow.",
+  "cog":"Stentor, stentorian"
 }
       

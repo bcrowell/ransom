@@ -3,12 +3,13 @@
   "word":"ὦμος",
   "short":"shoulder",
   "medium":"shoulder plus upper arm",
-  "notes":"Cf. ὠμός, raw. Dual ὤμω."
+  "notes":"Cf. ὠμός, raw. Dual ὤμω.",
+  "cog":"humerus"
 },
 {
   "word":"ὠμός",
   "medium":"raw",
-  "notes":"cf. ὦμος, shoulder"
+  "notes":"Cf. ὦμος, shoulder. No cognates likely to be familiar to English speakers."
 }
 ]
 
