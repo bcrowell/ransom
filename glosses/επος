@@ -3,8 +3,10 @@
 {
   "word":"ἔπος",
   "genitive":"ἔπεος",
+  "gender":"n",
   "medium":"speech, story",
   "long":"speech, story, song, epic",
-  "syn":"μῦθος"
+  "syn":"μῦθος",
+  "notes":"Τhird declension: ἔπος, ἔπεος, ἔπει, ἔπος, ἔπεα, ἐπέων, ἔπεσι, ἔπεα, ἔπεα. Ἔπος is both nominative and accusative. The genitive can also be ἔπους. Attic has the forms ἔπη and ἐπῶν."
 }
       
