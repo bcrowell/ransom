@@ -2,7 +2,10 @@
 // knee
 {
   "word":"γόνυ",
+  "gender":"n",
+  "genitive":"γούνατος",
   "medium":"knee",
-  "cog":"polygon, genuflect"
+  "cog":"polygon, genuflect",
+  "notes":"3rd declension. Attic genitive γόνατος."
 }
       

@@ -2,8 +2,12 @@
 // unwed woman
 {
   "word":"ἄλοχος",
-  "medium":"unwed woman",
-  "etym":"ἁ+λόχος",
-  "cog":"λέχος, λόχος, λέχομαι, lie"
+  "gender":"f",
+  "medium":"wife; unwed woman",
+  "long":"wife, concubine, bed partner; unwed woman",
+  "etym":"ἁ+λόχος, unlaid or lying-together",
+  "cog":"λέχος, λόχος, λέχομαι, lie",
+  "notes":"2nd declension. Dative ἀλόχῳ. One of the few feminine nouns in -ος. The two opposite meanings come from the uses of the prefix α- to mean 'not' or 'same'."
+  // https://latin.stackexchange.com/questions/13259/is-there-a-short-list-of-feminine-nouns-in-%ce%bf%cf%82
 }
       
