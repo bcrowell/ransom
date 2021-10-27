@@ -42,8 +42,7 @@ mnem -- a mnemonic; may be idiosyncratic and only of interest to me; I use these
 def Gloss.all_lemmas(file_glob:'glosses/*')
   lemmas = []
   Dir.glob(file_glob).sort.each { |filename|
-    next if filename=~/~/
-    next if filename=~/README/
+    next if (filename=~/~/ || filename=~/README/ )
     filename=~/([[:alpha:]]+)$/
     key = $1
     err,message = Gloss.validate(key)
@@ -54,7 +53,7 @@ def Gloss.all_lemmas(file_glob:'glosses/*')
     x = JSON.parse(json)
     if x.kind_of?(Array) then a=x else a=[x] end
     a.each { |x|
-      lemmas.push(x['word'])
+      lemmas.push(x['word']) if x['word']!=''
     }
   }
   return alpha_sort(lemmas)
@@ -64,6 +63,7 @@ def Gloss.get(lexical,word,prefer_length:1)
   # It doesn't matter whether the inputs have accents or not. We immediately strip them off.
   # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
   # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
+  # If you want to look the word up by lexical form, then supply the same string form both lexical and word.
   entry_lexical   = Gloss.helper(lexical,prefer_length)
   entry_inflected = Gloss.helper(word,prefer_length)
   if entry_inflected.nil? then

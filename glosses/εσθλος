@@ -2,6 +2,13 @@
 // good, good, good, excellent, fine, helpful, useful
 {
   "word":"ἐσθλός",
-  "medium":"good"
+  "short":"doughty",
+  "medium":"doughty, moral, excellent",
+  "long":"doughty, moral, excellent, genuine, fortunate",
+  "notes":"Poetic, mainly Homeric. Less common than ἀγαθός. Often in the stereotyped phrases such as κλέος ἐσθλόν, noble glory. There is also a noun ἐσθλόν.",
+  "etym":"unknown",
+  "syn":"ἀγαθός",
+  "cog":"ἐσθλόν",
+  "mnem":"He's such a noble hero that his dental care includes aesthetic floss."
 }
       
