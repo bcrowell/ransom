@@ -3,8 +3,10 @@
 {
   "word":"ὀφέλλω",
   "medium":"owe, should, if only, increase",
-  "long":"owe; should (+inf); if only, referring to the past (past+inf); if only, referring to the present (αἴθ/ὡς'+past+inf); increase something",
-  "notes":"Also ὀφείλω. The additional meaning of increasing something occurs only for ὀφέλλω.",
-  "cog":"ὄφελος"
+  "long":"owe, should (+inf); augment, avail, help; if only, referring to the past (past+inf); if only, referring to the present (αἴθ/ὡς'+past+inf); augment, avail, help; to sweep",
+  "notes":"Also ὀφείλω. The additional meanings of augmenting or sweeping occur only for ὀφέλλω. The name Ὠφέλεια/Ophelia is analogous to the Spanish name Socorro, which refers to the Virgin Mary.",
+  "cog":"ὄφελος, ὠφέλεια (succor), Ophelia, anopheles",
+  "etym":"All three meanings come from PIE h3bhel, and probably the same root.",
+  "mnem":"If only Ophelia hadn't killed herself. She owed it to her father Polonius not to do something like that. She should have rescued him from being killed by Hamlet."
 }
       

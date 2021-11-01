@@ -140,7 +140,16 @@ def vocab1(stuff)
   return if entry.nil?
   word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
   if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
-  if entry.has_key?('lexical') || (data.has_key?('is_3rd_decl') && data['is_3rd_decl'] && !alpha_equal(word,lexical)) then
+  explain_inflection = entry.has_key?('lexical') || (data.has_key?('is_3rd_decl') && data['is_3rd_decl'] && !alpha_equal(word,lexical))
+  if explain_inflection then
+    text = [word.downcase,lexical,gloss]
+  else
+    text = [lexical,gloss]
+  end
+  total_chars = text.map { |t| t.length}.sum+text.length-1 # final terms count blanks
+  if lexical=='ἀμείνων' then $stderr.print "lexical=#{lexical}, total_chars=#{total_chars}, text=#{text}\n" end
+  if total_chars>35 && entry.has_key?('short') then gloss=entry['short'] end
+  if explain_inflection then
     s = "\\vocabinflection{#{word.downcase}}{#{lexical}}{#{gloss}}"
   else
     s = "\\vocab{#{lexical}}{#{gloss}}"
