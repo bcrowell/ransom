@@ -41,7 +41,7 @@ def main
   0.upto(total_odometer_values-1) { |o|
     odo = count_to_odometer(o,nvals)
     0.upto(n-1) { |i|
-      if last_odo[i]!=odo[i] then
+      if last_odo[i]!=odo[i] && nvals[i]!=1 then
         print "  "*i,"#{keys[i]} = ",values[i][odo[i]],"\n"
       end
     }
