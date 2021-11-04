@@ -2,6 +2,8 @@
 // sword, corn-flag (Gladiolus italicus), cocklebur (Xanthium strumarium)
 {
   "word":"φάσγανον",
-  "medium":"sword"
+  "medium":"sword",
+  "syn":"ἄορ, ξίφος",
+  "notes":"Homer uses the words φάσγανον, ἄορ, and ξίφος interchangeably, depending on what he needs for the meter."
 }
       
