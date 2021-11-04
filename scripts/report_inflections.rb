@@ -45,7 +45,7 @@ def main
     indent = 0
     0.upto(n-1) { |i|
       if last_odo[i]!=odo[i] && nvals[i]!=1 then
-        print " "*indent*indentation_spacing,"#{keys[i]} = ",values[i][odo[i]],"\n"
+        print " "*indent*indentation_spacing,describe_tag(keys[i],values[i][odo[i]]),"\n"
       end
       if nvals[i]!=1 then
         indent +=1 
@@ -69,7 +69,8 @@ def main
       matches.push(inflected)
     }
     if all_the_same_pos=~/^v+$/ then matches=deredundantize_verb(matches) end # all verbs
-    print " "*n_varying*indentation_spacing,matches.join(','),"\n"
+    if matches.length>=1 then results=matches.join(',') else results='-' end
+    print " "*n_varying*indentation_spacing,results,"\n"
     last_odo = odo
   }
 end
@@ -101,6 +102,20 @@ def deredundantize_verb(l)
     }
   }
   return l
+end
+
+def describe_tag(tag,value)
+  if tag=='tense' then
+    if value=='p' then return 'present' end
+    if value=='i' then return 'imperfect' end
+    if value=='a' then return 'aorist' end
+  end
+  if tag=='number' then
+    if value=='s' then return 'singular' end
+    if value=='d' then return 'dual' end
+    if value=='p' then return 'plural' end
+  end
+  return "#{tag} = #{value}"
 end
 
 main
