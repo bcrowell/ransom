@@ -15,6 +15,7 @@ $fields = ["pos","person","number","tense","mood","voice","gender","case","degre
 # The first arg is the lemma. Accents in the lemma are ignored.
 
 def main
+  indentation_spacing = 2
   file = "#{Dir.home}/Documents/programming/ransom/lemmas/homer_lemmas.json"
   homer = json_from_file_or_die(file)
   lemma = ARGV.shift
@@ -29,6 +30,7 @@ def main
   }
   nvals = values.map { |x| x.length}
   n = nvals.length
+  n_varying = (nvals-[1]).length # number of elements that are > 1
   total_odometer_values = nvals.inject(1, :*)
   #print "keys=#{keys}\nvalues=#{values}\nnvals=#{nvals}\ntotal_odometer_values=#{total_odometer_values}\n"
   homer_filtered = {}
@@ -40,9 +42,13 @@ def main
   last_odo = Array.new(n, -1)
   0.upto(total_odometer_values-1) { |o|
     odo = count_to_odometer(o,nvals)
+    indent = 0
     0.upto(n-1) { |i|
       if last_odo[i]!=odo[i] && nvals[i]!=1 then
-        print "  "*i,"#{keys[i]} = ",values[i][odo[i]],"\n"
+        print " "*indent*indentation_spacing,"#{keys[i]} = ",values[i][odo[i]],"\n"
+      end
+      if nvals[i]!=1 then
+        indent +=1 
       end
     }
     #print "odo=#{odo}\n"
@@ -63,7 +69,7 @@ def main
       matches.push(inflected)
     }
     if all_the_same_pos=~/^v+$/ then matches=deredundantize_verb(matches) end # all verbs
-    print "  "*(n+1),matches.join(','),"\n"
+    print " "*n_varying*indentation_spacing,matches.join(','),"\n"
     last_odo = odo
   }
 end
