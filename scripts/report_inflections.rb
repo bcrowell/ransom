@@ -46,6 +46,8 @@ def main
       end
     }
     #print "odo=#{odo}\n"
+    matches = []
+    all_the_same_pos = ''
     homer_filtered.each_pair { |inflected,data|
       values_for_this_form = data[2].chars
       match = true
@@ -56,8 +58,12 @@ def main
         if values[i][odo[i]] != v then match=false; break end
       }
       next if !match
-      print "  "*(n+1),inflected,"\n"
+      part_of_speech = values_for_this_form[0] # e.g., 'v' if it's a verb
+      all_the_same_pos = all_the_same_pos+part_of_speech
+      matches.push(inflected)
     }
+    if all_the_same_pos=~/^v+$/ then matches=deredundantize_verb(matches) end # all verbs
+    print "  "*(n+1),matches.join(','),"\n"
     last_odo = odo
   }
 end
@@ -72,6 +78,23 @@ def count_to_odometer(count,nvals)
     odo = [remainder] + odo
   }
   return odo
+end
+
+def deredundantize_verb(l)
+  if l.length<2 then return l end
+  0.upto(l.length-1) { |i|
+    0.upto(l.length-1) { |j|
+      next if i==j
+      if remove_accents(l[i])==remove_accents(l[j]+"ν") then return deredundantize_verb(l-[l[j]]) end
+      if remove_accents(l[i])==remove_accents("ε"+l[j]) then return deredundantize_verb(l-[l[j]]) end
+      if l[j]=~/(.*)᾽/ then
+        stem = $1
+        m = stem.length
+        if l[i][0,m]==stem then return deredundantize_verb(l-[l[j]]) end
+      end
+    }
+  }
+  return l
 end
 
 main
