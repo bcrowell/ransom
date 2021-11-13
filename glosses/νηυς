@@ -3,8 +3,9 @@
 {
   "word":"νηῦς",
   "gender":"f",
-  "genitive":"νεός, νηός",
+  "genitive":"νηός",
   "medium":"ship",
-  "notes":"epic and Ionic form of ναῦς; in later dialectsm πλοῖον"
+  "notes":"Epic and Ionic form of ναῦς. About 25% of the time, Homer uses forms with ε rather than η. Modern πλοῖον."
+  // Tagged in Perseus as ναῦς, even though the forms are actually forms of νηῦς.
 }
       

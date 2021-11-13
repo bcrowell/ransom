@@ -9,16 +9,18 @@ require 'json'
 # https://github.com/cltk/greek_treebank_perseus
 $fields = ["pos","person","number","tense","mood","voice","gender","case","degree"]
 $all_values = {'person'=>['1','2','3'],'number'=>['s','d','p'],'tense'=>['p','i','r','l','t','f','a'],'mood'=>['i','s','o','n','m','p'],
-           'voice'=>['a','p','m','e']}
-
-# usage:
-#   report_inflections.rb καλεω person=3 mood=* voice=a tense=p,i,a number=s,p
-# The rightmost key changes most rapidly, as expected intuitively from the way we write decimal notation.
-# The first arg is the lemma. Accents in the lemma are ignored.
-# Using * causes results to be broken down by that key. If you just don't care about that key and want to accept all its possible
-# values, then simply don't include the key on the command line.
+           'voice'=>['a','p','m','e'],'case'=>['n','g','d','a','v','l']}
 
 =begin
+
+usage:
+  report_inflections.rb ολεκω
+  report_inflections.rb person=3 mood=* voice=a tense=pia number=sp καλεω 
+The rightmost key changes most rapidly, as expected intuitively from the way we write decimal notation.
+The lemma can be given in any position, is detected by the absence of an equals sign. Accents in the lemma are ignored.
+Using * causes results to be broken down by that key. If you just don't care about that key and want to accept all its possible
+values, then simply don't include the key on the command line.
+
   Typical database entry:
   "ἀγείρετο": [
     "ἀγείρω",
@@ -34,19 +36,30 @@ def main
   indentation_spacing = 2
   file = "#{Dir.home}/Documents/programming/ransom/lemmas/homer_lemmas.json"
   homer = json_from_file_or_die(file)
-  lemma = ARGV.shift
-  selector_strings = ARGV
-  print "lemma=#{lemma} selectors=#{selector_strings}\n"
+  lemma = nil
+  ARGV.each { |arg|
+    if !(arg=~/=/) then
+      lemma = arg
+    end
+  }
+  if lemma.nil? then print "no lemma given\n"; exit(-1) end
+  selector_strings = ARGV.dup
+  selector_strings.delete(lemma)
+  #print "lemma=#{lemma} selectors=#{selector_strings}\n"
   keys = []
   values = []
   selector_strings.each { |s|
     key,val = s.split(/=/)
+    if !($fields.include?(key)) then print "illegal key: #{key}\n"; exit(-1) end
     keys.push(key)
     if val=='*' then
       vv = $all_values[key]
       if vv.nil? then print "* not implemented for key=#{key}\n"; exit(-1) end
     else
-      vv = val.split(/,/)
+      vv = val.chars
+      if $all_values.has_key?(key) then
+        vv.each { |c| if !($all_values[key].include?(c)) then print "illegal key-value pair #{key}=#{c}; legal values are #{$all_values[key].join}\n"; exit(-1) end}
+      end
     end
     values.push(vv)
   }
@@ -156,6 +169,14 @@ def describe_tag(tag,value)
     if value=='s' then return 'singular' end
     if value=='d' then return 'dual' end
     if value=='p' then return 'plural' end
+  end
+  if tag=='mood' then
+    if value=='i' then return 'indicative' end
+    if value=='s' then return 'subjunctive' end
+    if value=='o' then return 'optative' end
+    if value=='n' then return 'infinitive' end
+    if value=='m' then return 'imperative' end
+    if value=='p' then return 'participle' end
   end
   return "#{tag} = #{value}"
 end

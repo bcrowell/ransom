@@ -105,6 +105,7 @@ end
 
 def Gloss.validate(key)
   # Returns [err,message].
+  if key!=remove_accents(key).downcase then return [true,"filename #{key} contains accents or uppercase, should be #{remove_accents(key).downcase}"] end
   path = Gloss.key_to_path(key)
   if !FileTest.exist?(path) then return [true,"file #{path} doesn't exist"] end
   json,err = slurp_file_with_detailed_error_reporting(path)
@@ -126,6 +127,8 @@ def Gloss.validate(key)
     eks = entry.keys.to_set
     if !(eks.subset?(allowed_keys.to_set)) then return [true,"illegal key(s): #{eks-allowed_keys.to_set}"] end
     if !(mandatory_keys.to_set.subset?(eks)) then return [true,"required key(s) not present: #{mandatory_keys.to_set-eks}"] end
+    eks.select! { |key| entry[key]!='' } # delete keys with null-string values
+    if !(mandatory_keys.to_set.subset?(eks)) then return [true,"required key(s) are null strings: #{mandatory_keys.to_set-eks}"] end
     if entry.has_key?('gender') then
       allowed_genders = ['m','f','n','m or f']
       if !(allowed_genders.to_set.include?(entry['gender'])) then return [true,"illegal value for gender, #{entry['gender']}, should be one of #{allowed_genders}"] end
@@ -134,6 +137,7 @@ def Gloss.validate(key)
       value = entry[key]
       if value!=remove_macrons_and_breves(value) then return [true,"value contains macron or breve, #{value}"] end
     }
+    if alpha_compare(entry['word'],key)!=0 then return [true,"filename #{key} doesn't match word #{entry['word']} up to case and accents"] end
   }
   return [false,nil]
 end
