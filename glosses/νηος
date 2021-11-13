@@ -1,11 +1,9 @@
-// https://en.wiktionary.org/wiki/ναός
-// a temple, innermost part of a temple, sanctuary, the part of the temple considered most pure and holy
 {
-  "word":"ναός",
+  "word":"νηός",
   "short":"temple",
   "medium":"temple, shrine",
   "cog":"If from PIE nes-, then cognate with νέομαι, νόστος, nostalgia, harness, and possibly ναίω.",
   "etym":"Possible from PIE nes-, homecoming, with the idea that the temple is the place where the god dwells.",
-  "notes":"3rd declension. Also Ionic νηός."
+  "notes":"3rd declension. Ionic form of ναός."
 }
       
