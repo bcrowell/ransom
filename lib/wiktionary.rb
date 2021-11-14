@@ -1,8 +1,10 @@
+# coding: utf-8
 class WiktionaryGlosses
 
 filename = "wiktextract/grc_en.json"
 
 @@glosses = {}
+@@unaccented_index = {}
 if not File.exists?(filename) then
   $stderr.print %q{
     Warning: file #{filename} not found, so we won't be able to give automatic suggestions of glosses.
@@ -15,6 +17,9 @@ else
     x = JSON.parse(line)
     w = remove_macrons_and_breves(x['word']).downcase # should be the lexical form
     @@glosses[w] = x
+    unaccented = remove_accents(w)
+    if !(@@unaccented_index.has_key?(unaccented)) then @@unaccented_index[unaccented]=[] end
+    @@unaccented_index[unaccented].push(w)
   }
   # $stderr.print "...done\n"
 end
@@ -54,5 +59,36 @@ def WiktionaryGlosses.get_glosses(lexical)
   return glosses
 end
 
+# {"pos":"noun","heads":[{"head":"χᾰλῑνός",
+# a={"pos"=>"noun", "heads"=>[{"head"=>"χᾰλῑνός", 
+
+def WiktionaryGlosses.macronized(lexical_possibly_unaccented)
+  # used by the macronize.rb script
+  # Input is a lemmatized form. If input doesn't have accents, an attempt will be made to disambiguate.
+  # Output is [found,macronized,err]. If there is no macronized string available, then found is false and an error message is in err.
+  ok,lexical,err = WiktionaryGlosses.disambiguate_unaccented_lemma(lexical_possibly_unaccented)
+  if !ok then return [false,nil,""] end
+  key = remove_macrons_and_breves(lexical).downcase
+  return [false,nil,"key #{lexical} not found"] if !(@@glosses.has_key?(key))
+  a = @@glosses[key]
+  return [false,nil,"no heads found for key #{lexical}"] if !(a.has_key?('heads'))
+  a['heads'].each { |x|
+    x.each_pair { |k,v|
+      if remove_macrons_and_breves(v)==lexical && v!=lexical then return [true,v,nil] end
+    }
+  }
+  return [false,nil,"no macronized head found for key #{key}, a=#{a}"]
+end
+
+def WiktionaryGlosses.disambiguate_unaccented_lemma(lexical_possibly_macronized)
+  # Allows convenience features where the user can type in words without accents and do a query, as in the macronize.rb script.
+  lexical = remove_macrons_and_breves(lexical_possibly_macronized)
+  unaccented = remove_accents(lexical)
+  if unaccented!=lexical then return [true,lexical,nil] end # doesn't need to be disambiguated
+  if !(@@unaccented_index.has_key?(unaccented)) then return [false,nil,"no accented entry found to match unaccented input #{lexical}"] end
+  a = @@unaccented_index[unaccented]
+  if a.length>1 then return [false,nil,"unaccented input #{lexical} is ambiguous, could be any of: #{a}"] end
+  return [true,@@unaccented_index[unaccented][0]]
+end
 
 end

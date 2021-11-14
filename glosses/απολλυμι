@@ -3,6 +3,7 @@
 // https://latin.stackexchange.com/questions/16778/omicron-sometimes-becoming-omega-in-conjugation-of-%e1%bc%80%cf%80%cf%8c%ce%bb%ce%bb%cf%85%ce%bc%ce%b9
 {
   "word":"ἀπόλλυμι",
+  "vowel_length":"ἀπόλλυ_μι",
   "princ":"ἀπολέσω,ἀπώλεσα",
   "medium":"destroy",
   "etym":"Intensified form of όλλυμι.",

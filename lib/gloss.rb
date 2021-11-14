@@ -17,6 +17,10 @@ optional:
 
 lexical
   E.g., for the word ἕλωμαι, lexical is αἱρέω.
+vowel_length
+  E.g., for νέκυς, this is νέκυ_ς. That is: for any doubtful vowel that is
+  phonemically long, we put an underbar after it. To convert from standard macronized
+  style to this style, use Gloss.macronized_to_underbar_style().
 
 pos ["verb","noun","adj","adv",...]
 short
@@ -118,7 +122,7 @@ def Gloss.validate(key)
   if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
   n = a.length
   mandatory_keys = ['word','medium']
-  allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem']
+  allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem','vowel_length']
   # Try to detect duplicate keys.
   allowed_keys.each { |key|
     if json.scan(/\"#{key}\"\s*:/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
@@ -133,9 +137,16 @@ def Gloss.validate(key)
       allowed_genders = ['m','f','n','m or f']
       if !(allowed_genders.to_set.include?(entry['gender'])) then return [true,"illegal value for gender, #{entry['gender']}, should be one of #{allowed_genders}"] end
     end
+    if entry.has_key?('vowel_length') then
+      macronized = entry['vowel_length'] # in a style like λύρα_, with underbars for doubtful vowels that are long
+      if macronized.gsub(/_/,'')!=entry['word'] then return [true,"macronized form #{macronized} doesn't make sense for word #{entry['word']}"] end
+      if macronized=~/(([^αιυ])_)/ then return [true,"macronized form #{macronized} contains #{$1}, but #{$2} isn't a doubtful vowel"] end
+    else
+      if entry['word']=~/υμι$/ then return [true,"no vowel_length entry for #{entry['word']}, should probably have one ending in υ_μι"] end
+    end
     entry.keys.each { |key|
       value = entry[key]
-      if value!=remove_macrons_and_breves(value) then return [true,"value contains macron or breve, #{value}"] end
+      if value!=remove_macrons_and_breves(value) then return [true,"value contains macron or breve, #{value}; macronization should be indicated only in the style like α_, not like ᾱ, and should be present only in the vowel_length field"] end
     }
     if alpha_compare(entry['word'],key)!=0 then return [true,"filename #{key} doesn't match word #{entry['word']} up to case and accents"] end
   }
@@ -161,5 +172,9 @@ def Gloss.word_to_key(s)
   return remove_accents(s).downcase.sub(/᾽/,'')
 end
 
+def Gloss.macronized_to_underbar_style(s)
+  x = s.gsub(/([ᾱῑῡ])/) { "#{remove_macrons_and_breves($1)}_" }
+  return remove_macrons_and_breves(x)
+end
 
 end

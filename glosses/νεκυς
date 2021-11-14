@@ -2,6 +2,7 @@
 // corpse, dead person, spirits of the dead, dead, deceased
 {
   "word":"νέκυς",
+  "vowel_length":"νέκυ_ς",
   "gender":"m",
   "genitive":"νέκυος",
   "medium":"corpse",

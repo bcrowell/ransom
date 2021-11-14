@@ -2,6 +2,7 @@
 // say, tell
 {
   "word":"μυθέομαι",
+  "vowel_length":"μυ_θέομαι",
   "princ":"μυθήσομαι,μυθησάμην",
   "medium":"say, tell"
 }
