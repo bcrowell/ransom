@@ -33,6 +33,9 @@ values, then simply don't include the key on the command line.
 =end
 
 def main
+  warnings = []
+  total_matches = 0
+  total_occurrences = 0
   indentation_spacing = 2
   file = "#{Dir.home}/Documents/programming/ransom/lemmas/homer_lemmas.json"
   homer = json_from_file_or_die(file)
@@ -43,11 +46,14 @@ def main
     end
   }
   if lemma.nil? then print "no lemma given\n"; exit(-1) end
+  if lemma=~/[a-zA-Z,\."\-]/ then print "lemma #{lemma} contains punctuation or Latin characters\n"; exit(-1) end
+  if lemma=~/ς./ then print "lemma #{lemma} contains ς in a non-final position\n"; exit(-1) end
   selector_strings = ARGV.dup
   selector_strings.delete(lemma)
   #print "lemma=#{lemma} selectors=#{selector_strings}\n"
   keys = []
   values = []
+  lemma_matches = []
   selector_strings.each { |s|
     key,val = s.split(/=/)
     if !($fields.include?(key)) then print "illegal key: #{key}\n"; exit(-1) end
@@ -71,6 +77,7 @@ def main
   homer_filtered = {}
   homer.each_pair { |inflected,data|
     next unless remove_accents(data[0])==remove_accents(lemma)
+    lemma_matches.push(data[0])
     homer_filtered[inflected] = data
     #print "data=#{data}\n"
   }
@@ -97,6 +104,7 @@ def main
       n_occurrences.push(data[3])
     }
     n_matches = matches.length
+    total_matches += n_matches
 
     indent = 0
     changed_past_here = false
@@ -112,10 +120,35 @@ def main
     if all_the_same_pos=~/^v+$/ then matches,n_occurrences=deredundantize_verb([matches,n_occurrences]) end # all verbs
     if n_matches>=1 then
       results=0.upto(matches.length-1).map { |i| "#{matches[i]} (#{n_occurrences[i]})"}.join(', ')
+      total_occurrences += n_occurrences.sum
       print " "*n_varying*indentation_spacing,results,"\n"
     end
     last_odo = odo
   }
+
+  lemma_matches = lemma_matches.uniq
+  if lemma_matches.length>0 && remove_accents(lemma)!=lemma && !lemma_matches.include?(lemma) then
+    warnings.push("The given lemma #{lemma} appears to be incorrectly accented compared to the matches: #{lemma_matches}")
+  end
+  if lemma_matches.length>0 then
+    if lemma_matches.length==1 && lemma_matches[0]==lemma then
+      print "The given lemma #{lemma} is an exact and unique match to the database, including accentuation.\n"
+    else
+      if lemma_matches.length==1 then
+        print "The given lemma is a unique match to: ",lemma_matches[0],"\n"
+      else
+        print "The given lemma matches: ",lemma_matches,"\n"
+      end
+    end
+  end
+
+  print "total matches: #{total_matches}, total occurrences: #{total_occurrences}\n"  
+  if warnings.length>0 then
+    print "**************************** WARNINGS *****************************\n"
+    warnings.each { |w|
+      print w,"\n"
+    }
+  end
 end
 
 def count_to_odometer(count,nvals)
