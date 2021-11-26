@@ -1,6 +1,8 @@
 {
-  "word":"ξένος",
+  "word":"ξεῖνος",
+  // Indexed by Perseus as ξένος, so leave the filename as is.
   "short":"stranger",
-  "medium":"guest-friend, host, stranger"
+  "medium":"guest-friend, host, stranger",
+  "notes":"The Attic form ξένος would be awkward metrically in forms like ξένῳ and ξένων. Cf. βροτός, θρόνος."
 }
       
