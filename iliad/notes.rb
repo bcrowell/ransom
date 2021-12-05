@@ -8,9 +8,10 @@ class IliadNotes
   }],
   ["1.6" , {
     'about_what'    => %q{δὴ},
-    'explain'       => %q{a specific moment in time},
+    'explain'       => %q{Anthon thinks that here this means a specific moment in time. Most translators read this line to be a description of when Zeus makes his decree. In an unusual interpretation, Hartsock takes it to mean that the poet is asking the muse to start telling the story at that point, rather than at its logical start with Helen's abduction. This would seem redundant.},
     'cite'          => "Anthon, p. 127"
   }],
+  // https://latin.stackexchange.com/questions/17341/iliad-1-6-when-they-first-stood-apart-in-strife-can-this-be-read-as-when-th
   ["1.9" , {
     'about_what'    => %q{Λητοῦς καὶ Διὸς υἱός},
     'explain'       => %q{Apollo}
@@ -18,6 +19,11 @@ class IliadNotes
   ["1.10" , {
     'about_what'    => %q{ἀνὰ},
     'explain'       => %q{+acc, here meaning throughout},
+    'cite'          => "Anthon, p. 128"
+  }],
+  ["1.16" , {
+    'about_what'    => %q{Ἀτρεΐδα δὲ μάλιστα δύω, κοσμήτορε λαῶν},
+    'explain'       => %q{referring to Agamemnon and Menelaus},
     'cite'          => "Anthon, p. 128"
   }],
   ["1.25" , {

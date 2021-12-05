@@ -11,6 +11,9 @@ the file is an array containing the two entries.
 mandatory keys:
 
 word
+  Normally this is  just the filename with accents added in. However, sometimes Project Perseus indexes a word under a form
+  like ξένος, while Homer uses some other form like ξείνος.
+
 medium
 
 optional:
@@ -148,7 +151,8 @@ def Gloss.validate(key)
       value = entry[key]
       if value!=remove_macrons_and_breves(value) then return [true,"value contains macron or breve, #{value}; macronization should be indicated only in the style like α_, not like ᾱ, and should be present only in the vowel_length field"] end
     }
-    if alpha_compare(entry['word'],key)!=0 then return [true,"filename #{key} doesn't match word #{entry['word']} up to case and accents"] end
+    #if alpha_compare(entry['word'],key)!=0 then return [true,"filename #{key} doesn't match word #{entry['word']} up to case and accents"] end
+    # no, we want this in cases like χενος
   }
   return [false,nil]
 end
