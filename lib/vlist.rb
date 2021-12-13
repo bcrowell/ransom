@@ -32,7 +32,7 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[])
+def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core_list:[])
   lemmas = json_from_file_or_die(lemmas_file)
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -75,6 +75,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
     next if did_lemma.has_key?(lemma)
     excl = false
     [lemma,word].each { |x| excl = excl || exclude_glosses.include?(remove_accents(x).downcase) }
+    # $stderr.print "excl=#{excl}, #{lemma}/#{word}\n" # qwe
     next if excl
     did_lemma[lemma] = 1
     rank = freq_rank[lemma]
@@ -82,6 +83,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
     is_3rd_decl = guess_whether_third_declension(word_raw,lemma,pos)
     is_epic = Epic_form.is(word_raw)
     difficult_to_recognize = (is_3rd_decl || is_epic) && !alpha_equal(word_raw,lemma)
+    next if core_list.include?(remove_accents(lemma).downcase) && ! difficult_to_recognize
     next unless rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize)
     misc = {}
     if is_3rd_decl then misc['is_3rd_decl']=true end
