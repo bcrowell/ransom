@@ -75,8 +75,12 @@ vocab_by_chapter = []
 %    stuff at end
 %=============================================================================
 
+\fancyhead[CE]{ΙΛΙΑΣ}
+\fancyhead[CO]{ΙΛΙΑΣ}
+\fancyhead[LO]{Grammar}
 \input{iliad/grammar}
-\twocolumn
+\fancyhead[LO]{Core vocabulary}
+\twocolumn[\formatlikechapter{Core vocabulary for Homer}]
 \input{iliad/core}
 \onecolumn
 
