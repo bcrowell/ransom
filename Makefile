@@ -53,3 +53,7 @@ figures:
 clean:
 	rm -f *~ *.aux *.log *.idx *.toc *.ilg *.bak *.toc $(BOOK).tex
 
+core:
+	mkdir -p help_gloss
+	ruby scripts/make_core.rb
+

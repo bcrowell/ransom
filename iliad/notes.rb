@@ -8,7 +8,7 @@ class IliadNotes
   }],
   ["1.6" , {
     'about_what'    => %q{δὴ},
-    'explain'       => %q{Anthon thinks that here this means a specific moment in time. Most translators read this line to be a description of when Zeus makes his decree. In an unusual interpretation, Hartsock takes it to mean that the poet is asking the muse to start telling the story at that point, rather than at its logical start with Helen's abduction. This would seem redundant.},
+    'explain'       => %q{Anthon thinks that here this word means at a specific moment in time. The line as a whole may be describing the point when the muse is asked to start singing, or the time when Zeus formulated his plan.},
     'cite'          => "Anthon, p. 127"
   }],
   // https://latin.stackexchange.com/questions/17341/iliad-1-6-when-they-first-stood-apart-in-strife-can-this-be-read-as-when-th
@@ -50,6 +50,10 @@ class IliadNotes
     'about_what'    => %q{πολυφλοίσβοιο},
     'explain'       => %q{2-2 adjective, archaic form of the genitive},
     'cite'          => "Smyth 230, http://www.perseus.tufts.edu/hopper/text?doc=Perseus%3Atext%3A1999.04.0007%3Apart%3D2%3Achapter%3D13%3Asection%3D15"
+  }],
+  ["1.34" , {
+    'about_what'    => %q{ἠρᾶθ᾽},
+    'explain'       => %q{elided from ἠρᾶτο, contracted imperfect of ἀράομαι}
   }],
   ["1.39" , {
     'about_what'    => %q{Σμινθεῦ},
@@ -103,6 +107,10 @@ class IliadNotes
     'about_what'    => %q{ἕλωμαι},
     'explain'       => %q{Middle voice of εἷλον, aorist of αἱρέω, to take, seize. The middle suggests that the taking is a personal choice or for oneself. Cognate with ἑλώριον, booty, spoils.},
     'cite'          => "https://en.wiktionary.org/wiki/%E1%BC%94%CE%BF%CE%B9%CE%BA%CE%B1"
+  }],
+  ["1.141" , {
+    'about_what'    => %q{ἅλα δῖαν},
+    'explain'       => %q{a set phrase, divine or bright sea}
   }],
   ["1.371" , {
     'about_what'    => %q{},
