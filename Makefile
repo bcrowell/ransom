@@ -5,12 +5,12 @@ GENERIC = "pos_file":"$(POS)"
 # ... If I do this, then error messages freeze things.
 COMPILE = xelatex $(BOOK)
 
-.PHONY: clean default check check_glosses
+.PHONY: clean default check check_glosses core
 
 default:
 	@make --no-print-directory --assume-new iliad.rbtex $(BOOK).pdf
 
-$(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex
+$(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@rm -f warnings help_gloss/__links.html
 	@make figures # renders any figure whose pdf is older than its svg
 	@./fruby $(BOOK).rbtex '{$(GENERIC),"clean":true}' >$(BOOK).tex
@@ -53,7 +53,17 @@ figures:
 clean:
 	rm -f *~ *.aux *.log *.idx *.toc *.ilg *.bak *.toc $(BOOK).tex
 
-core:
+core: core/homer.json
+	#
+
+core/homer.json:
 	mkdir -p help_gloss
-	ruby scripts/make_core.rb
+	mkdir -p core
+	ruby scripts/make_core.rb >core/homer.json
+
+core_tex: iliad/core.tex
+	#
+
+iliad/core.tex: core/homer.json
+	ruby scripts/make_core_tex.rb >iliad/core.tex
 

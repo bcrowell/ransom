@@ -11,7 +11,7 @@ class IliadNotes
     'explain'       => %q{Anthon thinks that here this word means at a specific moment in time. The line as a whole may be describing the point when the muse is asked to start singing, or the time when Zeus formulated his plan.},
     'cite'          => "Anthon, p. 127"
   }],
-  // https://latin.stackexchange.com/questions/17341/iliad-1-6-when-they-first-stood-apart-in-strife-can-this-be-read-as-when-th
+  # https://latin.stackexchange.com/questions/17341/iliad-1-6-when-they-first-stood-apart-in-strife-can-this-be-read-as-when-th
   ["1.9" , {
     'about_what'    => %q{Λητοῦς καὶ Διὸς υἱός},
     'explain'       => %q{Apollo}
