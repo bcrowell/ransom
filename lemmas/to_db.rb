@@ -1,5 +1,7 @@
 require 'json'
 require 'sdbm' # part of the standard ruby distribution, https://en.wikipedia.org/wiki/DBM_(computing)
+require "../lib/string_util.rb"
+require "../lib/file_util.rb"
 
 log_file = "homer_lemmas.log"
 json_file = "homer_lemmas.json"
@@ -20,6 +22,7 @@ end
 table = {}
 # intermediate format, hash of lists of entries of the format [lemma,lemma_number,pos,count]
 $stdin.each_line { |line|
+  line = x=remove_macrons_and_breves(line)
   next unless line=~/[[:alpha:]]/
   line.sub!(/\n/,'')
   a = line.split(/,/)

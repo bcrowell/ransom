@@ -9,6 +9,23 @@ reading the json file is actually pretty efficient.
 The file homer_lemmas.json is created by to_db.rb, and comments in that program
 define its format.
 
+===================== new =====================
+git clone https://github.com/PerseusDL/treebank_data
+cd treebank_data/v2.1/Greek/texts/
+in file tlg0012.tlg001.perseus-grc1.tb.xml
+    <sentence subdoc="2.217" id="2274577" document_id="urn:cts:greekLit:tlg0012.tlg001.perseus-grc1">
+... this refers to Iliad 2.217
+File tlg0012.tlg001.perseus-grc1.tb.xml starts with Iliad book 1.
+Subdocs are sorted in string order, so book 10 comes before book 2.
+This file seems to contain the whole Iliad.
+tlg0012.tlg001 = Iliad (see https://github.com/PerseusDL/canonical-greekLit/blob/master/data/tlg0012/tlg001/tlg0012.tlg001.perseus-eng3.xml )
+tlg0012.tlg002 = Odyssey (see https://github.com/PerseusDL/canonical-greekLit/blob/master/data/tlg0012/tlg001/tlg0012.tlg001.perseus-eng3.xml )
+cat homer_lemmas.csv | ruby to_db.rb
+...writes homer_lemmas.json ; doesn't write sdbm file because I have that commented out; removes macrons and breves
+ruby make_freq.rb >homer_freq.json
+
+
+===================== old =====================
 Oops, in the following I used their version 1, but later versions have already been converted
 to unicode; see treebank_data/v2.1/Greek/texts/
 

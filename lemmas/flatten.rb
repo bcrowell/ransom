@@ -5,6 +5,7 @@ def die(message)
 end
 
 def clean_up_greek(s)
+  # No longer using this. This was for when I mistakenly used old beta code version.
   # Some cases where cltk fails to convert beta code correctly, maybe because the beta code syntax wasn't legal.
   # https://github.com/PerseusDL/treebank_data/issues/30
   s = s.sub(/\((.)/) { $1.tr("αειουηω","ἁἑἱὁὑἡὡ") }
@@ -24,14 +25,14 @@ end
 $text,$book,$near_line = nil,nil,nil
 
 $stdin.each_line { |line|
-  if line=~/<sentence/ then
-    if line=~/Perseus:text:1999.01.0133/ then $text="iliad" end
-    if line=~/Perseus:text:1999.01.0135/ then $text="odyssey" end
-    if line=~/book=(\d+)/ then $book=$1 end
-    if line=~/card=(\d+)/ then $near_line=$1 end
-    #print "text=#{$text}, $book=#{book}, line=#{$near_line}\n"
+    if line=~/urn:cts:greekLit:tlg0012.tlg001.perseus-grc1.tb/ then $text="iliad" end
+    if line=~/urn:cts:greekLit:tlg0012.tlg002.perseus-grc1.tb/ then $text="odyssey" end
+  if line=~/<sentence/ && line=~/subdoc="(\d+)\.(\d+)/ then
+    #     <sentence subdoc="1.1-1.2" id="2185541" document_id="urn:cts:greekLit:tlg0012.tlg002.perseus-grc1">
+    $book,$near_line = $1,$2
+    $stderr.print "text=#{$text}, book=#{$book}, line=#{$near_line}\n"
   end
-  if line=~/<word/ then
+  if line=~/<word/ && ! (line=~/(insertion_id|artificial)/) then
     count = 0
     data = {}
     ["form","lemma","postag"].each { |tag|
@@ -42,8 +43,8 @@ $stdin.each_line { |line|
     if count<3 then die("only #{count} tags found in line #{line}") end
     next unless form=~/[[:alpha:]]/ && lemma=~/[[:alpha:]]/
     if form=~/,/ || lemma=~/,/ || pos=~/,/ then die("oh no, a comma in line #{line}") end
-    form = clean_up_greek(form)
-    lemma = clean_up_greek(lemma)
+    #form = clean_up_greek(form)
+    #lemma = clean_up_greek(lemma)
     which_lemma = ''
     if lemma=~/(\d+)$/ then which_lemma=$1 end
     lemma.gsub!(/(\d+)$/,'')
