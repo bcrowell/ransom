@@ -1,3 +1,4 @@
+=== about the data ===
 based on project perseus data
 project perseus has an unclear license; homepage says cc-by-sa, but file itself says nc; did they change licenses?
   https://github.com/PerseusDL/treebank_data/issues/29
@@ -8,34 +9,22 @@ reading the json file is actually pretty efficient.
 
 The file homer_lemmas.json is created by to_db.rb, and comments in that program
 define its format.
-
-===================== new =====================
-git clone https://github.com/PerseusDL/treebank_data
-cd treebank_data/v2.1/Greek/texts/
-in file tlg0012.tlg001.perseus-grc1.tb.xml
-    <sentence subdoc="2.217" id="2274577" document_id="urn:cts:greekLit:tlg0012.tlg001.perseus-grc1">
-... this refers to Iliad 2.217
 File tlg0012.tlg001.perseus-grc1.tb.xml starts with Iliad book 1.
 Subdocs are sorted in string order, so book 10 comes before book 2.
 This file seems to contain the whole Iliad.
 tlg0012.tlg001 = Iliad (see https://github.com/PerseusDL/canonical-greekLit/blob/master/data/tlg0012/tlg001/tlg0012.tlg001.perseus-eng3.xml )
 tlg0012.tlg002 = Odyssey (see https://github.com/PerseusDL/canonical-greekLit/blob/master/data/tlg0012/tlg001/tlg0012.tlg001.perseus-eng3.xml )
-cat homer_lemmas.csv | ruby to_db.rb
-...writes homer_lemmas.json ; doesn't write sdbm file because I have that commented out; removes macrons and breves
-ruby make_freq.rb >homer_freq.json
+in file tlg0012.tlg001.perseus-grc1.tb.xml
+    <sentence subdoc="2.217" id="2274577" document_id="urn:cts:greekLit:tlg0012.tlg001.perseus-grc1">
+... this refers to Iliad 2.217
+      <word id="6" form="οὐλομένην" lemma="οὐλόμενος" postag="a-s---fa-" head="1" relation="ATR" cite="urn:cts:greekLit:tlg0012.tlg001:1.2"/>
+...the 1.2 is book and line
+=== building ===
 
 
-===================== old =====================
-Oops, in the following I used their version 1, but later versions have already been converted
-to unicode; see treebank_data/v2.1/Greek/texts/
-
+go to ~/a, which is the scratch directory referenced in the makefile
 git clone https://github.com/PerseusDL/treebank_data
-head -207651 v1/greek/data/agdt-1.7.xml | tail -170456 >~/iliad_perseus.xml
-head -346041 v1/greek/data/agdt-1.7.xml | tail -138389 >~/odyssey_perseus.xml
-python3 beta_to_unicode.py <iliad_perseus.xml >iliad_unicode.xml
-python3 beta_to_unicode.py <odyssey_perseus.xml >odyssey_unicode.xml
-cat iliad_unicode.xml odyssey_unicode.xml | ruby flatten.rb >homer_lemmas.csv
-cat homer_lemmas.csv | ruby to_db.rb
-ruby make_freq.rb >homer_freq.json
-ruby -e 'require "./lib/string_util.rb"; require "./lib/file_util.rb"; require "json"; x=remove_macrons_and_breves(slurp_file("lemmas/homer_lemmas.json")); print x' >a.a ... and replace
-ruby -e 'require "./lib/string_util.rb"; require "./lib/file_util.rb"; require "json"; x=remove_macrons_and_breves(slurp_file("lemmas/homer_freq.json")); print x' >a.a ... and replace
+come back to this directory
+make
+
+

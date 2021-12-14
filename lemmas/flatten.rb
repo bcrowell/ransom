@@ -22,34 +22,35 @@ def clean_up_greek(s)
   return s
 end
 
-$text,$book,$near_line = nil,nil,nil
+$text,$book,$line = nil,nil,nil
 
 $stdin.each_line { |line|
-    if line=~/urn:cts:greekLit:tlg0012.tlg001.perseus-grc1.tb/ then $text="iliad" end
-    if line=~/urn:cts:greekLit:tlg0012.tlg002.perseus-grc1.tb/ then $text="odyssey" end
+  if line=~/urn:cts:greekLit:tlg0012.tlg001.perseus-grc1.tb/ then $text="iliad" end
+  if line=~/urn:cts:greekLit:tlg0012.tlg002.perseus-grc1.tb/ then $text="odyssey" end
   if line=~/<sentence/ && line=~/subdoc="(\d+)\.(\d+)/ then
     #     <sentence subdoc="1.1-1.2" id="2185541" document_id="urn:cts:greekLit:tlg0012.tlg002.perseus-grc1">
-    $book,$near_line = $1,$2
-    $stderr.print "text=#{$text}, book=#{$book}, line=#{$near_line}\n"
+    $book,$line = $1,$2
+    $stderr.print "text=#{$text}, book=#{$book}, line=#{$line}\n"
   end
   if line=~/<word/ && ! (line=~/(insertion_id|artificial)/) then
     count = 0
     data = {}
-    ["form","lemma","postag"].each { |tag|
+    ["form","lemma","postag","cite"].each { |tag|
       if line=~/#{tag}="([^"]*)"/ then data[tag]=$1; count+=1 end
     }
-    form,lemma,pos = [data['form'],data['lemma'],data['postag']]
+    form,lemma,pos,cite = [data['form'],data['lemma'],data['postag'],data['cite']]
     next if form=='' || lemma=~/πυνξ\d/
     if count<3 then die("only #{count} tags found in line #{line}") end
     next unless form=~/[[:alpha:]]/ && lemma=~/[[:alpha:]]/
     if form=~/,/ || lemma=~/,/ || pos=~/,/ then die("oh no, a comma in line #{line}") end
     #form = clean_up_greek(form)
     #lemma = clean_up_greek(lemma)
+    if cite=~/(\d+)\.(\d+)$/ then $book,$line = $1,$2 end
     which_lemma = ''
     if lemma=~/(\d+)$/ then which_lemma=$1 end
     lemma.gsub!(/(\d+)$/,'')
     next if lemma=~/\?/
-    a = [$text,$book,$near_line,form,lemma,which_lemma,pos]
+    a = [$text,$book,$line,form,lemma,which_lemma,pos]
     print a.join(","),"\n"
   end
 }
