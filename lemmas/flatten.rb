@@ -39,7 +39,7 @@ $stdin.each_line { |line|
       if line=~/#{tag}="([^"]*)"/ then data[tag]=$1; count+=1 end
     }
     form,lemma,pos,cite = [data['form'],data['lemma'],data['postag'],data['cite']]
-    next if form=='' || lemma=~/πυνξ\d/
+    next if form=='' || lemma=~/πυνξ\d/ || lemma=~/\&/
     if count<3 then die("only #{count} tags found in line #{line}") end
     next unless form=~/[[:alpha:]]/ && lemma=~/[[:alpha:]]/
     if form=~/,/ || lemma=~/,/ || pos=~/,/ then die("oh no, a comma in line #{line}") end

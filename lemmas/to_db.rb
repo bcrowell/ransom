@@ -13,11 +13,22 @@ def die(message)
   exit(-1)
 end
 
+
 # input is csv:
 # iliad,1,1,ἄειδε,ἀείδω,1,v2spma---
 # output is a hash where key is a word and value is [lemma,lemma_number,pos,count,if_ambiguous,ambig].
 # If if_ambiguous is true, then ambig is a list of possible lemmas, each in the format [lemma,lemma_number,pos,count],
 # but the most common lemma is the one listed in front.
+
+def nearly_identical_pos(a,b)
+  # Sometimes the same lemmatization is recorded with slightly different POS tags, e.g.:
+  #   ῥίγιον,,a-s---nn-
+  #   ῥίγιον,,a-s---nnc
+  #   ρίγιον,,a-s---n-c ... but note the lack of a rough breathing mark on this one ...!?!?
+  if a==b then return true end
+  if a[0,7]!=b[0,7] then return false end
+  return (a[7]==b[7] || a[7]=='-' || b[7]=='-') && (a[8]==b[8] || a[8]=='-' || b[8]=='-')
+end
 
 table = {}
 # intermediate format, hash of lists of entries of the format [lemma,lemma_number,pos,count]
@@ -34,10 +45,11 @@ $stdin.each_line { |line|
     j = 0
     table[word].each { |x|
       lemma2,lemma_number2,pos2 = x
-      if lemma2.downcase==lemma.downcase && lemma_number2==lemma_number then seen_before=j; break end
-      # Don't require POS to be the same. Sometimes the same lemmatization is recorded with slightly different POS tags, e.g.:
-      #   ῥίγιον,,a-s---nn-
-      #   ῥίγιον,,a-s---nnc
+      same_pos = nearly_identical_pos(pos,pos2)
+      if lemma2.downcase==lemma.downcase && lemma_number2==lemma_number && same_pos then
+        seen_before=j
+        break
+      end
       # Don't require case to be the same, e.g., they have both αἰνείας and Αἰνείας, which are just redundant.
       j += 1
     }
