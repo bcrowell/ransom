@@ -1,5 +1,11 @@
+require "set"
+
 class MultiString
   # A MultiString object represents a string that can exist in multiple forms, e.g., blinked/blinking.
+  # ruby -e "require './multistring.rb'; x=MultiString.new('hello'); y=MultiString.new('louder'); print x.bag_distance(y)"
+  # ... outputs 3, because udr in second string are not in first string
+  # ruby -e "require './multistring.rb'; x=MultiString.new([['quiet','loud'],['ly']]); y=MultiString.new('louder'); print x.bag_distance(y)"
+  # ... outputs 2, because loudly and louder have a bag distance of 2
   def initialize(stuff)
     # stuff can be either a string or a list of lists such as [["blink"],["ed","ing"]]
     if stuff.kind_of?(String) then @data=[[stuff]] else @data=stuff end
@@ -16,11 +22,10 @@ class MultiString
   def nth(n)
     # Input n ranges from 0 to complexity-1. Gives the nth string that can result from the multistring.
     indices = []
-    nn = shallow_clone(n)
     @data.each { |seg|
       choices = seg.length
-      indices.push(nn%choices)
-      nn = nn/choices
+      indices.push(n%choices)
+      n = n/choices
     }
     result = ''
     k = 0
@@ -47,8 +52,8 @@ class MultiString
   end
   def MultiString.atomic_bag_distance(p,q)
     # The distance between two atomic strings p and q is the number of characters in p not appearing in q, or vice versa, whichever is greater.
-    ps = ultiString.string_to_set_of_chars(p)
-    qs = ultiString.string_to_set_of_chars(q)
+    ps = MultiString.string_to_set_of_chars(p)
+    qs = MultiString.string_to_set_of_chars(q)
     return [(ps-qs).length,(qs-ps).length].max
   end
   def MultiString.string_to_set_of_chars(s)
