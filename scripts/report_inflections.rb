@@ -178,19 +178,39 @@ def deredundantize_verb(x)
   0.upto(l.length-1) { |i|
     0.upto(l.length-1) { |j|
       next if i==j
-      if remove_accents(l[i])==remove_accents(l[j]+"ν") && remove_accents(l[j])=~/ε$/ then
+      conservatism = 3
+      if verbs_redundant(l[i],l[j],conservatism) then
         return deredundantize_verb(deredundantize_helper(l,n_occurrences,i,l[j]))
-      end
-      # if remove_accents(l[i])==remove_accents("ε"+l[j]) then return deredundantize_verb(deredundantize_helper(l,n_occurrences,i,l[j])) end
-      # ... don't consider them redundant if they differ by augment; sometimes I want to know whether a verb takes the augment or not more frequently
-      if l[j]=~/(.*)᾽/ then
-        stem = $1
-        m = stem.length
-        if l[i][0,m]==stem then return deredundantize_verb(deredundantize_helper(l,n_occurrences,i,l[j])) end
       end
     }
   }
   return [l,n_occurrences]
+end
+
+def verbs_redundant(u,v,conservatism)
+  return (verbs_redundant_helper(u,v,conservatism) || verbs_redundant_helper(v,u,conservatism))
+end
+
+def verbs_redundant_helper(u_raw,v_raw,conservatism)
+  u = remove_accents(u_raw)
+  v = remove_accents(v_raw)
+  if conservatism<=4 then
+    if u==v then return true end
+  end
+  if conservatism<=3 then
+    if v=~/(.*)᾽/ then
+      stem = $1
+      m = stem.length
+      if u[0,m]==stem then return true end
+    end
+  end
+  if conservatism<=2 then # disregard nu-movable
+    if u==v+"ν" && v=~/ε$/ then return true end
+  end
+  if conservatism<=1 then # disregard augment
+    if u=="ε"+v then return true end
+  end
+  return false
 end
 
 def deredundantize_helper(array1,array2,i_keep,value_to_delete)
