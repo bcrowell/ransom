@@ -79,7 +79,6 @@ def main
     next unless remove_accents(data[0])==remove_accents(lemma)
     lemma_matches.push(data[0])
     homer_filtered[inflected] = data
-    #print "data=#{data}\n"
   }
   last_odo = Array.new(n, -1)
   0.upto(total_odometer_values-1) { |o|
@@ -117,7 +116,10 @@ def main
       indent +=1 
     }
 
-    if all_the_same_pos=~/^v+$/ then matches,n_occurrences=deredundantize_verb([matches,n_occurrences]) end # all verbs
+    if true then
+      # Not 100% reliable.
+      if all_the_same_pos=~/^v+$/ then matches,n_occurrences=deredundantize_verb([matches,n_occurrences]) end # all verbs
+    end
     if n_matches>=1 then
       results=0.upto(matches.length-1).map { |i| "#{matches[i]} (#{n_occurrences[i]})"}.join(', ')
       total_occurrences += n_occurrences.sum
@@ -169,21 +171,24 @@ def deredundantize_verb(x)
   0.upto(l.length-1) { |i|
     0.upto(l.length-1) { |j|
       next if i==j
-      if remove_accents(l[i])==remove_accents(l[j]+"ν") then return deredundantize_verb(deredundantize_helper(l,n_occurrences,l[j])) end
-      if remove_accents(l[i])==remove_accents("ε"+l[j]) then return deredundantize_verb(deredundantize_helper(l,n_occurrences,l[j])) end
+      if remove_accents(l[i])==remove_accents(l[j]+"ν") && remove_accents(l[j])=~/ε$/ then
+        return deredundantize_verb(deredundantize_helper(l,n_occurrences,i,l[j]))
+      end
+      if remove_accents(l[i])==remove_accents("ε"+l[j]) then return deredundantize_verb(deredundantize_helper(l,n_occurrences,i,l[j])) end
       if l[j]=~/(.*)᾽/ then
         stem = $1
         m = stem.length
-        if l[i][0,m]==stem then return deredundantize_verb(deredundantize_helper(l,n_occurrences,l[j])) end
+        if l[i][0,m]==stem then return deredundantize_verb(deredundantize_helper(l,n_occurrences,i,l[j])) end
       end
     }
   }
   return [l,n_occurrences]
 end
 
-def deredundantize_helper(array1,array2,value_to_delete)
+def deredundantize_helper(array1,array2,i_keep,value_to_delete)
   i = array1.index(value_to_delete)
   if i.nil? then return [array1,array2] end
+  array2[i_keep] += array2[i]
   a1 = array1.dup
   a2 = array2.dup
   a1.delete_at(i)
