@@ -11,6 +11,7 @@ require 'set'
 
 require_relative "../lib/file_util"
 require_relative "../lib/string_util"
+require_relative "../lib/treebank"
 require_relative "../lib/epos"
 require_relative "../lib/vlist"
 require_relative "../lib/gloss"
@@ -19,8 +20,7 @@ require_relative "nouns"
 
 text_file = ARGV[0]
 
-lemmas_file = "../lemmas/homer_lemmas.json"
-lemmas = json_from_file_or_die(lemmas_file)
+lemmas = TreeBank.new('homer').lemmas
 
 words = nil
 File.open(text_file,'r') { |f|

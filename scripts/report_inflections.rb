@@ -4,6 +4,7 @@
 lib_dir = "lib"
 require_relative "../lib/file_util"
 require_relative "../lib/string_util"
+require_relative "../lib/treebank"
 require 'json'
 
 # https://github.com/cltk/greek_treebank_perseus
@@ -37,8 +38,7 @@ def main
   total_matches = 0
   total_occurrences = 0
   indentation_spacing = 2
-  file = "#{Dir.home}/Documents/programming/ransom/lemmas/homer_lemmas.json"
-  homer = json_from_file_or_die(file)
+  homer = TreeBank.new('homer').lemmas
   lemma = nil
   ARGV.each { |arg|
     if !(arg=~/=/) then

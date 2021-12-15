@@ -12,6 +12,7 @@ require 'set'
 require_relative "../lib/gloss"
 require_relative "../lib/file_util"
 require_relative "../lib/string_util"
+require_relative '../lib/treebank.rb'
 
 w = ARGV[0]
 
@@ -24,4 +25,4 @@ else
   print "File #{key} does not exist.\n"
 end
 
-print `grep \\"#{w}\\" ../lemmas/homer_lemmas.json | head -3`
+print `grep \\"#{w}\\" #{TreeBank.new('homer').lemmas_file} | head -3`

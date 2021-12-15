@@ -29,6 +29,7 @@ require 'set'
 require_relative "../lib/gloss"
 require_relative "../lib/file_util"
 require_relative "../lib/string_util"
+require_relative "../lib/treebank"
 
 all_glossed_lemmas = Gloss.all_lemmas().to_set
 
@@ -97,7 +98,7 @@ IO.foreach(vocab_list_file) {|line|
   vocab_list.push(line.sub(/\s+/,''))
 }
 
-x = json_from_file_or_stdin_or_die("lemmas/homer_lemmas.json")
+x = Treebank.new('homer').lemmas
 cards = {}
 x.each { |word,data|
   lemma,glub1,pos,count,if_ambiguous,ambig = data

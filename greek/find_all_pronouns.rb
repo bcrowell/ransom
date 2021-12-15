@@ -1,6 +1,7 @@
 require 'json'
 require_relative "../lib/file_util"
 require_relative "../lib/string_util"
+require_relative "../lib/treebank"
 
 
 =begin
@@ -30,7 +31,7 @@ require_relative "../lib/string_util"
 
 =end
 
-x = json_from_file_or_stdin_or_die("../lemmas/homer_lemmas.json")
+x = TreeBank.new('homer').lemmas
 
 a = []
 x.each { |word,data|

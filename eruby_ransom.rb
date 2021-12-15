@@ -3,6 +3,7 @@ require 'sdbm'
 require 'set'
 require_relative "lib/file_util"
 require_relative "lib/string_util"
+require_relative "lib/treebank"
 require_relative "lib/epos"
 require_relative "lib/vlist"
 require_relative "lib/gloss"
@@ -284,7 +285,7 @@ class Patch_names
 end
 
 class Lemmatize
-  @@lemmas = json_from_file_or_die("lemmas/homer_lemmas.json")
+  @@lemmas = TreeBank.new('homer').lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
   def Lemmatize.lemmatize(word)

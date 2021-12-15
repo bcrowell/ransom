@@ -2,7 +2,9 @@
 // to hear, listen to [+genitive and participle = someone doing something],
 {
   "word":"κλύω",
+  "princ":",ἔκλυον",
   "medium":"hear, listen to",
+  "long":"Homer uses only the imperfect and aorist. Imperatives are sometimes reduplicated, sometimes not. The imperative κέκλυτε, 'hear me!,' is common. The plural indicative aorist forms are sometimes unaugmented or reduplicated: κέκλυτε, κλύον.",
   "cog":"κλέος"
 }
       

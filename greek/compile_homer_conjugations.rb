@@ -11,11 +11,12 @@ members if there is more than possible way to inflect the verb for the desired f
 require_relative '../lib/string_util.rb'
 require_relative '../lib/file_util.rb'
 require_relative '../lib/string_util.rb'
+require_relative '../lib/treebank.rb'
 require 'json'
 
 def main
 
-a = json_from_file_or_die("../lemmas/homer_lemmas.json")
+a = Treebank.new('homer').lemmas
 
 # See comments in to_db.rb for explanation of format.
 # typical entry when there's no ambiguity:

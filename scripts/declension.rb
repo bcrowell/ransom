@@ -1,13 +1,11 @@
 require "json"
+require_relative "../lib/treebank"
 
 this_lemma = ARGV[0]
 print "this lemma=#{this_lemma}\n"
 exit(-1)
 
-lemmas = nil
-File.open("../lemmas/homer_lemmas.json","r") { |f| 
-  lemmas=JSON.parse(f.gets(nil))
-}
+lemmas = TreeBank.new('homer').lemmas
 
 # typical entry when there's no ambiguity:
 #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
