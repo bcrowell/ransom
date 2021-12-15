@@ -78,7 +78,12 @@ def main
   homer.each_pair { |inflected,data|
     next unless remove_accents(data[0])==remove_accents(lemma)
     lemma_matches.push(data[0])
-    homer_filtered[inflected] = data
+    ambiguous = data[4]
+    if !ambiguous then
+      homer_filtered[inflected] = [data]
+    else
+      homer_filtered[inflected] = data[5]
+    end
   }
   last_odo = Array.new(n, -1)
   0.upto(total_odometer_values-1) { |o|
@@ -87,20 +92,22 @@ def main
     matches = []
     n_occurrences = []
     all_the_same_pos = ''
-    homer_filtered.each_pair { |inflected,data|
-      values_for_this_form = data[2].chars
-      match = true
-      0.upto(keys.length-1) { |i|
-        k = $fields.index(keys[i])
-        v = values_for_this_form[k]
-        #if values[i][odo[i]] != v then print "#{inflected}, k=#{k}, #{data[2]}, i=#{i}, odo=#{odo}, failed because #{values[i][odo[i]]} != #{v}\n" end
-        if values[i][odo[i]] != v then match=false; break end
+    homer_filtered.each_pair { |inflected,ambig|
+      ambig.each { |data|
+        values_for_this_form = data[2].chars
+        match = true
+        0.upto(keys.length-1) { |i|
+          k = $fields.index(keys[i])
+          v = values_for_this_form[k]
+          #if values[i][odo[i]] != v then print "#{inflected}, k=#{k}, #{data[2]}, i=#{i}, odo=#{odo}, failed because #{values[i][odo[i]]} != #{v}\n" end
+          if values[i][odo[i]] != v then match=false; break end
+        }
+        next if !match
+        part_of_speech = values_for_this_form[0] # e.g., 'v' if it's a verb
+        all_the_same_pos = all_the_same_pos+part_of_speech
+        matches.push(inflected)
+        n_occurrences.push(data[3])
       }
-      next if !match
-      part_of_speech = values_for_this_form[0] # e.g., 'v' if it's a verb
-      all_the_same_pos = all_the_same_pos+part_of_speech
-      matches.push(inflected)
-      n_occurrences.push(data[3])
     }
     n_matches = matches.length
     total_matches += n_matches
@@ -174,7 +181,8 @@ def deredundantize_verb(x)
       if remove_accents(l[i])==remove_accents(l[j]+"ν") && remove_accents(l[j])=~/ε$/ then
         return deredundantize_verb(deredundantize_helper(l,n_occurrences,i,l[j]))
       end
-      if remove_accents(l[i])==remove_accents("ε"+l[j]) then return deredundantize_verb(deredundantize_helper(l,n_occurrences,i,l[j])) end
+      # if remove_accents(l[i])==remove_accents("ε"+l[j]) then return deredundantize_verb(deredundantize_helper(l,n_occurrences,i,l[j])) end
+      # ... don't consider them redundant if they differ by augment; sometimes I want to know whether a verb takes the augment or not more frequently
       if l[j]=~/(.*)᾽/ then
         stem = $1
         m = stem.length
