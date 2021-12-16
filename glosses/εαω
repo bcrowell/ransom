@@ -1,11 +1,11 @@
 {
-  "word":"ἐάω",
-  "princ":"ἐάσω,εἴασα",
-  "short":"let",
-  "medium":"let someone do something (+acc+inf)",
-  "long":"let someone do something (+acc+inf); grant, agree, let go",
-  "notes":"Homer has subjunctive ἐάσομεν in place of ἐάσωμεν.",
-  "cog":"vacation, void",
-  "etym":"PIE h1weh2, to leave, abandon, give out. As is often the case, Latin v is missing in the Greek form."
+  "word": "ἐάω",
+  "princ": "ἐάσω,εἴασα",
+  "short": "let",
+  "medium": "let someone do something (+acc+inf)",
+  "long": "let someone do something (+acc+inf); grant, agree, let go",
+  "notes": "Homer has subjunctive ἐάσομεν in place of ἐάσωμεν.",
+  "cog": "vacation, void",
+  "etym": "PIE h1weh2, to leave, abandon, give out. As is often the case, Latin v is missing in the Greek form.",
+  "aorist_difficult_to_recognize": 1
 }
-      

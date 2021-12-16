@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/ἐφίημι https://logeion.uchicago.edu/ἐφίημι
-// send to, let fly, lay hands on, incite, bring, impose (troubles etc. upon someone), enjoin upon, command
 {
-  "word":"ἐφίημι",
-  "princ":"ἐφήσω,ἐφῆκα",
-  "medium":"send to, let fly"
+  "word": "ἐφίημι",
+  "princ": "ἐφήσω,ἐφῆκα",
+  "medium": "send to, let fly",
+  "aorist_difficult_to_recognize": 1
 }
-      

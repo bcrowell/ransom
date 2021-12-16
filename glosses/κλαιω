@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/κλαίω https://logeion.uchicago.edu/κλαίω
-// first-person singular future indicative active of κλείω (kleíō)
 {
-  "word":"κλαίω",
-  "princ":",κλαῦσα",
-  "medium":"weep"
+  "word": "κλαίω",
+  "princ": ",κλαῦσα",
+  "medium": "weep",
+  "aorist_difficult_to_recognize": 1
 }
-      

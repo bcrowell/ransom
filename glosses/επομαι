@@ -1,10 +1,8 @@
-// https://en.wiktionary.org/wiki/ἕπομαι https://logeion.uchicago.edu/ἕπομαι
-// follow, obey, stand by, support, help, attend, escort, pursue, keep pace with, come near, approach, cling, stick, belong to, am inseparable from, follow suit, agree with, follow, result, am a consequence of, understand
 {
-  "word":"ἕπομαι",
-  "medium":"follow, support",
-  "princ":"ἕψομαι,ἑσπόμην",
-  "cog":"sequel,social",
-  "etym":"PIE sekw, 'follow,' as in sequel. In a form like sekwo, an s at the beginning of a word changes regularly to h in Greek, and kwo becomes po. Forms like ἑσπόμην and σπέσθαι are not well explained."
+  "word": "ἕπομαι",
+  "medium": "follow, support",
+  "princ": "ἕψομαι,ἑσπόμην",
+  "cog": "sequel,social",
+  "etym": "PIE sekw, 'follow,' as in sequel. In a form like sekwo, an s at the beginning of a word changes regularly to h in Greek, and kwo becomes po. Forms like ἑσπόμην and σπέσθαι are not well explained.",
+  "aorist_difficult_to_recognize": 1
 }
-      

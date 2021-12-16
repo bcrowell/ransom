@@ -1,13 +1,10 @@
-// https://en.wiktionary.org/wiki/βαίνω
-// to go, step, move on foot, to mount (a chariot), to depart, go away, to die, perfect βέβηκα (bébēka): (intransitive) to stand, be somewhere, to be, perfect βέβηκα (bébēka): (intransitive) to stand, be somewhere, εὖ (eû) βεβηκώς (bebēkṓs) well off, perfect βέβηκα (bébēka): (intransitive) to stand, be somewhere, to stand on a base, future βήσω (bḗsō) and aorist ἔβησα (ébēsa): (causative) to make someone dismount
 {
-  "word":"βαίνω",
-  "princ":"βήσω,ἔβησα/ἔβην",
-  "short":"walk",
-  "medium":"go, walk, stand",
-  "syn":"εἶμι, κίω, βάσκω, ἔρχομαι",
-  "cog":"come, Latin venio",
-  "notes":"The first aorist, ἔβησα, is like 'I walked the dog,' while the second aorist, ἔβην, means 'I walked.' Other forms of the 2nd aorist include ἔβην/ἔβαν, βῆν/βάν. The phonetic changes in the various principal parts go back to two different PIE roots and are not regular examples of ablaut."
-  // https://latin.stackexchange.com/a/16966/3597
+  "word": "βαίνω",
+  "princ": "βήσω,ἔβησα/ἔβην",
+  "short": "walk",
+  "medium": "go, walk, stand",
+  "syn": "εἶμι, κίω, βάσκω, ἔρχομαι",
+  "cog": "come, Latin venio",
+  "notes": "The first aorist, ἔβησα, is like 'I walked the dog,' while the second aorist, ἔβην, means 'I walked.' Other forms of the 2nd aorist include ἔβην/ἔβαν, βῆν/βάν. The phonetic changes in the various principal parts go back to two different PIE roots and are not regular examples of ablaut.",
+  "aorist_difficult_to_recognize": 1
 }
-      

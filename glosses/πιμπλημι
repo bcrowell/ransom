@@ -1,11 +1,9 @@
-// https://en.wiktionary.org/wiki/πίμπλημι https://logeion.uchicago.edu/πίμπλημι
-// fill [+genitive or dative = with something], fill full, satisfy, glut, fill [+genitive or dative = with something], fill an office, fill (for) myself, am full of, am satisfied, I have enough, am full of, become pregnant
 {
-  "word":"πίμπλημι",
-  "princ":"πλήσω,ἔπλησα",
-  "medium":"fill oneself",
-  "long":"fill; passive: glut oneself with something (+gen).",
-  "notes":"Transitive. Tenses other than the present and imperfect are supplied by πλήθω, which is intransitive and is the same verb without the reduplication that is an archaic marker for the progressive.",
-  "cog":"plenum, πληρόω, plethora, πλήθω"
+  "word": "πίμπλημι",
+  "princ": "πλήσω,ἔπλησα",
+  "medium": "fill oneself",
+  "long": "fill; passive: glut oneself with something (+gen).",
+  "notes": "Transitive. Tenses other than the present and imperfect are supplied by πλήθω, which is intransitive and is the same verb without the reduplication that is an archaic marker for the progressive.",
+  "cog": "plenum, πληρόω, plethora, πλήθω",
+  "aorist_difficult_to_recognize": 1
 }
-      

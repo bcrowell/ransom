@@ -1,6 +1,7 @@
 {
-  "word":"ἀφίημι",
-  "princ":"ἀφήσω,ἀφῆκα",
-  "medium":"let go, allow",
-  "notes":"The principal parts are analogous to ἵημι,ἥσω,ἕηκα, and the singular imperfect is analogously irregular."
- }
+  "word": "ἀφίημι",
+  "princ": "ἀφήσω,ἀφῆκα",
+  "medium": "let go, allow",
+  "notes": "The principal parts are analogous to ἵημι,ἥσω,ἕηκα, and the singular imperfect is analogously irregular.",
+  "aorist_difficult_to_recognize": 1
+}

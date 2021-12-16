@@ -1,15 +1,13 @@
-// https://en.wiktionary.org/wiki/ἄνωγα https://logeion.uchicago.edu/ἄνωγα
-// order, command, bid, advise, urge, prompt
 {
-  "word":"ἄνωγα",
-  "princ":"ἀνώξω,ἤνωξα",
-  "short":"order",
-  "medium":"to command, order",
-  "pos":"verb",
-  "syn":"κελεύω, κέλομαι, ἐπιτέλλω",
-  "etym":"ἀνα (intensifier) + ωγα (to say)",
-  "cog":"Negate. The root of ωγα is cognate with ἠμί and Latin aio, which forms ne+aio=nego, to deny.",
-  "mnem":"Opposite of nego, replacing the negative prefix with an intensifier.",
-  "notes":"Epic. The perfect ἄνωγα is used with present meaning. Forms like imperfect ἤνωγον, future ἀνώξει, and aorist ἤνωξεν were back-formations in which ἄνωγα was treated as if it were a present-tense form."
+  "word": "ἄνωγα",
+  "princ": "ἀνώξω,ἤνωξα",
+  "short": "order",
+  "medium": "to command, order",
+  "pos": "verb",
+  "syn": "κελεύω, κέλομαι, ἐπιτέλλω",
+  "etym": "ἀνα (intensifier) + ωγα (to say)",
+  "cog": "Negate. The root of ωγα is cognate with ἠμί and Latin aio, which forms ne+aio=nego, to deny.",
+  "mnem": "Opposite of nego, replacing the negative prefix with an intensifier.",
+  "notes": "Epic. The perfect ἄνωγα is used with present meaning. Forms like imperfect ἤνωγον, future ἀνώξει, and aorist ἤνωξεν were back-formations in which ἄνωγα was treated as if it were a present-tense form.",
+  "aorist_difficult_to_recognize": 1
 }
-      

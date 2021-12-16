@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/προτίθημι https://logeion.uchicago.edu/προτίθημι
-// 
 {
-  "word":"προτίθημι",
-  "princ":",προύθηκα",
-  "medium":"set before"
+  "word": "προτίθημι",
+  "princ": ",προύθηκα",
+  "medium": "set before",
+  "aorist_difficult_to_recognize": 1
 }
-      

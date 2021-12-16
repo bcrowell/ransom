@@ -1,12 +1,10 @@
-// https://en.wiktionary.org/wiki/αἱρέω https://logeion.uchicago.edu/αἱρέω
-// take, grasp, seize, win, gain, convict, win a conviction, grasp with the mind, understand, take for oneself, choose, select, prefer
 {
-  "word":"αἱρέω",
-  "princ":"αἱρήσω,ἕελον",
-  "medium":"take; mp: choose",
-  "long":"take, grasp, win; mp: choose, prefer",
-  "cog":"Heresy. Ἕελον is cognate with 'sell.'",
-  "notes":"Koine also has ᾕρησα. The meaning of the mp makes sense as 'take for oneself.' Third-person forms can involve the contraction ε+ε -> ει.",
-  "etym":"unknown (possibly PIE ser)"
+  "word": "αἱρέω",
+  "princ": "αἱρήσω,ἕελον",
+  "medium": "take; mp: choose",
+  "long": "take, grasp, win; mp: choose, prefer",
+  "cog": "Heresy. Ἕελον is cognate with 'sell.'",
+  "notes": "Koine also has ᾕρησα. The meaning of the mp makes sense as 'take for oneself.' Third-person forms can involve the contraction ε+ε -> ει.",
+  "etym": "unknown (possibly PIE ser)",
+  "aorist_difficult_to_recognize": 1
 }
-      

@@ -1,9 +1,7 @@
-// https://en.wiktionary.org/wiki/συνίημι https://logeion.uchicago.edu/συνίημι
-// send together, to bring together or set together, come together, to come to an agreement, perceive, hear, be aware of, take notice of, observe, perceive, hear, understand
 {
-  "word":"συνίημι",
-  "princ":"συνήσω,ξυνέηκα",
-  "medium":"send together",
-  "syn":"ἵστημι"
+  "word": "συνίημι",
+  "princ": "συνήσω,ξυνέηκα",
+  "medium": "send together",
+  "syn": "ἵστημι",
+  "aorist_difficult_to_recognize": 1
 }
-      

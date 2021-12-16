@@ -1,9 +1,7 @@
-// https://en.wiktionary.org/wiki/λαμβάνω https://logeion.uchicago.edu/λαμβάνω
-// take, take hold of, grasp, seize, take, seize, take, catch, overtake, take, catch, discover, detect, take, bind (under oath), take, keep, take, take, take, perceive, understand, take, undertake, receive, get, admit, receive, get, take hold of, lay hands upon, take hold of, find fault with, censure, take hold of, check myself
 {
-  "word":"λαμβάνω",
-  "princ":"λάψομαι,ἔλαβον",
-  "medium":"take, grasp",
-  "notes":"Familiar to English speakers in the famous phrase μολὼν λαβέ. The imperative λαβέ is one of five 2nd aorists that accent the final syllable."
+  "word": "λαμβάνω",
+  "princ": "λάψομαι,ἔλαβον",
+  "medium": "take, grasp",
+  "notes": "Familiar to English speakers in the famous phrase μολὼν λαβέ. The imperative λαβέ is one of five 2nd aorists that accent the final syllable.",
+  "aorist_difficult_to_recognize": 1
 }
-      

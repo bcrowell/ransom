@@ -1,10 +1,8 @@
-// https://en.wiktionary.org/wiki/ῥέζω https://logeion.uchicago.edu/ῥέζω
-// do, make, perform sacrifices, do, make, do something to someone (with two accusatives), act (as opposed to speaking or being acted on)
 {
-  "word":"ῥέζω",
-  "princ":"ῥέξω,ἔρρεξα",
-  "short":"perform",
-  "medium":"do, make, perform sacrifices",
-  "cog":"erg"
+  "word": "ῥέζω",
+  "princ": "ῥέξω,ἔρρεξα",
+  "short": "perform",
+  "medium": "do, make, perform sacrifices",
+  "cog": "erg",
+  "aorist_difficult_to_recognize": 1
 }
-      

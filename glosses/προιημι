@@ -1,10 +1,8 @@
-// https://en.wiktionary.org/wiki/προίημι https://logeion.uchicago.edu/προίημι
-// 
 {
-  "word":"προίημι",
-  "princ":"προήσω,προέηκα",
-  "medium":"send forth, abandon",
-  "notes":"Also προΐημι. The principal parts are analogous to ἵημι,ἥσω,ἕηκα, and the singular imperfect is analogously irregular.",
-  "etym":"προ + ἵημι (release, throw)"
+  "word": "προίημι",
+  "princ": "προήσω,προέηκα",
+  "medium": "send forth, abandon",
+  "notes": "Also προΐημι. The principal parts are analogous to ἵημι,ἥσω,ἕηκα, and the singular imperfect is analogously irregular.",
+  "etym": "προ + ἵημι (release, throw)",
+  "aorist_difficult_to_recognize": 1
 }
-      

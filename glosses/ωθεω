@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/ὠθέω https://logeion.uchicago.edu/ὠθέω
-// To push
 {
-  "word":"ὠθέω",
-  "princ":"ὤσω,ὦσα",
-  "medium":"push"
+  "word": "ὠθέω",
+  "princ": "ὤσω,ὦσα",
+  "medium": "push",
+  "aorist_difficult_to_recognize": 1
 }
-      

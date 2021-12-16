@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/θείνω https://logeion.uchicago.edu/θείνω
-// strike, wound
 {
-  "word":"θείνω",
-  "princ":",ἔπεφνον",
-  "medium":"strike, wound"
+  "word": "θείνω",
+  "princ": ",ἔπεφνον",
+  "medium": "strike, wound",
+  "aorist_difficult_to_recognize": 1
 }
-      

@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/συντίθημι https://logeion.uchicago.edu/συντίθημι
-// assemble, put together
 {
-  "word":"συντίθημι",
-  "princ":"συνθήσω,συνέθηκα",
-  "medium":"assemble"
+  "word": "συντίθημι",
+  "princ": "συνθήσω,συνέθηκα",
+  "medium": "assemble",
+  "aorist_difficult_to_recognize": 1
 }
-      

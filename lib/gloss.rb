@@ -44,6 +44,8 @@ princ [for verbs]: future and aorist, e.g., for ἔρχομαι, "ἐλεύσο�
 
 logdiff [+1 means consider it as difficult as a word whose freq
      rank is 10x greater]
+"aorist_difficult_to_recognize":1 -- indicates that given the aorist form, it's difficult to infer
+        the lexical form
 
 mnem -- a mnemonic; may be idiosyncratic and only of interest to me; I use these only when there is no cognate that helps
 =end
@@ -127,7 +129,7 @@ def Gloss.validate(key)
   if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
   n = a.length
   mandatory_keys = ['word','medium']
-  allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem','vowel_length']
+  allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem','vowel_length','aorist_difficult_to_recognize']
   # Try to detect duplicate keys.
   allowed_keys.each { |key|
     if json.scan(/\"#{key}\"\s*:/).length>n then return [true,"key #{key} occurs more than #{n} times"] end

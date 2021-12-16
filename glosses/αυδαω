@@ -1,9 +1,7 @@
-// https://en.wiktionary.org/wiki/αὐδάω https://logeion.uchicago.edu/αὐδάω
-// speak, utter, speak to, address
 {
-  "word":"αὐδάω",
-  "princ":"αὐδήσω,ηὔδησα",
-  "short":"speak",
-  "medium":"speak, declare, shout"
+  "word": "αὐδάω",
+  "princ": "αὐδήσω,ηὔδησα",
+  "short": "speak",
+  "medium": "speak, declare, shout",
+  "aorist_difficult_to_recognize": 1
 }
-      

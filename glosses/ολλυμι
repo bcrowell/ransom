@@ -1,12 +1,10 @@
-// https://en.wiktionary.org/wiki/ὄλλυμι https://logeion.uchicago.edu/ὄλλυμι
-// destroy, make an end of, lose, perish, come to an end, be ruined, undone
 {
-  "word":"ὄλλυμι",
-  "vowel_length":"ὄλλυ_μι",
-  "princ":"ὀλέσω,ὤλεσα",
-  "short":"destroy",
-  "medium":"destroy, kill, lose",
-  "notes":"koine ἀπόλλυμι",
-  "cog":"ὄλεθρος, ὀλοός"
+  "word": "ὄλλυμι",
+  "vowel_length": "ὄλλυ_μι",
+  "princ": "ὀλέσω,ὤλεσα",
+  "short": "destroy",
+  "medium": "destroy, kill, lose",
+  "notes": "koine ἀπόλλυμι",
+  "cog": "ὄλεθρος, ὀλοός",
+  "aorist_difficult_to_recognize": 1
 }
-      

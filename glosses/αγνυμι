@@ -1,10 +1,8 @@
-// https://en.wiktionary.org/wiki/ἀγαθός https://logeion.uchicago.edu/ἀγαθός
-// good, brave, noble, moral, fortunate, lucky, useful
 {
-  "word":"ἄγνυμι",
-  "vowel_length":"ἄγνυ_μι",
-  "princ":",ἔαξα",
-  "medium":"break",
-  "long":"break something, shiver it"
+  "word": "ἄγνυμι",
+  "vowel_length": "ἄγνυ_μι",
+  "princ": ",ἔαξα",
+  "medium": "break",
+  "long": "break something, shiver it",
+  "aorist_difficult_to_recognize": 1
 }
-      

@@ -1,10 +1,8 @@
-// https://en.wiktionary.org/wiki/ναίω https://logeion.uchicago.edu/ναίω
-// Alternative form of νάω (náō)
 {
-  "word":"ναίω",
-  "princ":",νάσσα",
-  "medium":"flow",
-  "cog":"If from PIE nes-, then cognate with νέομαι, νόστος, nostalgia, harness, and possibly ναός.",
-  "mnem":"Ngaio Marsh, water flows into a marsh."
+  "word": "ναίω",
+  "princ": ",νάσσα",
+  "medium": "flow",
+  "cog": "If from PIE nes-, then cognate with νέομαι, νόστος, nostalgia, harness, and possibly ναός.",
+  "mnem": "Ngaio Marsh, water flows into a marsh.",
+  "aorist_difficult_to_recognize": 1
 }
-      

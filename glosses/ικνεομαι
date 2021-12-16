@@ -1,8 +1,9 @@
-{ 
-  "word":"ἱκνέομαι",
-  "princ":"ἵξομαι,ἱκόμην",
-  "short":"arrive",
-  "medium":"reach, arrive at",
-  "syn":"ἱκάνω",
-  "cog":"ἱκάνω, ἵκω"
+{
+  "word": "ἱκνέομαι",
+  "princ": "ἵξομαι,ἱκόμην",
+  "short": "arrive",
+  "medium": "reach, arrive at",
+  "syn": "ἱκάνω",
+  "cog": "ἱκάνω, ἵκω",
+  "aorist_difficult_to_recognize": 1
 }

@@ -1,10 +1,8 @@
-// https://en.wiktionary.org/wiki/ἀραρίσκω https://logeion.uchicago.edu/ἀραρίσκω
-// join, fasten, fit together, construct, fit, equip, furnish, make fit, make pleasing, be joined closely together, fit or suit, be fitted with, furnished with, be fitted, suiting, agreeable, pleasing
 {
-  "word":"ἀραρίσκω",
-  "princ":",ἦρσα/ἤραρον",
-  "medium":"join together",
-  "notes":"The second aorist, middle, and perfect tenses are used intransitively: to be joined, fit, be furnished with, be agreeable.",
-  "cog":"articulate, arthritis"
+  "word": "ἀραρίσκω",
+  "princ": ",ἦρσα/ἤραρον",
+  "medium": "join together",
+  "notes": "The second aorist, middle, and perfect tenses are used intransitively: to be joined, fit, be furnished with, be agreeable.",
+  "cog": "articulate, arthritis",
+  "aorist_difficult_to_recognize": 1
 }
-      

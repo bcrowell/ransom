@@ -1,12 +1,10 @@
-// https://en.wiktionary.org/wiki/ἐρύω https://logeion.uchicago.edu/ἐρύω
-// draw, drag, pull
 {
-  "word":"ἐρύω",
-  "princ":"ἐρύσω,εἴρυσσα",
-  "medium":"pull, drag, guard",
-  "syn":"ἕλκω",
-  "notes":"Homeric, poetic",
-  "etym":"unknown",
-  "mnem":"pulling an erythrocyte"
+  "word": "ἐρύω",
+  "princ": "ἐρύσω,εἴρυσσα",
+  "medium": "pull, drag, guard",
+  "syn": "ἕλκω",
+  "notes": "Homeric, poetic",
+  "etym": "unknown",
+  "mnem": "pulling an erythrocyte",
+  "aorist_difficult_to_recognize": 1
 }
-      

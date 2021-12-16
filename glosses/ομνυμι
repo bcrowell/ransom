@@ -1,14 +1,10 @@
-// https://en.wiktionary.org/wiki/ὄμνυμι https://logeion.uchicago.edu/ὄμνυμι
-// swear, swear a thing, affirm or confirm by oath, swear a thing, affirm or confirm by oath, swear that one will..., swear a thing, affirm or confirm by oath
 {
-  "word":"ὄμνυμι",
-  "vowel_length":"ὄμνυ_μι",
-  "princ":"ὀμέω,ὤμοσα",
-  "medium":"swear",
-  "cog":"No modern descendants except possibly those related to Latin amo.",
-  // "Alternatively, Olav Hackstein and Michiel De Vaan suggest a derivation from Proto-Indo-European *h₃emh₃- (“to seize, to take hold”) via Proto-Italic *amāō (“to take hold”), applying a semantic shift “to take by the hand” > “to regard as a friend” > “to love, to be fond of”."
-  // https://en.wiktionary.org/wiki/amo#Etymology_1_4
-  "notes":"Future middle ὀμοῦμαι.",
-  "etym":"PIE h3emh3, meaning something like to insist, grasp, swear."
+  "word": "ὄμνυμι",
+  "vowel_length": "ὄμνυ_μι",
+  "princ": "ὀμέω,ὤμοσα",
+  "medium": "swear",
+  "cog": "No modern descendants except possibly those related to Latin amo.",
+  "notes": "Future middle ὀμοῦμαι.",
+  "etym": "PIE h3emh3, meaning something like to insist, grasp, swear.",
+  "aorist_difficult_to_recognize": 1
 }
-      

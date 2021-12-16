@@ -1,10 +1,8 @@
-// https://en.wiktionary.org/wiki/ὁράω https://logeion.uchicago.edu/ὁράω
-// To look with the eyes, To be able to see; (with negative) to be unable to see, to be blind, To look a certain way, Infinitive is added to an adjective, adverb, and so on to indicate that the description relates to sight: to see, to look at, to behold, To see, perceive, observe, To find out, To make sure, To see with the mind, understand, To provide
 {
-  "word":"ὁράω",
-  "princ":"ὄψομαι,εἶδον",
-  "medium":"see",
-  "notes":"The aorist of 'to see' is expressed using the verb εἶδον, but that verb's future and perfect mean to know. The contraction α+ε=α gives imperfect ὅρα. Most senses have the same meanings in active and middle. There is a passive in attic (to be seen), but not in Homer. The imperative ἰδέ is one of five 2nd aorists that accent the final syllable.",
-  "cog":"aware, wary, guard, warden; optical, cyclops; kaleidoscope, video"
+  "word": "ὁράω",
+  "princ": "ὄψομαι,εἶδον",
+  "medium": "see",
+  "notes": "The aorist of 'to see' is expressed using the verb εἶδον, but that verb's future and perfect mean to know. The contraction α+ε=α gives imperfect ὅρα. Most senses have the same meanings in active and middle. There is a passive in attic (to be seen), but not in Homer. The imperative ἰδέ is one of five 2nd aorists that accent the final syllable.",
+  "cog": "aware, wary, guard, warden; optical, cyclops; kaleidoscope, video",
+  "aorist_difficult_to_recognize": 1
 }
-      

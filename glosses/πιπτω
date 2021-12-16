@@ -1,11 +1,9 @@
-// https://en.wiktionary.org/wiki/πίπτω https://logeion.uchicago.edu/πίπτω
-// fall, throw oneself down
 {
-  "word":"πίπτω",
-  "princ":"πεσέομαι,ἔπεσον",
-  "medium":"fall",
-  "long":"fall, fall upon",
-  "cog":"apoptosis, petal, πέτομαι, ptomaine",
-  "notes":"Πέτομαι, to fly, is the form without reduplication. Another pair of verbs with and without reduplication is μίμνω and μένω. See Giannakis, https://sci-hub.se/10.2307/40266877"
+  "word": "πίπτω",
+  "princ": "πεσέομαι,ἔπεσον",
+  "medium": "fall",
+  "long": "fall, fall upon",
+  "cog": "apoptosis, petal, πέτομαι, ptomaine",
+  "notes": "Πέτομαι, to fly, is the form without reduplication. Another pair of verbs with and without reduplication is μίμνω and μένω. See Giannakis, https://sci-hub.se/10.2307/40266877",
+  "aorist_difficult_to_recognize": 1
 }
-      

@@ -1,10 +1,8 @@
-// https://en.wiktionary.org/wiki/τίκτω
-// I beget, give birth to, I bear, produce, generate
 {
-  "word":"τίκτω",
-  "princ":"τέξω,τέκον",
-  "cog":"oxytocin, τέκος, τέκνον",
-  "medium":"beget",
-  "etym":"PIE tek-, beget, reduplicated as titk-."
+  "word": "τίκτω",
+  "princ": "τέξω,τέκον",
+  "cog": "oxytocin, τέκος, τέκνον",
+  "medium": "beget",
+  "etym": "PIE tek-, beget, reduplicated as titk-.",
+  "aorist_difficult_to_recognize": 1
 }
-      

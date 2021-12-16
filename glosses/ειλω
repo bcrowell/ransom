@@ -1,11 +1,9 @@
-// https://en.wiktionary.org/wiki/εἴλω https://logeion.uchicago.edu/εἴλω
-// 
 {
-  "word":"εἴλω",
-  "princ":",ἔλσα",
-  "short":"pack",
-  "medium":"pack, press, drive",
-  "long":"pack, press, enclose, drive, jostle, roll up",
-  "cog":"helix, vulgar, revolve"
+  "word": "εἴλω",
+  "princ": ",ἔλσα",
+  "short": "pack",
+  "medium": "pack, press, drive",
+  "long": "pack, press, enclose, drive, jostle, roll up",
+  "cog": "helix, vulgar, revolve",
+  "aorist_difficult_to_recognize": 1
 }
-      

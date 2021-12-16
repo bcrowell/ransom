@@ -1,9 +1,10 @@
 {
-  "word":"δαίνυμι",
-  "princ":"δαίσω,δαῖσα",
-  "vowel_length":"δαίνυ_μι",
-  "short":"feast",
-  "medium":"give a feast, feast on",
-  "cog":"δαίς, δατέομαι, δαίω",
-  "notes":"Only the present and imperfect appear as finite forms in Homer. Note to be confused with δύναμαι."
+  "word": "δαίνυμι",
+  "princ": "δαίσω,δαῖσα",
+  "vowel_length": "δαίνυ_μι",
+  "short": "feast",
+  "medium": "give a feast, feast on",
+  "cog": "δαίς, δατέομαι, δαίω",
+  "notes": "Only the present and imperfect appear as finite forms in Homer. Note to be confused with δύναμαι.",
+  "aorist_difficult_to_recognize": 1
 }

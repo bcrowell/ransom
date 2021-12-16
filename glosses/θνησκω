@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/θνήσκω https://logeion.uchicago.edu/θνήσκω
-// Alternative spelling of θνῄσκω (thnḗiskō)
 {
-  "word":"θνῄσκω",
-  "princ":"θανοῦμαι,εθάνον",
-  "medium":"die"
+  "word": "θνῄσκω",
+  "princ": "θανοῦμαι,εθάνον",
+  "medium": "die",
+  "aorist_difficult_to_recognize": 1
 }
-      
