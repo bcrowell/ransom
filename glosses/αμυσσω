@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/ἀμύσσω https://logeion.uchicago.edu/ἀμύσσω
-// scratch, tear, lacerate, tear in pieces, mangle, prick, sting
 {
-  "word":"ἀμύσσω",
-  "princ":"ἀμύξω,",
-  "medium":"scratch, tear"
+  "word": "ἀμύσσω",
+  "princ": "ἀμύξω,",
+  "medium": "scratch, tear",
+  "aorist_difficult_to_recognize": 0
 }
-      

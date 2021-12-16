@@ -1,10 +1,8 @@
-// https://en.wiktionary.org/wiki/ἀγορεύω https://logeion.uchicago.edu/ἀγορεύω
-// speak in the assembly, say, speak, proclaim
 {
-  "word":"ἀγορεύω",
-  "princ":"ἀγορεύσω,ἀγόρευσα",
-  "short":"speak",
-  "medium":"speak in assembly",
-  "long":"speak in the assembly, proclaim, harangue"
+  "word": "ἀγορεύω",
+  "princ": "ἀγορεύσω,ἀγόρευσα",
+  "short": "speak",
+  "medium": "speak in assembly",
+  "long": "speak in the assembly, proclaim, harangue",
+  "aorist_difficult_to_recognize": 0
 }
-      

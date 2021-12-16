@@ -1,7 +1,8 @@
 {
   "word": "τεύχω",
-  "princ":"τεύξω,ἔτευξα/τέτυκον",
+  "princ": "τεύξω,ἔτευξα/τέτυκον",
   "medium": "make",
-  "notes":"in later dialects, σκευάζω and compounds",
-  "cog":"τεῦχος, τυγχάνω"
+  "notes": "in later dialects, σκευάζω and compounds",
+  "cog": "τεῦχος, τυγχάνω",
+  "aorist_difficult_to_recognize": 0
 }

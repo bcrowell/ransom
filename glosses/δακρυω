@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/δακρύω https://logeion.uchicago.edu/δακρύω
-// cry, weep, shed tears, run, exude tree sap, cry, weep for
 {
-  "word":"δακρύω",
-  "princ":"δακρύσω,ἐδάκρυσα",
-  "medium":"weep"
+  "word": "δακρύω",
+  "princ": "δακρύσω,ἐδάκρυσα",
+  "medium": "weep",
+  "aorist_difficult_to_recognize": 0
 }
-      

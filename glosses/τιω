@@ -1,12 +1,12 @@
 {
-  "word":"τίω",
-  "princ":"τίσω,",
-  "short":"honor",
-  "medium":"value, honor",
-  "long":"value, honor, exalt, pay, punish, take revenge",
-  "syn":"τιμάω",
-  "cog":"τιμή, τιμάω, possibly τίνω, ἄποινα",
-  "etym":"PIE kwey, to observe, honor. Before e, kw changes regularly to t.",
-  "notes":"More general than τίω, which means to honor, exalt."
+  "word": "τίω",
+  "princ": "τίσω,",
+  "short": "honor",
+  "medium": "value, honor",
+  "long": "value, honor, exalt, pay, punish, take revenge",
+  "syn": "τιμάω",
+  "cog": "τιμή, τιμάω, possibly τίνω, ἄποινα",
+  "etym": "PIE kwey, to observe, honor. Before e, kw changes regularly to t.",
+  "notes": "More general than τίω, which means to honor, exalt.",
+  "aorist_difficult_to_recognize": 0
 }
-      

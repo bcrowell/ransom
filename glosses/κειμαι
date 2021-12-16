@@ -1,11 +1,9 @@
-// https://en.wiktionary.org/wiki/κεῖμαι https://logeion.uchicago.edu/κεῖμαι
-// lie, lie outstretched, lie asleep, repose, lie idle, lie still, lie, lie outstretched, lie sick or wounded, lie in misery, lie, lie outstretched, lie dead, lie, lie outstretched, lie neglected, uncared for, unburied, lie, lie outstretched, have a fall, lie, be situated, lie in a place, be laid up, be in store, be set up, proposed, be laid down, be set up, proposed, be laid down, be set up, proposed, be given, be in the power of, be in such a manner, be, settle down, deposit a sediment, be found, to occur
 {
-  "word":"κεῖμαι",
-  "princ":"κείσομαι,",
-  "medium":"lie",
-  "long":"rest, lie down to sleep, lie dead, be laid up sick; be located; settle",
-  "notes":"Modern κοιμάμαι. There is no aorist, but Homer often uses imperfect forms like κέατο.",
-  "cog":"civilization; Latin cunae, cradle"
+  "word": "κεῖμαι",
+  "princ": "κείσομαι,",
+  "medium": "lie",
+  "long": "rest, lie down to sleep, lie dead, be laid up sick; be located; settle",
+  "notes": "Modern κοιμάμαι. There is no aorist, but Homer often uses imperfect forms like κέατο.",
+  "cog": "civilization; Latin cunae, cradle",
+  "aorist_difficult_to_recognize": 0
 }
-      

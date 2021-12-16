@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/κτείνω https://logeion.uchicago.edu/κτείνω
-// kill, slay
 {
-  "word":"κτείνω",
-  "princ":"κτενέω,ἔκτην",
-  "medium":"kill"
+  "word": "κτείνω",
+  "princ": "κτενέω,ἔκτην",
+  "medium": "kill",
+  "aorist_difficult_to_recognize": 0
 }
-      

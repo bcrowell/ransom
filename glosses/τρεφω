@@ -1,11 +1,10 @@
 {
-  "word":"τρέφω",
-  "princ":"θρέψω,ἔθρεψα/ἔτραφον",
-  "short":"nurture",
-  "medium":"nurture; solidify",
-  "long":"nourish, raise; solidify, curdle",
-  "notes":"The weird form τράφεν occurs in Homer as a singular 3rd person aorist passive.",
-  // https://latin.stackexchange.com/questions/16832/why-%cf%84%cf%81%ce%ac%cf%86%ce%b5%ce%bd-rather-than-%e1%bc%90%cf%84%cf%81%ce%ac%cf%86%ce%b7%cf%83%ce%b1%ce%bd
-  "cog":"atrophy, τροφή"
+  "word": "τρέφω",
+  "princ": "θρέψω,ἔθρεψα/ἔτραφον",
+  "short": "nurture",
+  "medium": "nurture; solidify",
+  "long": "nourish, raise; solidify, curdle",
+  "notes": "The weird form τράφεν occurs in Homer as a singular 3rd person aorist passive.",
+  "cog": "atrophy, τροφή",
+  "aorist_difficult_to_recognize": 0
 }
-      

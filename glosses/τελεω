@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/τελέω https://logeion.uchicago.edu/τελέω
-// bring about, complete, fulfill, perform, accomplish, do, keep my word, pay, present (especially pay taxes), belong to a class, consecrate, initiate
 {
-  "word":"τελέω",
-  "princ":"τελέω,ἐτέλεσσα",
-  "medium":"fulfill"
+  "word": "τελέω",
+  "princ": "τελέω,ἐτέλεσσα",
+  "medium": "fulfill",
+  "aorist_difficult_to_recognize": 0
 }
-      

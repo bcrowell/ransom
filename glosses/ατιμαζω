@@ -1,8 +1,9 @@
 {
   "word": "ἀτιμάζω",
-  "vowel_length":"ἀτι_μάζω",
-  "princ":"ἀτιμάσω,ἠτίμασα",
+  "vowel_length": "ἀτι_μάζω",
+  "princ": "ἀτιμάσω,ἠτίμασα",
   "medium": "insult, dishonor",
-  "cog":"τιμή",
-  "syn":"ἀτιμάω"
+  "cog": "τιμή",
+  "syn": "ἀτιμάω",
+  "aorist_difficult_to_recognize": 0
 }

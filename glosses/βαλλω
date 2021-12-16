@@ -1,11 +1,9 @@
-// https://en.wiktionary.org/wiki/βάλλω https://logeion.uchicago.edu/βάλλω
-// throw, cast, hurl, let fall, strike, touch, put, place, fall, tumble
 {
-  "word":"βάλλω",
-  "princ":"βαλέω,ἔβαλον",
-  "short":"throw",
-  "medium":"throw, hit, fall",
-  "long":"throw, put, drop, strike; intransitive: fall; mp: various meanings involving putting or laying things on or for oneself",
-  "cog":"βέλος"
+  "word": "βάλλω",
+  "princ": "βαλέω,ἔβαλον",
+  "short": "throw",
+  "medium": "throw, hit, fall",
+  "long": "throw, put, drop, strike; intransitive: fall; mp: various meanings involving putting or laying things on or for oneself",
+  "cog": "βέλος",
+  "aorist_difficult_to_recognize": 0
 }
-      

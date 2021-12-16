@@ -1,13 +1,11 @@
-// https://en.wiktionary.org/wiki/ἀναφαίνω https://logeion.uchicago.edu/ἀναφαίνω
-// 
 {
-  "word":"ἀναφαίνω",
-  "princ":",ἀναφῆνα",
-  "short":"reveal, shine",
-  "medium":"reveal, shine",
-  "long":"reveal, betray, denounce, display; shine; mp: appear",
-  "etym":"ἀνά (thoroughly) + φαίνω (appear, shine)",
-  "cog":"phenomenon",
-  "notes":"No finite future or aorist forms in Homer."
+  "word": "ἀναφαίνω",
+  "princ": ",ἀναφῆνα",
+  "short": "reveal, shine",
+  "medium": "reveal, shine",
+  "long": "reveal, betray, denounce, display; shine; mp: appear",
+  "etym": "ἀνά (thoroughly) + φαίνω (appear, shine)",
+  "cog": "phenomenon",
+  "notes": "No finite future or aorist forms in Homer.",
+  "aorist_difficult_to_recognize": 0
 }
-      

@@ -1,8 +1,9 @@
 {
-  "word":"τέλλω",
-  "princ":",ἔτελλα",
-  "medium":"direct",
-  "long":"direct something or someone toward a particular end",
-  "cog":"teleology, τέλος, wheel",
-  "notes":"The aorist can also be spelled ἔτειλα. For giving an order to a person, there is a more precise verb ἐπιτέλλω. The notion of accomplishing the end is given by the verb τελέω. The semantics of τέλλω make a future unlikely to be useful, so it makes sense that there is no future tense. The rising of a star is described by ἀνατέλλω, which occurs once in Homer."
+  "word": "τέλλω",
+  "princ": ",ἔτελλα",
+  "medium": "direct",
+  "long": "direct something or someone toward a particular end",
+  "cog": "teleology, τέλος, wheel",
+  "notes": "The aorist can also be spelled ἔτειλα. For giving an order to a person, there is a more precise verb ἐπιτέλλω. The notion of accomplishing the end is given by the verb τελέω. The semantics of τέλλω make a future unlikely to be useful, so it makes sense that there is no future tense. The rising of a star is described by ἀνατέλλω, which occurs once in Homer.",
+  "aorist_difficult_to_recognize": 0
 }

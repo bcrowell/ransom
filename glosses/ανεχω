@@ -1,9 +1,7 @@
-// https://en.wiktionary.org/wiki/ἀνέχω https://logeion.uchicago.edu/ἀνέχω
-// hold up one's hands (in fight, in surrender, in prayer etc.), make ready, lift up, exalt, uphold, maintain, put forth, hold back, rise up, emerge, arise, happen, appear, show oneself, project,jut out, hold on, keep doing (+ participle), cease, wait, delay, be alleviated of pain
 {
-  "word":"ἀνέχω",
-  "princ":",ἀνέσχον",
-  "medium":"raise one's hands",
-  "long":"raise one's hands (in fight, in surrender, in prayer etc.)"
+  "word": "ἀνέχω",
+  "princ": ",ἀνέσχον",
+  "medium": "raise one's hands",
+  "long": "raise one's hands (in fight, in surrender, in prayer etc.)",
+  "aorist_difficult_to_recognize": 0
 }
-      

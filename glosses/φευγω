@@ -1,9 +1,7 @@
-// https://en.wiktionary.org/wiki/φεύγω https://logeion.uchicago.edu/φεύγω
-// flee, run off, go a certain direction with haste, flee, escape, avoid, get away from (danger or trouble), leave the country, go into exile, be exiled, banished, driven out of the country, leave the country, go into exile, be in exile, live in banishment, have escaped, be safe from, be accused of a crime; often with δίκην (díkēn) and genitive of the crime
 {
-  "word":"φεύγω",
-  "princ":"φεύξομαι,ἔφυγον",
-  "medium":"flee",
-  "cog":"fugitive"
+  "word": "φεύγω",
+  "princ": "φεύξομαι,ἔφυγον",
+  "medium": "flee",
+  "cog": "fugitive",
+  "aorist_difficult_to_recognize": 0
 }
-      

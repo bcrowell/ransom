@@ -1,10 +1,8 @@
-// https://en.wiktionary.org/wiki/ἀπειλέω https://logeion.uchicago.edu/ἀπειλέω
-// threaten
 {
-  "word":"ἀπειλέω",
-  "princ":"ἀπειλήσω,ἠπείλησα",
-  "short":"threaten",
-  "medium":"threaten, boast",
-  "etym":"unknown"
+  "word": "ἀπειλέω",
+  "princ": "ἀπειλήσω,ἠπείλησα",
+  "short": "threaten",
+  "medium": "threaten, boast",
+  "etym": "unknown",
+  "aorist_difficult_to_recognize": 0
 }
-      

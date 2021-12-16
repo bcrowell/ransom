@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/φωνέω https://logeion.uchicago.edu/φωνέω
-// produce a sound or tone, speak loud or clearly; I speak, give utterance, voice, call by name, call, speak, tell of
 {
-  "word":"φωνέω",
-  "princ":",φώνησα",
-  "medium":"sound, speak"
+  "word": "φωνέω",
+  "princ": ",φώνησα",
+  "medium": "sound, speak",
+  "aorist_difficult_to_recognize": 0
 }
-      

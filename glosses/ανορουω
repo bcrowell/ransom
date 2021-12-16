@@ -1,8 +1,6 @@
-// https://en.wiktionary.org/wiki/ἀνορούω https://logeion.uchicago.edu/ἀνορούω
-// start up, leap up
 {
-  "word":"ἀνορούω",
-  "princ":",ἀνόρουσα",
-  "medium":"leap up"
+  "word": "ἀνορούω",
+  "princ": ",ἀνόρουσα",
+  "medium": "leap up",
+  "aorist_difficult_to_recognize": 0
 }
-      

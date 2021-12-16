@@ -1,11 +1,8 @@
-// https://en.wiktionary.org/wiki/ἀμύνω https://logeion.uchicago.edu/ἀμύνω
-// keep off, ward off, defend, guard, assist [+accusative = something or someone],, avenge, punish, repay, requite
 {
-  "word":"ἀμύνω",
-  "princ":",ἤμυνα",
-  "medium":"ward off, help, withstand",
-  "long":"keep off, ward off; help (+acc); withstand (+dat)",
-  // wiktionary says etym basically unknown
-  "cog":"kings of Macedon named Amyntas; extinct hippo-like animals called the amynodontidae, which have a defensive tooth"
+  "word": "ἀμύνω",
+  "princ": ",ἤμυνα",
+  "medium": "ward off, help, withstand",
+  "long": "keep off, ward off; help (+acc); withstand (+dat)",
+  "cog": "kings of Macedon named Amyntas; extinct hippo-like animals called the amynodontidae, which have a defensive tooth",
+  "aorist_difficult_to_recognize": 0
 }
-      

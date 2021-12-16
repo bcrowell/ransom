@@ -1,12 +1,9 @@
-// https://en.wiktionary.org/wiki/ἀπόλλυμι https://logeion.uchicago.edu/ἀπόλλυμι
-// destroy utterly, kill, slay, lose utterly, perish, die, be lost, slip away, vanish
-// https://latin.stackexchange.com/questions/16778/omicron-sometimes-becoming-omega-in-conjugation-of-%e1%bc%80%cf%80%cf%8c%ce%bb%ce%bb%cf%85%ce%bc%ce%b9
 {
-  "word":"ἀπόλλυμι",
-  "vowel_length":"ἀπόλλυ_μι",
-  "princ":"ἀπολέσω,ἀπώλεσα",
-  "medium":"destroy",
-  "etym":"Intensified form of όλλυμι.",
-  "notes":"When the optional augment is omitted, the -ώ- spellings become -ό-."
+  "word": "ἀπόλλυμι",
+  "vowel_length": "ἀπόλλυ_μι",
+  "princ": "ἀπολέσω,ἀπώλεσα",
+  "medium": "destroy",
+  "etym": "Intensified form of όλλυμι.",
+  "notes": "When the optional augment is omitted, the -ώ- spellings become -ό-.",
+  "aorist_difficult_to_recognize": 0
 }
-      

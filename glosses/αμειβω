@@ -1,11 +1,9 @@
-// https://en.wiktionary.org/wiki/ἀμείβω https://logeion.uchicago.edu/ἀμείβω
-// exchange, pass in or out of a house, do in turn or alternately, alternate, move crosswise, reply, answer, repay, requite
 {
-  "word":"ἀμείβω",
-  "princ":"ἀμείψω,ἤμειψα",
-  "short":"exchange, answer",
-  "medium":"exchange; mp: answer, take turns",
-  "long":"exchange; mp: answer, have dialog, take turns, repay, requite",
-  "cog":"amoeba"
+  "word": "ἀμείβω",
+  "princ": "ἀμείψω,ἤμειψα",
+  "short": "exchange, answer",
+  "medium": "exchange; mp: answer, take turns",
+  "long": "exchange; mp: answer, have dialog, take turns, repay, requite",
+  "cog": "amoeba",
+  "aorist_difficult_to_recognize": 0
 }
-      

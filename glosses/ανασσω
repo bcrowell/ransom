@@ -1,10 +1,8 @@
-// https://en.wiktionary.org/wiki/ἀνάσσω
-// to rule, be lord (over)
 {
-  "word":"ἀνάσσω",
-  "princ":"ἀνάξω,ἤναξα",
-  "short":"rule",
-  "medium":"rule, be lord",
-  "cog":"ἄναξ"
+  "word": "ἀνάσσω",
+  "princ": "ἀνάξω,ἤναξα",
+  "short": "rule",
+  "medium": "rule, be lord",
+  "cog": "ἄναξ",
+  "aorist_difficult_to_recognize": 0
 }
-      

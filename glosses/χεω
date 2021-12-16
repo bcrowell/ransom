@@ -1,12 +1,10 @@
-// https://en.wiktionary.org/wiki/χέω https://logeion.uchicago.edu/χέω
-// pour, shed (of tears), pour, smelt, cast (of metal), pour, become liquid, melt, dissolve, scatter, shed, throw up (of soil), scatter, shed, shower (of spears), scatter, shed, let fall, drop, scatter, shed, am heaped up, mounded, scatter, shed, move together, stream, scatter, shed, am engaged, absorbed in
 {
-  "word":"χέω",
-  "princ":"χέω,ἔχεα/ἐχύμην",
-  "short":"pour",
-  "medium":"pour, scatter",
-  "long":"pour, scatter, shed, spread forth; mp: embrace, pour forth",
-  "notes":"There are additional epic forms with an upsilon: χεύω, ἔχευα. Homer uses the forms with and without υ about equally often. There are nouns χύμα, that which is poured, and χυμός, juice.",
-  "cog":"guts, chyle, χυμός (juice, as in modern χυμός πορτοκαλιού)"
+  "word": "χέω",
+  "princ": "χέω,ἔχεα/ἐχύμην",
+  "short": "pour",
+  "medium": "pour, scatter",
+  "long": "pour, scatter, shed, spread forth; mp: embrace, pour forth",
+  "notes": "There are additional epic forms with an upsilon: χεύω, ἔχευα. Homer uses the forms with and without υ about equally often. There are nouns χύμα, that which is poured, and χυμός, juice.",
+  "cog": "guts, chyle, χυμός (juice, as in modern χυμός πορτοκαλιού)",
+  "aorist_difficult_to_recognize": 0
 }
-      

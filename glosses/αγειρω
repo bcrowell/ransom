@@ -1,9 +1,7 @@
-// https://en.wiktionary.org/wiki/ἀγείρω https://logeion.uchicago.edu/ἀγείρω
-// collect, gather
 {
-  "word":"ἀγείρω",
-  "princ":",ἤγειρα",
-  "medium":"gather",
-  "cog":"agora, aggregate"
+  "word": "ἀγείρω",
+  "princ": ",ἤγειρα",
+  "medium": "gather",
+  "cog": "agora, aggregate",
+  "aorist_difficult_to_recognize": 0
 }
-      

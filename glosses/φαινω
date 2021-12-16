@@ -1,11 +1,9 @@
-// https://en.wiktionary.org/wiki/φαίνω https://logeion.uchicago.edu/φαίνω
-// cause to appear, bring to light; I show, uncover, reveal, make known, reveal, disclose, cause to appear, bring to light; I show, uncover, reveal, cause to appear, bring to light; I show, uncover, reveal, Ι show forth, expound, cause to appear, bring to light; I show, uncover, reveal, denounce, shine, give light, appear; I shine, come into being, appear; I shine, come about, appear; I shine, appear (to be)
 {
-  "word":"φαίνω",
-  "princ":"φανέω,ἔφηνα",
-  "short":"show",
-  "medium":"active: show; passive: appear",
-  "long":"active: show, cause to appear, uncover, bring to light; passive: appear, shine",
-  "cog":"φάος (light)"
+  "word": "φαίνω",
+  "princ": "φανέω,ἔφηνα",
+  "short": "show",
+  "medium": "active: show; passive: appear",
+  "long": "active: show, cause to appear, uncover, bring to light; passive: appear, shine",
+  "cog": "φάος (light)",
+  "aorist_difficult_to_recognize": 0
 }
-      

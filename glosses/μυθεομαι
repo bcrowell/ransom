@@ -1,9 +1,7 @@
-// https://en.wiktionary.org/wiki/μυθέομαι https://logeion.uchicago.edu/μυθέομαι
-// say, tell
 {
-  "word":"μυθέομαι",
-  "vowel_length":"μυ_θέομαι",
-  "princ":"μυθήσομαι,μυθησάμην",
-  "medium":"say, tell"
+  "word": "μυθέομαι",
+  "vowel_length": "μυ_θέομαι",
+  "princ": "μυθήσομαι,μυθησάμην",
+  "medium": "say, tell",
+  "aorist_difficult_to_recognize": 0
 }
-      

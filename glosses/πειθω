@@ -1,11 +1,9 @@
-// https://en.wiktionary.org/wiki/πείθω
-// I convince, persuade, I succeed through entreaty, I mislead, I obey, yield to, I believe, trust in, I trust, rely on, I believe, trust
 {
-  "word":"πείθω",
-  "princ":"πείσω,ἔπεισα/πέπιθον",
-  "short":"persuade",
-  "medium":"persuade, mislead, bribe",
-  "long":"persuade, mislead, bribe; mp: trust, obey",
-  "cog":"intensified form ἐπιπείθω"
+  "word": "πείθω",
+  "princ": "πείσω,ἔπεισα/πέπιθον",
+  "short": "persuade",
+  "medium": "persuade, mislead, bribe",
+  "long": "persuade, mislead, bribe; mp: trust, obey",
+  "cog": "intensified form ἐπιπείθω",
+  "aorist_difficult_to_recognize": 0
 }
-      

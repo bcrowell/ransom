@@ -1,11 +1,9 @@
-// https://en.wiktionary.org/wiki/ἔρομαι https://logeion.uchicago.edu/ἔρομαι
-// ask
 {
-  "word":"ἔρομαι",
-  "princ":"ἐρήσομαι,ἠρόμην",
-  "short":"ask",
-  "medium":"ask a question",
-  "notes":"Homer mostly uses the epic form εἴρομαι, but frequently has the imperfect ἐρέοντο and infinitive ἐρέσθαι. Attic uses ἔρομαι/ἐρωτάω.",
-  "etym":"Beekes speculates about semantically distant Germanic cognates. Not cognate with the family that includes εἴρω, irony, word."
+  "word": "ἔρομαι",
+  "princ": "ἐρήσομαι,ἠρόμην",
+  "short": "ask",
+  "medium": "ask a question",
+  "notes": "Homer mostly uses the epic form εἴρομαι, but frequently has the imperfect ἐρέοντο and infinitive ἐρέσθαι. Attic uses ἔρομαι/ἐρωτάω.",
+  "etym": "Beekes speculates about semantically distant Germanic cognates. Not cognate with the family that includes εἴρω, irony, word.",
+  "aorist_difficult_to_recognize": 0
 }
-      

@@ -1,9 +1,7 @@
-// https://en.wiktionary.org/wiki/λήγω https://logeion.uchicago.edu/λήγω
-// leave off, cease
 {
-  "word":"λήγω",
-  "princ":"λήξω,ἔληξα",
-  "medium":"cease",
-  "cog":"lax, slack, as in 'to slack off'"
+  "word": "λήγω",
+  "princ": "λήξω,ἔληξα",
+  "medium": "cease",
+  "cog": "lax, slack, as in 'to slack off'",
+  "aorist_difficult_to_recognize": 0
 }
-      
