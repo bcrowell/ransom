@@ -2,10 +2,12 @@
 // 
 {
   "word":"ἀναφαίνω",
+  "princ":",ἀναφῆνα",
   "short":"reveal, shine",
   "medium":"reveal, shine",
   "long":"reveal, betray, denounce, display; shine; mp: appear",
   "etym":"ἀνά (thoroughly) + φαίνω (appear, shine)",
-  "cog":"phenomenon"
+  "cog":"phenomenon",
+  "notes":"No finite future or aorist forms in Homer."
 }
       

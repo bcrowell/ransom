@@ -2,8 +2,10 @@
 // wrest (something) from (someone), rob (someone) of (something)
 {
   "word":"ἀπαυράω",
+  "princ":",ἄπουρα",
   "medium":"wrest, rob",
   "long":"to take or wrest something from someone, to rob someone of something",
-  "cog":"αἴρω"
+  "cog":"αἴρω",
+  "notes":"In Homer mainly in the imperfect ἀπηύρα and the aorist participle ἀπούρας."
 }
       
