@@ -68,6 +68,8 @@ Epos.new("text/buckley_iliad.txt","latin",false,postfilter:lambda { |s| Epos.str
 
 To do:
 
+Allow relative addressing, e.g., the second word in the third line after a certain word glob.
+
 Allow disambiguation with a syntax such as "47 % rosy fingered dawn",
 meaning whichever match is closest to lying 47% of the way through the
 entire text, or "book 7 % well greaved achaians" to restrict it to one

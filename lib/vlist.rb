@@ -4,6 +4,14 @@ class Vlist
 def initialize(list)
   # List is a list whose elements are lists of common, uncommon, and rare words.
   # Each element of a is a list of items of the form [word,lexical] or [word,lexical,data].
+  # The data field is a hash with keys that may include 'is_3rd_decl', 'is_epic', and 'pos'.
+  # The pos field is a 9-character string in the format used by Project Perseus:
+  #   https://github.com/cltk/greek_treebank_perseus (scroll down)
+  # The lexical and pos tagging may be wrong if the word can occur in more than one way.
+  # The Vlist class and its initializers mostly don't know or care about the gloss files, and a
+  # Vlist object doesn't contain an English translation or any of the other data from the gloss file.
+  # However, as a convenience, the Vlist.from_text() initializer will try to supply missing glosses from
+  # wiktionary and write them in a subdirectory.
   @list = list
   list.each { |l| l.sort! { |a,b| alpha_compare(a[1],b[1]) } } # alphabetical order by lexical form
 end
@@ -145,6 +153,8 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
         whine.push("no glossary entry for #{filename2} , see gloss help file")
       end
       if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end
+      # stuff some more info in the misc element:
+      misc['pos'] = pos # lemma and pos may be wrong if the same word can occur in more than one way
       this_part_of_result2.push([word,lemma,misc])
     }
     result2.push(this_part_of_result2)
