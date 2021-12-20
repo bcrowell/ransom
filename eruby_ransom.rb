@@ -108,15 +108,14 @@ def vocab(vl)
   # Prints latex code for vocab page, and returns the three file lists for later reuse.
   if Options.if_render_glosses then $stderr.print vl.console_messages end
   print "\\begin{vocabpage}\n"
-  vocab_helper('common',vl,0,0)
-  vocab_helper('uncommon',vl,1,2)
+  vocab_helper('uncommon',vl,0,2) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
   print "\\end{vocabpage}\n"
   return vl.list.map { |l| l.map{ |entry| entry[1] } }
 end
 
 def vocab_helper(commonness,vl,lo,hi)
-  if commonness=='common' then tag='vocabcommon' else tag='vocabuncommon' end
-  #if files.include?("κυων") then $stderr.print "doggies in vocab_helper\n" end
+  #if commonness=='common' then tag='vocabcommon' else tag='vocabuncommon' end
+  tag = 'vocaball'
   l = []
   lo.upto(hi) { |i|
     vl.list[i].each { |entry|
@@ -126,18 +125,18 @@ def vocab_helper(commonness,vl,lo,hi)
       next if g.nil?
       file_under = g['file_under']
       if file_under.nil? then raise "Gloss.get = #{g}, doesn't have a file_under key" end
-      l.push([file_under,word,lexical,data])
+      l.push(['gloss',file_under,word,lexical,data])
     }
   }
   print "\\begin{#{tag}}\n"
   l.sort { |a,b| alpha_compare(a[0],b[0])}.each { |entry| 
-    vocab1(entry)
+    if entry[0]=='gloss' then vocab1(entry) end
   }
   print "\\end{#{tag}}\n"
 end
 
 def vocab1(stuff)
-  file_under,word,lexical,data = stuff
+  type,file_under,word,lexical,data = stuff
   entry = Gloss.get(lexical,word)
   return if entry.nil?
   word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']

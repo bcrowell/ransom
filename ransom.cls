@@ -52,10 +52,12 @@
 \newcommand{\hardspace}[1]{\unskip\hspace{#1}\ignorespaces} % https://tex.stackexchange.com/a/89096/6853
 \newcommand{\vocab}[2]{\begin{boldgreek}#1\end{boldgreek} \hardspace{1em} #2}
 \newcommand{\vocabinflection}[3]{\vocab{#1}{\from{}{\greekfont #2}}, #3}
+\newcommand{\vocaballheader}{\textit{vocabulary}}
 \newcommand{\common}{\textit{common}}
 \newcommand{\uncommon}{\bigseparator\vspace{2mm}\textit{uncommon}}
 
 \newenvironment{vocabpage}{\cleardoublepage\begin{raggedright}\begin{multicols}{2}}{\end{multicols}\end{raggedright}}
+\newenvironment{vocaball}{\vocaballheader\\}{}
 \newenvironment{vocabcommon}{\common\\}{}
 \newenvironment{vocabuncommon}{\uncommon\\}{}
 \newenvironment{widespacing}{\linespread{1.5}}{}
