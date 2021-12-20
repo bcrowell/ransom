@@ -121,22 +121,47 @@ def vocab_helper(commonness,vl,lo,hi)
     vl.list[i].each { |entry|
       word,lexical,data = entry
       if data.nil? then data={} end
+      pos = data['pos']
       g = Gloss.get(lexical,word)
       next if g.nil?
       file_under = g['file_under']
       if file_under.nil? then raise "Gloss.get = #{g}, doesn't have a file_under key" end
-      l.push(['gloss',file_under,word,lexical,data])
+      l.push(['gloss',[file_under,word,lexical,data]])
+      if not_nil_or_zero(g['aorist_difficult_to_recognize']) then $stderr.print "... aorist #{word} #{lexical} #{pos}\n" end
+      if not_nil_or_zero(g['aorist_difficult_to_recognize']) && pos=~/^v..a/ then
+        l.push(['inflection',[file_under,word,lexical,data]])
+      end
     }
   }
-  print "\\begin{#{tag}}\n"
-  l.sort { |a,b| alpha_compare(a[0],b[0])}.each { |entry| 
-    if entry[0]=='gloss' then vocab1(entry) end
+  ['gloss','inflection'].each { |type|
+    envir = {'gloss'=>'vocaball','inflection'=>'forms'}[type]
+    ll = l.select { |entry| entry[0]==type }.map { |entry| entry[1] }
+    if ll.length>0 then
+      print "\\begin{#{envir}}\n"
+      ll.sort { |a,b| alpha_compare(a[0],b[0])}.each { |entry|
+        s = nil
+        if type=='gloss' then s=vocab1(entry) end
+        if type=='inflection' then s=vocab_inflection(entry) end
+        if !(s.nil?) then
+          print clean_up_unicode("#{s}\\\\")
+        end
+      }
+      print "\\end{#{envir}}\n"
+    end
   }
-  print "\\end{#{tag}}\n"
+end
+
+def not_nil_or_zero(x)
+  return !(x.nil? || x==0)
+end
+
+def vocab_inflection(stuff)
+  file_under,word,lexical,data = stuff
+  return "\\vocabinflectiononly{#{word.downcase}}{#{lexical}}"
 end
 
 def vocab1(stuff)
-  type,file_under,word,lexical,data = stuff
+  file_under,word,lexical,data = stuff
   entry = Gloss.get(lexical,word)
   return if entry.nil?
   word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
@@ -155,7 +180,7 @@ def vocab1(stuff)
   else
     s = "\\vocab{#{lexical}}{#{gloss}}"
   end
-  print clean_up_unicode("#{s}\\\\")
+  return s
 end
 
 
