@@ -108,14 +108,12 @@ def vocab(vl,core)
   # Prints latex code for vocab page, and returns the three file lists for later reuse.
   if Options.if_render_glosses then $stderr.print vl.console_messages end
   print "\\begin{vocabpage}\n"
-  vocab_helper('uncommon',vl,0,2,core) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
+  print vocab_helper('uncommon',vl,0,2,core) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
   print "\\end{vocabpage}\n"
   return vl.list.map { |l| l.map{ |entry| entry[1] } }
 end
 
 def vocab_helper(commonness,vl,lo,hi,core)
-  #if commonness=='common' then tag='vocabcommon' else tag='vocabuncommon' end
-  tag = 'vocaball'
   l = []
   lo.upto(hi) { |i|
     vl.list[i].each { |entry|
@@ -138,24 +136,28 @@ def vocab_helper(commonness,vl,lo,hi,core)
       end
     }
   }
+  secs = []
   ['gloss','inflection'].each { |type|
     envir = {'gloss'=>'vocaball','inflection'=>'forms'}[type]
     ll = l.select { |entry| entry[0]==type }.map { |entry| entry[1] }
     if ll.length>0 then
-      print "\\begin{#{envir}}\n"
+      this_sec = ''
+      this_sec += "\\begin{#{envir}}\n"
       ll.sort { |a,b| alpha_compare(a[0],b[0])}.each { |entry|
         s = nil
         if type=='gloss' then s=vocab1(entry) end
         if type=='inflection' then s=vocab_inflection(entry) end
         if !(s.nil?) then
-          print clean_up_unicode("#{s}\\\\\n")
+          this_sec += clean_up_unicode("#{s}\\\\\n")
         else
           die("unrecognized vocab type: #{type}")
         end
       }
-      print "\\end{#{envir}}\n"
+      this_sec += "\\end{#{envir}}\n"
+      secs.push(this_sec)
     end
   }
+  return secs.join("\n\\bigseparator\\vspace{2mm}\n")
 end
 
 def not_nil_or_zero(x)
