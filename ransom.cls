@@ -52,7 +52,7 @@
 \newcommand{\hardspace}[1]{\unskip\hspace{#1}\ignorespaces} % https://tex.stackexchange.com/a/89096/6853
 \newcommand{\vocab}[2]{\begin{boldgreek}#1\end{boldgreek} \hardspace{1em} #2}
 \newcommand{\vocabinflection}[3]{\vocab{#1}{\from{}{\greekfont #2}}, #3}
-\newcommand{\vocabinflectiononly}[3]{\vocab{#1}{\from{}{\greekfont #2}}}
+\newcommand{\vocabinflectiononly}[2]{\vocab{#1}{\from{}{\greekfont #2}}}
 \newcommand{\vocaballheader}{\textit{vocabulary}}
 \newcommand{\formsheader}{\textit{forms}}
 

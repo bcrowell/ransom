@@ -35,10 +35,10 @@ def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil)
   raise "four-page layout spans books" if rg1[0]!=rg2[0] # will cause all kinds of problems, including with notes
   first_line_number = g1[1]
   greek_text = greek.extract(rg1,rg2)
-  vl = Vlist.from_text(greek_text,lemmas_file,freq_file,exclude_glosses:list_exclude_glosses(g1,g2,notes),core_list:core)
+  vl = Vlist.from_text(greek_text,lemmas_file,freq_file,exclude_glosses:list_exclude_glosses(g1,g2,notes))
   if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
   vocab_by_chapter[ch] = alpha_sort((vocab_by_chapter[ch]+vl.all_lexicals).uniq)
-  v = vocab(vl) # prints
+  v = vocab(vl,core) # prints
   print "\\renewcommand{\\rightheaderinfo}{#{g1[0]}.#{g1[1]}}%\n"
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatvocab}%\n"
   print "\\pagebreak\n\n"
@@ -102,18 +102,18 @@ def find_notes(lineref1,lineref2,notes)
   return result.sort { |a,b| a[0] <=> b[0] } # array comparison is lexical
 end
 
-def vocab(vl)
+def vocab(vl,core)
   # Input is a Vlist object.
   # The three sections are interpreted as common, uncommon, and rare.
   # Prints latex code for vocab page, and returns the three file lists for later reuse.
   if Options.if_render_glosses then $stderr.print vl.console_messages end
   print "\\begin{vocabpage}\n"
-  vocab_helper('uncommon',vl,0,2) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
+  vocab_helper('uncommon',vl,0,2,core) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
   print "\\end{vocabpage}\n"
   return vl.list.map { |l| l.map{ |entry| entry[1] } }
 end
 
-def vocab_helper(commonness,vl,lo,hi)
+def vocab_helper(commonness,vl,lo,hi,core)
   #if commonness=='common' then tag='vocabcommon' else tag='vocabuncommon' end
   tag = 'vocaball'
   l = []
@@ -126,9 +126,14 @@ def vocab_helper(commonness,vl,lo,hi)
       next if g.nil?
       file_under = g['file_under']
       if file_under.nil? then raise "Gloss.get = #{g}, doesn't have a file_under key" end
-      l.push(['gloss',[file_under,word,lexical,data]])
-      if not_nil_or_zero(g['aorist_difficult_to_recognize']) then $stderr.print "... aorist #{word} #{lexical} #{pos}\n" end
-      if not_nil_or_zero(g['aorist_difficult_to_recognize']) && pos=~/^v..a/ then
+      difficult_to_recognize = data['difficult_to_recognize']
+      difficult_to_recognize ||= (not_nil_or_zero(g['aorist_difficult_to_recognize']) && pos=~/^...a/ )
+      data['difficult_to_recognize'] = difficult_to_recognize
+      data['core'] = core.include?(remove_accents(lexical).downcase)
+      if !data['core'] then
+        l.push(['gloss',[file_under,word,lexical,data]])
+      end
+      if data['core'] && difficult_to_recognize then
         l.push(['inflection',[file_under,word,lexical,data]])
       end
     }
@@ -143,7 +148,9 @@ def vocab_helper(commonness,vl,lo,hi)
         if type=='gloss' then s=vocab1(entry) end
         if type=='inflection' then s=vocab_inflection(entry) end
         if !(s.nil?) then
-          print clean_up_unicode("#{s}\\\\")
+          print clean_up_unicode("#{s}\\\\\n")
+        else
+          die("unrecognized vocab type: #{type}")
         end
       }
       print "\\end{#{envir}}\n"
@@ -173,7 +180,6 @@ def vocab1(stuff)
     text = [lexical,gloss]
   end
   total_chars = text.map { |t| t.length}.sum+text.length-1 # final terms count blanks
-  if lexical=='ἀμείνων' then $stderr.print "lexical=#{lexical}, total_chars=#{total_chars}, text=#{text}\n" end
   if total_chars>35 && entry.has_key?('short') then gloss=entry['short'] end
   if explain_inflection then
     s = "\\vocabinflection{#{word.downcase}}{#{lexical}}{#{gloss}}"
@@ -205,7 +211,6 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
       line_hash = Digest::MD5.hexdigest(lines[i])
       w = words(lines[i])
       ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
-      #$stderr.print "ww=#{ww}\n" # qwe
       gg.each { |x|
         if ww.include?(x) then # lemmatized version of line includes this rare lemma that we were asked to gloss
           j = ww.index(x)

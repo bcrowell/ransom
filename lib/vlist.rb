@@ -4,10 +4,13 @@ class Vlist
 def initialize(list)
   # List is a list whose elements are lists of common, uncommon, and rare words.
   # Each element of a is a list of items of the form [word,lexical] or [word,lexical,data].
-  # The data field is a hash with keys that may include 'is_3rd_decl', 'is_epic', and 'pos'.
+  # The data field is a hash with keys that may include 'is_3rd_decl', 'is_epic', 'pos',
+  # and 'difficult_to_recognize'. 
   # The pos field is a 9-character string in the format used by Project Perseus:
   #   https://github.com/cltk/greek_treebank_perseus (scroll down)
   # The lexical and pos tagging may be wrong if the word can occur in more than one way.
+  # The difficult_to_recognize flag is not completely accurate at this stage, because we don't look at
+  # the gloss files, which has info about whether the verb has an aorist that is difficult to recognize.
   # The Vlist class and its initializers mostly don't know or care about the gloss files, and a
   # Vlist object doesn't contain an English translation or any of the other data from the gloss file.
   # However, as a convenience, the Vlist.from_text() initializer will try to supply missing glosses from
@@ -40,7 +43,7 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core_list:[])
+def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[])
   lemmas = json_from_file_or_die(lemmas_file)
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -90,10 +93,15 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
     f = freq[lemma]
     is_3rd_decl = guess_whether_third_declension(word_raw,lemma,pos)
     is_epic = Epic_form.is(word_raw)
-    difficult_to_recognize = (is_3rd_decl || is_epic) && !alpha_equal(word_raw,lemma)
-    next if core_list.include?(remove_accents(lemma).downcase) && ! difficult_to_recognize
+    difficult_to_recognize = false
+    if !alpha_equal(word_raw,lemma) then
+      difficult_to_recognize ||= is_3rd_decl
+      difficult_to_recognize ||= is_epic
+      # Don't try to judge whether it's a difficult aorist to recognize, because we don't have access to the gloss file.
+    end
     next unless rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize)
     misc = {}
+    misc['difficult_to_recognize'] = difficult_to_recognize
     if is_3rd_decl then misc['is_3rd_decl']=true end
     if is_epic then misc['is_epic']=true end
     entry = word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc
