@@ -1,3 +1,14 @@
+def describe_declension(pos,tex)
+  # tex = boolean, do we want latex-compatible output?
+  # returns [long,short]
+  number = {'s'=>'s.','d'=>'dual','p'=>'pl.'}[pos[2]]
+  the_case = {'n'=>'nom.','g'=>'gen.','d'=>'dat.','a'=>'acc.','v'=>'voc.','l'=>'loc.'}[pos[7]]
+  short = the_case
+  long = "#{the_case} #{number}"
+  if tex then long.gsub!(/\. /,".~") end
+  return [long,short]
+end
+
 def guess_whether_third_declension(word,lemma,pos)
   # example: word="κύνεσσι", lemma="κύων", pos="n-p---md-"
   # Project perseus 9-character POS	tags are defined at https://github.com/cltk/greek_treebank_perseus (scroll down).

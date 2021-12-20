@@ -164,7 +164,12 @@ end
 
 def vocab_inflection(stuff)
   file_under,word,lexical,data = stuff
-  return "\\vocabinflectiononly{#{word.downcase}}{#{lexical}}"
+  pos = data['pos']
+  if pos[0]=='n' then
+    return "\\vocabnouninflection{#{word.downcase}}{#{lexical}}{#{describe_declension(pos,true)[0]}}"
+  else
+    return "\\vocabinflectiononly{#{word.downcase}}{#{lexical}}"
+  end
 end
 
 def vocab1(stuff)
