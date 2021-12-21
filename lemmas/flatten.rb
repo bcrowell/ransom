@@ -32,6 +32,7 @@ def clean_up_combining_characters(s)
   s2 = s2.sub(/#{[769].pack('U')}ε/) {'έ'}
   s2 = s2.sub(/#{[180].pack('U')}([κ])/) {$1} # accent on a kappa, obvious error
   s2 = s2.sub(/#{[834].pack('U')}/,'') # what the heck is this?  
+  s2 = s2.sub(/ʽ([ἁἑἱὁὑἡὡ])/) {$1} # redundant rough breathing mark
   if s2!=s then
     $stderr.print "cleaning up what appears to be an error in a combining character, #{s} -> #{s2}, unicode #{s.chars.map { |x| x.ord}} -> #{s2.chars.map { |x| x.ord}}\n"
     s = s2

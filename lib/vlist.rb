@@ -150,7 +150,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
         end
       end
       filename = "glosses/#{key}"
-      if !(FileTest.exist?(filename)) && Options.if_render_glosses then
+      if !(FileTest.exist?(filename)) && Options.if_render_glosses && !Ignore_words.patch(word) && !Proper_noun.is(word,lemma) then
         if key1==key2 then foo=key1 else foo="#{key1} or #{key2}" end
         gloss_help.push({
           'filename'=>key2,
@@ -238,6 +238,7 @@ class Proper_noun
     οδυσσευς παλλας Πηλείδης Πηλείων πλοῦτος πυλιος Πύλος τενεδος τροια τρως φθια Χρυσηίς αγαμεμνων αιας απολλων αργος βρισηις ατρειδης
     Μυρμιδών αχαιις ατη ατρειδης βρισευς διος εκτωρ αιγαιων αιγειδην εξαδιος ευρυβατης ηετιων θετις θηβη θησευς ιδομενευς καινευς
     καρδια κρονιων μενοιτιαδης μυρμιδονες πατροκλος πειριθοος πολυφημος ποσειδεων ταλθυβιος
+    αιθιοψ κρονιδης πηλευς δρυας κορος Ἀτρείων
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Proper_noun.is(word,lemma,require_cap:true)
     if require_cap && word[0].downcase==word[0] then return false end
@@ -248,7 +249,7 @@ class Proper_noun
 end
 
 class Ignore_words
-  # Words in the following list can be accented or unaccented, lemmatized or inflected. Case is nor significant. Accents are stripped.
+  # Words in the following list can be accented or unaccented, lemmatized or inflected. Case is not significant. Accents are stripped.
   # If an inflected form is given here, then it will only match that inflected form.
   # The words οτηερ and υνκνοων are English "other" and "unknown," processed incorrectly as if they were beta code.
   @@index = %q{
@@ -260,6 +261,7 @@ class Ignore_words
     κακος ευ παρα περ χειρ
     οτι πως εαν οτε ουδε τοτε οπως ουτε που ωδε δυο
     ειπον μα αλλη αμφω εκεινος κεινος μητε περι
+    μη αμφι υπερ
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Ignore_words.patch(word)
     w = remove_accents(word).downcase
