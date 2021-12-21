@@ -44,7 +44,8 @@ certain chunk-ending characters and doesn't span files.  For verse,
 the only chunk-ending character is \n. For latin-script prose, they're
 . ? ; and \n\n.  An example where the \n\n rule matters is near the
 beginning of Buckley, where a paragraph ends with a colon setting off
-quoted speech.
+quoted speech. To accommodate US-style punctuation of quotes, when
+a sentence ends "like this;", the quote is included in the sentence.
 
 The API is structured so that usually we think of a chunk as a pointer
 to just before its own first character.  A string like "irritate me
@@ -66,6 +67,12 @@ A text may contain material like footnotes that we want to pretend are
 not there. This is done using the postfilter facility. Example:
 Epos.new("text/buckley_iliad.txt","latin",false,postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
 
+Testing:
+
+When testing, make sure to do use_cache:false. Otherwise nothing will actually be tested.
+We also, for example, don't want to run a test without postfiltering, cache the result,
+and then read it back later from the case without postfiltering.
+
 To do:
 
 Allow relative addressing, e.g., the second word in the third line after a certain word glob.
@@ -82,15 +89,17 @@ or less verbose.
 
 class Epos
 
-  def initialize(text,script,is_verse,postfilter:nil)
+  def initialize(text,script,is_verse,postfilter:nil,use_cache:true)
     # Text is the pathname of either a file or a directory containing some files. If it's a directory, then
     # any files inside it are taken to be texts, unless they have extensions .freq, .index, .dir, .pag, or .meta.
     # Script can be 'latin', 'greek', or 'hebrew'.
     # Is_verse is boolean
+    # The use_cache flag is for testing and development. See more notes about this in documentation at top of code.
     @text = text
     @script = script
     @is_verse = is_verse
     @postfilter = postfilter
+    @use_cache = use_cache
     @contents = nil
   end
 
@@ -109,7 +118,7 @@ class Epos
     # Returns chunk r1 (inclusive) to r2 (not inclusive). Leading and trailing whitespace is stripped, except that
     # if it's verse, then the result has exactly one trailing newline.
     # One-liner for testing:
-    #   ruby -e 'require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); r1=e.word_glob_to_hard_ref("μῆνιν-ἄειδε")[0]; r2=e.word_glob_to_hard_ref("ἐϋκνήμιδες-Ἀχαιοί")[0]; print e.extract(r1,r2)'
+    #   ruby -e 'require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true,use_cache:false); r1=e.word_glob_to_hard_ref("μῆνιν-ἄειδε")[0]; r2=e.word_glob_to_hard_ref("ἐϋκνήμιδες-Ἀχαιοί")[0]; print e.extract(r1,r2)'
     sanity_check_ref(r1)
     sanity_check_ref(r2)
     c = self.get_contents
@@ -154,14 +163,18 @@ class Epos
     # Returns [hard_ref,non_unique]. Hard_ref is a hard reference, meaning an internal data structure that is not likely to
     # remain valid when the text is edited. Currently hard_ref is implemented as [file_number,character_index], where both
     # indices are zero-based, and character_index is the first character in the chunk.
-    cache = self.auxiliary_filename_helper("cache")
-    result = nil
-    if File.exists?(cache+".dir") then
-      SDBM.open(cache) { |db| if db.has_key?(glob) then result=JSON.parse(db[glob]) end }
+    if @use_cache then
+      cache = self.auxiliary_filename_helper("cache")
+      result = nil
+      if File.exists?(cache+".dir") then
+        SDBM.open(cache) { |db| if db.has_key?(glob) then result=JSON.parse(db[glob]) end }
+      end
+      if !(result.nil?) then return result end # return cached result
     end
-    if !(result.nil?) then return result end # return cached result
     result = word_glob_to_hard_ref_helper(glob)
-    SDBM.open(cache) { |db| db[glob]=JSON.generate(result) }
+    if @use_cache then
+      SDBM.open(cache) { |db| db[glob]=JSON.generate(result) }
+    end
     return result
   end
 
@@ -256,6 +269,19 @@ class Epos
     end
     ref = clown([ref[0],i])
     1.upto(bump) { |k| ref=self.increment_ref(ref) }
+    if true then
+      # Check for quotation mark that should be included with the preceding chunk.
+      # This seems to be necessary and sufficient for the glob "irritate me not>, which occurs at Iliad 1.33.
+      # I'm not certain at all whether this is correct in all cases.
+      i=ref[1]
+      if i<s.length-1 && s[i]=~/['`"“”\n]/ then ref=self.increment_ref(ref) end
+    end
+    if false && ref[1]>=3418 && ref[1]<=3422 then # qwe
+      File.open('epos_debug','a') { |f|
+        i = ref[1]
+        f.print "ref=#{ref}, s[i:i+30]=#{s[i..i+10]}\n"
+      }
+    end
     return ref
   end
 
