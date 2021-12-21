@@ -150,14 +150,21 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
         end
       end
       filename = "glosses/#{key}"
-      if !(FileTest.exist?(filename)) && Options.if_render_glosses && !Ignore_words.patch(word) && !Proper_noun.is(word,lemma) then
+      if Options.if_render_glosses && !(FileTest.exist?(filename)) && !(FileTest.exist?(filename1)) \
+                          && !Ignore_words.patch(lemma) && !Proper_noun.is(word,lemma,require_cap:false) then
         if key1==key2 then foo=key1 else foo="#{key1} or #{key2}" end
-        gloss_help.push({
+        debug_gloss = ['καρδια','ηφαιστος','οσος','σφος'].include?(key2)
+        $stderr.print "................. key=#{key}\n" # qwe
+        h = {
           'filename'=>key2,
           'lemma'=>lemma,
           'url'=> "https://en.wiktionary.org/wiki/#{lemma} https://logeion.uchicago.edu/#{lemma}",
           'wikt'=> WiktionaryGlosses.get_glosses(lemma).join(', ')
-        })
+        }
+        if debug_gloss then
+           h['debug']="key=#{key}, raw=#{word_raw}, word=#{word}, lemma=#{lemma}, ignore=#{Ignore_words.patch(word)}, pr=#{Proper_noun.is(word,lemma,require_cap:false)}"
+        end
+        gloss_help.push(h)
         whine.push("no glossary entry for #{filename2} , see gloss help file")
       end
       if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end
@@ -203,6 +210,7 @@ def Vlist.give_gloss_help(gloss_help)
       x.gsub!(/\A\n/,'')
       x.gsub!(/^        /,'')
       f.print x
+      if h.has_key?('debug') then f.print "// #{h}\n" end
     }
   }
   File.open(dir_and_file_to_path(gloss_help_dir,"__links.html"),"a") { |f|
@@ -238,7 +246,7 @@ class Proper_noun
     οδυσσευς παλλας Πηλείδης Πηλείων πλοῦτος πυλιος Πύλος τενεδος τροια τρως φθια Χρυσηίς αγαμεμνων αιας απολλων αργος βρισηις ατρειδης
     Μυρμιδών αχαιις ατη ατρειδης βρισευς διος εκτωρ αιγαιων αιγειδην εξαδιος ευρυβατης ηετιων θετις θηβη θησευς ιδομενευς καινευς
     καρδια κρονιων μενοιτιαδης μυρμιδονες πατροκλος πειριθοος πολυφημος ποσειδεων ταλθυβιος
-    αιθιοψ κρονιδης πηλευς δρυας κορος Ἀτρείων
+    αιθιοψ κρονιδης πηλευς δρυας κορος Ἀτρείων ηφαιστος λημνος
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Proper_noun.is(word,lemma,require_cap:true)
     if require_cap && word[0].downcase==word[0] then return false end
@@ -261,7 +269,7 @@ class Ignore_words
     κακος ευ παρα περ χειρ
     οτι πως εαν οτε ουδε τοτε οπως ουτε που ωδε δυο
     ειπον μα αλλη αμφω εκεινος κεινος μητε περι
-    μη αμφι υπερ
+    μη αμφι υπερ σφος ποιος οστις οσος
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Ignore_words.patch(word)
     w = remove_accents(word).downcase

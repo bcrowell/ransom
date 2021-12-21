@@ -6,6 +6,8 @@
 % https://tex.stackexchange.com/q/80520/6853
 % Bindingoffset refers to the gutter.
 
+\RequirePackage{silence}
+
 % https://tex.stackexchange.com/a/37251/6853
 \RequirePackage{fontspec}
 \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
