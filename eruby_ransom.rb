@@ -3,6 +3,7 @@ require 'sdbm'
 require 'set'
 require_relative "lib/file_util"
 require_relative "lib/string_util"
+require_relative "lib/multistring"
 require_relative "lib/treebank"
 require_relative "lib/epos"
 require_relative "lib/vlist"

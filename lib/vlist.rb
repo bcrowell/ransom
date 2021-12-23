@@ -95,7 +95,7 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
     is_epic = Epic_form.is(word_raw)
     difficult_to_recognize = false
     if !alpha_equal(word_raw,lemma) then
-      difficult_to_recognize ||= is_3rd_decl
+      difficult_to_recognize ||= (is_3rd_decl && guess_difficulty_of_recognizing_declension(word_raw,lemma,pos)>0.4)
       difficult_to_recognize ||= is_epic
       # Don't try to judge whether it's a difficult aorist to recognize, because we don't have access to the gloss file.
     end
