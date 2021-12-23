@@ -35,6 +35,49 @@ class MultiString
     }
     return result
   end
+  def distance(t)
+    # Return a distance based on whatever I think is currently my best distance measure.
+    return self.lcs_distance(t)
+  end
+  def lcs_distance(t)
+    # Calculate a measure of the similarity between this instance and another MultiString t.
+    # This measure is the smallest of all distances calculated between possible atomic results of the two multistrings.
+    d = []
+    0.upto(self.complexity-1) { |i|
+      p = self.nth(i)
+      0.upto(t.complexity-1) { |j|
+        q = t.nth(j)
+        d.push(atomic_lcs_distance(p,q))
+      }
+    }
+    return d.min
+  end
+  def atomic_lcs_distance(p,q)
+    return [p.length,q.length].max-MultiString.longest_common_subsequence(p,q)
+  end
+  def MultiString.longest_common_subsequence(x,y)
+    # x and y are just strings, not multistrings
+    # https://en.wikipedia.org/wiki/Longest_common_subsequence_problem#Code_for_the_dynamic_programming_solution
+    # https://gist.github.com/bcrowell/e5125339fad9ddf723741d5897ef7230
+    # example of a test: ruby -e "require './multistring.rb'; print MultiString.longest_common_subsequence('abcd','acqxd')"
+    m = x.length
+    n = y.length
+    c = {}
+    0.upto(m) { |i| c["#{i},0"] = 0}
+    0.upto(n) { |j| c["0,#{j}"] = 0}
+    1.upto(m) { |i|
+      1.upto(n) { |j|
+        if x[i-1]==y[j-1] then
+          # C[i,j] := C[i-1,j-1] + 1
+          c["#{i},#{j}"] = c["#{i-1},#{j-1}"]+1
+        else
+          # C[i,j] := max(C[i,j-1], C[i-1,j])
+          c["#{i},#{j}"] = [c["#{i},#{j-1}"],c["#{i-1},#{j}"]].max
+        end
+      }
+    }
+    return c["#{m},#{n}"]
+  end
   def bag_distance(t)
     # Calculate a measure of the similarity between this instance and another MultiString t.
     # This measure is the smallest of all distances calculated between possible atomic results of the two multistrings.
