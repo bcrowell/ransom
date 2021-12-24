@@ -11,6 +11,9 @@ class MultiString
     if stuff.kind_of?(String) then @data=[[stuff]] else @data=stuff end
   end
   attr_accessor :data
+  def to_s
+    return @data.to_s
+  end
   def complexity
     # The number of different paths through the multistring. This may be greater than the actual number of possible distinct strings.
     result = 1

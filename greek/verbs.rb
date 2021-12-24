@@ -9,7 +9,7 @@ module Verb_difficulty
       ["ἴθι","εἶμι","v2spma---"],
       ["ἁζόμενοι","ἅζομαι","v-pppemn-"],
       ["λύει","λύω","v3spia---"],
-      ["ἠτίμασεν","ἀτιμάζω","v3saia---"
+      ["ἠτίμασεν","ἀτιμάζω","v3saia---"]
     ]
     results = []
     tests.each { |x|
@@ -25,19 +25,47 @@ end
   # Code that tries to judge the difficulty of recognizing a particular inflected form of a verb.
   def Verb_difficulty.guess(word,lemma,pos)
     f = Vform.new(pos)
+    f_lemma = f.make_lemma(lemma)
     # The effect of the following is to strip accents, phoneticize rough breathing as 'h' or null string, and archaicize iota subscripts.
     w = Writing.phoneticize(word)
     l = Writing.phoneticize(lemma)
     mi_verb = l=~/μι$/
     stem_from_word =  Verb_difficulty.strip_ending(w,mi_verb,f)
-    stem_from_lemma = Verb_difficulty.strip_ending(l,mi_verb,f.make_lemma(lemma))
-    ws = MultiString.new(stem_from_word)
-    ls = MultiString.new(stem_from_lemma)
+    stem_from_lemma = Verb_difficulty.strip_ending(l,mi_verb,f_lemma)
+    # In the following, ws and ls are multistrings, not strings.
+    ws = Verb_difficulty.strip_augment(stem_from_word,f)
+    ls = Verb_difficulty.strip_augment(stem_from_lemma,f_lemma)
     dist = ls.distance(ws) # is 0 if identical, or number of chars unexplainable by longest common subsequence
     x = dist.to_f/([stem_from_lemma.length,stem_from_word.length].max) # basically the fraction of chars that are unexplainable
     x = x+dist*0.1
-    threshold = 0.25
-    return [x>threshold,x,threshold,{'wstem'=>stem_from_word,'lstem'=>stem_from_lemma}]
+    threshold = 0.27
+    return [x>threshold,x,threshold,{'wstem'=>stem_from_word,'lstem'=>stem_from_lemma,'unaug'=>ws.to_s}]
+  end
+
+  def Verb_difficulty.strip_augment(word,f)
+    # This won't work if it has a preposition on the front, which is good because failure is awesome.
+    if !(f.past) then
+      return MultiString.new(word)
+    else
+      # past tense, may have augment
+      patterns = [
+        ["ηι",["αι","ει"]], # phoneticized, so handles stuff like ῃ -> ᾳ
+        ["ωι",["οι"]], # ῳ
+        ["ηυ",["αυ","ευ"]],
+        ["η",["α","ε"]],
+        ["ω",["ο"]]
+      ]
+      poss = [word]
+      patterns.each { |a,l|
+        if word=~/^#{a}/ then
+          l.each { |b|
+            poss.push(word.sub(/^#{a}/,b))
+          }
+          break # e.g., if it matches ῃ, don't also try to apply the η rule to it
+        end
+      }
+      return MultiString.new([poss]) # needs a singleton list of lists, not just a list
+    end
   end
 
   def Verb_difficulty.strip_ending(s,mi_verb,f)
