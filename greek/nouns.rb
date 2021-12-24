@@ -22,6 +22,7 @@ def test_decl_diff()
     ['νεκύων','νέκυς','pmg'],
     ['πόδας','πούς','pma'],
     ['φρεσὶ','φρήν','pfd'],
+    ['λαοί','λαός','pmn']
   ]
   results = []
   tests.each { |x|
@@ -37,7 +38,7 @@ def test_decl_diff()
 end
 
 def guess_difficulty_of_recognizing_declension(word,lemma,pos)
-  # Returns a floating-point number from 0 to about 1.0 (possibly a little higher in some cases).
+  # Returns [if_hard,score,threshold].
   # For testing and calibration, see test_decl_diff() above.
   is_3rd_decl = guess_whether_third_declension(word,lemma,pos)
   w = Writing.phoneticize(word)

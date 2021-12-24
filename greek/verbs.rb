@@ -134,6 +134,7 @@ class Vform
     # First character has to be there as a placeholder, but is ignored.
     # Final three characters are optional, ignored.
     # To get back a complete 9-character perseus tag, use the method get_perseus_tag().
+    if !(perseus_pos[0]=~/[vt]/) then $stderr.print caller[0..5].join("\n")+"\nVform initialized with pos=#{perseus_pos}, not a verb or participle\n"; exit(-1) end
     @person = perseus_pos[1].to_i # 1, 2, or 3
     @number = perseus_pos[2] # 's', 'd', or 'p'
     @tense = perseus_pos[3] # paif = present,aorist,imperfect,future; rlt = perfect,pluperfect,future perfect
