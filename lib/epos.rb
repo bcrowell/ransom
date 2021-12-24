@@ -276,12 +276,6 @@ class Epos
       i=ref[1]
       if i<s.length-1 && s[i]=~/['`"“”\n]/ then ref=self.increment_ref(ref) end
     end
-    if false && ref[1]>=3418 && ref[1]<=3422 then # qwe
-      File.open('epos_debug','a') { |f|
-        i = ref[1]
-        f.print "ref=#{ref}, s[i:i+30]=#{s[i..i+10]}\n"
-      }
-    end
     return ref
   end
 

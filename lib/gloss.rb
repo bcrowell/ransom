@@ -18,10 +18,6 @@ medium
 
 optional:
 
-lexical
-  E.g., for the word ἕλωμαι, lexical is αἱρέω. This is used so that words with difficult or irregular inflections will be
-  listed in the mini-vocabularies as, e.g., ἕλωμαι < αἱρέω. The "medium" field is required as usual, and can be different
-  from the gloss given in the file named for the lexical form.
 vowel_length
   E.g., for νέκυς, this is νέκυ_ς. That is: for any doubtful vowel that is
   phonemically long, we put an underbar after it. To convert from standard macronized
