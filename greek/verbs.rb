@@ -5,6 +5,9 @@ module Verb_difficulty
       ["ἁζόμενοι","ἅζομαι","v-pppemn-",false],
       ["λύει","λύω","v3spia---",false],
       ["ἠτίμασεν","ἀτιμάζω","v3saia---",false],
+      ["λίσσετο","λίσσομαι","v3siie---",false],
+      ["ᾤχετο","οἴχομαι","v3siie---",false],
+      ["λυσόμενός","λύω","v-sfpmmn-",false],
       ["ἐφιεὶς","ἐφίημι","v-sppamn-",true],
       ["δαμᾷ","δαμάζω","v3sfia---",true],
       ["ἤγερθεν","ἀγείρω","v3paip---",true],
@@ -12,7 +15,6 @@ module Verb_difficulty
       ["ἴθι","εἶμι","v2spma---",true],
       ["ὄμοσσον","ὄμνυμι","v2sama---",true],
       ["οἶσθα","οἶδα","v2sria---",true],
-      ["ᾤχετο","οἴχομαι","v3siie---",true]
     ]
     results = []
     tests.each { |x|
@@ -114,7 +116,9 @@ end
     else
       # voice = passive, middle, mp
       if f.present || f.future then pat = "o?(μαι|αι|σαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται)" end
-      if f.imperfect || (f.aorist && !f.passive) then pat = "μην|σο|το|μεθα|σθε|ντο|ατο" end
+      if f.imperfect || (f.aorist && !f.passive) then 
+        if mi_verb then pat = "μην|σο|το|μεθα|σθε|ντο|ατο" else pat = "ομην|εσο|ετο|ομεθα|εσθε|οντο|ατο" end
+      end
       if f.aorist && f.passive then pat = "(θη)?(ν|ς||το|μεν|τε|σαν|θεν|ντο)" end # null in 2nd group is to allow bare θη
       if f.imperative then pat = "σο|ου|σθε" end # no dual forms, failure is awesome
       if f.participle then pat = "ο?μεν(ος|ου|οιο|ωι|ον|οι|ων|οις|οισιν?|ους|ης|ας|η|α|ην|αν|αι|ηις|ηισιν?|ας)" end

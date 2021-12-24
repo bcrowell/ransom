@@ -40,7 +40,7 @@ class Writing
     s = Writing.phoneticize_breathing(s)
     s = Writing.accents_to_digraphs(s)
     if respell_final_sigma then s = s.sub(/ς/,'σ') else s = s.sub(/σ$/,'ς') end
-    if remove_accents then s=s.sub(/[\!\~]/,'') end
+    if remove_accents then s=s.gsub(/[\!\~]/,'') end
     return s
   end
   def Writing.accents_to_digraphs(s)
