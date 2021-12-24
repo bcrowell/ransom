@@ -18,9 +18,10 @@ module Verb_difficulty
     tests.each { |x|
       word,lemma,pos,i_think_hard = x
       if_hard,score,threshold,debug = Verb_difficulty.guess(word,lemma,pos)
+      if if_hard then hard_string='hard' else hard_string='easy' end
       mismatch = (i_think_hard!=if_hard)
       if mismatch then mismatch_string='******* error ??? *******' else mismatch_string='' end
-      results.push([score,sprintf("%10s %10s %.2f %s %20s %s\n",word,lemma,score,mismatch_string,Vform.new(pos),debug)])
+      results.push([score,sprintf("%10s %10s %.2f %s %s %20s %s\n",word,lemma,score,hard_string,mismatch_string,Vform.new(pos),debug)])
     }
     results.sort { |a,b| a[0]<=>b[0] }.each { |r|
     print r[1]
