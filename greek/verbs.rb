@@ -9,6 +9,7 @@ module Verb_difficulty
       ["ἴθι","εἶμι","v2spma---"],
       ["ἁζόμενοι","ἅζομαι","v-pppemn-"],
       ["λύει","λύω","v3spia---"],
+      ["ἠτίμασεν","ἀτιμάζω","v3saia---"
     ]
     results = []
     tests.each { |x|
