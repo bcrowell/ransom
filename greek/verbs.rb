@@ -2,20 +2,25 @@ module Verb_difficulty
   def Verb_difficulty.test()
     # ruby -e "require './greek/writing.rb'; require './greek/verbs.rb'; require './greek/nouns.rb'; require './lib/multistring.rb'; require './lib/clown.rb'; require './lib/string_util.rb'; Verb_difficulty.test()"
     tests = [
-      ["ἐφιεὶς","ἐφίημι","v-sppamn-"],
-      ["δαμᾷ","δαμάζω","v3sfia---"],
-      ["ἤγερθεν","ἀγείρω","v3paip---"],
-      ["ἔφατ᾽","φημί","v3siie---"],
-      ["ἴθι","εἶμι","v2spma---"],
-      ["ἁζόμενοι","ἅζομαι","v-pppemn-"],
-      ["λύει","λύω","v3spia---"],
-      ["ἠτίμασεν","ἀτιμάζω","v3saia---"]
+      ["ἁζόμενοι","ἅζομαι","v-pppemn-",false],
+      ["λύει","λύω","v3spia---",false],
+      ["ἠτίμασεν","ἀτιμάζω","v3saia---",false],
+      ["ἐφιεὶς","ἐφίημι","v-sppamn-",true],
+      ["δαμᾷ","δαμάζω","v3sfia---",true],
+      ["ἤγερθεν","ἀγείρω","v3paip---",true],
+      ["ἔφατ᾽","φημί","v3siie---",true],
+      ["ἴθι","εἶμι","v2spma---",true],
+      ["ὄμοσσον","ὄμνυμι","v2sama---",true],
+      ["οἶσθα","οἶδα","v2sria---",true],
+      ["ᾤχετο","οἴχομαι","v3siie---",true]
     ]
     results = []
     tests.each { |x|
-      word,lemma,pos = x
+      word,lemma,pos,i_think_hard = x
       if_hard,score,threshold,debug = Verb_difficulty.guess(word,lemma,pos)
-      results.push([score,sprintf("%10s %10s %.2f %20s %s\n",word,lemma,score,Vform.new(pos),debug)])
+      mismatch = (i_think_hard!=if_hard)
+      if mismatch then mismatch_string='******* error ??? *******' else mismatch_string='' end
+      results.push([score,sprintf("%10s %10s %.2f %s %20s %s\n",word,lemma,score,mismatch_string,Vform.new(pos),debug)])
     }
     results.sort { |a,b| a[0]<=>b[0] }.each { |r|
     print r[1]
