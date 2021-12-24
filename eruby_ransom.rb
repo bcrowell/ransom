@@ -10,6 +10,7 @@ require_relative "lib/vlist"
 require_relative "lib/gloss"
 require_relative "lib/clown"
 require_relative "greek/nouns"
+require_relative "greek/writing"
 
 class Options
   if ARGV.length<1 then die("no command-line argument supplied") end

@@ -1,4 +1,80 @@
+module Verb_difficulty
+  def Verb_difficulty.test_decl_diff()
+    # ruby -e "require './greek/writing.rb'; require './greek/verbs.rb'; require './lib/multistring.rb'; require './lib/string_util.rb'; Verb_difficulty.test_decl_diff()"
+    tests = [
+      ["ἐφιεὶς","ἐφίημι","v-sppamn-"]
+    ]
+    results = []
+    tests.each { |x|
+      word,lemma,pos = x
+      d = Verb_difficulty.guess(word,lemma,pos)[1]
+      results.push([d,"#{word}   #{lemma}   #{d} #{Vform.new(pos)}\n"])
+    }
+    results.sort { |a,b| a[0]<=>b[0] }.each { |r|
+    print r[1]
+  }
+end
+
+  # Code that tries to judge the difficulty of recognizing a particular inflected form of a verb.
+  def Verb_difficulty.guess(word,lemma,pos)
+    f = Vform.new(pos)
+    # The effect of the following is to strip accents, phoneticize rough breathing as 'h' or null string, and archaicize iota subscripts.
+    w = Writing.phoneticize(word)
+    l = Writing.phoneticize(lemma)
+    mi_verb = l=~/μι$/
+    stem_from_word =  Verb_difficulty.strip_ending(w,mi_verb,f)
+    stem_from_lemma = Verb_difficulty.strip_ending(l,mi_verb,f)
+    ws = MultiString.new(stem_from_word)
+    ls = MultiString.new(stem_from_lemma)
+    dist = ls.distance(ws) # is 0 if identical, or number of chars unexplainable by longest common subsequence
+    x = dist.to_f/([stem_from_lemma.length,stem_from_word.length].max) # basically the fraction of chars that are unexplainable
+    x = x+dist*0.1
+    threshold = 0.4
+    return [x>threshold,x,threshold]
+  end
+
+  def Verb_difficulty.strip_ending(s,mi_verb,f)
+    # The point of the following is not to be correct in all cases. The goal is actually to strip the ending in the way that a bewildered
+    # human would be likely to do. This is the "failure is awesome" philosophy.
+    # Input s should be phoneticized, not raw accented Greek.
+    if remove_accents(s)!=s then $stderr.print "input to Verb_difficulty.strip_ending not phoneticized: #{s}\n"; exit(-1) end
+    pat = nil
+    if f.active then
+      if f.indicative then
+        if !mi_verb then
+          if f.present || f.future then pat = "ω|εις|ει|ομεν|ετε|ουσιν?" end
+          if f.imperfect then pat = "ον|ες|εν?|ομεν|ετε|ον" end
+          if f.aorist then pat = "α|ας|εν?|αμεν|ατε|αν" end # don't try to do root aorist, we *want* those to get scored as high difficulty
+        else
+          # μι verbs, indicative
+          if f.present then pat = "μι|ς|σι|μεν|τε|ασιν?" end
+          if f.past then pat = "ν|ς|μεν|τε|σαν" end
+        end
+      end
+      if f.optative then
+        if f.present then pat = "μι|ην|ς|ης|η|οι|μεν|τε|εν?" end
+        if f.aorist then pat = "μι|ς|μεν|τε|εν?" end
+      end
+      if f.imperative then pat = "ε|θι|τι|τε" end # no dual forms, failure is awesome
+      if f.infinitive then pat = "εν|ειν|μεναι|μεν|αι|ναι|σθαι" end
+      if f.participle then pat = "ων|ους|ασιν|((οντ|αντ)(ος|ι|α|ες|ων|ας))|((ουσ|ασ)(α|ης|ηι|αν|αι|αων|ηις|ας))|((αν)(|τος|τι|τα|ων|α))" end
+      # ... spellings like ηι are because s is already phoneticized; don't do athematic stuff like υς because failure is awesome
+    else
+      # voice = passive, middle, mp
+      if f.present || f.future then pat = "μαι|αι|σαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται" end
+      if f.imperfect || (f.aorist && !f.passive) then pat = "μην|σο|το|μεθα|σθε|ντο|ατο" end
+      if f.aorist && f.passive then pat = "(θη)?(ν|ς||το|μεν|τε|σαν|θεν|ντο)" end # null in 2nd group is to allow bare θη
+      if f.imperative then pat = "σο|ου|σθε" end # no dual forms, failure is awesome
+    end
+    if !(pat.nil?) then s = s.sub(/(#{pat})$/,'') end
+    # ... not really a bug if pat is nil; can just indicate that this is something obscure where the human would have trouble
+    return s
+  end
+end
+
 class Vform
+  # An instance of this class basically embodies a Project Perseus part-of-speech tag for a verb in a form that is more convenient to
+  # manipulate.
   def initialize(perseus_pos)
     # definition of perseus 9-character pos tags: https://github.com/cltk/greek_treebank_perseus
     # First character has to be there as a placeholder, but is ignored.
@@ -19,6 +95,7 @@ class Vform
   end
 
   def indicative() return (@mood=='i') end
+  def optative() return (@mood=='o') end
   def imperative() return (@mood=='m') end
   def active() return (@voice=='a') end
   def present() return (@tense=='p') end
@@ -31,11 +108,18 @@ class Vform
   def present() return (@tense=='p') end
   def aorist() return (@tense=='a') end
   def imperfect() return (@tense=='i') end
+  def infinitive() return (@mood=='n') end
   def participle() return (@mood=='p') end
+
+  def to_s # should improve on this
+    return self.get_perseus_tag()
+  end
 
 end
 
 class Verb_conj
+
+# This class was my attempt to do conjugation using code. Didn't work very well, not currently used in ransom.
 
 def Verb_conj.regular(lemma,f,principal_parts:{},do_archaic_forms:false,include_contracted:true)
   # lemma may be fully accented or omit the acute accent

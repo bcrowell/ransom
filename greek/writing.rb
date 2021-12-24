@@ -8,11 +8,12 @@ class Writing
       ["δαμᾷ","δαμα~ι"],
       ["μὲν","με!ν"],
       ["ἀγλαός","αγλαο!σ"],
-      ["ἑλώριον","hελω!ριον"]
+      ["ἑλώριον","hελω!ριον"],
+      ["ἅπτω","hα!πτω"]
     ]
     tests.each { |x|
       inp,out = x
-      result = Writing.phoneticize(inp)
+      result = Writing.phoneticize(inp,remove_accents:false,respell_final_sigma:true)
       if result!=out then
         $stderr.print "test failed, in=#{inp} out=#{result} expected=#{out}\n"
         exit(-1)
@@ -21,16 +22,20 @@ class Writing
       end
     }
   end
-  def Writing.phoneticize(s)
+  def Writing.phoneticize(s,remove_accents:true,respell_final_sigma:false)
     # Turn a Greek string into a phoneticized version that works better with
     # algorithms like longest common subsequence.
+    # My main application is judging whether noun and verb inflections look irregular. For this purpose, it seems
+    # best to use remove_accents:false, because the accents are basically never what's irregular.
+    # For these applications, it's also not helpful to respell the final ς as σ, just creates confusion in things like stripping inflectional endings.
     s = s.downcase
     s = grave_to_acute(s) # we don't care about phonetic differences that only occur due to neighboring words
     s = Writing.remove_diar(s)
     s = Writing.archaicize_iota_subscript(s)
     s = Writing.phoneticize_breathing(s)
     s = Writing.accents_to_digraphs(s)
-    s = s.sub(/ς/,'σ')
+    if respell_final_sigma then s = s.sub(/ς/,'σ') end
+    if remove_accents then s=s.sub(/[\!\~]/,'') end
     return s
   end
   def Writing.accents_to_digraphs(s)

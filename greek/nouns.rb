@@ -10,7 +10,7 @@ def describe_declension(pos,tex)
 end
 
 def test_decl_diff()
-  # ruby -e "require './greek/nouns.rb'; require './lib/multistring.rb'; require './lib/string_util.rb'; test_decl_diff()"
+  # ruby -e "require './greek/writing.rb'; require './greek/nouns.rb'; require './lib/multistring.rb'; require './lib/string_util.rb'; test_decl_diff()"
   tests = [
     ['κύνεσσι','κύων','pmd'], 
     ['νῆας','ναῦς','pfa'], 
@@ -28,7 +28,7 @@ def test_decl_diff()
     word,lemma,number_gender_case = x
     number,gender,c = number_gender_case.chars
     pos = "n-#{number}---#{gender}#{c}-"
-    d = guess_difficulty_of_recognizing_declension(word,lemma,pos)
+    d = guess_difficulty_of_recognizing_declension(word,lemma,pos)[1]
     results.push([d,"#{number_gender_case}  #{word}   #{lemma}   #{d}\n"])
   }
   results.sort { |a,b| a[0]<=>b[0] }.each { |r|
@@ -40,8 +40,8 @@ def guess_difficulty_of_recognizing_declension(word,lemma,pos)
   # Returns a floating-point number from 0 to about 1.0 (possibly a little higher in some cases).
   # For testing and calibration, see test_decl_diff() above.
   is_3rd_decl = guess_whether_third_declension(word,lemma,pos)
-  w = remove_accents(word).downcase
-  l = remove_accents(lemma).downcase
+  w = Writing.phoneticize(word)
+  l = Writing.phoneticize(lemma)
   # Figure out what declension it *looks like*, not necessarily what declension it is.
   decl = 2
   if !(l=~/ος/) then decl=1 end
@@ -63,7 +63,8 @@ def guess_difficulty_of_recognizing_declension(word,lemma,pos)
   x = dist.to_f/([stem_from_lemma.length,stem_from_word.length].max) # basically the fraction of chars that are unexplainable
   if is_3rd_decl then x=x+0.2 end
   if is_feminine_ending_in_os(l) then x=x+0.2 end
-  return x
+  threshold = 0.4
+  return [x>threshold,x,threshold]
 end
 
 def guess_whether_third_declension(word,lemma,pos)
