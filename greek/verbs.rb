@@ -27,11 +27,12 @@ end
     f = Vform.new(pos)
     f_lemma = f.make_lemma(lemma)
     # The effect of the following is to strip accents, phoneticize rough breathing as 'h' or null string, and archaicize iota subscripts.
+    mi_verb = (lemma=~/μι$/) # won't work if, e.g., lemma is 2nd aorist, but failure is awesome
     w = Writing.phoneticize(word)
-    l = Writing.phoneticize(lemma)
-    mi_verb = l=~/μι$/
     stem_from_word =  Verb_difficulty.strip_ending(w,mi_verb,f)
-    stem_from_lemma = Verb_difficulty.strip_ending(l,mi_verb,f_lemma)
+    l = Writing.phoneticize(lemma)
+    l = Verb_difficulty.strip_ending(l,mi_verb,f_lemma)
+    stem_from_lemma = Verb_difficulty.add_sigma_to_aorist_or_future(l,f) # e.g., if w is aorist, find the aorist stem from the lemma
     # In the following, ws and ls are multistrings, not strings.
     ws = Verb_difficulty.strip_augment(stem_from_word,f)
     ls = Verb_difficulty.strip_augment(stem_from_lemma,f_lemma)
@@ -66,6 +67,15 @@ end
       }
       return MultiString.new([poss]) # needs a singleton list of lists, not just a list
     end
+  end
+
+  def Verb_difficulty.add_sigma_to_aorist_or_future(s,f)
+    # s is a string (not a multistring), has already had its ending stripped
+    if !(f.aorist || f.future) then return s end
+    if s=~/σ$/ then return s end
+    if s=~/[μνλρ]$/ then return s end
+    if s=~/[ζ]$/ then return s.sub(/.$/,'σ') end
+    return s+'σ'
   end
 
   def Verb_difficulty.strip_ending(s,mi_verb,f)

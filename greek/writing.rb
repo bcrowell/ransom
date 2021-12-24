@@ -30,11 +30,16 @@ class Writing
     # For these applications, it's also not helpful to respell the final ς as σ, just creates confusion in things like stripping inflectional endings.
     s = s.downcase
     s = grave_to_acute(s) # we don't care about phonetic differences that only occur due to neighboring words
+    s = s.sub(/ψ/,'πσ')
+    s = s.sub(/ξ/,'κσ')
+    s = s.sub(/γκ/,'νκ')
+    s = s.sub(/γξ/,'νκσ')
+    s = s.sub(/γχ/,'νχ')
     s = Writing.remove_diar(s)
     s = Writing.archaicize_iota_subscript(s)
     s = Writing.phoneticize_breathing(s)
     s = Writing.accents_to_digraphs(s)
-    if respell_final_sigma then s = s.sub(/ς/,'σ') end
+    if respell_final_sigma then s = s.sub(/ς/,'σ') else s = s.sub(/σ$/,'ς') end
     if remove_accents then s=s.sub(/[\!\~]/,'') end
     return s
   end
