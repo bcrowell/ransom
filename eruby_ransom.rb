@@ -10,6 +10,7 @@ require_relative "lib/vlist"
 require_relative "lib/gloss"
 require_relative "lib/clown"
 require_relative "greek/nouns"
+require_relative "greek/verbs"
 require_relative "greek/writing"
 
 class Options
@@ -128,6 +129,7 @@ def vocab_helper(commonness,vl,lo,hi,core)
       if file_under.nil? then raise "Gloss.get = #{g}, doesn't have a file_under key" end
       difficult_to_recognize = data['difficult_to_recognize']
       difficult_to_recognize ||= (not_nil_or_zero(g['aorist_difficult_to_recognize']) && pos=~/^...a/ )
+      difficult_to_recognize ||= Verb_difficulty.guess(word,lexical,pos)[0]
       data['difficult_to_recognize'] = difficult_to_recognize
       data['core'] = core.include?(remove_accents(lexical).downcase)
       if !data['core'] then

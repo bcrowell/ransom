@@ -72,8 +72,10 @@ class Writing
     s = s.tr('ᾴῄῴ','άήώ')
     s = s.tr('ᾄᾔᾤ','ἄἤὤ')
     s = s.tr('ᾅᾕᾥ','ἅἥὥ')
-    s = s.tr('ᾆᾖᾦ','ἆἦὦ')
     s = s.tr('ᾅᾕᾥ','ἅἥὥ')
+    s = s.tr('ᾆᾖᾦ','ἆἦὦ')
+    s = s.tr('ᾇᾗᾧ','ἇἧὧ')
+    s = s.tr('ᾀᾐᾠ','ἀἠὠ')
     return s
   end
   def Writing.remove_diar(s)
