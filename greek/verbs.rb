@@ -8,6 +8,7 @@ module Verb_difficulty
       ["λίσσετο","λίσσομαι","v3siie---",false],
       ["ᾤχετο","οἴχομαι","v3siie---",false],
       ["λυσόμενός","λύω","v-sfpmmn-",false],
+      ["μάχεσθαι","μάχομαι","v--pne---",false],
       ["ἐφιεὶς","ἐφίημι","v-sppamn-",true],
       ["δαμᾷ","δαμάζω","v3sfia---",true],
       ["ἤγερθεν","ἀγείρω","v3paip---",true],
@@ -35,11 +36,11 @@ end
     f = Vform.new(pos)
     f_lemma = f.make_lemma(lemma)
     # The effect of the following is to strip accents, phoneticize rough breathing as 'h' or null string, and archaicize iota subscripts.
-    mi_verb = (lemma=~/μι$/) # won't work if, e.g., lemma is 2nd aorist, but failure is awesome
+    μι_verb = (lemma=~/μι$/) # won't work if, e.g., lemma is 2nd aorist, but failure is awesome
     w = Writing.phoneticize(word)
-    stem_from_word =  Verb_difficulty.strip_ending(w,mi_verb,f)
+    stem_from_word =  Verb_difficulty.strip_ending(w,μι_verb,f)
     l = Writing.phoneticize(lemma)
-    l = Verb_difficulty.strip_ending(l,mi_verb,f_lemma)
+    l = Verb_difficulty.strip_ending(l,μι_verb,f_lemma)
     stem_from_lemma = Verb_difficulty.add_sigma_to_aorist_or_future(l,f) # e.g., if w is aorist, find the aorist stem from the lemma
     # In the following, ws and ls are multistrings, not strings.
     ws = Verb_difficulty.strip_augment(stem_from_word,f)
@@ -86,7 +87,7 @@ end
     return s+'σ'
   end
 
-  def Verb_difficulty.strip_ending(s,mi_verb,f)
+  def Verb_difficulty.strip_ending(s,μι_verb,f)
     # The point of the following is not to be correct in all cases. The goal is actually to strip the ending in the way that a bewildered
     # human would be likely to do. This is the "failure is awesome" philosophy.
     # Input s should be phoneticized, not raw accented Greek.
@@ -95,7 +96,7 @@ end
     # $stderr.print "                                        #{s} #{pat} #{f}\n" # qwe
     if f.active then
       if f.indicative then
-        if !mi_verb then
+        if !μι_verb then
           if f.present || f.future then pat = "ω|εις|ει|ομεν|ετε|ουσιν?" end
           if f.imperfect then pat = "ον|ες|εν?|ομεν|ετε|ον" end
           if f.aorist then pat = "α|ας|εν?|αμεν|ατε|αν" end # don't try to do root aorist, we *want* those to get scored as high difficulty
@@ -110,19 +111,28 @@ end
         if f.aorist then pat = "μι|ς|μεν|τε|εν?" end
       end
       if f.imperative then pat = "ε|θι|τι|τε" end # no dual forms, failure is awesome
-      if f.infinitive then pat = "εν|ειν|μεναι|μεν|αι|ναι|σθαι" end
+      if f.infinitive then
+        if μι_verb then pat = "εν|ειν|μεναι|μεν|αι|ναι" else pat = "εν|ειν|ο?μεναι|ο?μεν|αι" end
+      end
       if f.participle then pat = "ων|ους|ασιν|((οντ|αντ)(ος|ι|α|ες|ων|ας))|((ουσ|ασ)(α|ης|ηι|αν|αι|αων|ηις|ας))|((αν)(|τος|τι|τα|ων|α))" end
       # ... spellings like ηι are because s is already phoneticized; don't do athematic stuff like υς because failure is awesome
     else
       # voice = passive, middle, mp
       if f.present || f.future then pat = "o?(μαι|αι|σαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται)" end
       if f.imperfect || (f.aorist && !f.passive) then 
-        if mi_verb then pat = "μην|σο|το|μεθα|σθε|ντο|ατο" else pat = "ομην|εσο|ετο|ομεθα|εσθε|οντο|ατο" end
+        if μι_verb then pat = "μην|σο|το|μεθα|σθε|ντο|ατο" else pat = "ομην|εσο|ετο|ομεθα|εσθε|οντο|ατο" end
       end
       if f.aorist && f.passive then pat = "(θη)?(ν|ς||το|μεν|τε|σαν|θεν|ντο)" end # null in 2nd group is to allow bare θη
       if f.imperative then pat = "σο|ου|σθε" end # no dual forms, failure is awesome
       if f.participle then pat = "ο?μεν(ος|ου|οιο|ωι|ον|οι|ων|οις|οισιν?|ους|ης|ας|η|α|ην|αν|αι|ηις|ηισιν?|ας)" end
       # ...2-1-2 endings; -ο- is actually only for thematic verbs
+      if f.infinitive then
+        if !(f.aorist) then
+          if μι_verb then pat = "σθαι" else pat = "εσθαι" end
+        else
+          if μι_verb then pat = "ναι|μεναι|μεν" else pat = "ομεναι|ομεν" end
+        end
+      end
     end
     if !(pat.nil?) then s = s.sub(/(#{pat})$/,'') end
     # ... not really a bug if pat is nil; can just indicate that this is something obscure where the human would have trouble
