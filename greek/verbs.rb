@@ -1,14 +1,20 @@
 module Verb_difficulty
-  def Verb_difficulty.test_decl_diff()
-    # ruby -e "require './greek/writing.rb'; require './greek/verbs.rb'; require './lib/multistring.rb'; require './lib/string_util.rb'; Verb_difficulty.test_decl_diff()"
+  def Verb_difficulty.test()
+    # ruby -e "require './greek/writing.rb'; require './greek/verbs.rb'; require './greek/nouns.rb'; require './lib/multistring.rb'; require './lib/clown.rb'; require './lib/string_util.rb'; Verb_difficulty.test()"
     tests = [
-      ["ἐφιεὶς","ἐφίημι","v-sppamn-"]
+      ["ἐφιεὶς","ἐφίημι","v-sppamn-"],
+      ["δαμᾷ","δαμάζω","v3sfia---"],
+      ["ἤγερθεν","ἀγείρω","v3paip---"],
+      ["ἔφατ᾽","φημί","v3siie---"],
+      ["ἴθι","εἶμι","v2spma---"],
+      ["ἁζόμενοι","ἅζομαι","v-pppemn-"],
+      ["λύει","λύω","v3spia---"],
     ]
     results = []
     tests.each { |x|
       word,lemma,pos = x
-      d = Verb_difficulty.guess(word,lemma,pos)[1]
-      results.push([d,"#{word}   #{lemma}   #{d} #{Vform.new(pos)}\n"])
+      if_hard,score,threshold,debug = Verb_difficulty.guess(word,lemma,pos)
+      results.push([score,sprintf("%10s %10s %.2f %20s %s\n",word,lemma,score,Vform.new(pos),debug)])
     }
     results.sort { |a,b| a[0]<=>b[0] }.each { |r|
     print r[1]
@@ -23,14 +29,14 @@ end
     l = Writing.phoneticize(lemma)
     mi_verb = l=~/μι$/
     stem_from_word =  Verb_difficulty.strip_ending(w,mi_verb,f)
-    stem_from_lemma = Verb_difficulty.strip_ending(l,mi_verb,f)
+    stem_from_lemma = Verb_difficulty.strip_ending(l,mi_verb,f.make_lemma(lemma))
     ws = MultiString.new(stem_from_word)
     ls = MultiString.new(stem_from_lemma)
     dist = ls.distance(ws) # is 0 if identical, or number of chars unexplainable by longest common subsequence
     x = dist.to_f/([stem_from_lemma.length,stem_from_word.length].max) # basically the fraction of chars that are unexplainable
     x = x+dist*0.1
-    threshold = 0.4
-    return [x>threshold,x,threshold]
+    threshold = 0.25
+    return [x>threshold,x,threshold,{'wstem'=>stem_from_word,'lstem'=>stem_from_lemma}]
   end
 
   def Verb_difficulty.strip_ending(s,mi_verb,f)
@@ -39,6 +45,7 @@ end
     # Input s should be phoneticized, not raw accented Greek.
     if remove_accents(s)!=s then $stderr.print "input to Verb_difficulty.strip_ending not phoneticized: #{s}\n"; exit(-1) end
     pat = nil
+    # $stderr.print "                                        #{s} #{pat} #{f}\n" # qwe
     if f.active then
       if f.indicative then
         if !mi_verb then
@@ -61,10 +68,12 @@ end
       # ... spellings like ηι are because s is already phoneticized; don't do athematic stuff like υς because failure is awesome
     else
       # voice = passive, middle, mp
-      if f.present || f.future then pat = "μαι|αι|σαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται" end
+      if f.present || f.future then pat = "o?(μαι|αι|σαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται)" end
       if f.imperfect || (f.aorist && !f.passive) then pat = "μην|σο|το|μεθα|σθε|ντο|ατο" end
       if f.aorist && f.passive then pat = "(θη)?(ν|ς||το|μεν|τε|σαν|θεν|ντο)" end # null in 2nd group is to allow bare θη
       if f.imperative then pat = "σο|ου|σθε" end # no dual forms, failure is awesome
+      if f.participle then pat = "ο?μεν(ος|ου|οιο|ωι|ον|οι|ων|οις|οισιν?|ους|ης|ας|η|α|ην|αν|αι|ηις|ηισιν?|ας)" end
+      # ...2-1-2 endings; -ο- is actually only for thematic verbs
     end
     if !(pat.nil?) then s = s.sub(/(#{pat})$/,'') end
     # ... not really a bug if pat is nil; can just indicate that this is something obscure where the human would have trouble
@@ -85,19 +94,38 @@ class Vform
     @tense = perseus_pos[3] # paif = present,aorist,imperfect,future; rlt = perfect,pluperfect,future perfect
     @mood = perseus_pos[4] # isonmp = indicative,subjunctive,optative,infinitive,imperative,participle
     @voice = perseus_pos[5] # apme = active,passive,middle,medio-passive
+    @participle_stuff = perseus_pos[6..7]
   end
 
   attr_reader :person,:number,:tense,:mood,:voice
 
+  def make_lemma(lemma)
+    # take a Vform describing an inflected form, and a string representing its lemma, and try to make the correct Vform for the lemma
+    result = clown(self)
+    result.make_lemma!(lemma)
+    return result
+  end
+
+  def make_lemma!(lemma)
+    @person = 1
+    @number = 's'
+    @mood = 'i'
+    if lemma=~/(ω|μι|μαι)$/ then @tense = 'p' end
+    if lemma=~/(α|ον)$/ then @tense = 'a' end
+    if lemma=~/(ω|μι|ον)$/ then @voice = 'a' end
+    if lemma=~/(μαι)$/ then @voice = 'p' end # mark it as passive; better to use middle or mp?
+  end
+
   def get_perseus_tag
-    if self.participle() then c0='t' else c0='v' end
-    return c0+@person.to_s+@number+@tense+@mood+@voice+'---'
+    if self.participle() then c0='t'; c67=@participle_stuff else c0='v';c67='--' end
+    return c0+@person.to_s+@number+@tense+@mood+@voice+c67+'-'
   end
 
   def indicative() return (@mood=='i') end
   def optative() return (@mood=='o') end
   def imperative() return (@mood=='m') end
   def active() return (@voice=='a') end
+  def passive() return (@voice=='p') end
   def present() return (@tense=='p') end
   def future() return (@tense=='f') end
   def singular() return (@number=='s') end
@@ -111,8 +139,16 @@ class Vform
   def infinitive() return (@mood=='n') end
   def participle() return (@mood=='p') end
 
-  def to_s # should improve on this
-    return self.get_perseus_tag()
+  def to_s
+    result = []
+    if !(self.participle || self.infinitive) then result.push(self.person.to_s+({'s'=>'s','p'=>'pl','d'=>'dual'}[self.number])) end
+    if !self.present then result.push({'i'=>'impf.','r'=>'perf.','l'=>'plupf.','t'=>'fut. perf.','f'=>'fut.','a'=>'aor.'}[self.tense]) end
+    if !self.indicative then result.push({'s'=>'subj.','o'=>'opt.','n'=>'inf.','m'=>'impve.','p'=>'part'}[@mood]) end
+    if !self.active then result.push({'p'=>'pass.','m'=>'mid.','e'=>'mp'}[@voice]) end
+    if_tex = false # don't put ~ after ., not appropriate for a general-purpose stringification routine
+    if self.participle then result.push(describe_declension(self.get_perseus_tag,if_tex)[0]) end
+    # part mp nom. pl. nom.
+    return result.join(' ')
   end
 
 end
