@@ -17,7 +17,6 @@ class MultiString
   def or(t)
     result = clown(self)
     result.data = [self.all_strings+t.all_strings]
-    $stderr.print "             >>> #{result.data} = #{self.data} + #{t.data}\n"
     return result
   end
   def all_strings
