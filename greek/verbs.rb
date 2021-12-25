@@ -66,7 +66,7 @@ end
 
   def Verb_difficulty.strip_augment(word,f)
     # This won't work if it has a preposition on the front, which is good because failure is awesome.
-    if !(f.past) then
+    if !(f.past) || f.subjunctive then
       return MultiString.new(word)
     else
       # past tense, may have augment
@@ -100,7 +100,9 @@ end
     if s=~/[δζθτ]$/ then return s.sub(/.$/,'σ') end # ἄεισα, ἀκόντισα; but fairly often [δζ]->ξ, e.g., ἔρξα, ἥρπαξα
     if s=~/[γκχ]$/ then return s.sub(/.$/,'κσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
     if s=~/[πφ]$/ then return s.sub(/.$/,'πσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
-    return s+'σ'
+    if s=~/[αε]/ then return s.sub(/.$/,'ησ') end # νικάω, νίκησα; δοκέω, δόκησα
+    if s=~/[ι]/ then return s+'σ' end # κονίω, ἐκόνισα
+    return s
   end
 
   def Verb_difficulty.strip_ending(s,μι_verb,f)
@@ -126,6 +128,7 @@ end
         if f.present then pat = "μι|ην|ς|ης|η|οι|μεν|τε|εν?" end
         if f.aorist then pat = "μι|ς|μεν|τε|εν?" end
       end
+      if f.subjunctive then pat = "ω|ηισ|ηι|ωμεν|ητε|ωσιν?" end
       if f.imperative then pat = "ε|θι|τι|τε" end # no dual forms, failure is awesome
       if f.infinitive then
         if μι_verb then pat = "εν|ειν|μεναι|μεν|αι|ναι" else pat = "εν|ειν|ο?μεναι|ο?μεν|αι" end
@@ -139,6 +142,13 @@ end
         if μι_verb then pat = "μην|σο|το|μεθα|σθε|ντο|ατο" else pat = "ομην|εσο|ετο|ομεθα|εσθε|οντο|ατο" end
       end
       if f.aorist && f.passive then pat = "(θη)?(ν|ς||το|μεν|τε|σαν|θεν|ντο)" end # null in 2nd group is to allow bare θη
+      if f.subjunctive then 
+        if f.passive && f.aorist then
+          pat = "ωμαι|ηι|ηται|ωμεθα|ησθε|ωνται"
+        else
+          pat = "θ(ω|ηις|ηι|ωμεν|ητε|ωσιν?)"
+        end
+      end
       if f.imperative then pat = "σο|ου|σθε" end # no dual forms, failure is awesome
       if f.participle then pat = "ο?μεν(ος|ου|οιο|ωι|ον|οι|ων|οις|οισιν?|ους|ης|ας|η|α|ην|αν|αι|ηις|ηισιν?|ας)" end
       # ...2-1-2 endings; -ο- is actually only for thematic verbs
@@ -199,6 +209,7 @@ class Vform
 
   def indicative() return (@mood=='i') end
   def optative() return (@mood=='o') end
+  def subjunctive() return (@mood=='s') end
   def imperative() return (@mood=='m') end
   def active() return (@voice=='a') end
   def passive() return (@voice=='p') end
