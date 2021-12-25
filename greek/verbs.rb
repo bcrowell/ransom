@@ -9,6 +9,8 @@ module Verb_difficulty
       ["ᾤχετο","οἴχομαι","v3siie---",false],
       ["λυσόμενός","λύω","v-sfpmmn-",false],
       ["μάχεσθαι","μάχομαι","v--pne---",false],
+      ["κιὼν","κίω","v-sapamn-",false],
+      ["ἔλυσα","λύω","v1saia---",false],
       ["ἐφιεὶς","ἐφίημι","v-sppamn-",true],
       ["δαμᾷ","δαμάζω","v3sfia---",true],
       ["ἤγερθεν","ἀγείρω","v3paip---",true],
@@ -40,16 +42,24 @@ end
     w = Writing.phoneticize(word)
     stem_from_word =  Verb_difficulty.strip_ending(w,μι_verb,f)
     l = Writing.phoneticize(lemma)
-    l = Verb_difficulty.strip_ending(l,μι_verb,f_lemma)
-    stem_from_lemma = Verb_difficulty.add_sigma_to_aorist_or_future(l,f) # e.g., if w is aorist, find the aorist stem from the lemma
+    stem_from_lemma = Verb_difficulty.strip_ending(l,μι_verb,f_lemma)
+    stem_from_lemma_with_sigma = Verb_difficulty.add_sigma_to_aorist_or_future(stem_from_lemma,f)
+    # ... e.g., if w is aorist, find the aorist stem from the lemma
     # In the following, ws and ls are multistrings, not strings.
     ws = Verb_difficulty.strip_augment(stem_from_word,f)
     ls = Verb_difficulty.strip_augment(stem_from_lemma,f_lemma)
+    ls_with_sigma = Verb_difficulty.strip_augment(stem_from_lemma_with_sigma,f_lemma)
+    ls = ls.or(ls_with_sigma)
     dist = ls.distance(ws) # is 0 if identical, or number of chars unexplainable by longest common subsequence
     x = dist.to_f/([stem_from_lemma.length,stem_from_word.length].max) # basically the fraction of chars that are unexplainable
     x = x+dist*0.1
     threshold = 0.27
-    return [x>threshold,x,threshold,{'wstem'=>stem_from_word,'lstem'=>stem_from_lemma,'unaug'=>ws.to_s}]
+    return [x>threshold,x,threshold,{
+      # debugging info:
+      'wstem'=>stem_from_word,
+      'lstem'=>[stem_from_lemma,stem_from_lemma_with_sigma],
+      'unaug'=>ws.to_s
+    }]
   end
 
   def Verb_difficulty.strip_augment(word,f)
@@ -63,7 +73,8 @@ end
         ["ωι",["οι"]], # ῳ
         ["ηυ",["αυ","ευ"]],
         ["η",["α","ε"]],
-        ["ω",["ο"]]
+        ["ω",["ο"]],
+        ["ε",[""]]
       ]
       poss = [word]
       patterns.each { |a,l|

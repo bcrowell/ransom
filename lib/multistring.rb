@@ -14,6 +14,19 @@ class MultiString
   def to_s
     return @data.to_s
   end
+  def or(t)
+    result = clown(self)
+    result.data = [self.all_strings+t.all_strings]
+    $stderr.print "             >>> #{result.data} = #{self.data} + #{t.data}\n"
+    return result
+  end
+  def all_strings
+    result = []
+    0.upto(self.complexity-1) { |i|
+      result.push(nth(i))
+    }
+    return result
+  end
   def complexity
     # The number of different paths through the multistring. This may be greater than the actual number of possible distinct strings.
     result = 1
