@@ -39,9 +39,10 @@ end
     f_lemma = f.make_lemma(lemma)
     # The effect of the following is to strip accents, phoneticize rough breathing as 'h' or null string, and archaicize iota subscripts.
     μι_verb = (lemma=~/μι$/) # won't work if, e.g., lemma is 2nd aorist, but failure is awesome
-    w = Writing.phoneticize(word)
+    # In the following, the reduce_double_sigma:true helps with forms like ἐρύσσομεν < ἐρύω, which are pretty obvious to a human.
+    w = Writing.phoneticize(word,reduce_double_sigma:true)
     stem_from_word =  Verb_difficulty.strip_ending(w,μι_verb,f)
-    l = Writing.phoneticize(lemma)
+    l = Writing.phoneticize(lemma,reduce_double_sigma:true)
     stem_from_lemma = Verb_difficulty.strip_ending(l,μι_verb,f_lemma)
     stem_from_lemma_with_sigma = Verb_difficulty.add_sigma_to_aorist_or_future(stem_from_lemma,f)
     # ... e.g., if w is aorist, find the aorist stem from the lemma
@@ -211,15 +212,26 @@ class Vform
   def participle() return (@mood=='p') end
 
   def to_s
+    # for fancier stringification, see to_s_fancy, which has optional args
+    return self.to_s_fancy()
+  end
+
+  def to_s_fancy(tex:false,relative_to_lemma:nil)
+    if !(relative_to_lemma).nil? then f_lemma = self.make_lemma(relative_to_lemma) else f_lemma=nil end
     result = []
     if !(self.participle || self.infinitive) then result.push(self.person.to_s+({'s'=>'s','p'=>'pl','d'=>'dual'}[self.number])) end
-    if !self.present then result.push({'i'=>'impf.','r'=>'perf.','l'=>'plupf.','t'=>'fut. perf.','f'=>'fut.','a'=>'aor.'}[self.tense]) end
-    if !self.indicative then result.push({'s'=>'subj.','o'=>'opt.','n'=>'inf.','m'=>'impve.','p'=>'part'}[@mood]) end
-    if !self.active then result.push({'p'=>'pass.','m'=>'mid.','e'=>'mp'}[@voice]) end
+    if !self.present then result.push({'i'=>'impf.','r'=>'pf.','l'=>'plupf.','t'=>'fut. perf.','f'=>'fut.','a'=>'aor.'}[self.tense]) end
+    if !self.indicative then result.push({'s'=>'subj.','o'=>'opt.','n'=>'inf.','m'=>'imp.','p'=>'ppl.'}[@mood]) end
+    if (f_lemma.nil? && !(self.active)) || (!(f_lemma.nil?) && self.active!=f_lemma.active) then
+      # File.open("debug.txt",'a') { |f| f.print "            #{f_lemma.active} #{self.active}\n" } # qwe
+      result.push({'a'=>'act.','p'=>'pass.','m'=>'mid.','e'=>'mp'}[@voice])
+    end
     if_tex = false # don't put ~ after ., not appropriate for a general-purpose stringification routine
     if self.participle then result.push(describe_declension(self.get_perseus_tag,if_tex)[0]) end
     # part mp nom. pl. nom.
-    return result.join(' ')
+    s = result.join(' ')
+    if tex then s = s.gsub(/\. /,'.~') end
+    return s
   end
 
 end

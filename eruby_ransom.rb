@@ -173,9 +173,12 @@ def vocab_inflection(stuff)
   pos = data['pos']
   if pos[0]=='n' then
     return "\\vocabnouninflection{#{word.downcase}}{#{lexical}}{#{describe_declension(pos,true)[0]}}"
-  else
-    return "\\vocabinflectiononly{#{word.downcase}}{#{lexical}}"
   end
+  if pos[0]=~/[vt]/ then
+    # File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} \n" } # qwe
+    return "\\vocabverbinflection{#{word.downcase}}{#{lexical}}{#{Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical)}}"
+  end
+  return "\\vocabinflectiononly{#{word.downcase}}{#{lexical}}"
 end
 
 def vocab1(stuff)

@@ -86,7 +86,6 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
     next if did_lemma.has_key?(lemma)
     excl = false
     [lemma,word].each { |x| excl = excl || exclude_glosses.include?(remove_accents(x).downcase) }
-    # $stderr.print "excl=#{excl}, #{lemma}/#{word}\n" # qwe
     next if excl
     did_lemma[lemma] = 1
     rank = freq_rank[lemma]
@@ -154,7 +153,6 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
                           && !Ignore_words.patch(lemma) && !Proper_noun.is(word,lemma,require_cap:false) then
         if key1==key2 then foo=key1 else foo="#{key1} or #{key2}" end
         debug_gloss = ['καρδια','ηφαιστος','οσος','σφος'].include?(key2)
-        $stderr.print "................. key=#{key}\n" # qwe
         h = {
           'filename'=>key2,
           'lemma'=>lemma,

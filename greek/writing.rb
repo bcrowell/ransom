@@ -22,7 +22,7 @@ class Writing
       end
     }
   end
-  def Writing.phoneticize(s,remove_accents:true,respell_final_sigma:false)
+  def Writing.phoneticize(s,remove_accents:true,respell_final_sigma:false,reduce_double_sigma:false)
     # Turn a Greek string into a phoneticized version that works better with
     # algorithms like longest common subsequence.
     # My main application is judging whether noun and verb inflections look irregular. For this purpose, it seems
@@ -35,6 +35,7 @@ class Writing
     s = s.sub(/γκ/,'νκ')
     s = s.sub(/γξ/,'νκσ')
     s = s.sub(/γχ/,'νχ')
+    if reduce_double_sigma then s = s.sub(/σσ/,'σ') end
     s = Writing.remove_diar(s)
     s = Writing.archaicize_iota_subscript(s)
     s = Writing.phoneticize_breathing(s)
