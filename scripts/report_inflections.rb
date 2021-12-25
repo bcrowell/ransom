@@ -46,9 +46,10 @@ def main
   if lemma.nil? then print "no lemma given\n"; exit(-1) end
   selector_strings = ARGV.dup
   selector_strings.delete(lemma)
+  sel = parse_selector_strings(selector_strings)
   is_regex = (lemma=~/[\[\]\.*?()^$]/)
   if !is_regex then
-    do_one_lemma(lemma,selector_strings,homer)
+    do_one_lemma(lemma,selector_strings,homer,sel)
   else
     r = Regexp.new(remove_accents(lemma.downcase))
     lemmas = Set[]
@@ -57,13 +58,12 @@ def main
       lemmas.add(data[0])
     }
     alpha_sort(lemmas.to_a).each { |l|
-      do_one_lemma(l,selector_strings,homer)
+      do_one_lemma(l,selector_strings,homer,sel)
     }
   end
 end
 
 def parse_selector_strings(selector_strings)
-  # returns two parallel lists, one of keys, one of values
   keys = []
   values = []
   selector_strings.each { |s|
@@ -84,20 +84,26 @@ def parse_selector_strings(selector_strings)
   return [keys,values]
 end
 
-def do_one_lemma(lemma,selector_strings,homer)
+def set_up_odometer(sel)
+  keys,values = sel
+  nvals = values.map { |x| x.length}
+  n = nvals.length
+  n_varying = (nvals-[1]).length # number of elements that are > 1
+  total_odometer_values = nvals.inject(1, :*)
+  return [nvals,n,n_varying,total_odometer_values]
+end
+
+def do_one_lemma(lemma,selector_strings,homer,sel)
   if lemma=~/[a-zA-Z,\."\-]/ then print "lemma #{lemma} contains punctuation or Latin characters\n"; exit(-1) end
   if lemma=~/ς./ then print "lemma #{lemma} contains ς in a non-final position\n"; exit(-1) end
+  keys,values = sel
   warnings = []
   total_matches = 0
   total_occurrences = 0
   indentation_spacing = 2
   #print "lemma=#{lemma} selectors=#{selector_strings}\n"
-  keys,values = parse_selector_strings(selector_strings)
   lemma_matches = []
-  nvals = values.map { |x| x.length}
-  n = nvals.length
-  n_varying = (nvals-[1]).length # number of elements that are > 1
-  total_odometer_values = nvals.inject(1, :*)
+  nvals,n,n_varying,total_odometer_values = set_up_odometer(sel)
   #print "keys=#{keys}\nvalues=#{values}\nnvals=#{nvals}\ntotal_odometer_values=#{total_odometer_values}\n"
   homer_filtered = {}
   homer.each_pair { |inflected,data|
@@ -120,14 +126,7 @@ def do_one_lemma(lemma,selector_strings,homer)
     homer_filtered.each_pair { |inflected,ambig|
       ambig.each { |data|
         values_for_this_form = data[2].chars
-        match = true
-        0.upto(keys.length-1) { |i|
-          k = $fields.index(keys[i])
-          v = values_for_this_form[k]
-          #if values[i][odo[i]] != v then print "#{inflected}, k=#{k}, #{data[2]}, i=#{i}, odo=#{odo}, failed because #{values[i][odo[i]]} != #{v}\n" end
-          if values[i][odo[i]] != v then match=false; break end
-        }
-        next if !match
+        next if !pos_match(keys,values,odo,values_for_this_form)
         part_of_speech = values_for_this_form[0] # e.g., 'v' if it's a verb
         all_the_same_pos = all_the_same_pos+part_of_speech
         matches.push(inflected)
@@ -183,6 +182,17 @@ def do_one_lemma(lemma,selector_strings,homer)
       print w,"\n"
     }
   end
+end
+
+def pos_match(keys,values,odo,values_for_this_form)
+  match = true
+  0.upto(keys.length-1) { |i|
+    k = $fields.index(keys[i])
+    v = values_for_this_form[k]
+    #if values[i][odo[i]] != v then print "#{inflected}, k=#{k}, #{data[2]}, i=#{i}, odo=#{odo}, failed because #{values[i][odo[i]]} != #{v}\n" end
+    if values[i][odo[i]] != v then match=false; break end
+  }
+  return match
 end
 
 def count_to_odometer(count,nvals)
