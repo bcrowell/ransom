@@ -84,13 +84,17 @@ def parse_selector_strings(selector_strings)
   return [keys,values]
 end
 
-def set_up_odometer(sel)
-  keys,values = sel
-  nvals = values.map { |x| x.length}
-  n = nvals.length
-  n_varying = (nvals-[1]).length # number of elements that are > 1
-  total_odometer_values = nvals.inject(1, :*)
-  return [nvals,n,n_varying,total_odometer_values]
+def lemma_match(lemma,data)
+  x = remove_accents(lemma)
+  ambiguous = data[4]
+  if !ambiguous then
+    if remove_accents(data[0])==x then return [true,[data]] else return [false,nil] end
+  end
+  result = []
+  data[5].each { |d|
+    if remove_accents(d[0])==x then result.push(d) end
+  }
+  if result.length==0 then return [false,nil] else return [true,result] end
 end
 
 def do_one_lemma(lemma,selector_strings,homer,sel)
@@ -102,20 +106,19 @@ def do_one_lemma(lemma,selector_strings,homer,sel)
   total_occurrences = 0
   indentation_spacing = 2
   #print "lemma=#{lemma} selectors=#{selector_strings}\n"
-  lemma_matches = []
   nvals,n,n_varying,total_odometer_values = set_up_odometer(sel)
   #print "keys=#{keys}\nvalues=#{values}\nnvals=#{nvals}\ntotal_odometer_values=#{total_odometer_values}\n"
   homer_filtered = {}
+  lemma_matches = [] # can match more than one lemma, so count them
   homer.each_pair { |inflected,data|
-    next unless remove_accents(data[0])==remove_accents(lemma)
-    lemma_matches.push(data[0])
-    ambiguous = data[4]
-    if !ambiguous then
-      homer_filtered[inflected] = [data]
-    else
-      homer_filtered[inflected] = data[5]
-    end
+    match,list = lemma_match(lemma,data)
+    next unless match
+    homer_filtered[inflected] = list
+    list.each { |d|
+      lemma_matches.push(d[0]) # will latter be winnowed using .uniq
+    }
   }
+  lemma_matches = lemma_matches.uniq
   last_odo = Array.new(n, -1)
   0.upto(total_odometer_values-1) { |o|
     odo = count_to_odometer(o,nvals)
@@ -159,7 +162,6 @@ def do_one_lemma(lemma,selector_strings,homer,sel)
     last_odo = odo
   }
 
-  lemma_matches = lemma_matches.uniq
   if lemma_matches.length>0 && remove_accents(lemma)!=lemma && !lemma_matches.include?(lemma) then
     warnings.push("The given lemma #{lemma} appears to be incorrectly accented compared to the matches: #{lemma_matches}")
   end
@@ -182,6 +184,15 @@ def do_one_lemma(lemma,selector_strings,homer,sel)
       print w,"\n"
     }
   end
+end
+
+def set_up_odometer(sel)
+  keys,values = sel
+  nvals = values.map { |x| x.length}
+  n = nvals.length
+  n_varying = (nvals-[1]).length # number of elements that are > 1
+  total_odometer_values = nvals.inject(1, :*)
+  return [nvals,n,n_varying,total_odometer_values]
 end
 
 def pos_match(keys,values,odo,values_for_this_form)
