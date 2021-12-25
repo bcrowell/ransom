@@ -49,7 +49,8 @@ def main
   sel = parse_selector_strings(selector_strings)
   is_regex = (lemma=~/[\[\]\.*?()^$]/)
   if !is_regex then
-    do_one_lemma(lemma,selector_strings,homer,sel)
+    has_output,output = do_one_lemma(lemma,selector_strings,homer,sel)
+    print output
   else
     r = Regexp.new(remove_accents(lemma.downcase))
     lemmas = Set[]
@@ -58,9 +59,102 @@ def main
       lemmas.add(data[0])
     }
     alpha_sort(lemmas.to_a).each { |l|
-      do_one_lemma(l,selector_strings,homer,sel)
+      has_output,output = do_one_lemma(l,selector_strings,homer,sel,verbose:false,extra_indentation_level:1)
+      next unless has_output
+      print "#{l}\n#{output}"
     }
   end
+end
+
+def do_one_lemma(lemma,selector_strings,homer,sel,verbose:true,extra_indentation_level:0)
+  if lemma=~/[a-zA-Z,\."\-]/ then print "lemma #{lemma} contains punctuation or Latin characters\n"; exit(-1) end
+  if lemma=~/ς./ then print "lemma #{lemma} contains ς in a non-final position\n"; exit(-1) end
+  keys,values = sel
+  warnings = []
+  total_matches = 0
+  total_occurrences = 0
+  indentation_spacing = 2
+  #print "lemma=#{lemma} selectors=#{selector_strings}\n"
+  nvals,n,n_varying,total_odometer_values = set_up_odometer(sel)
+  #print "keys=#{keys}\nvalues=#{values}\nnvals=#{nvals}\ntotal_odometer_values=#{total_odometer_values}\n"
+  homer_filtered = {}
+  lemma_matches = [] # can match more than one lemma, so count them
+  homer.each_pair { |inflected,data|
+    match,list = lemma_match(lemma,data)
+    next unless match
+    homer_filtered[inflected] = list
+    list.each { |d|
+      lemma_matches.push(d[0]) # will latter be winnowed using .uniq
+    }
+  }
+  lemma_matches = lemma_matches.uniq
+  last_odo = Array.new(n, -1)
+  result_string = []
+  0.upto(total_odometer_values-1) { |o|
+    odo = count_to_odometer(o,nvals)
+    #print "odo=#{odo}\n"
+    matches = []
+    n_occurrences = []
+    all_the_same_pos = ''
+    homer_filtered.each_pair { |inflected,ambig|
+      ambig.each { |data|
+        values_for_this_form = data[2].chars
+        next if !pos_match(keys,values,odo,values_for_this_form)
+        part_of_speech = values_for_this_form[0] # e.g., 'v' if it's a verb
+        all_the_same_pos = all_the_same_pos+part_of_speech
+        matches.push(inflected)
+        n_occurrences.push(data[3])
+      }
+    }
+    n_matches = matches.length
+    total_matches += n_matches
+
+    indent = extra_indentation_level
+    changed_past_here = false
+    0.upto(n-1) { |i|
+      if last_odo[i]!=odo[i] && nvals[i]!=1 then changed_past_here = true end
+      next if nvals[i]==1
+      if changed_past_here && ! (n_matches==0 && i==n-1) then
+        result_string.push(" "*indent*indentation_spacing+describe_tag(keys[i],values[i][odo[i]]))
+      end
+      indent +=1 
+    }
+
+    if true then
+      # Not 100% reliable.
+      if all_the_same_pos=~/^v+$/ then matches,n_occurrences=deredundantize_verb([matches,n_occurrences]) end # all verbs
+    end
+    if n_matches>=1 then
+      results=0.upto(matches.length-1).map { |i| "#{matches[i]} (#{n_occurrences[i]})"}.join(', ')
+      total_occurrences += n_occurrences.sum
+      result_string.push(" "*(n_varying+extra_indentation_level)*indentation_spacing+results)
+    end
+    last_odo = odo
+  }
+
+  if lemma_matches.length>0 && remove_accents(lemma)!=lemma && !lemma_matches.include?(lemma) then
+    warnings.push("The given lemma #{lemma} appears to be incorrectly accented compared to the matches: #{lemma_matches}")
+  end
+  if verbose then
+    if lemma_matches.length>0 then
+      if lemma_matches.length==1 && lemma_matches[0]==lemma then
+        result_string.push("The given lemma #{lemma} is an exact and unique match to the database, including accentuation.")
+      else
+        if lemma_matches.length==1 then
+          result_string.push("The given lemma is a unique match to: "+lemma_matches[0])
+        else
+          result_string.push("The given lemma matches: "+lemma_matches)
+        end
+      end
+    end
+    result_string.push("total matches: #{total_matches}, total occurrences: #{total_occurrences}")
+  end
+  if warnings.length>0 then
+    result_string.push("**************************** WARNINGS *****************************")
+    result_string += w
+  end
+  if result_string.length==0 then return [false,nil] end
+  return [true,result_string.join("\n")+"\n"]
 end
 
 def parse_selector_strings(selector_strings)
@@ -95,95 +189,6 @@ def lemma_match(lemma,data)
     if remove_accents(d[0])==x then result.push(d) end
   }
   if result.length==0 then return [false,nil] else return [true,result] end
-end
-
-def do_one_lemma(lemma,selector_strings,homer,sel)
-  if lemma=~/[a-zA-Z,\."\-]/ then print "lemma #{lemma} contains punctuation or Latin characters\n"; exit(-1) end
-  if lemma=~/ς./ then print "lemma #{lemma} contains ς in a non-final position\n"; exit(-1) end
-  keys,values = sel
-  warnings = []
-  total_matches = 0
-  total_occurrences = 0
-  indentation_spacing = 2
-  #print "lemma=#{lemma} selectors=#{selector_strings}\n"
-  nvals,n,n_varying,total_odometer_values = set_up_odometer(sel)
-  #print "keys=#{keys}\nvalues=#{values}\nnvals=#{nvals}\ntotal_odometer_values=#{total_odometer_values}\n"
-  homer_filtered = {}
-  lemma_matches = [] # can match more than one lemma, so count them
-  homer.each_pair { |inflected,data|
-    match,list = lemma_match(lemma,data)
-    next unless match
-    homer_filtered[inflected] = list
-    list.each { |d|
-      lemma_matches.push(d[0]) # will latter be winnowed using .uniq
-    }
-  }
-  lemma_matches = lemma_matches.uniq
-  last_odo = Array.new(n, -1)
-  0.upto(total_odometer_values-1) { |o|
-    odo = count_to_odometer(o,nvals)
-    #print "odo=#{odo}\n"
-    matches = []
-    n_occurrences = []
-    all_the_same_pos = ''
-    homer_filtered.each_pair { |inflected,ambig|
-      ambig.each { |data|
-        values_for_this_form = data[2].chars
-        next if !pos_match(keys,values,odo,values_for_this_form)
-        part_of_speech = values_for_this_form[0] # e.g., 'v' if it's a verb
-        all_the_same_pos = all_the_same_pos+part_of_speech
-        matches.push(inflected)
-        n_occurrences.push(data[3])
-      }
-    }
-    n_matches = matches.length
-    total_matches += n_matches
-
-    indent = 0
-    changed_past_here = false
-    0.upto(n-1) { |i|
-      if last_odo[i]!=odo[i] && nvals[i]!=1 then changed_past_here = true end
-      next if nvals[i]==1
-      if changed_past_here && ! (n_matches==0 && i==n-1) then
-        print " "*indent*indentation_spacing,describe_tag(keys[i],values[i][odo[i]]),"\n"
-      end
-      indent +=1 
-    }
-
-    if true then
-      # Not 100% reliable.
-      if all_the_same_pos=~/^v+$/ then matches,n_occurrences=deredundantize_verb([matches,n_occurrences]) end # all verbs
-    end
-    if n_matches>=1 then
-      results=0.upto(matches.length-1).map { |i| "#{matches[i]} (#{n_occurrences[i]})"}.join(', ')
-      total_occurrences += n_occurrences.sum
-      print " "*n_varying*indentation_spacing,results,"\n"
-    end
-    last_odo = odo
-  }
-
-  if lemma_matches.length>0 && remove_accents(lemma)!=lemma && !lemma_matches.include?(lemma) then
-    warnings.push("The given lemma #{lemma} appears to be incorrectly accented compared to the matches: #{lemma_matches}")
-  end
-  if lemma_matches.length>0 then
-    if lemma_matches.length==1 && lemma_matches[0]==lemma then
-      print "The given lemma #{lemma} is an exact and unique match to the database, including accentuation.\n"
-    else
-      if lemma_matches.length==1 then
-        print "The given lemma is a unique match to: ",lemma_matches[0],"\n"
-      else
-        print "The given lemma matches: ",lemma_matches,"\n"
-      end
-    end
-  end
-
-  print "total matches: #{total_matches}, total occurrences: #{total_occurrences}\n"  
-  if warnings.length>0 then
-    print "**************************** WARNINGS *****************************\n"
-    warnings.each { |w|
-      print w,"\n"
-    }
-  end
 end
 
 def set_up_odometer(sel)
