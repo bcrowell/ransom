@@ -34,6 +34,7 @@ module Verb_difficulty
 end
 
   # Code that tries to judge the difficulty of recognizing a particular inflected form of a verb.
+  # To do: Doesn't know about formation of optative or subjunctive, which has the effect of making these forms always be rated as hard.
   def Verb_difficulty.guess(word,lemma,pos)
     f = Vform.new(pos)
     f_lemma = f.make_lemma(lemma)

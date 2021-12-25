@@ -34,10 +34,6 @@ values, then simply don't include the key on the command line.
 =end
 
 def main
-  warnings = []
-  total_matches = 0
-  total_occurrences = 0
-  indentation_spacing = 2
   homer = TreeBank.new('homer').lemmas
   lemma = nil
   ARGV.each { |arg|
@@ -50,6 +46,14 @@ def main
   if lemma=~/ς./ then print "lemma #{lemma} contains ς in a non-final position\n"; exit(-1) end
   selector_strings = ARGV.dup
   selector_strings.delete(lemma)
+  do_one_lemma(lemma,selector_strings,homer)
+end
+
+def do_one_lemma(lemma,selector_strings,homer)
+  warnings = []
+  total_matches = 0
+  total_occurrences = 0
+  indentation_spacing = 2
   #print "lemma=#{lemma} selectors=#{selector_strings}\n"
   keys = []
   values = []

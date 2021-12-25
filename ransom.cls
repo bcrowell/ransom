@@ -59,10 +59,11 @@
 \newcommand{\vocabinflection}[3]{\vocab{#1}{\from{}{\greekfont #2}}, #3}
 \newcommand{\vocabinflectiononly}[2]{\vocab{#1}{\from{}{\greekfont #2}}}
 \newcommand{\vocaballheader}{\textit{vocabulary}}
-\newcommand{\formsheader}{\textit{forms}}
+\newcommand{\formsheader}[1]{\textit{#1}}
 
 \newenvironment{vocabpage}{\cleardoublepage\begin{raggedright}\begin{multicols}{2}}{\end{multicols}\end{raggedright}}
-\newenvironment{forms}{\formsheader\\}{}
+\newenvironment{conjugations}{\formsheader{conjugations}\\}{}
+\newenvironment{declensions}{\formsheader{declensions}\\}{}
 \newenvironment{vocaball}{\vocaballheader\\}{}
 \newenvironment{widespacing}{\linespread{1.5}}{}
 \newenvironment{foreignpage}{%

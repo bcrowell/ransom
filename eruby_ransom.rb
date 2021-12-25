@@ -123,26 +123,27 @@ def vocab_helper(commonness,vl,lo,hi,core)
       word,lexical,data = entry
       if data.nil? then data={} end
       pos = data['pos']
+      is_verb = (pos=~/^[vt]/)
       g = Gloss.get(lexical,word)
       next if g.nil?
       file_under = g['file_under']
       if file_under.nil? then raise "Gloss.get = #{g}, doesn't have a file_under key" end
       difficult_to_recognize = data['difficult_to_recognize']
       difficult_to_recognize ||= (not_nil_or_zero(g['aorist_difficult_to_recognize']) && pos=~/^...a/ )
-      difficult_to_recognize ||= (pos=~/^[vt]/ && Verb_difficulty.guess(word,lexical,pos)[0])
+      difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lexical,pos)[0])
       data['difficult_to_recognize'] = difficult_to_recognize
       data['core'] = core.include?(remove_accents(lexical).downcase)
-      if !data['core'] then
-        l.push(['gloss',[file_under,word,lexical,data]])
-      end
+      entry_type = nil
+      if !data['core'] then entry_type='gloss' end
       if data['core'] && difficult_to_recognize then
-        l.push(['inflection',[file_under,word,lexical,data]])
+        if is_verb then entry_type='conjugation' else entry_type='declension' end
       end
+      if !entry_type.nil? then l.push([entry_type,[file_under,word,lexical,data]]) end
     }
   }
   secs = []
-  ['gloss','inflection'].each { |type|
-    envir = {'gloss'=>'vocaball','inflection'=>'forms'}[type]
+  ['gloss','conjugation','declension'].each { |type|
+    envir = {'gloss'=>'vocaball','conjugation'=>'conjugations','declension'=>'declensions'}[type]
     ll = l.select { |entry| entry[0]==type }.map { |entry| entry[1] }
     if ll.length>0 then
       this_sec = ''
@@ -150,7 +151,7 @@ def vocab_helper(commonness,vl,lo,hi,core)
       ll.sort { |a,b| alpha_compare(a[0],b[0])}.each { |entry|
         s = nil
         if type=='gloss' then s=vocab1(entry) end
-        if type=='inflection' then s=vocab_inflection(entry) end
+        if type=='conjugation' || type=='declension' then s=vocab_inflection(entry) end
         if !(s.nil?) then
           this_sec += clean_up_unicode("#{s}\\\\\n")
         else
