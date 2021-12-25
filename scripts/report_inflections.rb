@@ -6,6 +6,7 @@ require_relative "../lib/file_util"
 require_relative "../lib/string_util"
 require_relative "../lib/treebank"
 require 'json'
+require 'set'
 
 # https://github.com/cltk/greek_treebank_perseus
 $fields = ["pos","person","number","tense","mood","voice","gender","case","degree"]
@@ -16,6 +17,7 @@ $all_values = {'person'=>['1','2','3'],'number'=>['s','d','p'],'tense'=>['p','i'
 
 usage:
   report_inflections.rb ολεκω
+  report_inflections.rb pos=vt ".*γω$" ... regex search for verbs ending in -γω
   report_inflections.rb person=3 mood=* voice=a tense=pia number=sp καλεω 
 The rightmost key changes most rapidly, as expected intuitively from the way we write decimal notation.
 The lemma can be given in any position, is detected by the absence of an equals sign. Accents in the lemma are ignored.
@@ -42,22 +44,28 @@ def main
     end
   }
   if lemma.nil? then print "no lemma given\n"; exit(-1) end
-  if lemma=~/[a-zA-Z,\."\-]/ then print "lemma #{lemma} contains punctuation or Latin characters\n"; exit(-1) end
-  if lemma=~/ς./ then print "lemma #{lemma} contains ς in a non-final position\n"; exit(-1) end
   selector_strings = ARGV.dup
   selector_strings.delete(lemma)
-  do_one_lemma(lemma,selector_strings,homer)
+  is_regex = (lemma=~/[\[\]\.*?()^$]/)
+  if !is_regex then
+    do_one_lemma(lemma,selector_strings,homer)
+  else
+    r = Regexp.new(remove_accents(lemma.downcase))
+    lemmas = Set[]
+    homer.each_pair { |inflected,data|
+      next unless r.match?(remove_accents(data[0].downcase))
+      lemmas.add(data[0])
+    }
+    alpha_sort(lemmas.to_a).each { |l|
+      do_one_lemma(l,selector_strings,homer)
+    }
+  end
 end
 
-def do_one_lemma(lemma,selector_strings,homer)
-  warnings = []
-  total_matches = 0
-  total_occurrences = 0
-  indentation_spacing = 2
-  #print "lemma=#{lemma} selectors=#{selector_strings}\n"
+def parse_selector_strings(selector_strings)
+  # returns two parallel lists, one of keys, one of values
   keys = []
   values = []
-  lemma_matches = []
   selector_strings.each { |s|
     key,val = s.split(/=/)
     if !($fields.include?(key)) then print "illegal key: #{key}\n"; exit(-1) end
@@ -73,6 +81,19 @@ def do_one_lemma(lemma,selector_strings,homer)
     end
     values.push(vv)
   }
+  return [keys,values]
+end
+
+def do_one_lemma(lemma,selector_strings,homer)
+  if lemma=~/[a-zA-Z,\."\-]/ then print "lemma #{lemma} contains punctuation or Latin characters\n"; exit(-1) end
+  if lemma=~/ς./ then print "lemma #{lemma} contains ς in a non-final position\n"; exit(-1) end
+  warnings = []
+  total_matches = 0
+  total_occurrences = 0
+  indentation_spacing = 2
+  #print "lemma=#{lemma} selectors=#{selector_strings}\n"
+  keys,values = parse_selector_strings(selector_strings)
+  lemma_matches = []
   nvals = values.map { |x| x.length}
   n = nvals.length
   n_varying = (nvals-[1]).length # number of elements that are > 1
