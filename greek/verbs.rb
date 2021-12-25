@@ -93,10 +93,13 @@ end
 
   def Verb_difficulty.add_sigma_to_aorist_or_future(s,f)
     # s is a string (not a multistring), has already had its ending stripped
+    # See my notes under "my empirical data on rules for how sigmatic aorists work".
     if !(f.aorist || f.future) then return s end
-    if s=~/σ$/ then return s end
+    if s=~/σσ$/ then return s.sub(/..$/,'ξ') end # πλῆξα
     if s=~/[μνλρ]$/ then return s end
-    if s=~/[ζ]$/ then return s.sub(/.$/,'σ') end
+    if s=~/[δζθτ]$/ then return s.sub(/.$/,'σ') end # ἄεισα, ἀκόντισα; but fairly often [δζ]->ξ, e.g., ἔρξα, ἥρπαξα
+    if s=~/[γκχ]$/ then return s.sub(/.$/,'κσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
+    if s=~/[πφ]$/ then return s.sub(/.$/,'πσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
     return s+'σ'
   end
 

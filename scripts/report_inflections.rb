@@ -1,6 +1,8 @@
 #!/bin/ruby
 # coding: utf-8
 
+$stdout.sync = true # so tail -f will work
+
 lib_dir = "lib"
 require_relative "../lib/file_util"
 require_relative "../lib/string_util"
