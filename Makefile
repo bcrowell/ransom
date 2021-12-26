@@ -67,3 +67,6 @@ core_tex: iliad/core.tex
 iliad/core.tex: core/homer.json
 	ruby scripts/make_core_tex.rb >iliad/core.tex
 
+test:
+	ruby -e "require './greek/writing.rb'; require './greek/verbs.rb'; require './greek/nouns.rb'; require './lib/multistring.rb'; require './lib/clown.r\
+b'; require './lib/string_util.rb'; Verb_difficulty.test()"

@@ -101,7 +101,7 @@ end
     if s=~/[γκχ]$/ then return s.sub(/.$/,'κσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
     if s=~/[πφ]$/ then return s.sub(/.$/,'πσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
     if s=~/[αε]/ then return s.sub(/.$/,'ησ') end # νικάω, νίκησα; δοκέω, δόκησα
-    if s=~/[ι]/ then return s+'σ' end # κονίω, ἐκόνισα
+    if s=~/[ιου]/ then return s+'σ' end # κονίω, ἐκόνισα, ἔλυσα,  χόλωσα
     return s
   end
 
