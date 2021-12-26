@@ -1,6 +1,16 @@
 module Verb_difficulty
+  # This is a utility module whose main function, Verb_difficulty.guess(), tries to guess whether a particular
+  # form of a verb is likely to be difficult for a human to *recognize* (not produce). Throughout the code,
+  # there are various conjugation rules that are *intentionally* oversimplified, with comments saying "failure is awesome."
+  # The idea here is that we're trying to guess how well a human with imperfect memory and grammatical knowledge
+  # will do, so we don't *want* to get every obscure grammar rule right, or include every obscure alternative form.
+  # As an example, suppose that the text has ἕζ' ἐπὶ θρόνου, in which the elision is for the imperative ἕζευ ἐπὶ θρόνου
+  # (an unusual imperative form, which has been contracted). Our audience probably won't be able to parse this, so although 
+  # it's perfectly regular, we intentionally fail. The intentional failure occurs because we omit "ευ" as a possible rare
+  # way of filling in an elision, and also because we don't try to do contracted forms.
   def Verb_difficulty.test()
-    # ruby -e "require './greek/writing.rb'; require './greek/verbs.rb'; require './greek/nouns.rb'; require './lib/multistring.rb'; require './lib/clown.rb'; require './lib/string_util.rb'; Verb_difficulty.test()"
+    # make test, which does this:
+    #   ruby -e "require './greek/writing.rb'; require './greek/verbs.rb'; require './greek/nouns.rb'; require './lib/multistring.rb'; require './lib/clown.rb'; require './lib/string_util.rb'; Verb_difficulty.test()"
     tests = [
       ["ἁζόμενοι","ἅζομαι","v-pppemn-",false],
       ["λύει","λύω","v3spia---",false],
@@ -20,6 +30,7 @@ module Verb_difficulty
       ["οἶσθα","οἶδα","v2sria---",true],
       ["ἕζεται","ἕζομαι","v3spie---",false],
       ["ἕζετ᾽","ἕζομαι","v3spie---",false],
+      ["ἕζευ","ἕζομαι","v2spme---",true],
     ]
     results = []
     tests.each { |x|
@@ -41,10 +52,10 @@ end
     if !(word[-1]=~/[[:alpha:]]/) then
       # final character is punctuation, which we assume to be a Greek elision marker like ' or ᾽
       results = []
-      ["α","ε","ι","ο","υ","ω","αι","ει","ου"].each { |c|
+      ["α","ε","ι","ο","ω","αι","ει"].each { |c|
+        # because failure is awesome, omit rare ones: υ, η (3s root aorist), ου (3s passive imperative), ευ (contraction of εου, as in ἕζευ)
         unelided = word[0..-2]+c
         results.push(Verb_difficulty.guess_no_elision(unelided,lemma,pos))
-        print "...#{unelided} #{results[-1]}\n" # qwe
       }
       result = results.sort { |x,y| x[1]<=>y[1] }[0] # pick the one lowest in difficulty
       result[1] += 0.1 # score it as harder because of the elision
