@@ -18,6 +18,8 @@ module Verb_difficulty
       ["ἴθι","εἶμι","v2spma---",true],
       ["ὄμοσσον","ὄμνυμι","v2sama---",true],
       ["οἶσθα","οἶδα","v2sria---",true],
+      ["ἕζεται","ἕζομαι","v3spie---",false],
+      ["ἕζετ᾽","ἕζομαι","v3spie---",false],
     ]
     results = []
     tests.each { |x|
@@ -34,8 +36,25 @@ module Verb_difficulty
 end
 
   # Code that tries to judge the difficulty of recognizing a particular inflected form of a verb.
-  # To do: Doesn't know about formation of optative or subjunctive, which has the effect of making these forms always be rated as hard.
+  # To do: Doesn't know about formation of optative, which has the effect of making these forms always be rated as hard.
   def Verb_difficulty.guess(word,lemma,pos)
+    if !(word[-1]=~/[[:alpha:]]/) then
+      # final character is punctuation, which we assume to be a Greek elision marker like ' or ᾽
+      results = []
+      ["α","ε","ι","ο","υ","ω","αι","ει","ου"].each { |c|
+        unelided = word[0..-2]+c
+        results.push(Verb_difficulty.guess_no_elision(unelided,lemma,pos))
+        print "...#{unelided} #{results[-1]}\n" # qwe
+      }
+      result = results.sort { |x,y| x[1]<=>y[1] }[0] # pick the one lowest in difficulty
+      result[1] += 0.1 # score it as harder because of the elision
+      return result
+    else
+      return Verb_difficulty.guess_no_elision(word,lemma,pos)
+    end
+  end
+
+  def Verb_difficulty.guess_no_elision(word,lemma,pos)
     f = Vform.new(pos)
     f_lemma = f.make_lemma(lemma)
     # The effect of the following is to strip accents, phoneticize rough breathing as 'h' or null string, and archaicize iota subscripts.
@@ -137,7 +156,7 @@ end
       # ... spellings like ηι are because s is already phoneticized; don't do athematic stuff like υς because failure is awesome
     else
       # voice = passive, middle, mp
-      if f.present || f.future then pat = "o?(μαι|αι|σαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται)" end
+      if f.present || f.future then pat = "ο?(μαι|αι|σαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται)" end
       if f.imperfect || (f.aorist && !f.passive) then 
         if μι_verb then pat = "μην|σο|το|μεθα|σθε|ντο|ατο" else pat = "ομην|εσο|ετο|ομεθα|εσθε|οντο|ατο" end
       end

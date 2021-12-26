@@ -50,6 +50,25 @@ class MultiString
     }
     return result
   end
+  def distance_against_string_with_possible_greek_elision(t)
+    # t may have elision
+    # I coded this up, but it actually isn't that useful because in an application like Verb_difficulty, I need to be able to match
+    # regexes for endings in order to strip the endings, before I would even get here.
+    result = 99999
+    t.all_strings.each { |b|
+      if !(b[-1]=~/[[:alpha:]]/) then
+        # final character is punctuation, which we assume to be a Greek elision marker like ' or ᾽
+        self.all_strings.each { |a|
+          0.upto(a.length-1) { |n|
+            result = [result,atomic_lcs_distance(a[0..n],b[0..-2])].min
+          }
+        }
+      else
+        result = [result,self.distance(MultiString.new(b))].min
+      end
+    }
+    return result
+  end
   def distance(t)
     # Return a distance based on whatever I think is currently my best distance measure.
     return self.lcs_distance(t)
