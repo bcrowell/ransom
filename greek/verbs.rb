@@ -34,6 +34,8 @@ module Verb_difficulty
       ["ἐοικώς","ἔοικα","v-srpamn-",false],
       ["καλέσσατο","καλέω","v3saim---",false],
       ["ὁρᾶτο","ὁράω","v3siie---",false],
+      ["φιλέει","φιλέω","v3spia---",false],
+      ["φιλεῖ","φιλέω","v3spia---",false],
     ]
     results = []
     tests.each { |x|
@@ -88,10 +90,13 @@ end
     stem_from_lemma,lemma_ending = Verb_difficulty.strip_ending(l,μι_verb,f_lemma)
     stem_from_lemma_with_sigma = Verb_difficulty.add_sigma_to_aorist_or_future(stem_from_lemma,f,stem_from_word)
     # ... e.g., if w is aorist, find the aorist stem from the lemma
-    # For a form like ὁρᾶτο, we'd think it would be ὁραατο, but it seems like the double vowel just drops to a single vowel:
+    # For a form like ὁρᾶτο, the contraction of the double vowel from ὁραατο doesn't make it hard to recognize, and similarly
+    # for φιλέει -> φιλεῖ. We don't do contractions in general, because failure is awesome, but these αα->α and εει->ει ones are trivial to a human.
     ["α","ε"].each { |thematic|
-      if stem_from_lemma=~/#{thematic}$/ && ending=~/^#{thematic}/ then 
-        stem_from_word += thematic # e.g., if we analyzed ὁρᾶτο into ὁρ-ατο, change the analysis to ὁρα-ατο
+      if stem_from_lemma=~/#{thematic}$/ && !(stem_from_word=~/#{thematic}$/) && ending=~/^#{thematic}/ then
+        if thematic=='α' || (thematic=='ε' && ending=~/^ει/) then
+          stem_from_word += thematic # e.g., if we analyzed ὁρᾶτο into ὁρ-ατο, change the analysis to ὁρα-ατο
+        end
       end
     }
     # In the following, ws and ls are multistrings, not strings.
