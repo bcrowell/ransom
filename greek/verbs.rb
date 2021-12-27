@@ -32,6 +32,7 @@ module Verb_difficulty
       ["ἕζετ᾽","ἕζομαι","v3spie---",false],
       ["ἕζευ","ἕζομαι","v2spme---",true],
       ["ἐοικώς","ἔοικα","v-srpamn-",false],
+      ["καλέσσατο","καλέω","v3saim---",false],
     ]
     results = []
     tests.each { |x|
@@ -84,7 +85,7 @@ end
     stem_from_word =  Verb_difficulty.strip_ending(w,μι_verb,f)
     l = Writing.phoneticize(lemma,reduce_double_sigma:true)
     stem_from_lemma = Verb_difficulty.strip_ending(l,μι_verb,f_lemma)
-    stem_from_lemma_with_sigma = Verb_difficulty.add_sigma_to_aorist_or_future(stem_from_lemma,f)
+    stem_from_lemma_with_sigma = Verb_difficulty.add_sigma_to_aorist_or_future(stem_from_lemma,f,stem_from_word)
     # ... e.g., if w is aorist, find the aorist stem from the lemma
     # In the following, ws and ls are multistrings, not strings.
     ws = Verb_difficulty.strip_augment(stem_from_word,f)
@@ -137,16 +138,22 @@ end
     end
   end
 
-  def Verb_difficulty.add_sigma_to_aorist_or_future(s,f)
+  def Verb_difficulty.add_sigma_to_aorist_or_future(s,f,stem_from_word)
     # s is a string (not a multistring), has already had its ending stripped
     # See my notes under "my empirical data on rules for how sigmatic aorists work".
+    # The inflected form stem_from_word can be nil; if not nil, then we use it
+    # as a way of cheating so that we don't get picky about stuff like ησ versus εσ, which isn't that salient to a human.
     if !(f.aorist || f.future) then return s end
     if s=~/σσ$/ then return s.sub(/..$/,'ξ') end # πλῆξα
     if s=~/[μνλρ]$/ then return s end
     if s=~/[δζθτ]$/ then return s.sub(/.$/,'σ') end # ἄεισα, ἀκόντισα; but fairly often [δζ]->ξ, e.g., ἔρξα, ἥρπαξα
     if s=~/[γκχ]$/ then return s.sub(/.$/,'κσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
     if s=~/[πφ]$/ then return s.sub(/.$/,'πσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
-    if s=~/[αε]/ then return s.sub(/.$/,'ησ') end # νικάω, νίκησα; δοκέω, δόκησα
+    if s=~/[αε]/ then
+      if !stem_from_word.nil? && stem_from_word=~/εσ$/ then x='εσ' else x='ησ' end
+      # The normal case is ησ: νικάω, νίκησα; δοκέω, δόκησα; but: καλεσσατο. A human won't consider this difficult to recognize either way.
+      return s.sub(/.$/,x)
+    end 
     if s=~/[ιου]/ then return s+'σ' end # κονίω, ἐκόνισα, ἔλυσα,  χόλωσα
     return s
   end
