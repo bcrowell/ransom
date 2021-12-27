@@ -31,6 +31,7 @@ module Verb_difficulty
       ["ἕζεται","ἕζομαι","v3spie---",false],
       ["ἕζετ᾽","ἕζομαι","v3spie---",false],
       ["ἕζευ","ἕζομαι","v2spme---",true],
+      ["ἐοικώς","ἔοικα","v-srpamn-",false],
     ]
     results = []
     tests.each { |x|
@@ -48,7 +49,15 @@ end
 
   # Code that tries to judge the difficulty of recognizing a particular inflected form of a verb.
   # To do: Doesn't know about formation of optative, which has the effect of making these forms always be rated as hard.
-  def Verb_difficulty.guess(word,lemma,pos)
+  def Verb_difficulty.guess(word,lemma_raw,pos)
+    if lemma_raw=~/α$/ then
+      # A verb like ἔοικα, where the lexical form is in the perfect tense. Don't try to hard to make up a realistic
+      # fake present tense (which doesn't exist), but just try to make something semi-reasonable that has some
+      # chance of working.
+      lemma = lemma_raw.sub(/κ?α$/,'ω')
+    else
+      lemma = lemma_raw
+    end
     if !(word[-1]=~/[[:alpha:]]/) then
       # final character is punctuation, which we assume to be a Greek elision marker like ' or ᾽
       results = []
@@ -163,8 +172,14 @@ end
       if f.infinitive then
         if μι_verb then pat = "εν|ειν|μεναι|μεν|αι|ναι" else pat = "εν|ειν|ο?μεναι|ο?μεν|αι" end
       end
-      if f.participle then pat = "ων|ους|ασιν|((οντ|αντ)(ος|ι|α|ες|ων|ας))|((ουσ|ασ)(α|ης|ηι|αν|αι|αων|ηις|ας))|((αν)(|τος|τι|τα|ων|α))" end
-      # ... spellings like ηι are because s is already phoneticized; don't do athematic stuff like υς because failure is awesome
+      if f.participle then
+        if !f.perfect then
+          pat = "ων|ους|ασιν|((οντ|αντ)(ος|ι|α|ες|ων|ας))|((ουσ|ασ)(α|ης|ηι|αν|αι|αων|ηις|ας))|((αν)(|τος|τι|τα|ων|α))"
+          # ... spellings like ηι are because s is already phoneticized; don't do athematic stuff like υς because failure is awesome
+        else
+          pat = "κ(ως|οτος|οτι|οτα|οτες|οτων|οσιν|οτας|υια|υιας|θια|υιαν|υιαι|υιων|υιαις|υιας|ος|οτος|οτι|ος|οτα|οτων|οσιν|οτα)"
+        end
+      end
     else
       # voice = passive, middle, mp
       if f.present || f.future then pat = "ο?(μαι|αι|σαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται)" end
