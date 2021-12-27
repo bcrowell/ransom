@@ -33,6 +33,7 @@ module Verb_difficulty
       ["ἕζευ","ἕζομαι","v2spme---",true],
       ["ἐοικώς","ἔοικα","v-srpamn-",false],
       ["καλέσσατο","καλέω","v3saim---",false],
+      ["ὁρᾶτο","ὁράω","v3siie---",false],
     ]
     results = []
     tests.each { |x|
@@ -52,7 +53,7 @@ end
   # To do: Doesn't know about formation of optative, which has the effect of making these forms always be rated as hard.
   def Verb_difficulty.guess(word,lemma_raw,pos)
     if lemma_raw=~/α$/ then
-      # A verb like ἔοικα, where the lexical form is in the perfect tense. Don't try to hard to make up a realistic
+      # A verb like ἔοικα, where the lexical form is in the perfect tense. Don't try to hard too make up a realistic
       # fake present tense (which doesn't exist), but just try to make something semi-reasonable that has some
       # chance of working.
       lemma = lemma_raw.sub(/κ?α$/,'ω')
@@ -63,7 +64,7 @@ end
       # final character is punctuation, which we assume to be a Greek elision marker like ' or ᾽
       results = []
       ["α","ε","ι","ο","ω","αι","ει"].each { |c|
-        # because failure is awesome, omit rare ones: υ, η (3s root aorist), ου (3s passive imperative), ευ (contraction of εου, as in ἕζευ)
+        # because failure is awesome, omit rare ones: υ, η (3s root aorist), ου (passive imperative), ευ (contraction of εου, as in ἕζευ)
         unelided = word[0..-2]+c
         results.push(Verb_difficulty.guess_no_elision(unelided,lemma,pos))
       }
@@ -82,11 +83,17 @@ end
     μι_verb = (lemma=~/μι$/) # won't work if, e.g., lemma is 2nd aorist, but failure is awesome
     # In the following, the reduce_double_sigma:true helps with forms like ἐρύσσομεν < ἐρύω, which are pretty obvious to a human.
     w = Writing.phoneticize(word,reduce_double_sigma:true)
-    stem_from_word =  Verb_difficulty.strip_ending(w,μι_verb,f)
+    stem_from_word,ending =  Verb_difficulty.strip_ending(w,μι_verb,f)
     l = Writing.phoneticize(lemma,reduce_double_sigma:true)
-    stem_from_lemma = Verb_difficulty.strip_ending(l,μι_verb,f_lemma)
+    stem_from_lemma,lemma_ending = Verb_difficulty.strip_ending(l,μι_verb,f_lemma)
     stem_from_lemma_with_sigma = Verb_difficulty.add_sigma_to_aorist_or_future(stem_from_lemma,f,stem_from_word)
     # ... e.g., if w is aorist, find the aorist stem from the lemma
+    # For a form like ὁρᾶτο, we'd think it would be ὁραατο, but it seems like the double vowel just drops to a single vowel:
+    ["α","ε"].each { |thematic|
+      if stem_from_lemma=~/#{thematic}$/ && ending=~/^#{thematic}/ then 
+        stem_from_word += thematic # e.g., if we analyzed ὁρᾶτο into ὁρ-ατο, change the analysis to ὁρα-ατο
+      end
+    }
     # In the following, ws and ls are multistrings, not strings.
     ws = Verb_difficulty.strip_augment(stem_from_word,f)
     ls = Verb_difficulty.strip_augment(stem_from_lemma,f_lemma)
@@ -159,6 +166,13 @@ end
   end
 
   def Verb_difficulty.strip_ending(s,μι_verb,f)
+    stem = Verb_difficulty.strip_ending_helper(s,μι_verb,f)
+    # Working backward, infer what ending was stripped off, which can help the caller to do certain tweaks:
+    if s=~/#{stem}(.*)/ then ending=$1 else ending='' end
+    return [stem,ending]
+  end
+
+  def Verb_difficulty.strip_ending_helper(s,μι_verb,f)
     # The point of the following is not to be correct in all cases. The goal is actually to strip the ending in the way that a bewildered
     # human would be likely to do. This is the "failure is awesome" philosophy.
     # Input s should be phoneticized, not raw accented Greek.
