@@ -94,6 +94,13 @@ end
     dist = ls.distance(ws) # is 0 if identical, or number of chars unexplainable by longest common subsequence
     x = dist.to_f/([stem_from_lemma.length,stem_from_word.length].max) # basically the fraction of chars that are unexplainable
     x = x+dist*0.1
+    # Small additions for grammar that most people aren't likely to be really solid on:
+    if f.perfect then
+      x += 0.05 if f.present_perfect 
+      x += 0.10 if f.pluperfect 
+      x += 0.10 if f.future_perfect 
+      x += 0.05 if f.participle
+    end
     threshold = 0.27
     return [x>threshold,x,threshold,{
       # debugging info:
@@ -264,6 +271,9 @@ class Vform
   def dual() return (@number=='d') end
   def plural() return (@number=='p') end # doesn't include dual
   def perfect() return (@tense=~/[rlt]/) end
+  def present_perfect() return (@tense=~/[r]/) end
+  def pluperfect() return (@tense=~/[l]/) end
+  def future_perfect() return (@tense=~/[f]/) end
   def past() return (@tense=~/[ail]/) end
   def present() return (@tense=='p') end
   def aorist() return (@tense=='a') end
