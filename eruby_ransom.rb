@@ -177,7 +177,8 @@ def vocab_inflection(stuff)
   end
   if pos[0]=~/[vt]/ then
     # File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} \n" } # qwe
-    return "\\vocabverbinflection{#{word.downcase}}{#{lexical}}{#{Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical)}}"
+    return "\\vocabverbinflection{#{word.downcase}}{#{lexical}}{#{Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical,
+                   omit_easy_number_and_person:true,omit_voice:true)}}"
   end
   return "\\vocabinflectiononly{#{word.downcase}}{#{lexical}}"
 end

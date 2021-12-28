@@ -36,6 +36,15 @@ module Verb_difficulty
       ["ὁρᾶτο","ὁράω","v3siie---",false],
       ["φιλέει","φιλέω","v3spia---",false],
       ["φιλεῖ","φιλέω","v3spia---",false],
+      ["ἤγερθεν","ἀγείρω","v3paip---",true],
+      ["φράσαι","φράζω","v2samm---",false],
+      ["δέξασθαι","δέχομαι","v--anm---",false],
+      ["ἔοικε","ἔοικα","v3sria---",false],
+      ["ἀγείρομεν","ἀγείρω","v1pasa---",false],
+      ["ἐρύσσομεν","ἐρύω","v1pasa---",false],
+      ["κέλεαι","κέλομαι","v2spie---",false],
+      ["ῥέξας","ῥέζω","v-sapamn-",false],
+      ["χαίρῃς","χαίρω","v2spsa---",false],
     ]
     results = []
     tests.each { |x|
@@ -44,11 +53,12 @@ module Verb_difficulty
       if if_hard then hard_string='hard' else hard_string='easy' end
       mismatch = (i_think_hard!=if_hard)
       if mismatch then mismatch_string='******* error ??? *******' else mismatch_string='' end
-      results.push([score,sprintf("%10s %10s %.2f %s %s %20s %s\n",word,lemma,score,hard_string,mismatch_string,Vform.new(pos),debug)])
+      s = Vform.new(pos).to_s_fancy(omit_easy_number_and_person:true,omit_voice:true)
+      results.push([score,sprintf("%10s %10s %.2f %s %s %20s %s\n",word,lemma,score,hard_string,mismatch_string,s,debug),word])
     }
-    results.sort { |a,b| a[0]<=>b[0] }.each { |r|
-    print r[1]
-  }
+    results.sort_by { |a| [a[0],remove_accents(a[2]).downcase] }.each { |r|
+      print r[1]
+    }
 end
 
   # Code that tries to judge the difficulty of recognizing a particular inflected form of a verb.
@@ -219,7 +229,7 @@ end
       if f.imperfect || (f.aorist && !f.passive) then 
         if μι_verb then pat = "μην|σο|το|μεθα|σθε|ντο|ατο" else pat = "ομην|εσο|ετο|ομεθα|εσθε|οντο|ατο" end
       end
-      if f.aorist && f.passive then pat = "(θη)?(ν|ς||το|μεν|τε|σαν|θεν|ντο)" end # null in 2nd group is to allow bare θη
+      if f.aorist && f.passive then pat = "θεν|(θ?η(ν|ς||το|μεν|τε|σαν|ντο))" end # null in 2nd group is to allow bare θη; no θ for 2nd aor.
       if f.subjunctive then 
         if f.passive && f.aorist then
           pat = "ωμαι|ηι|ηται|ωμεθα|ησθε|ωνται"
@@ -227,7 +237,10 @@ end
           pat = "θ(ω|ηις|ηι|ωμεν|ητε|ωσιν?)"
         end
       end
-      if f.imperative then pat = "σο|ου|σθε" end # no dual forms, failure is awesome
+      if f.imperative then
+        # no dual forms, failure is awesome
+        if !f.aorist then pat="σο|ου|σθε" else pat="ον|αι|θητι|ατε|ασθε|θητε" end
+      end
       if f.participle then pat = "ο?μεν(ος|ου|οιο|ωι|ον|οι|ων|οις|οισιν?|ους|ης|ας|η|α|ην|αν|αι|ηις|ηισιν?|ας)" end
       # ...2-1-2 endings; -ο- is actually only for thematic verbs
       if f.infinitive then
@@ -312,18 +325,31 @@ class Vform
     return self.to_s_fancy()
   end
 
-  def to_s_fancy(tex:false,relative_to_lemma:nil)
+  def to_s_fancy(tex:false,relative_to_lemma:nil,omit_easy_number_and_person:false,omit_voice:false)
     if !(relative_to_lemma).nil? then f_lemma = self.make_lemma(relative_to_lemma) else f_lemma=nil end
     result = []
-    if !(self.participle || self.infinitive) then result.push(self.person.to_s+({'s'=>'s','p'=>'pl','d'=>'dual'}[self.number])) end
-    if !self.present then result.push({'i'=>'impf.','r'=>'pf.','l'=>'plupf.','t'=>'fut. perf.','f'=>'fut.','a'=>'aor.'}[self.tense]) end
-    if !self.indicative then result.push({'s'=>'subj.','o'=>'opt.','n'=>'inf.','m'=>'imp.','p'=>'ppl.'}[@mood]) end
-    if (f_lemma.nil? && !(self.active)) || (!(f_lemma.nil?) && self.active!=f_lemma.active) then
-      # File.open("debug.txt",'a') { |f| f.print "            #{f_lemma.active} #{self.active}\n" } # qwe
-      result.push({'a'=>'act.','p'=>'pass.','m'=>'mid.','e'=>'mp'}[@voice])
+    if !(self.participle || self.infinitive) then
+      x = self.person.to_s+({'s'=>'s','p'=>'pl','d'=>'dual'}[self.number])
+      easy_number_and_person = []
+      if omit_easy_number_and_person then
+        if self.imperative then
+          x.sub!(/2/,'')
+          easy_number_and_person=['s']
+        else
+          easy_number_and_person=['3s','1s','1pl']
+          # 3s is common so is a kind of default; 1s is easy because it's a principal part; 1pl is easy because forms are distinctive
+        end
+      end
+      result.push(x) unless omit_easy_number_and_person && easy_number_and_person.include?(x)
     end
-    if_tex = false # don't put ~ after ., not appropriate for a general-purpose stringification routine
-    if self.participle then result.push(describe_declension(self.get_perseus_tag,if_tex)[0]) end
+    if !self.present then result.push({'i'=>'impf.','r'=>'pf.','l'=>'plupf.','t'=>'fut. perf.','f'=>'fut.','a'=>'aor.'}[self.tense]) end
+    if !self.indicative then result.push({'s'=>'subj.','o'=>'opt.','n'=>'inf.','m'=>'impv.','p'=>'ppl.'}[@mood]) end
+    unless omit_voice then # usually obvious by looking at an inflected form that it's either active or some variety of mp
+      if (f_lemma.nil? && !(self.active)) || (!(f_lemma.nil?) && self.active!=f_lemma.active) then
+        result.push({'a'=>'act.','p'=>'pass.','m'=>'mid.','e'=>'mp'}[@voice])
+      end
+    end
+    if self.participle then result.push(describe_declension(self.get_perseus_tag,tex)[0]) end
     # part mp nom. pl. nom.
     s = result.join(' ')
     if tex then s = s.gsub(/\. /,'.~') end
