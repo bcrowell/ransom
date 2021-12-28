@@ -33,19 +33,17 @@ module Verb_difficulty
       ["ἕζευ","ἕζομαι","v2spme---",true],
       ["ἐοικώς","ἔοικα","v-srpamn-",false],
       ["καλέσσατο","καλέω","v3saim---",false],
-      ["ὁρᾶτο","ὁράω","v3siie---",false],
+      ["ὁρᾶτο","ὁράω","v3siie---",false], # trivial contraction, not hard for a human to parse
       ["φιλέει","φιλέω","v3spia---",false],
-      ["φιλεῖ","φιλέω","v3spia---",false],
-      ["ἤγερθεν","ἀγείρω","v3paip---",true],
+      ["φιλεῖ","φιλέω","v3spia---",false], # trivial contraction, not hard for a human to parse
       ["φράσαι","φράζω","v2samm---",false],
       ["δέξασθαι","δέχομαι","v--anm---",false],
       ["ἔοικε","ἔοικα","v3sria---",false],
-      ["ἀγείρομεν","ἀγείρω","v1pasa---",false],
-      ["ἐρύσσομεν","ἐρύω","v1pasa---",false],
+      ["ἀγείρομεν","ἀγείρω","v1pasa---",true], # hard because it can't be recognized as subjunctive without context
       ["κέλεαι","κέλομαι","v2spie---",false],
       ["ῥέξας","ῥέζω","v-sapamn-",false],
       ["χαίρῃς","χαίρω","v2spsa---",false],
-      ["ἔρξαι","ἔρδω","v2samm---",true],
+      ["ἔρξαι","ἔρδω","v2samm---",true], # hard because δ->ξ in the aorist, which is hard for a human to undo
     ]
     results = []
     tests.each { |x|
@@ -218,7 +216,7 @@ end
         if f.present then pat = "μι|ην|ς|ης|η|οι|μεν|τε|εν?" end
         if f.aorist then pat = "μι|ς|μεν|τε|εν?" end
       end
-      if f.subjunctive then pat = "ω|ηισ|ηι|ωμεν|ητε|ωσιν?" end
+      if f.subjunctive then pat = "ω|ηις|ηι|ωμεν|ητε|ωσιν?" end
       if f.imperative then pat = "ε|θι|τι|τε" end # no dual forms, failure is awesome
       if f.infinitive then
         if μι_verb then pat = "εν|ειν|μεναι|μεν|αι|ναι" else pat = "εν|ειν|ο?μεναι|ο?μεν|αι" end
@@ -252,10 +250,10 @@ end
       if f.participle then pat = "ο?μεν(ος|ου|οιο|ωι|ον|οι|ων|οις|οισιν?|ους|ης|ας|η|α|ην|αν|αι|ηις|ηισιν?|ας)" end
       # ...2-1-2 endings; -ο- is actually only for thematic verbs
       if f.infinitive then
-        if !(f.aorist) then
-          if μι_verb then pat = "σθαι" else pat = "εσθαι" end
+        if f.aorist then
+          if μι_verb then pat = "ναι|μεναι|μεν" else pat = "ομεναι|ομεν|ασθαι" end
         else
-          if μι_verb then pat = "ναι|μεναι|μεν" else pat = "ομεναι|ομεν" end
+          if μι_verb then pat = "σθαι" else pat = "εσθαι" end
         end
       end
     end
