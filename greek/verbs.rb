@@ -45,6 +45,7 @@ module Verb_difficulty
       ["κέλεαι","κέλομαι","v2spie---",false],
       ["ῥέξας","ῥέζω","v-sapamn-",false],
       ["χαίρῃς","χαίρω","v2spsa---",false],
+      ["ἔρξαι","ἔρδω","v2samm---",true],
     ]
     results = []
     tests.each { |x|
@@ -124,6 +125,7 @@ end
       x += 0.10 if f.future_perfect 
       x += 0.05 if f.participle
     end
+    if stem_from_lemma=~/δ$/ && stem_from_lemma_with_sigma=~/κσ$/ then x += 0.30 end
     threshold = 0.27
     return [x>threshold,x,threshold,{
       # debugging info:
@@ -168,7 +170,12 @@ end
     if !(f.aorist || f.future) then return s end
     if s=~/σσ$/ then return s.sub(/..$/,'ξ') end # πλῆξα
     if s=~/[μνλρ]$/ then return s end
-    if s=~/[δζθτ]$/ then return s.sub(/.$/,'σ') end # ἄεισα, ἀκόντισα; but fairly often [δζ]->ξ, e.g., ἔρξα, ἥρπαξα
+    if s=~/[θτ]$/ then return s.sub(/.$/,'σ') end # ἄεισα, ἀκόντισα
+    if s=~/[δζ]$/ then
+      if !stem_from_word.nil? && stem_from_word=~/κσ$/ then x='κσ' else x='σ' end # e.g., ἔρξα, ῥέξα
+      # When this happens with δ, we detect it and add to score later on.
+      return s.sub(/.$/,x)
+    end
     if s=~/[γκχ]$/ then return s.sub(/.$/,'κσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
     if s=~/[πφ]$/ then return s.sub(/.$/,'πσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
     if s=~/[αε]/ then
@@ -218,10 +225,10 @@ end
       end
       if f.participle then
         if !f.perfect then
-          pat = "ων|ους|ασιν|((οντ|αντ)(ος|ι|α|ες|ων|ας))|((ουσ|ασ)(α|ης|ηι|αν|αι|αων|ηις|ας))|((αν)(|τος|τι|τα|ων|α))"
+          pat = "ων|ους|ασιν|ας|((οντ|αντ)(ος|ι|α|ες|ων|ας))|((ουσ|ασ)(α|ης|ηι|αν|αι|αων|ηις|ας))|((αν)(|τος|τι|τα|ων|α))"
           # ... spellings like ηι are because s is already phoneticized; don't do athematic stuff like υς because failure is awesome
         else
-          pat = "κ(ως|οτος|οτι|οτα|οτες|οτων|οσιν|οτας|υια|υιας|θια|υιαν|υιαι|υιων|υιαις|υιας|ος|οτος|οτι|ος|οτα|οτων|οσιν|οτα)"
+          pat = "κ?(ως|οτος|οτι|οτα|οτες|οτων|οσιν|οτας|υια|υιας|θια|υιαν|υιαι|υιων|υιαις|υιας|ος|οτος|οτι|ος|οτα|οτων|οσιν|οτα)"
         end
       end
     else
