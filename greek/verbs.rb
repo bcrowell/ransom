@@ -225,7 +225,7 @@ end
       end
     else
       # voice = passive, middle, mp
-      if f.present || f.future then pat = "ο?(μαι|αι|σαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται)" end
+      if f.present || f.future then pat = "ο?(μαι|αι|εαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται)" end
       if f.imperfect || (f.aorist && !f.passive) then 
         if μι_verb then pat = "μην|σο|το|μεθα|σθε|ντο|ατο" else pat = "ομην|εσο|ετο|ομεθα|εσθε|οντο|ατο" end
       end
