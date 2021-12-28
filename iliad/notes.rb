@@ -112,6 +112,18 @@ class IliadNotes
     'about_what'    => %q{ἅλα δῖαν},
     'explain'       => %q{a set phrase, divine or bright sea}
   }],
+  ["1.113" , {
+    'about_what'    => %q{προβέβουλα},
+    'explain'       => %q{The use of the perfect is common in describing a permanent present mental state, and can also show intensity.}
+  }],
+  ["1.114" , {
+    'about_what'    => %q{κουριδίης ἀλόχου},
+    'explain'       => %q{Literally ``wedded bedmate,'' describing Clytemnestra. He compares his wife with his sex slave Chryseis, who is his unwedded bedmate. (The later, opposite sense of ἄλοχος as ``virgin''  is not found in Homer.)}
+  }],
+  ["1.170" , {
+    'about_what'    => %q{οὐδέ σ᾽ ὀΐω},
+    'explain'       => %q{But neither do I think that for your sake}
+  }],
   ["1.371" , {
     'about_what'    => %q{},
     'explain'       => %q{Nine lines are repeated verbatim from 1.12-25.}

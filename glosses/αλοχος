@@ -3,11 +3,12 @@
 {
   "word":"ἄλοχος",
   "gender":"f",
-  "medium":"wife; unwed woman",
-  "long":"wife, concubine, bed partner; unwed woman",
-  "etym":"ἁ+λόχος, unlaid or lying-together",
+  "medium":"wife",
+  "long":"wife, concubine, bed partner",
+  "etym":"ἁ+λόχος, lying-together",
   "cog":"λέχος, λόχος, λέχομαι, lie",
-  "notes":"2nd declension. Dative ἀλόχῳ. One of the few feminine nouns in -ος. The two opposite meanings come from the uses of the prefix α- to mean 'not' or 'same'."
+  "notes":"2nd declension. Dative ἀλόχῳ. One of the few feminine nouns in -ος. The word's meaning in Homeric diction is from the use of the prefix α- to mean 'same.' In later dialects, the word can also mean a virgin, which is based on the meaning of α- as 'not.'"
   // https://latin.stackexchange.com/questions/13259/is-there-a-short-list-of-feminine-nouns-in-%ce%bf%cf%82
+  // Wiktionary had a claim that the virgin meaning was in Homer, but that was a mistake, see talk page.
 }
       
