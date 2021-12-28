@@ -56,7 +56,7 @@ clean:
 core: core/homer.json
 	#
 
-core/homer.json:
+core/homer.json: scripts/make_core.rb
 	mkdir -p help_gloss
 	mkdir -p core
 	ruby scripts/make_core.rb >core/homer.json
