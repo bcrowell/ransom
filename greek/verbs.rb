@@ -200,6 +200,7 @@ end
           if f.present || f.future then pat = "ω|εις|ει|ομεν|ετε|ουσιν?" end
           if f.imperfect then pat = "ον|ες|εν?|ομεν|ετε|ον" end
           if f.aorist then pat = "α|ας|εν?|αμεν|ατε|αν" end # don't try to do root aorist, we *want* those to get scored as high difficulty
+          if f.perfect then pat = "κ?(α|ας|εν?|αμεν|ατε|ασιν)" end
         else
           # μι verbs, indicative
           if f.present then pat = "μι|ς|σι|μεν|τε|ασιν?" end
