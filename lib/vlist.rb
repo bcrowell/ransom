@@ -74,13 +74,13 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
   did_lemma = {}
   warn_ambig = {}
   t.scan(/[^\s—]+/).each { |word_raw|
-    word = word_raw.gsub(/[^[:alpha:]᾽']/,'')
+    word = word_raw.gsub(/[^[:alpha:]᾽']/,'') # word_raw is super useless, may e.g. have a command on the end
     next unless word=~/[[:alpha:]]/
     lemma_entry = Vlist.get_lemma_helper(lemmas,word)
-    if lemma_entry.nil? then whine.push("error: no index entry for #{word_raw}, key=#{word}"); next end
+    if lemma_entry.nil? then whine.push("error: no index entry for #{word}, key=#{word}"); next end
     lemma,lemma_number,pos,count,if_ambiguous,ambig = lemma_entry
     if if_ambiguous then 
-      warn_ambig[word]= "warning: lemma for #{word_raw} is ambiguous, taking most common one; #{ambig}"
+      warn_ambig[word]= "warning: lemma for #{word} is ambiguous, taking most common one; #{ambig}"
     end
     if lemma.nil? then whine.push("lemma is nil for #{word} in lemmas file"); next end
     next if did_lemma.has_key?(lemma)
@@ -90,14 +90,14 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
     did_lemma[lemma] = 1
     rank = freq_rank[lemma]
     f = freq[lemma]
-    is_3rd_decl = guess_whether_third_declension(word_raw,lemma,pos)
-    is_epic = Epic_form.is(word_raw)
+    is_3rd_decl = guess_whether_third_declension(word,lemma,pos)
+    is_epic = Epic_form.is(word)
     is_verb = (pos=~/^[vt]/)
     difficult_to_recognize = false
-    if !alpha_equal(word_raw,lemma) then
-      difficult_to_recognize ||= (is_3rd_decl && guess_difficulty_of_recognizing_declension(word_raw,lemma,pos)[0])
+    if !alpha_equal(word,lemma) then
+      difficult_to_recognize ||= (is_3rd_decl && guess_difficulty_of_recognizing_declension(word,lemma,pos)[0])
       difficult_to_recognize ||= is_epic
-      difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word_raw,lemma,pos)[0])
+      difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lemma,pos)[0])
     end
     next unless rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize)
     misc = {}

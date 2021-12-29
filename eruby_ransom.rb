@@ -129,6 +129,8 @@ def vocab_helper(commonness,vl,lo,hi,core)
       file_under = g['file_under']
       if file_under.nil? then raise "Gloss.get = #{g}, doesn't have a file_under key" end
       difficult_to_recognize = data['difficult_to_recognize']
+      debug = (word=='ἄνασσε')
+      if debug then File.open("debug.txt","a") { |f| f.print "... 100 #{word} #{lexical} #{difficult_to_recognize}\n" } end # qwe
       difficult_to_recognize ||= (not_nil_or_zero(g['aorist_difficult_to_recognize']) && pos=~/^...a/ )
       difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lexical,pos)[0])
       data['difficult_to_recognize'] = difficult_to_recognize
@@ -138,7 +140,6 @@ def vocab_helper(commonness,vl,lo,hi,core)
       if data['core'] && difficult_to_recognize then
         if is_verb then entry_type='conjugation' else entry_type='declension' end
       end
-      # if word=='φάσθαι' then         File.open("debug.txt","a") { |f|            f.print "... #{word} #{lexical} #{difficult_to_recognize} #{data['core']} #{entry_type}\n" }       end # qwe
       if !entry_type.nil? then l.push([entry_type,[file_under,word,lexical,data]]) end
     }
   }
