@@ -45,6 +45,8 @@ module Verb_difficulty
       ["χαίρῃς","χαίρω","v2spsa---",false],
       ["ἔρξαι","ἔρδω","v2samm---",true], # hard because δ->ξ in the aorist, which is hard for a human to undo
       ["φάσθαι","φημί","v--pne---",true],
+      ["ἄνασσε","ἀνάσσω","v3siia---",false],
+      ["ἐρυσσάμενος","ἐρύω","v-sapmmn-",false],
     ]
     results = []
     tests.each { |x|
@@ -177,12 +179,12 @@ end
     end
     if s=~/[γκχ]$/ then return s.sub(/.$/,'κσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
     if s=~/[πφ]$/ then return s.sub(/.$/,'πσ') end # ἔλεξα, λίγξα, etc.; not redup 2nd aorists like αγαγον, εφυγον; -σκω gives 2nd aor.
-    if s=~/[αε]/ then
+    if s=~/[αε]$/ then
       if !stem_from_word.nil? && stem_from_word=~/εσ$/ then x='εσ' else x='ησ' end
       # The normal case is ησ: νικάω, νίκησα; δοκέω, δόκησα; but: καλεσσατο. A human won't consider this difficult to recognize either way.
       return s.sub(/.$/,x)
     end 
-    if s=~/[ιου]/ then return s+'σ' end # κονίω, ἐκόνισα, ἔλυσα,  χόλωσα
+    if s=~/[ιου]$/ then return s+'σ' end # κονίω, ἐκόνισα, ἔλυσα,  χόλωσα
     return s
   end
 
@@ -254,7 +256,7 @@ end
         # no dual forms, failure is awesome
         if !f.aorist then pat="σο|ου|σθε" else pat="ον|αι|θητι|ατε|ασθε|θητε" end
       end
-      if f.participle then pat = "ο?μεν(ος|ου|οιο|ωι|ον|οι|ων|οις|οισιν?|ους|ης|ας|η|α|ην|αν|αι|ηις|ηισιν?|ας)" end
+      if f.participle then pat = "[αο]?μεν(ος|ου|οιο|ωι|ον|οι|ων|οις|οισιν?|ους|ης|ας|η|α|ην|αν|αι|ηις|ηισιν?|ας)" end
       # ...2-1-2 endings; -ο- is actually only for thematic verbs
       if f.infinitive then
         if f.aorist then
