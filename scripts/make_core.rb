@@ -31,7 +31,7 @@ very common words, 'scum words':
   I have a hand-constructed list of these below.
 good core words:
   most common of these: "ἀνήρ" : 1039,
-  least common of these: "πάτηρ" : 54, ... the 526th lemma on the list
+  least common of these: "πατήρ" : 54, ... the 526th lemma on the list
 
 =end
 
@@ -57,7 +57,7 @@ scum = (<<-'SCUM'
 SCUM
 ).split(/\s/)
 
-# words that are more common than πάτηρ but seem too weird to be on the core list; often these are compound verbs,
+# words that are more common than πατήρ but seem too weird to be on the core list; often these are compound verbs,
 # military terms, or words that occur in Homer's favorite set phrase
 goofy = (<<-'GOOFY'
 προσαυδάω πτερόεις βροτός δῆμος
@@ -86,11 +86,15 @@ words = words.select { |w| ! (scum.include?(w) || goofy.include?(w))}
 
 glosses = {}
 words.each { |w|
-  data = Gloss.get(w,w) # change optional arg prefer_length if I want the long def
+  if w=='πάτηρ' then w='πατήρ' end # Perseus has vocative πάτηρ as its own lemma???
+  data = Gloss.get(w) # change optional arg prefer_length if I want the long def
   # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
   # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
+  if data.nil? then $stderr.print "gloss not found for #{w}\n"; exit(-1) end
   if data.nil? then g=nil else g = data['gloss'] end
-  glosses[w] = g
+  if !data.has_key?('word') then $stderr.print "gloss for #{w} has no word key, data=#{data}\n"; exit(-1) end
+  preferred_form = data['word'] # e.g., if w='ξένος', then switch this to ξείνος
+  glosses[preferred_form] = g
 }
 
 print (<<-'COMMENT'

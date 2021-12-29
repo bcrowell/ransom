@@ -13,16 +13,24 @@ mandatory keys:
 word
   Normally this is  just the filename with accents added in. However, sometimes Project Perseus indexes a word under a form
   like ξένος, while Homer uses some other form like ξείνος. In a case like that, we would have a file named
-  χενος, containing "word":"ξείνος" and, optionally, "perseus":"ξένος" (see below).
+  χενος, containing "word":"ξείνος" and "perseus":"ξένος" (see below). The word would appear
+  in the book as ξείνος.
+  Sometimes Homer has more than one form of the word, e.g., ὄπισθεν and ὄπιθεν. In this situation, the
+  gloss file only has to list whatever form is used by Perseus. When the alternate spelling occurs, it's
+  tagged in the Perseus treebank as a case of the lemma with the correct spelling, so we don't need to
+  do anything special.
 
 medium
+  A medium-length definition of the word.
 
 optional:
 
 perseus
   In cases where the preferred Homeric form of the word differs from Project Perseus's lemma, the filename
-  is based on the Perseus lemma, and we can also, optionally, have this tag giving the accented form of
-  the Perseus lemma. This tag isn't necessary unless there is some danger of ambiguity in looking up the
+  is based on the Perseus lemma, and we can also have this tag giving the accented form of
+  the Perseus lemma. If this information is missing, the main thing that goes wrong is that when
+  we generate the list of core vocabulary, we get an error. Having this data could conceivably
+  also be helpful if there is some danger of ambiguity in looking up the
   word based on its Perseus lemma.
 
 vowel_length
@@ -80,27 +88,31 @@ def Gloss.get(word,prefer_length:1)
   # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state" }
   x = Gloss.get_from_file(word)
   if x.nil? then return nil end
-  if x.kind_of?(Array) then
-    # words like δαίς/δάϊς that have the same key and therefore live in the same file
-    found = false
-    entry_found = nil
+  if !(x.kind_of?(Array)) then x=[x] end
+  # We can have words like δαίς/δάϊς that have the same key and therefore live in
+  # the same file. Even if that's not the case, convert x to an array for convenience.
+  entries_found = []
+  ['perseus','word'].each { |tag|
     x.each { |entry|
-      if entry['word']==word then
-        found = true
-        entry_found = entry
+      if entry[tag]==word then
+        entries_found.push([tag,entry])
       end
     }
-    if found then
-      x = entry_found
-    else
-      return nil
-    end
+  }
+  if entries_found.length>0 then
+    e = entries_found[0][1]
+  else
+    return nil
   end
-  # {  "word": "ἔθηκε",  "medium": "put, put in a state",  "lexical": "τίθημι" }
-  x['gloss']=x['medium']
-  if prefer_length==0 && x.has_key?('short') then x['gloss']=x['short'] end
-  if prefer_length==2 && x.has_key?('long') then x['gloss']=x['long'] end
-  return x
+  ambiguous = (entries_found.length>=2 && entries_found[0][0]!=entries_found[1][0])
+  if ambiguous then
+    $stderr.print "********* WARNING: ambiguous glosses found for lemma #{lemma}: #{entries_found}\n"
+  end
+  # {  "word": "ἔθηκε",  "medium": "put, put in a state" }
+  e['gloss']=e['medium']
+  if prefer_length==0 && e.has_key?('short') then e['gloss']=e['short'] end
+  if prefer_length==2 && e.has_key?('long') then e['gloss']=e['long'] end
+  return e
 end
 
 def Gloss.validate(key)
