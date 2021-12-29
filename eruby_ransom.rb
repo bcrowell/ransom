@@ -129,10 +129,12 @@ def vocab_helper(commonness,vl,lo,hi,core)
       file_under = g['file_under']
       if file_under.nil? then raise "Gloss.get = #{g}, doesn't have a file_under key" end
       difficult_to_recognize = data['difficult_to_recognize']
-      debug = (word=='ἄνασσε')
+      debug = (word=='ἐρυσσάμενος')
       if debug then File.open("debug.txt","a") { |f| f.print "... 100 #{word} #{lexical} #{difficult_to_recognize}\n" } end # qwe
-      difficult_to_recognize ||= (not_nil_or_zero(g['aorist_difficult_to_recognize']) && pos=~/^...a/ )
+      difficult_to_recognize ||= (not_nil_or_zero(g['aorist_difficult_to_recognize']) && /^...a/.match?(pos) )
+      if debug then File.open("debug.txt","a") { |f| f.print "... 150 #{word} #{lexical} #{difficult_to_recognize} #{not_nil_or_zero(g['aorist_difficult_to_recognize'])}\n" } end # qwe
       difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lexical,pos)[0])
+      if debug then File.open("debug.txt","a") { |f| f.print "... 200 #{word} #{lexical} #{difficult_to_recognize} #{Verb_difficulty.guess(word,lexical,pos)[0]}\n" } end # qwe
       data['difficult_to_recognize'] = difficult_to_recognize
       data['core'] = core.include?(remove_accents(lexical).downcase)
       entry_type = nil

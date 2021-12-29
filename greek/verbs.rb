@@ -94,7 +94,7 @@ end
     f = Vform.new(pos)
     f_lemma = f.make_lemma(lemma)
     # The effect of the following is to strip accents, phoneticize rough breathing as 'h' or null string, and archaicize iota subscripts.
-    μι_verb = (remove_accents(lemma)=~/μι$/) # won't work if, e.g., lemma is 2nd aorist, but failure is awesome
+    μι_verb = (/μι$/.match?(remove_accents(lemma))) # won't work if, e.g., lemma is 2nd aorist, but failure is awesome
     # In the following, the reduce_double_sigma:true helps with forms like ἐρύσσομεν < ἐρύω, which are pretty obvious to a human.
     w = Writing.phoneticize(word,reduce_double_sigma:true)
     stem_from_word,ending =  Verb_difficulty.strip_ending(w,μι_verb,f)
