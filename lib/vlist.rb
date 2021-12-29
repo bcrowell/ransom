@@ -92,11 +92,12 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
     f = freq[lemma]
     is_3rd_decl = guess_whether_third_declension(word_raw,lemma,pos)
     is_epic = Epic_form.is(word_raw)
+    is_verb = (pos=~/^[vt]/)
     difficult_to_recognize = false
     if !alpha_equal(word_raw,lemma) then
       difficult_to_recognize ||= (is_3rd_decl && guess_difficulty_of_recognizing_declension(word_raw,lemma,pos)[0])
       difficult_to_recognize ||= is_epic
-      # Don't try to judge whether it's a difficult aorist to recognize, because we don't have access to the gloss file.
+      difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word_raw,lemma,pos)[0])
     end
     next unless rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize)
     misc = {}

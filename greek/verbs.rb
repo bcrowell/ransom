@@ -44,6 +44,7 @@ module Verb_difficulty
       ["ῥέξας","ῥέζω","v-sapamn-",false],
       ["χαίρῃς","χαίρω","v2spsa---",false],
       ["ἔρξαι","ἔρδω","v2samm---",true], # hard because δ->ξ in the aorist, which is hard for a human to undo
+      ["φάσθαι","φημί","v--pne---",true],
     ]
     results = []
     tests.each { |x|
@@ -91,12 +92,12 @@ end
     f = Vform.new(pos)
     f_lemma = f.make_lemma(lemma)
     # The effect of the following is to strip accents, phoneticize rough breathing as 'h' or null string, and archaicize iota subscripts.
-    μι_verb = (lemma=~/μι$/) # won't work if, e.g., lemma is 2nd aorist, but failure is awesome
+    μι_verb = (remove_accents(lemma)=~/μι$/) # won't work if, e.g., lemma is 2nd aorist, but failure is awesome
     # In the following, the reduce_double_sigma:true helps with forms like ἐρύσσομεν < ἐρύω, which are pretty obvious to a human.
     w = Writing.phoneticize(word,reduce_double_sigma:true)
     stem_from_word,ending =  Verb_difficulty.strip_ending(w,μι_verb,f)
     l = Writing.phoneticize(lemma,reduce_double_sigma:true)
-    stem_from_lemma,lemma_ending = Verb_difficulty.strip_ending(l,μι_verb,f_lemma)
+    stem_from_lemma,lemma_ending = Verb_difficulty.strip_ending(remove_accents(l),μι_verb,f_lemma)
     stem_from_lemma_with_sigma = Verb_difficulty.add_sigma_to_aorist_or_future(stem_from_lemma,f,stem_from_word)
     # ... e.g., if w is aorist, find the aorist stem from the lemma
     # For a form like ὁρᾶτο, the contraction of the double vowel from ὁραατο doesn't make it hard to recognize, and similarly
@@ -198,7 +199,7 @@ end
     # Input s should be phoneticized, not raw accented Greek.
     if remove_accents(s)!=s then $stderr.print "input to Verb_difficulty.strip_ending not phoneticized: #{s}\n"; exit(-1) end
     pat = nil
-    # $stderr.print "                                        #{s} #{pat} #{f}\n" # qwe
+    #$stderr.print "                                        #{s} #{pat} #{f}\n" # qwe
     if f.active then
       if f.indicative then
         if !μι_verb then
@@ -231,7 +232,13 @@ end
       end
     else
       # voice = passive, middle, mp
-      if f.present || f.future then pat = "ο?(μαι|αι|εαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται)" end
+      if f.present || f.future then
+        if μι_verb then
+          pat = "(μι|ς|σι|μεν|τε|ασι)"
+        else
+          pat = "ο?(μι|μαι|αι|εαι|ται|μεθα|σθε|νται|ομαι|ει|εται|ομεθα|εσθε|ονται)"
+        end
+      end
       if f.imperfect || (f.aorist && !f.passive) then 
         if μι_verb then pat = "μην|σο|το|μεθα|σθε|ντο|ατο" else pat = "ομην|εσο|ετο|ομεθα|εσθε|οντο|ατο" end
       end

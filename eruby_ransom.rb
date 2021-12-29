@@ -138,6 +138,7 @@ def vocab_helper(commonness,vl,lo,hi,core)
       if data['core'] && difficult_to_recognize then
         if is_verb then entry_type='conjugation' else entry_type='declension' end
       end
+      # if word=='φάσθαι' then         File.open("debug.txt","a") { |f|            f.print "... #{word} #{lexical} #{difficult_to_recognize} #{data['core']} #{entry_type}\n" }       end # qwe
       if !entry_type.nil? then l.push([entry_type,[file_under,word,lexical,data]]) end
     }
   }
