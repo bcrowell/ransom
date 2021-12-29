@@ -1,7 +1,12 @@
 // https://en.wiktionary.org/wiki/οἶος https://logeion.uchicago.edu/οἶος
 // only, single
+[
+{
+  "word":"οἷος",
+  "medium":"such"
+},
 {
   "word":"οἶος",
   "medium":"only, single"
 }
-      
+]      

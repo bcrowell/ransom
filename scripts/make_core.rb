@@ -100,7 +100,7 @@ COMMENT
 
 $stderr.print "total core words: #{words.length}\n"
 
-if true then
+if true then # give gloss help
   require "./lib/wiktionary.rb"
   gloss_help = []
   # The following code is mostly a copy of code from vlist.rb.

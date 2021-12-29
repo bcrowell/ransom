@@ -124,10 +124,8 @@ def vocab_helper(commonness,vl,lo,hi,core)
       if data.nil? then data={} end
       pos = data['pos']
       is_verb = (pos=~/^[vt]/)
-      g = Gloss.get(lexical,word)
+      g = Gloss.get(lexical)
       next if g.nil?
-      file_under = g['file_under']
-      if file_under.nil? then raise "Gloss.get = #{g}, doesn't have a file_under key" end
       difficult_to_recognize = data['difficult_to_recognize']
       debug = (word=='ἐρυσσάμενος')
       if debug then File.open("debug.txt","a") { |f| f.print "... 100 #{word} #{lexical} #{difficult_to_recognize}\n" } end # qwe
@@ -142,7 +140,7 @@ def vocab_helper(commonness,vl,lo,hi,core)
       if data['core'] && difficult_to_recognize then
         if is_verb then entry_type='conjugation' else entry_type='declension' end
       end
-      if !entry_type.nil? then l.push([entry_type,[file_under,word,lexical,data]]) end
+      if !entry_type.nil? then l.push([entry_type,[lexical,word,lexical,data]]) end
     }
   }
   secs = []
@@ -189,7 +187,7 @@ end
 
 def vocab1(stuff)
   file_under,word,lexical,data = stuff
-  entry = Gloss.get(lexical,word)
+  entry = Gloss.get(lexical)
   return if entry.nil?
   word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
   if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
@@ -236,7 +234,7 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
           j = ww.index(x)
           word = w[j] # original inflected form
           key = to_key(x)
-          entry = Gloss.get(x,word,prefer_length:0) # it doesn't matter whether inputs have accents
+          entry = Gloss.get(x,prefer_length:0) # it doesn't matter whether inputs have accents
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil

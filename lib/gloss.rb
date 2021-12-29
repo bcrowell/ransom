@@ -12,11 +12,18 @@ mandatory keys:
 
 word
   Normally this is  just the filename with accents added in. However, sometimes Project Perseus indexes a word under a form
-  like ξένος, while Homer uses some other form like ξείνος.
+  like ξένος, while Homer uses some other form like ξείνος. In a case like that, we would have a file named
+  χενος, containing "word":"ξείνος" and, optionally, "perseus":"ξένος" (see below).
 
 medium
 
 optional:
+
+perseus
+  In cases where the preferred Homeric form of the word differs from Project Perseus's lemma, the filename
+  is based on the Perseus lemma, and we can also, optionally, have this tag giving the accented form of
+  the Perseus lemma. This tag isn't necessary unless there is some danger of ambiguity in looking up the
+  word based on its Perseus lemma.
 
 vowel_length
   E.g., for νέκυς, this is νέκυ_ς. That is: for any doubtful vowel that is
@@ -65,25 +72,12 @@ def Gloss.all_lemmas(file_glob:'glosses/*')
   return alpha_sort(lemmas)
 end
 
-def Gloss.get(lexical,word,prefer_length:1)
-  # It doesn't matter whether the inputs have accents or not. We immediately strip them off.
-  # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
-  # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
-  # If you want to look the word up by lexical form, then supply the same string form both lexical and word.
-  entry_lexical   = Gloss.helper(lexical,prefer_length)
-  entry_inflected = Gloss.helper(word,prefer_length)
-  if entry_inflected.nil? then
-    entry = entry_lexical
-    file_under = lexical
-  else
-    entry = entry_inflected
-    file_under = word
-  end
-  if !(entry.nil?) then entry = entry.merge({'file_under'=>file_under}) end
-  return entry
-end
-
-def Gloss.helper(word,prefer_length)
+def Gloss.get(word,prefer_length:1)
+  # The input can be accented or unaccented. Accentuation will be used only for disambiguation, which is seldom necessary.
+  # Giving the inflected form could in theory disambiguate certain cases where there are two lemmas spelled the same, but
+  # I haven't implemented anything like that yet.
+  # Return value looks like the following.
+  # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state" }
   x = Gloss.get_from_file(word)
   if x.nil? then return nil end
   if x.kind_of?(Array) then
@@ -124,7 +118,7 @@ def Gloss.validate(key)
   if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
   n = a.length
   mandatory_keys = ['word','medium']
-  allowed_keys = ['word','lexical','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem','vowel_length','aorist_difficult_to_recognize']
+  allowed_keys = ['word','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem','vowel_length','aorist_difficult_to_recognize','perseus']
   # Try to detect duplicate keys.
   allowed_keys.each { |key|
     if json.scan(/\"#{key}\"\s*:/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
