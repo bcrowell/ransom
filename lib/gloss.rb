@@ -40,8 +40,7 @@ princ [for verbs]: future and aorist, e.g., for ἔρχομαι, "ἐλεύσο�
 
 logdiff [+1 means consider it as difficult as a word whose freq
      rank is 10x greater]
-"aorist_difficult_to_recognize":1 -- indicates that given the aorist form, it's difficult to infer
-        the lexical form
+"aorist_difficult_to_recognize" -- deprecated, never set to 1; harmless if set to 0
 
 mnem -- a mnemonic; may be idiosyncratic and only of interest to me; I use these only when there is no cognate that helps
 =end
