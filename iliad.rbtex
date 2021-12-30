@@ -80,8 +80,11 @@ breaks = [
   [ [2,187], "with which he went through the ships of the brazen-mailed Greeks"],
   [ [2,204], "for a government of many is not a good thing"],
   [ [2,221], "for these two he used to revile. But on this occasion, shouting out shrilly"],
+  [ [2,239], "He, who but just now has dishonoured Achilles"],
   [ [2,257], "But I declare to thee, which shall also be accomplished"],
   [ [2,274], "But now has he done this by far the best deed amongst the Greeks"],
+  [ [2,291], "For, like tender boys, or widowed women, they bewail unto one"],
+  [ [2,308], "There a great prodigy appeared; a serpent, spotted on the back"],
 ]
 
 vocab_by_chapter = []
