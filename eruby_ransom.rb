@@ -37,7 +37,7 @@ def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil)
   rg1,rg2 = greek.line_to_hard_ref(g1[0],g1[1]),greek.line_to_hard_ref(g2[0],g2[1])
   if rg1[0]!=rg2[0] then
     # This should only happen in the case where reference 2 is to the very first line of the next book.
-    if (rg2[1]!=1 || rg2[0]!=rg1[0]+1) then raise "four-page layout spans books, #{rg1} - #{rg2}" end
+    if !(rg2[1]<=5 && rg2[0]==rg1[0]+1) then raise "four-page layout spans books, #{rg1} - #{rg2}" end
   end
   first_line_number = g1[1]
   greek_text = greek.extract(rg1,rg2)
@@ -271,6 +271,7 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
           end
           if Options.if_render_glosses then
             pos = Init.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
+            if pos.nil? then raise "in foreign_helper, pos is nil for line_hash=#{line_hash}, key=#{key}" end
             x,y,width,height = pos['x'],pos['y'],pos['width'],pos['height'] # all floats in units of pts
             if x>254.0 then
               width=355.0-x

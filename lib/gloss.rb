@@ -91,10 +91,11 @@ def Gloss.get(word,prefer_length:1)
   if !(x.kind_of?(Array)) then x=[x] end
   # We can have words like δαίς/δάϊς that have the same key and therefore live in
   # the same file. Even if that's not the case, convert x to an array for convenience.
+  # Also handle words where there's a perseus spelling that differs from our preferred Homeric spelling.
   entries_found = []
   ['perseus','word'].each { |tag|
     x.each { |entry|
-      if entry[tag]==word then
+      if !entry[tag].nil? && alpha_compare(entry[tag],word)==0 then
         entries_found.push([tag,entry])
       end
     }
@@ -104,9 +105,24 @@ def Gloss.get(word,prefer_length:1)
   else
     return nil
   end
-  ambiguous = (entries_found.length>=2 && entries_found[0][0]!=entries_found[1][0])
+  ambiguous = false
+  if entries_found.length>=2 then
+    0.upto(entries_found.length-1) { |i| 0.upto(entries_found.length-1) { |j| 
+      next if i==j
+      next if entries_found[i][0]!=entries_found[j][0] # no problem, we'll prefer the one tagged with perseus
+      next if entries_found[i][1]==entries_found[j][1] # This is a comparison of hashes for equality, not just a check if they're the same ref.
+      ambiguous =true
+    }}
+  end
+  if ambiguous && entries_found.length==2 then
+    # Resolve simple 2-way ambiguities like this one for κῆρ:
+    #     [["word", {"word"=>"κῆρ", "medium"=>"heart"}], ["word", {"word"=>"κήρ", "short"=>"doom", "medium"=>"doom, death, fate"}]]
+    w0,w1 = entries_found[0][1]['word'],entries_found[1][1]['word']
+    if w0!=w1 && w1==word then e=entries_found[1][1]; ambiguous=false end
+    if w0!=w1 && w0==word then ambiguous=false end
+  end
   if ambiguous then
-    $stderr.print "********* WARNING: ambiguous glosses found for lemma #{lemma}: #{entries_found}\n"
+    $stderr.print "********* WARNING: ambiguous glosses found for #{word}: #{entries_found}\n"
   end
   # {  "word": "ἔθηκε",  "medium": "put, put in a state" }
   e['gloss']=e['medium']
