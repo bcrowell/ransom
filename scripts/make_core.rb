@@ -37,18 +37,20 @@ words_added_by_hand:
   -A word that occurs more frequently in compounds than would be indicated by its
    low frequency as an independent word (e.g., μῆτις, λέχος).
   -A word that is easy to learn because it has obvious cognates (e.g., κλέπτω, γλῶσσα).
-
+  -A word for a basic human concept that one should know in any
+   language one is learning (e.g., ἀδελφός).
 =end
 
 max_freq = 1039
 min_freq = 54
 
 # see above for criteria
-words_added_by_hand = (<<-'HAND'
+words_added_by_hand = (<<-'BY_HAND'
 ἀείδω ἀμείνων ἁνδάνω ἄποινα ἅπτω ἀράομαι ἀρητήρ ἀρχός βούλομαι γεραιός γέρας ἔρομαι ἤτοι
 ἱερεύς ἱερόν ἱστός κήδω κλέπτω λέχος μάντις μῆνις μηνίω ναός ὄμνυμι τιμάω τιμή τίνω χερείων
 γλῶσσα κρατέω κρίνω γηθέω σῶς βαρύς ὀνομάζω αἰδέομαι χώομαι χραισμέω μῆτις
-HAND
+ἀδελφός
+BY_HAND
 ).split(/\s/)
 
 # see def above
