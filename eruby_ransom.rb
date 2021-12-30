@@ -35,11 +35,15 @@ def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil)
   lemmas_file,freq_file,greek,translation,notes,core = stuff
   core = core.map { |x| remove_accents(x).downcase }
   rg1,rg2 = greek.line_to_hard_ref(g1[0],g1[1]),greek.line_to_hard_ref(g2[0],g2[1])
-  raise "four-page layout spans books" if rg1[0]!=rg2[0] # will cause all kinds of problems, including with notes
+  if rg1[0]!=rg2[0] then
+    # This should only happen in the case where reference 2 is to the very first line of the next book.
+    if (rg2[1]!=1 || rg2[0]!=rg1[0]+1) then raise "four-page layout spans books, #{rg1} - #{rg2}" end
+  end
   first_line_number = g1[1]
   greek_text = greek.extract(rg1,rg2)
   vl = Vlist.from_text(greek_text,lemmas_file,freq_file,exclude_glosses:list_exclude_glosses(g1,g2,notes))
   if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
+  if vocab_by_chapter[ch].nil? then vocab_by_chapter[ch]=[] end
   vocab_by_chapter[ch] = alpha_sort((vocab_by_chapter[ch]+vl.all_lexicals).uniq)
   v = vocab(vl,core) # prints
   print "\\renewcommand{\\rightheaderinfo}{#{g1[0]}.#{g1[1]}}%\n"
@@ -87,9 +91,25 @@ def list_exclude_glosses(lineref1,lineref2,notes)
 end
 
 def find_notes(lineref1,lineref2,notes)
-  # Finds notes that apply to the given range of linerefs. Converts the 0th element from a string into [book,line]. 
+  # Finds notes that apply to the given range of linerefs. Converts the 0th element from a note's string into [book,line]. 
   # Sorts the results.
-  raise "four-page layout spans books" if lineref1[0]!=lineref2[0]
+  if lineref1[0]==lineref2[0] then
+    return find_notes_one_book(lineref1,lineref2,notes)
+  else
+    result = []
+    lineref1[0].upto(lineref2[0]) { |book|
+      if book==lineref1[0] then x=lineref1 else x=[book,1] end
+      if book==lineref2[0] then y=lineref2 else y=[book,99999] end
+      result = result + find_notes_one_book(x,y,notes)
+    }
+    if result.length>50 then raise "result in find_notes fails sanity check, #{results.length} notes" end
+    return result
+  end
+end
+
+def find_notes_one_book(lineref1,lineref2,notes)
+  # Helper routine for find_notes().
+  raise "error in find_notes_one_book, four-page layout spans books" if lineref1[0]!=lineref2[0]
   book = lineref1[0]
   result = []
   notes.each { |note|
