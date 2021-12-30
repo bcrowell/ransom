@@ -309,6 +309,7 @@ class Epos
     # Sometimes such texts have arabic numerals at the end of lines stating the line numbers. Currently
     # we ignore them, so we depend on the assumption that there are no lines such as chapter headers or footnotes.
     # Both book and line are 1-based.
+    if line.nil? then stack=caller[0..5].join("\n"); raise "nil line, #{stack}" end
     s = self.get_contents[book-1]
     if s.nil? then raise "Book #{book} doesn't exist, number of books is #{self.get_contents.length} (numbering is 1-based)." end
     a = s.scan(/[^\r\n]*[\r\n]+/)
