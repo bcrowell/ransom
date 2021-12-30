@@ -111,6 +111,9 @@ breaks = [
   [ [2,716], "Those who inhabited Methone and Thaumacia, and possessed Melibœa"],
   [ [2,733], "two excellent physicians, both sons of Æsculapius, led these"],
   [ [2,750], "who placed their habitations by chilly Dodona"],
+  [ [2,766], "fed in Pieria"],
+  [ [2,784], "thus indeed beneath their feet the earth groaned mightily, as they went, and very swift they passed over the plain"],
+  [ [2,800], "For very like unto the leaves or the sand proceed they through the plain"],
 ]
 
 vocab_by_chapter = []
