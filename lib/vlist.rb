@@ -197,6 +197,7 @@ def Vlist.give_gloss_help(gloss_help)
   unless File.directory?(gloss_help_dir) then Dir.mkdir(gloss_help_dir) end
   $stderr.print "====writing gloss help to #{gloss_help_dir} ====\n"
   gloss_help.each { |h|
+    next if h['lemma']!=h['lemma'].downcase # probably a proper noun
     File.open(dir_and_file_to_path(gloss_help_dir,h['filename']),"w") { |f|
       x = %Q(
         // #{h['url']}

@@ -32,16 +32,22 @@ very common words, 'scum words':
 good core words:
   most common of these: "ἀνήρ" : 1039,
   least common of these: "πατήρ" : 54, ... the 526th lemma on the list
+words_added_by_hand:
+  A good candidate for this list could be:
+  -A word that occurs more frequently in compounds than would be indicated by its
+   low frequency as an independent word (e.g., μῆτις, λέχος).
+  -A word that is easy to learn because it has obvious cognates (e.g., κλέπτω, γλῶσσα).
 
 =end
 
 max_freq = 1039
 min_freq = 54
 
+# see above for criteria
 words_added_by_hand = (<<-'HAND'
 ἀείδω ἀμείνων ἁνδάνω ἄποινα ἅπτω ἀράομαι ἀρητήρ ἀρχός βούλομαι γεραιός γέρας ἔρομαι ἤτοι
 ἱερεύς ἱερόν ἱστός κήδω κλέπτω λέχος μάντις μῆνις μηνίω ναός ὄμνυμι τιμάω τιμή τίνω χερείων
-γλῶσσα κρατέω κρίνω γηθέω σῶς βαρύς ὀνομάζω αἰδέομαι χώομαι χραισμέω
+γλῶσσα κρατέω κρίνω γηθέω σῶς βαρύς ὀνομάζω αἰδέομαι χώομαι χραισμέω μῆτις
 HAND
 ).split(/\s/)
 
