@@ -136,35 +136,11 @@ def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entrie
       next unless rank>=threshold_difficult
       next if rank<threshold_no_gloss && !difficult_to_recognize      
       next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
-      key1 = remove_accents(word).downcase.sub(/᾽/,'')
-      key2 = remove_accents(lemma).downcase
-      filename1 = "glosses/#{key1}"
-      filename2 = "glosses/#{key2}"
-      if FileTest.exist?(filename1) then
-        key=key1
-      else
-        if FileTest.exist?(filename2) then
-          key=key2
-        else
-          key=key1
-        end
-      end
+      key = remove_accents(lemma).downcase
       filename = "glosses/#{key}"
-      if Options.if_render_glosses && !(FileTest.exist?(filename)) && !(FileTest.exist?(filename1)) \
-                          && !Ignore_words.patch(lemma) && !Proper_noun.is(word,lemma,require_cap:false) then
-        if key1==key2 then foo=key1 else foo="#{key1} or #{key2}" end
-        debug_gloss = ['καρδια','ηφαιστος','οσος','σφος'].include?(key2)
-        h = {
-          'filename'=>key2,
-          'lemma'=>lemma,
-          'url'=> "https://en.wiktionary.org/wiki/#{lemma} https://logeion.uchicago.edu/#{lemma}",
-          'wikt'=> WiktionaryGlosses.get_glosses(lemma).join(', ')
-        }
-        if debug_gloss then
-           h['debug']="key=#{key}, raw=#{word_raw}, word=#{word}, lemma=#{lemma}, ignore=#{Ignore_words.patch(word)}, pr=#{Proper_noun.is(word,lemma,require_cap:false)}"
-        end
-        gloss_help.push(h)
-        whine.push("no glossary entry for #{filename2} , see gloss help file")
+      if Options.if_render_glosses && Gloss.get(lemma).nil? then
+        gloss_help.push(Vlist.gloss_help_help_helper(key,lemma))
+        whine.push("no glossary entry for #{lemma} , see gloss help file")
       end
       if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end
       # stuff some more info in the misc element:
@@ -190,6 +166,20 @@ def Vlist.get_lemma_helper(lemmas,word)
   if lemmas.has_key?(word) then return lemmas[word] end
   if lemmas.has_key?(word.downcase) then return lemmas[word.downcase] end
   return nil
+end
+
+def Vlist.gloss_help_help_helper(key,lemma)
+  h = {
+    'filename'=>key,
+    'lemma'=>lemma,
+    'url'=> "https://en.wiktionary.org/wiki/#{lemma} https://logeion.uchicago.edu/#{lemma}",
+    'wikt'=> WiktionaryGlosses.get_glosses(lemma).join(', ')
+  }
+  debug_gloss = false
+  if debug_gloss then
+     h['debug']="key=#{key}, raw=#{word_raw}, word=#{word}, lemma=#{lemma}, ignore=#{Ignore_words.patch(word)}, pr=#{Proper_noun.is(word,lemma,require_cap:false)}"
+  end
+  return h
 end
 
 def Vlist.give_gloss_help(gloss_help)
@@ -269,7 +259,7 @@ class Ignore_words
     κακος ευ παρα περ χειρ
     οτι πως εαν οτε ουδε τοτε οπως ουτε που ωδε δυο
     ειπον μα αλλη αμφω εκεινος κεινος μητε περι
-    μη αμφι υπερ σφος ποιος οστις οσος
+    μη αμφι υπερ σφος ποιος οστις οσος αρα εισω
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Ignore_words.patch(word)
     w = remove_accents(word).downcase

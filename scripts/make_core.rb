@@ -49,7 +49,7 @@ words_added_by_hand = (<<-'BY_HAND'
 ἀείδω ἀμείνων ἁνδάνω ἄποινα ἅπτω ἀράομαι ἀρητήρ ἀρχός βούλομαι γεραιός γέρας ἔρομαι ἤτοι
 ἱερεύς ἱερόν ἱστός κήδω κλέπτω λέχος μάντις μῆνις μηνίω ναός ὄμνυμι τιμάω τιμή τίνω χερείων
 γλῶσσα κρατέω κρίνω γηθέω σῶς βαρύς ὀνομάζω αἰδέομαι χώομαι χραισμέω μῆτις γελάω
-ἀδελφός δάω ἀΐω πέρθω
+ἀδελφός δάω ἀΐω πέρθω εἴδω
 BY_HAND
 ).split(/\s/)
 
@@ -113,23 +113,3 @@ COMMENT
 
 $stderr.print "total core words: #{words.length}\n"
 
-if true then # give gloss help
-  require "./lib/wiktionary.rb"
-  gloss_help = []
-  # The following code is mostly a copy of code from vlist.rb.
-  words.each { |lemma|
-    if glosses[lemma].nil? then
-      key = remove_accents(lemma).downcase
-      filename = "glosses/#{lemma}"
-      gloss_help.push({
-        'filename'=>key,
-        'lemma'=>lemma,
-        'url'=> "https://en.wiktionary.org/wiki/#{lemma} https://logeion.uchicago.edu/#{lemma}",
-        'wikt'=> WiktionaryGlosses.get_glosses(lemma).join(', ')
-      })
-      if gloss_help.length>0 then
-        Vlist.give_gloss_help(gloss_help) # prints message to stderr as side effect
-      end
-    end
-  }
-end
