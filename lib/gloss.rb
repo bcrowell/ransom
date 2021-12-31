@@ -176,7 +176,7 @@ def Gloss.validate(key)
     if entry.has_key?('vowel_length') then
       macronized = entry['vowel_length'] # in a style like λύρα_, with underbars for doubtful vowels that are long
       if macronized.gsub(/_/,'')!=entry['word'] then return [true,"macronized form #{macronized} doesn't make sense for word #{entry['word']}"] end
-      if macronized=~/(([^αιυ])_)/ then return [true,"macronized form #{macronized} contains #{$1}, but #{$2} isn't a doubtful vowel"] end
+      if remove_accents(macronized)=~/(([^αιυ])_)/ then return [true,"macronized form #{macronized} contains #{$1}, but #{$2} isn't a doubtful vowel"] end
     else
       if entry['word']=~/υμι$/ then return [true,"no vowel_length entry for #{entry['word']}, should probably have one ending in υ_μι"] end
     end
