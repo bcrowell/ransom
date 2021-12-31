@@ -10,8 +10,6 @@ require "./lib/vlist.rb"
 # the frequency list tabulated for lemmas, and then excluded if they are
 # on either of a couple of hand-made lists embedded below in the code.
 # After that, we add in a hand-constructed list of some words that subjectively seem important.
-# If a word has no gloss, an attempt is made to generate one in the help_gloss
-# subdirectory (currently turned off for speed).
 # To execute this script, do "make core".
 
 freq_file = "lemmas/homer_freq.json"

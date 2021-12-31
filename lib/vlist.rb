@@ -188,6 +188,8 @@ def Vlist.give_gloss_help(gloss_help)
   $stderr.print "====writing gloss help to #{gloss_help_dir} ====\n"
   gloss_help.each { |h|
     next if h['lemma']!=h['lemma'].downcase # probably a proper noun
+    filename = dir_and_file_to_path(gloss_help_dir,"__links.html")
+    next if File.exist?(filename)
     File.open(dir_and_file_to_path(gloss_help_dir,h['filename']),"w") { |f|
       x = %Q(
         // #{h['url']}
@@ -203,7 +205,7 @@ def Vlist.give_gloss_help(gloss_help)
       if h.has_key?('debug') then f.print "// #{h}\n" end
     }
   }
-  File.open(dir_and_file_to_path(gloss_help_dir,"__links.html"),"a") { |f|
+  File.open(filename,"a") { |f|
     gloss_help.each { |h|
       next if h['wikt'].to_s!=''
       f.print "<p>#{remove_accents(h['lemma']).downcase} "
