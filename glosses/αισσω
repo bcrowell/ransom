@@ -1,8 +1,7 @@
+// https://en.wiktionary.org/wiki/ἀίσσω https://logeion.uchicago.edu/ἀίσσω
+// 
 {
-  "word": "ἀΐσσω",
-  "perseus":"ἀίσσω",
-  "princ": "ἀΐξω,ἤϊξα",
-  "short": "dart",
-  "medium": "dart, glance",
-  "long": "shoot, speed, dart, glance"
+  "word":"ἀίσσω",
+  "medium":"dart, glance"
 }
+      
