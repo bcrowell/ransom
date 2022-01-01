@@ -38,16 +38,17 @@ book_no_copy: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@$(COMPILE)
 
 forget_pdf_history:
-	test -e docs/$(BOOK).pdf || exit 1
-	test -e docs/$(BOOK)_booklet.pdf || exit 1
+	# https://stackoverflow.com/a/70552717/17812119
+	test -e $(BOOK).pdf || exit 1
+	test -e booklet.pdf || exit 1
 	git commit --allow-empty -a -m "updating before erasing history of docs/$(BOOK).pdf and docs/$(BOOK)_booklet.pdf"
 	git filter-repo --path docs/$(BOOK).pdf --invert-paths
 	git filter-repo --path docs/$(BOOK)_booklet.pdf --invert-paths
 	make reconfigure_git
 	cp $(BOOK).pdf docs
-	cp $(BOOK)_booklet.pdf docs
+	cp booklet.pdf docs/$(BOOK)_booklet.pdf
 	git add docs/$(BOOK).pdf
-	fit add docs/$(BOOK)_booklet.pdf
+	git add docs/$(BOOK)_booklet.pdf
 	git push --force -u origin master
 
 reconfigure_git:
