@@ -5,12 +5,29 @@ GENERIC = "pos_file":"$(POS)"
 # ... If I do this, then error messages freeze things.
 COMPILE = xelatex $(BOOK)
 
-.PHONY: clean default check check_glosses core update_github_pages reconfigure_git
+.PHONY: clean default check check_glosses core update_github_pages reconfigure_git book_no_copy
 
 default:
 	@make --no-print-directory --assume-new iliad.rbtex $(BOOK).pdf
 
 $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
+	FORMAT = whole
+	make book_no_copy
+	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
+	cp $(BOOK).pdf docs
+	# If you want to reduce the space-eating history of the pdf files in git, do a make forget_pdf_history
+
+booklet: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
+	FORMAT = booklet_short
+	make book_no_copy
+	pdfbook2 $(BOOK).pdf
+	mv $(BOOK)-book.pdf booklet.pdf
+	cp booklet.pdf docs/$(BOOK)_booklet.pdf
+	# creates booklet.pdf
+	# Instructions for printing: https://tex.stackexchange.com/a/70115/6853
+	# Briefly: (1) Print even pages. (2) Flip about an axis "out of the board." (3) Print odd pages.
+
+book_no_copy: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@rm -f warnings help_gloss/__links.html
 	@make figures # renders any figure whose pdf is older than its svg
 	@./fruby $(BOOK).rbtex '{$(GENERIC),"clean":true}' >$(BOOK).tex
@@ -19,9 +36,6 @@ $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@$(COMPILE)
 	@./fruby $(BOOK).rbtex '{$(GENERIC),"render_glosses":true}' >$(BOOK).tex
 	@$(COMPILE)
-	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
-	cp $(BOOK).pdf docs
-	# If you want to reduce the space-eating history of the pdf files in git, do a make forget_pdf_history
 
 forget_pdf_history:
 	test -e docs/$(BOOK).pdf || exit 1
@@ -38,14 +52,6 @@ forget_pdf_history:
 reconfigure_git:
 	git remote add origin https://github.com/bcrowell/ransom.git
 	git config remote.origin.url git@github.com:bcrowell/ransom.git
-
-booklet: $(BOOK).pdf
-	pdfbook2 $(BOOK).pdf
-	mv $(BOOK)-book.pdf booklet.pdf
-	cp booklet.pdf docs/$(BOOK)_booklet.pdf
-	# creates booklet.pdf
-	# Instructions for printing: https://tex.stackexchange.com/a/70115/6853
-	# Briefly: (1) Print even pages. (2) Flip about an axis "out of the board." (3) Print odd pages.
 
 # The following target creates pdf versions of the svg figures.
 # For this to work, the scripts in the scripts directory need to be executable.

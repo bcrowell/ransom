@@ -123,6 +123,11 @@ breaks = [
 
 ]
 
+format = ENV['FORMAT']
+if format.nil? then $stderr.print "FORMAT environment variable not set\n"; exit(-1) end
+if !(['whole','booklet_short'].include?(format)) then $stderr.print "FORMAT environment variable set to illegal value #{format}\n"; exit(-1) end
+if format=='booklet_short' then breaks = breaks[0..17] end
+
 vocab_by_chapter = []
 0.upto(breaks.length-2) { |i|
   if i==0 then s=breaks[i][0][0] else s=nil end
