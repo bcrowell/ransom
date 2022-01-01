@@ -21,9 +21,9 @@ $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@$(COMPILE)
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 	cp $(BOOK).pdf docs
-	# If you want to change the public-facing book, do a make update_github_pages
+	# If you want to reduce the space-eating history of the pdf files in git, do a make forget_pdf_history
 
-update_github_pages:
+forget_pdf_history:
 	git commit -a -m "updating before erasing history of docs/$(BOOK).pdf and docs/$(BOOK)_booklet.pdf"
 	git filter-repo --path docs/$(BOOK).pdf --invert-paths
 	git filter-repo --path docs/$(BOOK)_booklet.pdf --invert-paths
