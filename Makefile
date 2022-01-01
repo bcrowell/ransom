@@ -28,11 +28,12 @@ update_github_pages:
 	git filter-repo --path docs/$(BOOK).pdf --invert-paths
 	make reconfigure_git
 	cp $(BOOK).pdf docs
-	git push --force
+	git push --force -u origin master
 
 reconfigure_git:
 	git remote add origin https://github.com/bcrowell/ransom.git
 	git config remote.origin.url git@github.com:bcrowell/ransom.git
+	git push -u origin master
 
 booklet: $(BOOK).pdf
 	pdfbook2 $(BOOK).pdf
