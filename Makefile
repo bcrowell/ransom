@@ -47,6 +47,7 @@ forget_pdf_history:
 	cp $(BOOK).pdf docs
 	cp $(BOOK)_booklet.pdf docs
 	git add docs/$(BOOK).pdf
+	fit add docs/$(BOOK)_booklet.pdf
 	git push --force -u origin master
 
 reconfigure_git:
