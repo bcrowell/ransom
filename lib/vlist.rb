@@ -205,7 +205,7 @@ def Vlist.give_gloss_help(gloss_help)
       if h.has_key?('debug') then f.print "// #{h}\n" end
     }
   }
-  File.open(filename,"a") { |f|
+  File.open("#{gloss_help_dir}/__links.html","a") { |f|
     gloss_help.each { |h|
       next if h['wikt'].to_s!=''
       f.print "<p>#{remove_accents(h['lemma']).downcase} "
