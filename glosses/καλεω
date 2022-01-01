@@ -1,6 +1,7 @@
 {
   "word": "καλέω",
   "princ": "καλέω,ἐκάλεσα",
-  "medium": "call",
-  "aorist_difficult_to_recognize": 0
+  "medium": "summon, name",
+  "syn":"κικλήσκω",
+  "cog":"clamor, low, clear, declare; not cognate with call"
 }

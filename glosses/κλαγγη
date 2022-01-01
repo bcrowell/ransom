@@ -2,7 +2,8 @@
 // clang, clash (sharp sound)
 {
   "word":"κλαγγή",
-  "medium":"clang",
+  "short":"clang",
+  "medium":"clang, shriek",
   "cog":"κλάζω"
 }
       
