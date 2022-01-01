@@ -28,16 +28,17 @@ update_github_pages:
 	git filter-repo --path docs/$(BOOK).pdf --invert-paths
 	make reconfigure_git
 	cp $(BOOK).pdf docs
+	git add docs/$(BOOK).pdf
 	git push --force -u origin master
 
 reconfigure_git:
 	git remote add origin https://github.com/bcrowell/ransom.git
 	git config remote.origin.url git@github.com:bcrowell/ransom.git
-	git push -u origin master
 
 booklet: $(BOOK).pdf
 	pdfbook2 $(BOOK).pdf
 	mv $(BOOK)-book.pdf booklet.pdf
+	cp booklet.pdf docs/iliad_booklet.pdf
 	# creates booklet.pdf
 	# Instructions for printing: https://tex.stackexchange.com/a/70115/6853
 	# Briefly: (1) Print even pages. (2) Flip about an axis "out of the board." (3) Print odd pages.
