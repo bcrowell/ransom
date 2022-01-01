@@ -1,0 +1,23 @@
+*~
+*.aux
+*.log
+*.idx
+*.toc
+*.ilg
+*.bak
+
+# sdb files used for caching:
+*.dir
+*.pag
+
+*.pdf
+*.pos
+iliad.tex
+*.freq
+vocab_ch_*.txt
+help_gloss
+warnings
+core/*
+debug.txt
+iliad/core.tex
+iliad/figs/cover.png
