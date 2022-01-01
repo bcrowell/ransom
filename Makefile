@@ -24,10 +24,12 @@ $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	# If you want to change the public-facing book, do a make update_github_pages
 
 update_github_pages:
-	git commit -a -m "updating before erasing history of docs/$(BOOK).pdf"
+	git commit -a -m "updating before erasing history of docs/$(BOOK).pdf and docs/$(BOOK)_booklet.pdf"
 	git filter-repo --path docs/$(BOOK).pdf --invert-paths
+	git filter-repo --path docs/$(BOOK)_booklet.pdf --invert-paths
 	make reconfigure_git
 	cp $(BOOK).pdf docs
+	cp $(BOOK)_booklet.pdf docs
 	git add docs/$(BOOK).pdf
 	git push --force -u origin master
 
@@ -38,7 +40,7 @@ reconfigure_git:
 booklet: $(BOOK).pdf
 	pdfbook2 $(BOOK).pdf
 	mv $(BOOK)-book.pdf booklet.pdf
-	cp booklet.pdf docs/iliad_booklet.pdf
+	cp booklet.pdf docs/$(BOOK)_booklet.pdf
 	# creates booklet.pdf
 	# Instructions for printing: https://tex.stackexchange.com/a/70115/6853
 	# Briefly: (1) Print even pages. (2) Flip about an axis "out of the board." (3) Print odd pages.
