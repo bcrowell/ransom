@@ -11,14 +11,14 @@ default:
 	@make --no-print-directory --assume-new iliad.rbtex $(BOOK).pdf
 
 $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
-	FORMAT = whole
+	export FORMAT = whole
 	make book_no_copy
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 	cp $(BOOK).pdf docs
 	# If you want to reduce the space-eating history of the pdf files in git, do a make forget_pdf_history
 
 booklet: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
-	FORMAT = booklet_short
+	export FORMAT = booklet_short
 	make book_no_copy
 	pdfbook2 $(BOOK).pdf
 	mv $(BOOK)-book.pdf booklet.pdf
