@@ -5,7 +5,7 @@ GENERIC = "pos_file":"$(POS)"
 # ... If I do this, then error messages freeze things.
 COMPILE = xelatex $(BOOK)
 
-.PHONY: clean default check check_glosses core
+.PHONY: clean default check check_glosses core update_github_pages reconfigure_git
 
 default:
 	@make --no-print-directory --assume-new iliad.rbtex $(BOOK).pdf
@@ -21,6 +21,18 @@ $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@$(COMPILE)
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 	cp $(BOOK).pdf docs
+	# If you want to change the public-facing book, do a make update_github_pages
+
+update_github_pages:
+	git commit -a -m "updating before erasing history of docs/$(BOOK).pdf"
+	git filter-repo --path docs/$(BOOK).pdf --invert-paths
+	make reconfigure_git
+	cp $(BOOK).pdf docs
+	git push --force
+
+reconfigure_git:
+	git remote add origin https://github.com/bcrowell/ransom.git
+	git config remote.origin.url git@github.com:bcrowell/ransom.git
 
 booklet: $(BOOK).pdf
 	pdfbook2 $(BOOK).pdf
