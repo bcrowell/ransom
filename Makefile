@@ -39,7 +39,7 @@ book_no_copy: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 
 forget_pdf_history:
 	test -e docs/$(BOOK).pdf || exit 1
-	test -e docs/$(BOOK)_booklet.pdfx || exit 1
+	test -e docs/$(BOOK)_booklet.pdf || exit 1
 	git commit -a -m "updating before erasing history of docs/$(BOOK).pdf and docs/$(BOOK)_booklet.pdf"
 	git filter-repo --path docs/$(BOOK).pdf --invert-paths
 	git filter-repo --path docs/$(BOOK)_booklet.pdf --invert-paths
