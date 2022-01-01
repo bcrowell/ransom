@@ -20,6 +20,7 @@ $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@./fruby $(BOOK).rbtex '{$(GENERIC),"render_glosses":true}' >$(BOOK).tex
 	@$(COMPILE)
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
+	cp $(BOOK).pdf docs
 
 booklet: $(BOOK).pdf
 	pdfbook2 $(BOOK).pdf

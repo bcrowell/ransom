@@ -10,7 +10,7 @@
 *.dir
 *.pag
 
-*.pdf
+/*.pdf
 *.pos
 iliad.tex
 *.freq
