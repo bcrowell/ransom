@@ -5,7 +5,7 @@ GENERIC = "pos_file":"$(POS)"
 # ... If I do this, then error messages freeze things.
 COMPILE = xelatex $(BOOK)
 
-.PHONY: clean default check check_glosses core update_github_pages reconfigure_git book_no_copy
+.PHONY: clean default check check_glosses core update_github_pages reconfigure_git book_no_copy post
 
 default:
 	@make --no-print-directory --assume-new iliad.rbtex $(BOOK).pdf
@@ -14,15 +14,19 @@ $(BOOK).pdf: export FORMAT=whole
 $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	make book_no_copy
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
-	cp $(BOOK).pdf docs
-	# If you want to reduce the space-eating history of the pdf files in git, do a make forget_pdf_history
+
+post: $(BOOK).pdf booklet.pdf
+	cp $(BOOK).pdf docs	
+	cp booklet.pdf docs/$(BOOK)_booklet.pdf
+	git commit --allow-empty -a -m "updating pdf output files"
+	git push
+	# echo "*********** consider doing a make forget_pdf_history in order to keep the repo from getting bloated **************"
 
 booklet: export FORMAT=booklet_short
 booklet: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	make book_no_copy
 	pdfbook2 $(BOOK).pdf
 	mv $(BOOK)-book.pdf booklet.pdf
-	cp booklet.pdf docs/$(BOOK)_booklet.pdf
 	# creates booklet.pdf
 	# Instructions for printing: https://tex.stackexchange.com/a/70115/6853
 	# Briefly: (1) Print even pages. (2) Flip about an axis "out of the board." (3) Print odd pages.
