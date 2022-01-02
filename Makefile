@@ -95,8 +95,13 @@ core/homer.json: scripts/make_core.rb
 core_tex: iliad/core.tex
 	#
 
+iliad/core.tex: export FORMAT = tex
 iliad/core.tex: core/homer.json
 	ruby scripts/make_core_tex.rb >iliad/core.tex
+
+core.txt: export FORMAT = txt
+core.txt: core/homer.json
+	ruby scripts/make_core_tex.rb >core.txt
 
 test:
 	ruby -e "require './greek/writing.rb'; require './greek/verbs.rb'; require './greek/nouns.rb'; require './lib/multistring.rb'; require './lib/clown.r\
