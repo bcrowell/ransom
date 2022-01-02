@@ -1,7 +1,7 @@
-// https://en.wiktionary.org/wiki/κάμνω https://logeion.uchicago.edu/κάμνω
-// exert oneself, labour, work hard, be weary, be sick, ill, suffer
 {
   "word":"κάμνω",
-  "medium":"exert oneself"
+  "short":"toil, tire",
+  "medium":"exert oneself, get tired",
+  "syn":"πένομαι, πονέω, κάμνω, ἐργάζομαι"
 }
       
