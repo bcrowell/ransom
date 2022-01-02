@@ -18,6 +18,7 @@ vocab_ch_*.txt
 help_gloss
 warnings
 core/*
+core.txt
 debug.txt
 iliad/core.tex
 iliad/figs/cover.png
