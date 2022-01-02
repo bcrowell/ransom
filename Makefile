@@ -53,6 +53,7 @@ forget_pdf_history:
 	cp booklet.pdf docs/$(BOOK)_booklet.pdf
 	git add docs/$(BOOK).pdf
 	git add docs/$(BOOK)_booklet.pdf
+	git commit -a -m "updating after erasing history of docs/$(BOOK).pdf and docs/$(BOOK)_booklet.pdf"
 	git push --force -u origin master
 
 reconfigure_git:
