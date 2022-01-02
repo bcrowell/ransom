@@ -83,7 +83,8 @@ figures:
 	@perl -e 'foreach my $$f(<iliad/figs/*.svg>) {system("scripts/render_one_figure.pl $$f $(FORCE)")}'
 
 clean:
-	rm -f *~ *.aux *.log *.idx *.toc *.ilg *.bak *.toc $(BOOK).tex
+	rm -f *~ *.aux *.log *.idx *.toc *.ilg *.bak *.toc $(BOOK).tex 
+	rm -f glosses/*~ help_gloss/*~
 
 core: core/homer.json
 	#
