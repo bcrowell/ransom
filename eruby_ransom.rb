@@ -27,7 +27,7 @@ end
 
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
 
-def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil)  
+def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil,max_chars:5000)  
   # g1 and g2 are line refs of the form [book,line]
   # t1 and t2 are word globs
   # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
@@ -55,9 +55,16 @@ def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil)
   if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatglosses}%\n"
   print ransom(greek_text,v,first_line_number),"\n\n"
-  rt1,rt2 = translation.word_glob_to_hard_ref(t1)[0],translation.word_glob_to_hard_ref(t2)[0]
+  hr1,hr2 = translation.word_glob_to_hard_ref(t1),translation.word_glob_to_hard_ref(t2)
+  if hr1[1] then raise "ambiguous word glob: #{t1}" end
+  if hr2[1] then raise "ambiguous word glob: #{t2}" end
+  rt1,rt2 = hr1[0],hr2[0]
   if rt1.nil? || rt2.nil? then raise "bad word glob, #{t1}->#{rt1} or #{t2}->#{rt2}" end
   translation_text = translation.extract(rt1,rt2)
+  if translation_text.length>max_chars then
+    raise "page of translated text has #{translation_text.length} characters, failing sanity " \
+         +"check:\n  '#{t1}-'\n  '#{t2}'\n  #{rt1}-#{rt2}"
+  end
   translation_text = Patch_names.patch(translation_text)
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print translation_text
