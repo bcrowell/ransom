@@ -145,7 +145,7 @@ def do_one_lemma(lemma,selector_strings,homer,sel,verbose:true,extra_indentation
         if lemma_matches.length==1 then
           result_string.push("The given lemma is a unique match to: "+lemma_matches[0])
         else
-          result_string.push("The given lemma matches: "+lemma_matches)
+          result_string.push("The given lemma matches: "+lemma_matches.join(', '))
         end
       end
     end
