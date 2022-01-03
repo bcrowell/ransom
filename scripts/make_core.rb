@@ -5,12 +5,15 @@ require "./lib/file_util.rb"
 require "./lib/gloss.rb"
 require "./lib/vlist.rb"
 
-# This script is basically meant to be run once. It generates a list of about
-# 350 core vocab words for Homer. Words are taken from a certain range of
-# the frequency list tabulated for lemmas, and then excluded if they are
-# on either of a couple of hand-made lists embedded below in the code.
-# After that, we add in a hand-constructed list of some words that subjectively seem important.
-# To execute this script, do "make core".
+=begin
+
+This script is basically meant to be run once. It generates a list of
+about 400 core vocab words for Homer. Words are taken from a certain
+range of the frequency list tabulated for lemmas, and which gets
+modified if they are on three hand-made lists embedded below in the
+code.  To execute this script, do "make core".
+
+=end
 
 freq_file = "lemmas/homer_freq.json"
 freq = json_from_file_or_die(freq_file)
@@ -30,6 +33,14 @@ very common words, 'scum words':
 good core words:
   most common of these: "ἀνήρ" : 1039,
   least common of these: "πατήρ" : 54, ... the 526th lemma on the list
+'goofy' words:
+  These are words that are omitted in order to avoid bulking up the list too much
+  with things like specialized military terms and compounds. The idea is to make
+  the list represent something more like a basic level of linguistic competence
+  rather than a mechanically constructed frequency-based list like the one by
+  Owen and Goodspeed. For example, if the reader has some background in modern,
+  koine, or Attic Greek, we would like the core list to align somewhat with the
+  kind of background they have.
 words_added_by_hand:
   A good candidate for this list could be:
   -A word that occurs more frequently in compounds than would be indicated by its
@@ -48,7 +59,8 @@ words_added_by_hand = (<<-'BY_HAND'
 ἱερεύς ἱερόν ἱστός κήδω κλέπτω λέχος μάντις μῆνις μηνίω ναός τιμάω τιμή τίνω χερείων
 γλῶσσα κρατέω κρίνω γηθέω σῶς βαρύς ὀνομάζω αἰδέομαι χώομαι χραισμέω μῆτις γελάω
 ἀδελφός δάω ἀΐω πέρθω εἴδω εὐνάω ἥμισυς καρδία μήν μόνος νεφέλη ὅρκος ὄμνυμι
-ἄγχι σχεδόν πονέω κάμνω
+ἄγχι σχεδόν πονέω κάμνω τέλος
+τρεῖς τέσσαρες δέκα ἑκατόν
 BY_HAND
 ).split(/\s/)
 
