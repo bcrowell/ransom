@@ -58,7 +58,6 @@ def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil,max_ch
   # Let word globs contain, e.g., Hera rather than Juno.
   t1 = Patch_names.antipatch(t1)
   t2 = Patch_names.antipatch(t2)
-  $stderr.print "antipatched: #{t1} #{t2}\n" # qwe
   hr1 = translation.word_glob_to_hard_ref(t1)
   hr2 = translation.word_glob_to_hard_ref(t2)
   if hr1[1] then raise "ambiguous word glob: #{t1}, #{hr1[2]}" end

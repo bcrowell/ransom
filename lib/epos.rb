@@ -186,7 +186,10 @@ class Epos
       bare_glob = glob
       constraint_pct = [0.0,100.0]
     end
-    bare_glob = bare_glob.gsub(/[\[\]?.]/,'') # filter out regex metacharacters
+    if Regexp.new("[#{self.splitters}]").match?(bare_glob) then
+      raise "error, glob #{bare_glob} contains characters that match splitter characters #{self.splitters}"
+    end
+    bare_glob = bare_glob.gsub(/[\[\]]/,'') # filter out regex metacharacters
     constraint = constraint_pct.map { |pct| self.percentage_to_hard_ref(pct) }
     result = word_glob_to_hard_ref_helper(bare_glob,constraint)
     if @use_cache then
@@ -265,7 +268,6 @@ class Epos
       end
     }
     if result.nil? then
-      raise "failed match for #{glob}"
       return [nil,nil,nil]
     end
     result[1] = first_character_in_chunk(result)
