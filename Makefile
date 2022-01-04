@@ -22,6 +22,9 @@ post: $(BOOK).pdf booklet.pdf
 	git push
 	# echo "*********** consider doing a make forget_pdf_history in order to keep the repo from getting bloated **************"
 
+booklet.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
+	make booklet
+
 booklet: export FORMAT=booklet_short
 booklet: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	make book_no_copy
