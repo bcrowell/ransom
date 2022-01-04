@@ -16,11 +16,8 @@ $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 
 post: $(BOOK).pdf booklet.pdf
-	cp $(BOOK).pdf docs	
-	cp booklet.pdf docs/$(BOOK)_booklet.pdf
-	git commit --allow-empty -a -m "updating pdf output files"
-	git push
-	# echo "*********** consider doing a make forget_pdf_history in order to keep the repo from getting bloated **************"
+	cp $(BOOK).pdf ~/Lightandmatter.com/iliad
+	cp booklet.pdf ~/Lightandmatter.com/iliad/$(BOOK)_booklet.pdf
 
 booklet.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	make booklet
@@ -43,25 +40,6 @@ book_no_copy: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@$(COMPILE)
 	@./fruby $(BOOK).rbtex '{$(GENERIC),"render_glosses":true}' >$(BOOK).tex
 	@$(COMPILE)
-
-forget_pdf_history:
-	# https://stackoverflow.com/a/70552717/17812119
-	test -e $(BOOK).pdf || exit 1
-	test -e booklet.pdf || exit 1
-	git commit --allow-empty -a -m "updating before erasing history of docs/$(BOOK).pdf and docs/$(BOOK)_booklet.pdf"
-	git filter-repo --path docs/$(BOOK).pdf --invert-paths
-	git filter-repo --path docs/$(BOOK)_booklet.pdf --invert-paths
-	make reconfigure_git
-	cp $(BOOK).pdf docs
-	cp booklet.pdf docs/$(BOOK)_booklet.pdf
-	git add docs/$(BOOK).pdf
-	git add docs/$(BOOK)_booklet.pdf
-	git commit -a -m "updating after erasing history of docs/$(BOOK).pdf and docs/$(BOOK)_booklet.pdf"
-	git push --force -u origin master
-
-reconfigure_git:
-	git remote add origin https://github.com/bcrowell/ransom.git
-	git config remote.origin.url git@github.com:bcrowell/ransom.git
 
 # The following target creates pdf versions of the svg figures.
 # For this to work, the scripts in the scripts directory need to be executable.
