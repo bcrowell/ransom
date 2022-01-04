@@ -69,9 +69,9 @@ breaks = [
   [ [2,1], "The rest, then, both gods and horse-arraying men"],
   [ [2,17], "And quickly it came to the swift ships of the Greeks"],
   [ [2,35], "Thus then having spoken, he departed, and left him there pondering"],
-  [ [2,52], "They therefore summoned them, and the people were very speedily assembled."],
+  [ [2,52], "They therefore summoned them, and the people were very speedily assembled"],
   [ [2,69], "for Juno, supplicating, has bent all"],
-  [ [2,85], "and obeyed the shepherd of the tribes, and the hosts rushed forward."],
+  [ [2,85], "and obeyed the shepherd of the tribes, and the hosts rushed forward"],
   [ [2,102], "Vulcan in the first place gave it to king Jove, the son of Saturn"],
   [ [2,119], "For this were disgraceful even for posterity to hear"],
   [ [2,136], "Our wives and infant children sit in our dwellings expecting us"],
@@ -84,7 +84,7 @@ breaks = [
   [ [2,257], "But I declare to thee, which shall also be accomplished"],
   [ [2,274], "But now has he done this by far the best deed amongst the Greeks"],
   [ [2,291], "For, like tender boys, or widowed women, they bewail unto one"],
-  [ [2,308], "There a great prodigy appeared; a serpent, spotted on the back"],
+  [ [2,308], "There a great prodigy appeared"],
   [ [2,326], "As this serpent has devoured the young of the sparrow"],
   [ [2,344], "But do thou, O son of Atreus, maintaining, as before, thy purpose firm, command the Greeks in the hard-fought conflicts"],
   [ [2,361], "nor shall the advice which I am about to utter be discarded"],
@@ -131,10 +131,12 @@ if format=='booklet_short' then breaks = breaks[0..17] end
 vocab_by_chapter = []
 0.upto(breaks.length-2) { |i|
   a,b = breaks[i],breaks[i+1]
-  if i==0 || b[0][0]>a[0][0] then s=a[0][0] else s=nil end
+  starting_ch = nil
+  if i==0 then starting_ch=1 end
+  if b[0][0]>a[0][0] then starting_ch=b[0][0] end
   a_opts = a[2] # hash or nil
   if !a_opts.nil? && a_opts.has_key?('end_at') then end_at=a_opts['end_at'] else end_at=b[1] end
-  four_page_layout(stuff,a[0],b[0],a[1],end_at,vocab_by_chapter,start_chapter:s)
+  four_page_layout(stuff,a[0],b[0],a[1],end_at,vocab_by_chapter,start_chapter:starting_ch)
 }
 1.upto(vocab_by_chapter.length-1) { |ch|
   filename = sprintf("vocab_ch_%02d.txt",ch)
