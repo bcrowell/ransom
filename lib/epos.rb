@@ -498,7 +498,9 @@ class Epos
   end
 
   def Epos.strip_pg_footnotes(s)
-    return s.gsub(/Footnote \d+([^\n]+\n)+/,'')
+    s = s.gsub(/Footnote \d+([^\n]+\n)+/,'')
+    s = s.gsub(/^ \s*[^\s][^\n]*/,'') # indented lines sometimes occur inside footnotes, with blank lines above and below
+    return s
   end
 
   def Epos.matches_without_containing_paragraph_break(regex,x)
