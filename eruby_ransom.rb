@@ -55,9 +55,10 @@ def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil,max_ch
   if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatglosses}%\n"
   print ransom(greek_text,v,first_line_number),"\n\n"
-  hr1,hr2 = translation.word_glob_to_hard_ref(t1),translation.word_glob_to_hard_ref(t2)
-  if hr1[1] then raise "ambiguous word glob: #{t1}" end
-  if hr2[1] then raise "ambiguous word glob: #{t2}" end
+  hr1 = translation.word_glob_to_hard_ref(t1)
+  hr2 = translation.word_glob_to_hard_ref(t2)
+  if hr1[1] then raise "ambiguous word glob: #{t1}, #{hr1[2]}" end
+  if hr2[1] then raise "ambiguous word glob: #{t2}, #{hr2[2]}"end
   rt1,rt2 = hr1[0],hr2[0]
   if rt1.nil? || rt2.nil? then raise "bad word glob, #{t1}->#{rt1} or #{t2}->#{rt2}" end
   translation_text = translation.extract(rt1,rt2)

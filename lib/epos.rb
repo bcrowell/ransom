@@ -157,10 +157,10 @@ class Epos
     # Glob is a string such as "sing-destructive-wrath" (with hyphens or whitespace). It defines a chunk in which these three words occur in this order,
     # but possibly with other words in between. Case-insensitive.
     # Example:
-    #   rm -f text/ιλιας.cache* && ruby -e 'require "sdbm"; require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true); print e.word_glob_to_hard_ref("μῆνιν-ἄειδε")'
+    #   ruby -e 'require "sdbm"; require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true,use_cache:false); print e.word_glob_to_hard_ref("μῆνιν-ἄειδε")'
     #   For a non-unique match, try ῥοδοδάκτυλος-Ἠώς.
     #   rm -f text/buckley_iliad.cache* && ruby -e 'require "sdbm"; require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/buckley_iliad.txt","latin",false); print e.word_glob_to_hard_ref("irritate me not>")'
-    # Returns [hard_ref,non_unique]. Hard_ref is a hard reference, meaning an internal data structure that is not likely to
+    # Returns [hard_ref,non_unique,ambig_list]. Hard_ref is a hard reference, meaning an internal data structure that is not likely to
     # remain valid when the text is edited. Currently hard_ref is implemented as [file_number,character_index], where both
     # indices are zero-based, and character_index is the first character in the chunk.
     if @use_cache then
@@ -180,23 +180,24 @@ class Epos
 
   def word_glob_to_hard_ref_helper(glob)
     # Handles the case where the result is not cached.
+    # Returns [hard ref,if_ambiguous,ambig_list].
     if glob=~/(.*)\>\s*$/ then
       x = word_glob_to_hard_ref_helper2($1)
-      return [self.next_chunk(x[0]),x[1]]
+      return [self.next_chunk(x[0]),x[1],x[2]]
     end
     if glob=~/(.*)\|(.*)/ then
       left,right = $1,$2
       basic = "#{left} #{right}"
-      r1,non_unique = word_glob_to_hard_ref_helper2(basic) # ref to beginning of chunk
-      if r1.nil? then return [nil,nil] end
-      r2,garbage = word_glob_to_hard_ref_helper("#{basic} >") # ref to end (recurse because helper2 doesn't support >)
+      r1,non_unique,ambig_list = word_glob_to_hard_ref_helper2(basic) # ref to beginning of chunk
+      if r1.nil? then return [nil,nil,nil] end
+      r2,garbage,garbage2 = word_glob_to_hard_ref_helper("#{basic} >") # ref to end (recurse because helper2 doesn't support >)
       t = extract(r1,r2,remove_numerals:false)
       left_regex = plain_glob_to_regex(left)
       raise "internal error, left=#{left}" unless t=~/(#{left_regex})/ # shouldn't happen, because r1 was not nil
       left_match = $1
       offset = t.index(left_match)
       result = [r1[0],r1[1]+offset+left_match.length+1]
-      return [result,non_unique]
+      return [result,non_unique,ambig_list]
     end
     return word_glob_to_hard_ref_helper2(glob)
   end
@@ -217,27 +218,57 @@ class Epos
 
   def word_glob_to_hard_ref_helper2(glob)
     # Does the actual work for word_glob_to_hard_ref(). Glob must not contain stuff like >.
+    # Returns [hard ref,if_ambiguous,ambig_list], where ambig_list is debugging info consisting
+    # of a list of elements of the form [matching string, hard ref]
     whole_regex = plain_glob_to_regex(glob)
     c = self.get_contents
     non_unique = false
     found = false
+    ambig_list = []
     result = nil
-    0.upto(c.length-1) { |i|
-      m = c[i].scan(/#{whole_regex}/i)
-      m = m.select { |x| Epos.matches_without_containing_paragraph_break(whole_regex,x) }
-      if m.length>0 && found then non_unique=true; break end
+    0.upto(c.length-1) { |i| # loop over files
+      s = c[i]
+      m,hrs = self.word_glob_to_hard_ref_helper3(glob,s,whole_regex,i) # array of matching strings
+      if m.length>0 && found then
+        # found a match in this file, but also found one in a previous file
+        non_unique=true
+        if ambig_list.length<=1 then ambig_list.push([m[0],hrs[0]]) end
+        # ... help user by showing the match from the earlier file and also one match from this file, but show a maximum of two of these
+        break
+      end
       if m.length>0 && !found then
-        result = [i,c[i].index(m[0])]
+        if ambig_list.length<=1 then ambig_list.push([m[0],hrs[0]]) end
+        result = hrs[0]
         found = true
       end
-      if m.length>1 then non_unique=true; break end
+      if m.length>1 then 
+        non_unique=true
+        1.upto(1) { |k| ambig_list.push([m[k],hrs[k]]) } # show the user one more
+        break
+      end
     }
     if result.nil? then
       raise "failed match for #{glob}"
-      return [nil,nil]
+      return [nil,nil,nil]
     end
     result[1] = first_character_in_chunk(result)
-    return [result,non_unique]
+    return [result,non_unique,ambig_list]
+  end
+
+  def word_glob_to_hard_ref_helper3(glob,s,whole_regex,file_num)
+    # Works on a single string at a time. Returns [array of matching strings,hard refs of first few matching strings].
+    m = s.scan(/#{whole_regex}/i)
+    m = m.select { |x| Epos.matches_without_containing_paragraph_break(whole_regex,x) }
+    hrs = []
+    if m.length>0 then
+      search_from = 0
+      0.upto([1,m.length-1].min) { |k| # to help provide user with debugging, send back first one or two matches
+        ind = s.index(m[k],search_from)
+        hrs.push([file_num,ind])
+        search_from = ind+1
+      }
+    end
+    return [m,hrs]
   end
 
   def first_character_in_chunk(ref)
