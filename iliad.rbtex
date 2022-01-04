@@ -128,12 +128,13 @@ if format.nil? then $stderr.print "FORMAT environment variable not set\n"; exit(
 if !(['whole','booklet_short'].include?(format)) then $stderr.print "FORMAT environment variable set to illegal value #{format}\n"; exit(-1) end
 if format=='booklet_short' then breaks = breaks[0..17] end
 
+current_chapter = -999
 vocab_by_chapter = []
 0.upto(breaks.length-2) { |i|
   a,b = breaks[i],breaks[i+1]
   starting_ch = nil
-  if i==0 then starting_ch=1 end
-  if b[0][0]>a[0][0] then starting_ch=b[0][0] end
+  if i==0 then current_chapter=1 end
+  if a[0][0]>current_chapter then current_chapter=a[0][0]; starting_ch=current_chapter end
   a_opts = a[2] # hash or nil
   if !a_opts.nil? && a_opts.has_key?('end_at') then end_at=a_opts['end_at'] else end_at=b[1] end
   four_page_layout(stuff,a[0],b[0],a[1],end_at,vocab_by_chapter,start_chapter:starting_ch)
