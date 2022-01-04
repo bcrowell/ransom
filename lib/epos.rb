@@ -186,6 +186,7 @@ class Epos
       bare_glob = glob
       constraint_pct = [0.0,100.0]
     end
+    bare_glob = bare_glob.gsub(/[\[\]?.]/,'') # filter out regex metacharacters
     constraint = constraint_pct.map { |pct| self.percentage_to_hard_ref(pct) }
     result = word_glob_to_hard_ref_helper(bare_glob,constraint)
     if @use_cache then
@@ -273,14 +274,18 @@ class Epos
 
   def word_glob_to_hard_ref_helper3(glob,s,whole_regex,file_num,constraint)
     # Works on a single string at a time. Returns [array of matching strings,hard refs of first few matching strings].
-    m = s.scan(/#{whole_regex}/im) # m means allow . to match newline, i means case-insensitive
-    m = m.select { |x| Epos.matches_without_containing_paragraph_break(whole_regex,x) }
+    Epos.assert_integrity_of_constraint(constraint)
+    re1 = Regexp.new(whole_regex,Regexp::IGNORECASE | Regexp::MULTILINE)
+    m = s.scan(re1)
+    m = m.select { |x| Epos.matches_without_containing_paragraph_break(re1,x) }
     matches_fitting_constraints = []
     hrs = []
     if m.length>0 then
       search_from = 0
       0.upto(m.length-1) { |k| # to help provide user with debugging of ambiguities, send back first 1 or 2 matches
-        ind = s.index(m[k],search_from) # result guaranteed to be non-nil because m[k] is known to be a match
+        re = Regexp.new(Regexp.escape(m[k]),Regexp::IGNORECASE)
+        ind = s.index(re,search_from) # result guaranteed to be non-nil because m[k] is known to be a match
+        if ind.nil? then raise "result of s.index is nil, but this should never happen; does the regex contain metacharacters? -- re=#{re}" end
         hr = [file_num,ind]
         if hard_ref_triple_in_order(constraint[0],hr,constraint[1]) then
           matches_fitting_constraints.push(m[k])
@@ -505,8 +510,19 @@ class Epos
 
   def Epos.matches_without_containing_paragraph_break(regex,x)
     # For our convenience, the regex refuses to match @.
+    if !(regex.kind_of?(Regexp)) then raise "Regexp not supplied to Epos.matches_without_containing_paragraph_break" end
     x = x.gsub(/\n\n/,"@")
-    if x=~/#{regex}/i then return true else return false end
+    if x.match?(regex) then return true else return false end
+  end
+
+  def Epos.assert_integrity_of_constraint(c)
+    if c.length!=2 then raise "constraint has length not equal to 2, c=#{c}" end
+    Epos.assert_integrity_of_hard_ref(c[0])
+    Epos.assert_integrity_of_hard_ref(c[1])
+  end
+
+  def Epos.assert_integrity_of_hard_ref(r)
+    if r.length!=2 then raise "hard ref has length not equal to 2, ref=#{r}" end
   end
 
 end
