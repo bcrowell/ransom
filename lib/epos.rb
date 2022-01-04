@@ -57,11 +57,13 @@ example, "withhold heavy hands | pestilence" refers to the spot
 immediately after the word "hands."
 
 Because locating a word glob can be an expensive operation, the
-library automatically caches the resulting hard refs on disk for
-later use, in files ending with the extensions .cache.pag and .cache.dir.
+library automatically caches the resulting hard refs on disk for later
+use, in files ending with the extensions .cache.pag and .cache.dir.
 If the software changes and you need to test whether it's still
-actually working, you need to delete these files, and likewise if
-you make any changes to the text.
+actually working, you need to prevent reuse of this caching, and
+likewise if you make any changes to the text. To do this, either
+do a 'make flush_epos_cache' or call the constructor using
+Epos.new(...,use_cache:false).
 
 A text may contain material like footnotes that we want to pretend are
 not there. This is done using the postfilter facility. Example:
@@ -263,7 +265,7 @@ class Epos
     if m.length>0 then
       search_from = 0
       0.upto([1,m.length-1].min) { |k| # to help provide user with debugging, send back first one or two matches
-        ind = s.index(m[k],search_from)
+        ind = s.index(m[k],search_from) # result guaranteed to be non-nil because m[k] is known to be a match
         hrs.push([file_num,ind])
         search_from = ind+1
       }
