@@ -73,7 +73,7 @@ Sometimes you want to refer to a sentence that appears, verbatim, more
 than once in the text. There could be a lot of handy ways of dealing
 with this, but presently the only method is to use a syntax such as
 "47 % rosy fingered dawn", meaning to constrain the match to lie close
-to 47% of the way through the entire text. "Close" is defined as +-5%.
+to 47% of the way through the entire text. "Close" is defined as +-2%.
 
 Testing:
 
@@ -181,7 +181,7 @@ class Epos
     if glob=~/(.*)%(.*)/ then
       constraint_string,bare_glob = $1,$2
       pct = constraint_string.to_f
-      constraint_pct = [pct-5.0,pct+5.0] # by design, it's OK if these go below 0 or above 100%
+      constraint_pct = [pct-2.0,pct+2.0] # by design, it's OK if these go below 0 or above 100%
     else
       bare_glob = glob
       constraint_pct = [0.0,100.0]
@@ -204,7 +204,7 @@ class Epos
     if glob=~/(.*)\|(.*)/ then
       left,right = $1,$2
       basic = "#{left} #{right}"
-      r1,non_unique,ambig_list = word_glob_to_hard_ref_helper2(basic) # ref to beginning of chunk
+      r1,non_unique,ambig_list = word_glob_to_hard_ref_helper2(basic,constraint) # ref to beginning of chunk
       if r1.nil? then return [nil,nil,nil] end
       r2,garbage,garbage2 = word_glob_to_hard_ref_helper("#{basic} >",constraint) # ref to end (recurse because helper2 doesn't support >)
       t = extract(r1,r2,remove_numerals:false)
@@ -273,7 +273,7 @@ class Epos
 
   def word_glob_to_hard_ref_helper3(glob,s,whole_regex,file_num,constraint)
     # Works on a single string at a time. Returns [array of matching strings,hard refs of first few matching strings].
-    m = s.scan(/#{whole_regex}/i)
+    m = s.scan(/#{whole_regex}/im) # m means allow . to match newline, i means case-insensitive
     m = m.select { |x| Epos.matches_without_containing_paragraph_break(whole_regex,x) }
     matches_fitting_constraints = []
     hrs = []
@@ -411,7 +411,7 @@ class Epos
     # returns an array in which each element is a string holding the contents of a file.
     if !(@contents.nil?) then return @contents end
     s = self.all_files.map { |file| slurp_file(file) }
-    s = s.map { |x| x.gsub(/\r\n/,"\n") }
+    s = s.map { |x| x.gsub(/\r\n/,"\n") } # convert DOS crlf to unix
     if !(self.postfilter.nil?) then s=s.map { |x| self.postfilter.call(x)} end
     @contents = s
     return @contents
