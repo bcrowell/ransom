@@ -62,7 +62,7 @@ def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil,max_ch
   rt1,rt2 = hr1[0],hr2[0]
   if rt1.nil? || rt2.nil? then raise "bad word glob, #{t1}->#{rt1} or #{t2}->#{rt2}" end
   translation_text = translation.extract(rt1,rt2)
-  if translation_text.length>max_chars then
+  if translation_text.length>max_chars || translation_text.length==0 then
     raise "page of translated text has #{translation_text.length} characters, failing sanity " \
          +"check:\n  '#{t1}-'\n  '#{t2}'\n  #{rt1}-#{rt2}"
   end

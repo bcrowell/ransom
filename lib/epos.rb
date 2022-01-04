@@ -69,6 +69,12 @@ A text may contain material like footnotes that we want to pretend are
 not there. This is done using the postfilter facility. Example:
 Epos.new("text/buckley_iliad.txt","latin",false,postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
 
+Sometimes you want to refer to a sentence that appears, verbatim, more
+than once in the text. There could be a lot of handy ways of dealing
+with this, but presently the only method is to use a syntax such as
+"47 % rosy fingered dawn", meaning to constrain the match to lie close
+to 47% of the way through the entire text. "Close" is defined as +-5%.
+
 Testing:
 
 When testing, make sure to do use_cache:false. Otherwise nothing will actually be tested.
@@ -79,10 +85,8 @@ To do:
 
 Allow relative addressing, e.g., the second word in the third line after a certain word glob.
 
-Allow disambiguation with a syntax such as "47 % rosy fingered dawn",
-meaning whichever match is closest to lying 47% of the way through the
-entire text, or "book 7 % well greaved achaians" to restrict it to one
-book.
+Allow other methods for disambiguation. Possibly do this by letting the user
+put some kind of data structure in a JSON hash before the % sign.
 
 Given a word glob, suggest an alternative glob that is less ambiguous
 or less verbose.
@@ -173,18 +177,28 @@ class Epos
       end
       if !(result.nil?) then return result end # return cached result
     end
-    result = word_glob_to_hard_ref_helper(glob)
+    if glob=~/%.*%/ then raise "more than one % character in this glob: #{glob}" end
+    if glob=~/(.*)%(.*)/ then
+      constraint_string,bare_glob = $1,$2
+      pct = constraint_string.to_f
+      constraint_pct = [pct-5.0,pct+5.0] # by design, it's OK if these go below 0 or above 100%
+    else
+      bare_glob = glob
+      constraint_pct = [0.0,100.0]
+    end
+    constraint = constraint_pct.map { |pct| self.percentage_to_hard_ref(pct) }
+    result = word_glob_to_hard_ref_helper(bare_glob,constraint)
     if @use_cache then
       SDBM.open(cache) { |db| db[glob]=JSON.generate(result) }
     end
     return result
   end
 
-  def word_glob_to_hard_ref_helper(glob)
+  def word_glob_to_hard_ref_helper(glob,constraint)
     # Handles the case where the result is not cached.
     # Returns [hard ref,if_ambiguous,ambig_list].
     if glob=~/(.*)\>\s*$/ then
-      x = word_glob_to_hard_ref_helper2($1)
+      x = word_glob_to_hard_ref_helper2($1,constraint)
       return [self.next_chunk(x[0]),x[1],x[2]]
     end
     if glob=~/(.*)\|(.*)/ then
@@ -192,7 +206,7 @@ class Epos
       basic = "#{left} #{right}"
       r1,non_unique,ambig_list = word_glob_to_hard_ref_helper2(basic) # ref to beginning of chunk
       if r1.nil? then return [nil,nil,nil] end
-      r2,garbage,garbage2 = word_glob_to_hard_ref_helper("#{basic} >") # ref to end (recurse because helper2 doesn't support >)
+      r2,garbage,garbage2 = word_glob_to_hard_ref_helper("#{basic} >",constraint) # ref to end (recurse because helper2 doesn't support >)
       t = extract(r1,r2,remove_numerals:false)
       left_regex = plain_glob_to_regex(left)
       raise "internal error, left=#{left}" unless t=~/(#{left_regex})/ # shouldn't happen, because r1 was not nil
@@ -201,7 +215,7 @@ class Epos
       result = [r1[0],r1[1]+offset+left_match.length+1]
       return [result,non_unique,ambig_list]
     end
-    return word_glob_to_hard_ref_helper2(glob)
+    return word_glob_to_hard_ref_helper2(glob,constraint)
   end
 
   def whole_word_regex(word)
@@ -215,10 +229,10 @@ class Epos
 
   def plain_glob_to_regex(glob)
     # glob can't contain special characters like | or >
-    return glob.split(/[\-\s]+/).map { |key| whole_word_regex(key) }.join(regex_no_splitters())
+    return glob.split(/[\-\s]+/).filter { |key| key!=''}.map { |key| whole_word_regex(key) }.join(regex_no_splitters())
   end
 
-  def word_glob_to_hard_ref_helper2(glob)
+  def word_glob_to_hard_ref_helper2(glob,constraint)
     # Does the actual work for word_glob_to_hard_ref(). Glob must not contain stuff like >.
     # Returns [hard ref,if_ambiguous,ambig_list], where ambig_list is debugging info consisting
     # of a list of elements of the form [matching string, hard ref]
@@ -228,9 +242,9 @@ class Epos
     found = false
     ambig_list = []
     result = nil
-    0.upto(c.length-1) { |i| # loop over files
+    constraint[0][0].upto(constraint[1][0]) { |i| # loop over files
       s = c[i]
-      m,hrs = self.word_glob_to_hard_ref_helper3(glob,s,whole_regex,i) # array of matching strings
+      m,hrs = self.word_glob_to_hard_ref_helper3(glob,s,whole_regex,i,constraint) # array of matching strings
       if m.length>0 && found then
         # found a match in this file, but also found one in a previous file
         non_unique=true
@@ -257,20 +271,26 @@ class Epos
     return [result,non_unique,ambig_list]
   end
 
-  def word_glob_to_hard_ref_helper3(glob,s,whole_regex,file_num)
+  def word_glob_to_hard_ref_helper3(glob,s,whole_regex,file_num,constraint)
     # Works on a single string at a time. Returns [array of matching strings,hard refs of first few matching strings].
     m = s.scan(/#{whole_regex}/i)
     m = m.select { |x| Epos.matches_without_containing_paragraph_break(whole_regex,x) }
+    matches_fitting_constraints = []
     hrs = []
     if m.length>0 then
       search_from = 0
-      0.upto([1,m.length-1].min) { |k| # to help provide user with debugging, send back first one or two matches
+      0.upto(m.length-1) { |k| # to help provide user with debugging of ambiguities, send back first 1 or 2 matches
         ind = s.index(m[k],search_from) # result guaranteed to be non-nil because m[k] is known to be a match
-        hrs.push([file_num,ind])
+        hr = [file_num,ind]
+        if hard_ref_triple_in_order(constraint[0],hr,constraint[1]) then
+          matches_fitting_constraints.push(m[k])
+          hrs.push(hr) 
+        end
+        break if hrs.length>=2 # show user only 2 matches from any given file
         search_from = ind+1
       }
     end
-    return [m,hrs]
+    return [matches_fitting_constraints,hrs]
   end
 
   def first_character_in_chunk(ref)
@@ -354,6 +374,37 @@ class Epos
       offset += l.length
     }
     raise "Line #{line} doesn't exist in book #{book}, number of lines is #{count}"
+  end
+
+  def hard_ref_triple_in_order(r1,r2,r3)
+    # returns boolean, true if r1<=r2<=r3
+    return hard_ref_pair_in_order(r1,r2) && hard_ref_pair_in_order(r2,r3)
+  end
+
+  def hard_ref_pair_in_order(r1,r2)
+    # returns boolean, true if r1<=r2
+    return ((r1 <=> r2) <=0 )
+  end
+
+  def percentage_to_hard_ref(pct)
+    # Inputs outside of 0-100% are silently brought into that range.
+    if pct<0.0 then pct=0.0 end
+    if pct>100.0 then pct=100.0 end
+    l = self.get_contents.map { |s| s.length }
+    n = l.length
+    total = l.sum
+    if pct<=0.0 then return [0,0] end
+    if pct>=100.0 then return [n-1,l[-1]] end
+    if total==0 then raise "total==0??" end
+    f = pct*0.01
+    accum = 0
+    which_file = n-1 # gives the right result when we exhaust the whole loop below
+    0.upto(n-1) { |i|
+      if accum>f*total then which_file=i-1; break end
+      accum += l[i]
+    }
+    offset = accum-l[which_file] # back up one file
+    return [which_file,(f*total).to_i-offset]
   end
 
   def get_contents
