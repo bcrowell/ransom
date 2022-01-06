@@ -2,5 +2,4 @@ https://pypi.org/project/wiktextract/
 https://kaikki.org/dictionary/Ancient%20Greek/index.html ... 44 Mb
 
 scroll to bottom for json file
-curl -o kaikki.json https://kaikki.org/dictionary/Ancient%20Greek/kaikki.org-dictionary-AncientGreek.json
-Run scripts in this directory.
+run makefile in this directory

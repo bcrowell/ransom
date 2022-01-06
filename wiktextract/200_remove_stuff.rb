@@ -2,30 +2,25 @@ require 'json'
 
 def main()
 
+kill_tags = "lang wikipedia topics sounds categories forms inflection inflection_templates etymology_text lang_code etymology_templates".split(/\s+/)
+kill_senses_subtags = "tags id categories examples related".split(/\s+/)
 $stdin.each_line { |line|
   x = JSON.parse(line)
-  x.delete("lang")
-  x.delete("wikipedia")
-  x.delete("topics")
-  x.delete("sounds")
-  x.delete("categories")
-
+  kill_tags.each { |tag|
+    x.delete(tag)
+  }
+  if x.has_key?("senses") then
+    x["senses"].each { |sense|
+      kill_senses_subtags.each { |subtag|
+        sense.delete(subtag)
+      }
+    }
+  end
+  #line = JSON.pretty_generate(x)
   line = JSON.generate(x)
   puts line+"\n"
 }
 
 end # main
-
-def clown(x)
-  # Call it something besides clone because otherwise it's hard to grep for use of clone, which I
-  # should *never* use.
-  return Marshal.load(Marshal.dump(x))
-end
-
-def shallow_copy(x)
-  # The purpose of having this here is so that I can easily tell when looking through my code that I haven't
-  # thoughtlessly done shallow copying using clone.
-  return x.clone
-end
 
 main

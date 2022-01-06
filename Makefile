@@ -16,8 +16,8 @@ $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 
 post: $(BOOK).pdf booklet.pdf
-	cp $(BOOK).pdf ~/Lightandmatter.com/iliad
-	cp booklet.pdf ~/Lightandmatter.com/iliad/$(BOOK)_booklet.pdf
+	cp $(BOOK).pdf ~/Lightandmatter/iliad
+	cp booklet.pdf ~/Lightandmatter/iliad/$(BOOK)_booklet.pdf
 
 booklet.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	make booklet

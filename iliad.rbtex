@@ -117,7 +117,7 @@ breaks = [
   [ [2,816], "The Trojans, in the first place, great helmet-nodding Hector, son of Priam, commanded"],
   [ [2,834], "for the fates of sable death impelled them"],
   [ [2,851], "But the sturdy heart of Pylæmenes from the Eneti, whence is the race of wild mules, led the Paphlagonians"],
-  [ [2,867], "Nastes commanded the barbarous-voiced Carians, who possessed Miletus"],
+  [ [2,867], "Nastes commanded the barbarous-voiced Carians, who possessed Miletus",{'end_at'=> "But Sarpedon and gallant Glaucus from Lycia afar>"}],
 
   [ [3,1], "But after they had each been marshalled along with their leaders"],
 
