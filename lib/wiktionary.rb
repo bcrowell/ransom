@@ -7,12 +7,13 @@ class GenerateWiktionary -- generates wiktionary entries from my gloss files
 
 class GenerateWiktionary
   
-  def GenerateWiktionary.generate(gloss,treebank)
+  def GenerateWiktionary.generate(gloss,treebank,force:false)
     # Inputs: gloss is a hash in the format returned by Gloss.get.
     # returns [lemma,text,if_err,error_code,error_message]
+    # If force is true, then we return a result even if there is already a wiktionary entry in the weekly wiktextract download.
     possible_lemmas = [gloss['word'],gloss['perseus']]
     # ...It's OK if perseus gloss is nil.
-    if WiktionaryGlosses.has_gloss(possible_lemmas) then return [nil,nil,true,'exists',"entry exists already as one of: #{possible_lemmas}"] end
+    if WiktionaryGlosses.has_gloss(possible_lemmas) && !force then return [nil,nil,true,'exists',"entry exists already as one of: #{possible_lemmas}"] end
     # ...This only tests against the weekly wiktextract download, not the current live version.
     if gloss.has_key?('perseus') then perseus_lemma=gloss['perseus']; alt=gloss['word'] else perseus_lemma=gloss['word']; alt=nil end
     pos_list = treebank.lemma_to_pos(perseus_lemma)
@@ -35,7 +36,7 @@ class GenerateWiktionary
     end
     pieces.push("===Pronunciation===\n{{grc-IPA}}")
     if pos=='n' then
-      if x=='c' then x="m or f" else x="|#{gender}" end
+      if gender=='c' then x="|m or f" else x="|#{gender}" end
     else
       x=''
     end
@@ -48,7 +49,8 @@ class GenerateWiktionary
       x.push("# #{d}")
     }
     pieces.push(x.join("\n"))
-    return [lemma,pieces.join("\n\n"),false,nil,nil]
+    text = pieces.join("\n\n")+"\n"
+    return [lemma,text,false,nil,nil]
   end
 end
 
