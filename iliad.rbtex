@@ -12,7 +12,7 @@
 
 <%
 
-lemmas_file = TreeBank.new('homer').lemmas_file
+treebank = TreeBank.new('homer')
 freq_file = "lemmas/homer_freq.json"
 core = json_from_file_or_die("core/homer.json").keys # array containing lemmas not to put in vocab lists, because they're in core vocab in back
 greek = Epos.new("text/ιλιας","greek",true)
@@ -21,7 +21,7 @@ translation = Epos.new("text/buckley_iliad.txt","latin",false,postfilter:lambda 
 load "iliad/notes.rb"
 notes = IliadNotes.notes
 
-stuff = lemmas_file,freq_file,greek,translation,notes,core
+stuff = treebank,freq_file,greek,translation,notes,core
 
 %>
 

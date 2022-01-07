@@ -43,8 +43,8 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,lemmas_file,freq_file,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[])
-  lemmas = json_from_file_or_die(lemmas_file)
+def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[])
+  lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
   freq = json_from_file_or_die(freq_file)
