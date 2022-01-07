@@ -1,4 +1,52 @@
 # coding: utf-8
+
+=begin
+class WiktionaryGlosses -- accesses wiktextract entries from a file on disk
+class GenerateWiktionary -- generates wiktionary entries from my gloss files
+=end
+
+class GenerateWiktionary
+  
+  def GenerateWiktionary.generate(gloss,treebank)
+    # Inputs: gloss is a hash in the format returned by Gloss.get.
+    # returns [lemma,text,if_err,error_code,error_message]
+    possible_lemmas = [gloss['word'],gloss['perseus']]
+    # ...It's OK if perseus gloss is nil.
+    if WiktionaryGlosses.has_gloss(possible_lemmas) then return [nil,nil,true,'exists',"entry exists already as one of: #{possible_lemmas}"] end
+    # ...This only tests against the weekly wiktextract download, not the current live version.
+    pos_list = treebank.lemma_to_pos(lemma)
+    if pos_list.length>1 then return [nil,nil,true,'ambiguous_pos',"POS is ambiguous: #{pos_list}"] end
+    pos = pos_list[0]
+    if pos=='n' then gender=treebank.noun_to_gender(lemma) end
+    pos_long = {'n'=>'noun','v'=>'verb','a'=>'adjective','d'=>'adverb'}[pos]
+    if pos_long.nil? then return [nil,nil,true,'unsupported_pos',"unsupported part of speech: #{pos}"] end
+    if gloss.has_key?('perseus') then lemma=gloss['perseus']; alt=gloss['word'] else lemma=gloss['word']; alt=nil end
+    # ... go with Perseus's judgment as to what is the proper general-purpose lemma
+    pieces = []
+    pieces.push("==Ancient Greek==")
+    if !(alt.nil?) then
+      pieces.push("===Alternative forms===\n* #{alt} (epic)")
+    end
+    if gloss.has_key?('etym') then
+      pieces.push("===Etymology===\n#{gloss['etym']}")
+    end
+    pieces.push("===Pronunciation===\n{{grc-IPA}}")
+    pieces.push("===#{pos_long.capitalize}===\n{{grc-#{pos_long}}}")
+    english = nil
+    possible_lemmas.each { |l|
+      next if l.nil?
+      english = Gloss.get(l,prefer_length:2)
+      break unless english.nil?
+    }
+    if english.nil? then return [nil,nil,true,'gloss_not_found',"no gloss found for lemmas: #{possible_lemmas}"] end
+    english.split(/;/).each { |d|
+      # I've tried to do a consistent style in which entirely separate senses are separated by semicolons
+      pieces.push("# #{d}")
+    }
+    return [lemma,pieces.join("\n\n"),false,nil,nil]
+  end
+end
+
 class WiktionaryGlosses
 
 filename = "wiktextract/grc_en.json"
@@ -42,6 +90,16 @@ end
 #    }
 #  ]
 # }
+
+def WiktionaryGlosses.has_gloss(possible_lemmas)
+  # possible_lemmas is a list of strings; if any are nil, they're silently ignored; this is to allow for cases where there is a Homeric
+  # lemma and also a different lemma used by Perseus's treebank for that Homeric form
+  possible_lemmas.each { |lemma|
+    next if lemma.nil?
+    if !(WiktionaryGlosses.get_glosses(lemma).nil?) then return true end
+  }
+  return false
+end
 
 def WiktionaryGlosses.get_glosses(lexical)
   # Input is a lemmatized form, whose accents are significant, but not its case or macrons and breves.
