@@ -27,7 +27,7 @@ class TreeBank
   end
 
   def lemma_to_words(lemma)
-    # Given a lemma, returns a list whose elements are of the form [word,pos], or returns nil.
+    # Given a lemma, returns a list whose elements are of the form [word,pos]. The list may be empty.
     if @inverse_index.nil? then
       @inverse_index = {}
       @lemmas.keys.each { |word|
@@ -38,7 +38,8 @@ class TreeBank
         }
       }
     end
-    return @inverse_index[lemma]
+    x = @inverse_index[lemma]
+    if x.nil? then return [] else return x end
   end
 
   def lemma_to_pos(lemma)
@@ -50,10 +51,27 @@ class TreeBank
     h = {}
     self.lemma_to_words(lemma).each { |e|
       word,pos = e
-      print "word=#{word}, pos=#{pos}\n" # qwe
       h[pos[0]] = 1
     }
     return h.keys
+  end
+
+  def noun_to_gender(lemma)
+    # Given a lemma for a noun, returns "m", "f", "n", or "c" for its gender. In cases where the treebank has the
+    # noun tagged with more than one gender (e.g., ἔλαφος), we return "c" for common gender. There may be cases where a noun is
+    # really common gender, but it only occurs as one gender in the corpus, so we incorrectly return a fixed gender.
+    # If the lemma never occurs as a noun in the treebank, or it's never tagged by gender, we return nil.
+    h = {}
+    self.lemma_to_words(lemma).each { |e|
+      word,pos = e
+      next if pos[0]!='n'
+      gender = pos[6]
+      next if gender=='-'
+      h[gender] = 1
+    }
+    if h.keys.length==0 then return nil end
+    if h.keys.length==1 then return h.keys[0] end # this is the normal case
+    return 'c'
   end
 
 end
