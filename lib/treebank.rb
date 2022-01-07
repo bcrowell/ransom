@@ -22,7 +22,7 @@ class TreeBank
     # Elements are of the form [lemma,pos_tag], where pos_tag is a 9-character Project Perseus tag.
     x = self.word_to_lemma_entry(word)
     if x.nil? then return [] end
-    if !x[4] then return [x[0],x[2]] end # not ambiguous
+    if !x[4] then return [[x[0],x[2]]] end # not ambiguous
     return x[5].map { |a| [a[0],a[2]] }
   end
 
@@ -30,7 +30,7 @@ class TreeBank
     # Given a lemma, returns a list whose elements are of the form [word,pos], or returns nil.
     if @inverse_index.nil? then
       @inverse_index = {}
-      @lemmas.each { |word|
+      @lemmas.keys.each { |word|
         word_to_lemmas(word).each { |e|
           lemma2,pos = e
           if !(@inverse_index.has_key?(lemma2)) then @inverse_index[lemma2]=[] end
@@ -39,6 +39,21 @@ class TreeBank
       }
     end
     return @inverse_index[lemma]
+  end
+
+  def lemma_to_pos(lemma)
+    # Given a lemma, returns a list whose-elements are characters such as "n" for noun, as defined 
+    # by the first char of the perseus 9-character pos tags. In the normal case, the lemma has only
+    # one possible pos, e.g., it's a verb, so the return value is a singleton array containing a character.
+    # If the lemma is not recognized, the return value can be an empty list. This can happen, e.g., if
+    # the input was a Homeric lemma rather than Project Perseus's lemma.
+    h = {}
+    self.lemma_to_words(lemma).each { |e|
+      word,pos = e
+      print "word=#{word}, pos=#{pos}\n" # qwe
+      h[pos[0]] = 1
+    }
+    return h.keys
   end
 
 end
