@@ -12,12 +12,25 @@ class TreeBank
   attr_reader :lemmas,:lemmas_file
 
   def word_to_lemma_entry(word)
+    # This only handles the case where the word occurs as an inflected form of some lemma. If word is a lemma but never occurs
+    # in the text (e.g., λύω in the Iliad), then this function returns nil.
     if @lemmas.has_key?(word) then return @lemmas[word] end
     if @lemmas.has_key?(word.downcase) then return @lemmas[word.downcase] end
     return nil
   end
 
   def word_to_lemmas(word)
+    # Returns an array of entries for possible lemmas; in most cases the array will be a singleton.
+    # Elements are of the form [lemma,pos], where pos is a 1-character Project Perseus tag such as "n" for noun.
+    # This works both in the case where word occurs in the text and in the case where word is a Perseus lemma but does
+    # not itself occur in the text. It will return nil in the case where word is not the Perseus lemma and does not
+    # occur in the text, e.g., if word is a Homeric form.
+    x = self.word_in_text_to_lemmas(word)
+    y = self.lemma_to_words(word).map { |e| [word,e[1][0]] }
+    return (x+y).map { |e| [e[0],e[1][0]] }.uniq
+  end
+
+  def word_in_text_to_lemmas(word)
     # Returns an array of entries for possible lemmas; in most cases the array will be a singleton.
     # Elements are of the form [lemma,pos_tag], where pos_tag is a 9-character Project Perseus tag.
     x = self.word_to_lemma_entry(word)
@@ -31,7 +44,7 @@ class TreeBank
     if @inverse_index.nil? then
       @inverse_index = {}
       @lemmas.keys.each { |word|
-        word_to_lemmas(word).each { |e|
+        word_in_text_to_lemmas(word).each { |e|
           lemma2,pos = e
           if !(@inverse_index.has_key?(lemma2)) then @inverse_index[lemma2]=[] end
           @inverse_index[lemma2].push([word,pos])

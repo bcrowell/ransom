@@ -11,11 +11,25 @@ class GenerateWiktionary
     # Inputs: gloss is a hash in the format returned by Gloss.get.
     # returns [lemma,text,if_err,error_code,error_message]
     # If force is true, then we return a result even if there is already a wiktionary entry in the weekly wiktextract download.
-    possible_lemmas = [gloss['word'],gloss['perseus']]
-    # ...It's OK if perseus gloss is nil.
+    possible_perseus_lemmas = treebank.word_to_lemmas(gloss['word']).map { |x| x[0] }
+    if possible_perseus_lemmas.length==0 then return [nil,nil,true,'no_perseus_lemma',"can't find perseus lemmatization for #{gloss['word']}"] end
+    possible_lemmas = ([gloss['word'],gloss['perseus']]+possible_perseus_lemmas).uniq.filter { |x| !(x.nil?)}
+    # ...It's OK if perseus gloss is nil, gets filtered out.
     if WiktionaryGlosses.has_gloss(possible_lemmas) && !force then return [nil,nil,true,'exists',"entry exists already as one of: #{possible_lemmas}"] end
     # ...This only tests against the weekly wiktextract download, not the current live version.
-    if gloss.has_key?('perseus') then perseus_lemma=gloss['perseus']; alt=gloss['word'] else perseus_lemma=gloss['word']; alt=nil end
+    if gloss.has_key?('perseus') then
+      perseus_lemma=gloss['perseus']
+      alt=gloss['word']
+    else
+      if possible_perseus_lemmas.length==1 then
+        perseus_lemma=possible_perseus_lemmas[0]
+        alt=gloss['word']
+      else
+        return [nil,nil,true,'unclear_lemma',
+                     "gloss doesn't have perseus tag, and perseus doesn't give unambiguous lemmatization, gives: #{possible_perseus_lemmas}"]
+      end
+    end
+    if alt==perseus_lemma then alt=nil end
     pos_list = treebank.lemma_to_pos(perseus_lemma)
     if pos_list.length>1 then return [nil,nil,true,'ambiguous_pos',"POS is ambiguous: #{pos_list}"] end
     pos = pos_list[0]
