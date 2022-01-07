@@ -14,14 +14,17 @@ class GenerateWiktionary
     # ...It's OK if perseus gloss is nil.
     if WiktionaryGlosses.has_gloss(possible_lemmas) then return [nil,nil,true,'exists',"entry exists already as one of: #{possible_lemmas}"] end
     # ...This only tests against the weekly wiktextract download, not the current live version.
-    pos_list = treebank.lemma_to_pos(lemma)
+    if gloss.has_key?('perseus') then perseus_lemma=gloss['perseus']; alt=gloss['word'] else perseus_lemma=gloss['word']; alt=nil end
+    pos_list = treebank.lemma_to_pos(perseus_lemma)
     if pos_list.length>1 then return [nil,nil,true,'ambiguous_pos',"POS is ambiguous: #{pos_list}"] end
     pos = pos_list[0]
-    if pos=='n' then gender=treebank.noun_to_gender(lemma) end
     pos_long = {'n'=>'noun','v'=>'verb','a'=>'adjective','d'=>'adverb'}[pos]
     if pos_long.nil? then return [nil,nil,true,'unsupported_pos',"unsupported part of speech: #{pos}"] end
-    if gloss.has_key?('perseus') then lemma=gloss['perseus']; alt=gloss['word'] else lemma=gloss['word']; alt=nil end
-    # ... go with Perseus's judgment as to what is the proper general-purpose lemma
+    lemma = perseus_lemma
+    if pos=='n' then
+      gender=treebank.noun_to_gender(perseus_lemma)
+      if gender.nil? then return [nil,nil,true,'no_gender',"unable to determine gender for lemma #{lemma}; perhaps this isn't the Perseus lemma"] end
+    end
     pieces = []
     pieces.push("==Ancient Greek==")
     if !(alt.nil?) then
@@ -31,18 +34,20 @@ class GenerateWiktionary
       pieces.push("===Etymology===\n#{gloss['etym']}")
     end
     pieces.push("===Pronunciation===\n{{grc-IPA}}")
-    pieces.push("===#{pos_long.capitalize}===\n{{grc-#{pos_long}}}")
-    english = nil
-    possible_lemmas.each { |l|
-      next if l.nil?
-      english = Gloss.get(l,prefer_length:2)
-      break unless english.nil?
-    }
-    if english.nil? then return [nil,nil,true,'gloss_not_found',"no gloss found for lemmas: #{possible_lemmas}"] end
+    if pos=='n' then
+      if x=='c' then x="m or f" else x="|#{gender}" end
+    else
+      x=''
+    end
+    pieces.push("===#{pos_long.capitalize}===\n{{grc-#{pos_long}#{x}}}")
+    english = gloss['gloss']
+    if english.nil? then return [nil,nil,true,'no_gloss',"no gloss field exists in: #{gloss}"] end
+    x = []
     english.split(/;/).each { |d|
       # I've tried to do a consistent style in which entirely separate senses are separated by semicolons
-      pieces.push("# #{d}")
+      x.push("# #{d}")
     }
+    pieces.push(x.join("\n"))
     return [lemma,pieces.join("\n\n"),false,nil,nil]
   end
 end
