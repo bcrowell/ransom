@@ -76,7 +76,7 @@ def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:5
   t.scan(/[^\s—]+/).each { |word_raw|
     word = word_raw.gsub(/[^[:alpha:]᾽']/,'') # word_raw is super useless, may e.g. have a command on the end
     next unless word=~/[[:alpha:]]/
-    lemma_entry = Vlist.get_lemma_helper(lemmas,word)
+    lemma_entry = treebank.word_to_lemma_entry(word)
     if lemma_entry.nil? then whine.push("error: no index entry for #{word}, key=#{word}"); next end
     lemma,lemma_number,pos,count,if_ambiguous,ambig = lemma_entry
     if if_ambiguous then 
@@ -160,12 +160,6 @@ def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:5
   vl = Vlist.new(result2)
   if whine.length>0 then vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n" end
   return vl
-end
-
-def Vlist.get_lemma_helper(lemmas,word)
-  if lemmas.has_key?(word) then return lemmas[word] end
-  if lemmas.has_key?(word.downcase) then return lemmas[word.downcase] end
-  return nil
 end
 
 def Vlist.gloss_help_help_helper(key,lemma)
