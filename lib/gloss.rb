@@ -60,7 +60,7 @@ logdiff [+1 means consider it as difficult as a word whose freq
 mnem -- a mnemonic; may be idiosyncratic and only of interest to me; I use these only when there is no cognate that helps
 =end
 
-def Gloss.all_lemmas(file_glob:'glosses/*')
+def Gloss.all_lemmas(file_glob:'glosses/*',prefer_perseus:false)
   lemmas = []
   Dir.glob(file_glob).sort.each { |filename|
     next if (filename=~/~/ || filename=~/README/ )
@@ -74,6 +74,7 @@ def Gloss.all_lemmas(file_glob:'glosses/*')
     x = JSON.parse(json)
     if x.kind_of?(Array) then a=x else a=[x] end
     a.each { |x|
+      if prefer_perseus && x.has_key?('perseus') then lemmas.push(x['perseus']); next end
       lemmas.push(x['word']) if x['word']!=''
     }
   }

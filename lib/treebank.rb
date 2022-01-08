@@ -19,15 +19,21 @@ class TreeBank
     return nil
   end
 
-  def word_to_lemmas(word)
+  def word_to_lemmas(forms)
+    # Input is a list of possible forms, e.g., ["κεραΐζω","κεραίζω"]. It's OK if some elements are nil.
     # Returns an array of entries for possible lemmas; in most cases the array will be a singleton.
     # Elements are of the form [lemma,pos], where pos is a 1-character Project Perseus tag such as "n" for noun.
     # This works both in the case where word occurs in the text and in the case where word is a Perseus lemma but does
     # not itself occur in the text. It will return nil in the case where word is not the Perseus lemma and does not
     # occur in the text, e.g., if word is a Homeric form.
-    x = self.word_in_text_to_lemmas(word)
-    y = self.lemma_to_words(word).map { |e| [word,e[1][0]] }
-    return (x+y).map { |e| [e[0],e[1][0]] }.uniq
+    results = []
+    forms.each { |word|
+      next if word.nil?
+      results = results + self.word_in_text_to_lemmas(word)
+      results = results + self.lemma_to_words(word).map { |e| [word,e[1][0]] }
+    }
+    results = results.map { |e| [e[0],e[1][0]] }.uniq
+    return results
   end
 
   def word_in_text_to_lemmas(word)

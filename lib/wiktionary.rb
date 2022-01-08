@@ -11,7 +11,12 @@ class GenerateWiktionary
     # Inputs: gloss is a hash in the format returned by Gloss.get.
     # returns [lemma,text,if_err,error_code,error_message]
     # If force is true, then we return a result even if there is already a wiktionary entry in the weekly wiktextract download.
-    possible_perseus_lemmas = treebank.word_to_lemmas(gloss['word']).map { |x| x[0] }
+    if ["φοῖβος","σμινθεύς","βορέης"].include?(gloss['word'].downcase) then
+      return [nil,nil,true,'proper_noun',"the word #{gloss['word']} is lemmatized by Perseus as a proper noun"]
+    end
+    possible_perseus_lemmas = treebank.word_to_lemmas([gloss['word'],gloss['perseus']]).map { |x| x[0] }
+    if gloss.has_key?('perseus') then possible_perseus_lemmas.push(gloss['perseus']) end
+    # ... happens, e.g., for ὠλένη, which occurs in Homer only in the compound λευκωλενος
     if possible_perseus_lemmas.length==0 then return [nil,nil,true,'no_perseus_lemma',"can't find perseus lemmatization for #{gloss['word']}"] end
     possible_lemmas = ([gloss['word'],gloss['perseus']]+possible_perseus_lemmas).uniq.filter { |x| !(x.nil?)}
     # ...It's OK if perseus gloss is nil, gets filtered out.
@@ -117,7 +122,7 @@ def WiktionaryGlosses.has_gloss(possible_lemmas)
   # lemma and also a different lemma used by Perseus's treebank for that Homeric form
   possible_lemmas.each { |lemma|
     next if lemma.nil?
-    if !(WiktionaryGlosses.get_glosses(lemma).nil?) then return true end
+    if WiktionaryGlosses.get_glosses(lemma).length>0 then return true end
   }
   return false
 end
