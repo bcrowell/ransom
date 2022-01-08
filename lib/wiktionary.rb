@@ -80,7 +80,7 @@ filename = "wiktextract/grc_en.json"
 @@glosses = {}
 @@unaccented_index = {}
 if not File.exists?(filename) then
-  $stderr.print %q{
+  $stderr.print %Q{
     Warning: file #{filename} not found, so we won't be able to give automatic suggestions of glosses.
     See wiktextract/notes.txt re how to create this file.
     This has no effect on production of the pdf files. It just makes it more work to create glosses for new pages.

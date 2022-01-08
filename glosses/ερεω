@@ -2,8 +2,9 @@
 // first-person singular future active indicative uncontracted of εἴρω (eírō) and λέγω (légō)
 {
   "word":"ἐρέω",
-  "medium":"ask; will say",
-  "syn":"ἐρωτάω, ἔρομαι",
-  "notes":"epic and Ionic form of ἔρομαι"
+  "perseus":"ἐρῶ",
+  "medium":"will say",
+  "syn":"φημί, λέγω, εἶπον",
+  "notes":"Used as a future form of words like φημί, λέγω, εἶπον. Can be contracted to ἐρῶ, and is lemmatized in Project Perseus as that form."
 }
       
