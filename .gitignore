@@ -17,6 +17,7 @@ iliad.tex
 vocab_ch_*.txt
 help_gloss
 warnings
+epos_debug.txt
 core/*
 core.txt
 debug.txt

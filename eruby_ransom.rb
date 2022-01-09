@@ -26,9 +26,13 @@ class Options
 end
 
 class Bilingual
-  def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000)
+  def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000,length_ratio_expected:1.23,length_ratio_tol_factor:1.38)
     # g1 and g2 are line refs of the form [book,line]
     # t1 and t2 are word globs
+    # sanity checks:
+    #   max_chars -- maximum length of translated text
+    #   length_ratio_expected -- expected value of length of translation divided by length of foreign text
+    #   length_ratio_tol_factor -- tolerance factor for the above ratio
     @foreign_chapter_number = g1[0]
     @foreign_first_line_number = g1[1]
     @foreign_hr1,@foreign_hr2 = foreign.line_to_hard_ref(g1[0],g1[1]),foreign.line_to_hard_ref(g2[0],g2[1])
@@ -47,9 +51,26 @@ class Bilingual
     @translation_text = Patch_names.patch(@translation_text) # change, e.g., Juno to Hera
     max_chars = 5000
     if @translation_text.length>max_chars || @translation_text.length==0 then
-      raise "page of translated text has #{@translation_text.length} characters, failing sanity " \
-           +"check:\n  '#{t1}-'\n  '#{t2}'\n  #{translation_hr1}-#{translation_hr2}"
+      message = "page of translated text has #{@translation_text.length} characters, failing sanity check"
+      self.raise_failed_sanity_check(message,t1,t2,translation_hr1,translation_hr2)
     end
+    l_t,l_f = @translation_text.length,@foreign_text.length
+    length_ratio = l_t.to_f/l_f.to_f
+    lo,hi = length_ratio_expected/length_ratio_tol_factor,length_ratio_expected*length_ratio_tol_factor
+    if length_ratio<lo || length_ratio>hi then
+      message = "length ratio=#{length_ratio}, outside of expected range of #{lo}-#{hi}"
+      self.raise_failed_sanity_check(message,t1,t2,translation_hr1,translation_hr2)
+    end
+  end
+  def raise_failed_sanity_check(basic_message,t1,t2,translation_hr1,translation_hr2)
+    debug_file = "epos_debug.txt"
+    message = "Epos text selection fails sanity check\n" \
+         + basic_message + "\n" \
+         + "  '#{t1}-'\n  '#{t2}'\n  #{translation_hr1}-#{translation_hr2}\n"
+    File.open(debug_file,"w") { |f|
+      f.print message,"\n-------------------\n",self.foreign_text,"\n-------------------\n",self.translation_text,"\n"
+    }
+    raise message + "\n  See #{debug_file}"
   end
   attr_reader :foreign_hr1,:foreign_hr2,:foreign_ch1,:foreign_ch2,:foreign_text,:translation_text,:foreign_first_line_number,:foreign_chapter_number
 end
