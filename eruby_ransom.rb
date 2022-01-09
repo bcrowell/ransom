@@ -340,7 +340,7 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
           end
           if Options.if_render_glosses then
             pos = Init.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
-            if pos.nil? then raise "in foreign_helper, pos is nil for line_hash=#{line_hash}, key=#{key}" end
+            if pos.nil? then raise "in foreign_helper, rendering ransom notes, position is nil for line_hash=#{line_hash}, key=#{key}" end
             x,y,width,height = pos['x'],pos['y'],pos['width'],pos['height'] # all floats in units of pts
             if x>254.0 then
               width=355.0-x
