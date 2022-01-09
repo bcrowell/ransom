@@ -29,6 +29,7 @@ class Bilingual
   def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000)
     # g1 and g2 are line refs of the form [book,line]
     # t1 and t2 are word globs
+    @foreign_chapter_number = g1[0]
     @foreign_first_line_number = g1[1]
     @foreign_hr1,@foreign_hr2 = foreign.line_to_hard_ref(g1[0],g1[1]),foreign.line_to_hard_ref(g2[0],g2[1])
     @foreign_ch1,@foreign_ch2 = @foreign_hr1[0],@foreign_hr2[0]
@@ -50,7 +51,7 @@ class Bilingual
            +"check:\n  '#{t1}-'\n  '#{t2}'\n  #{translation_hr1}-#{translation_hr2}"
     end
   end
-  attr_reader :foreign_hr1,:foreign_hr2,:foreign_ch1,:foreign_ch2,:foreign_text,:translation_text,:foreign_first_line_number
+  attr_reader :foreign_hr1,:foreign_hr2,:foreign_ch1,:foreign_ch2,:foreign_text,:translation_text,:foreign_first_line_number,:foreign_chapter_number
 end
 
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
@@ -102,7 +103,7 @@ def print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,notes)
 end
 
 def header_latex(bilingual)
-  foreign_header = "#{bilingual.foreign_hr1[0]}.#{bilingual.foreign_hr1[1]}" # e.g., 2.217 for book 2, line 217
+  foreign_header = "#{bilingual.foreign_chapter_number}.#{bilingual.foreign_first_line_number}" # e.g., 2.217 for book 2, line 217
   x = ''
   x += "\\renewcommand{\\rightheaderinfo}{#{foreign_header}}%\n"
   x += "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatvocab}%\n"
