@@ -120,6 +120,7 @@ breaks = [
   [ [2,867], "Nastes commanded the barbarous-voiced Carians, who possessed Miletus",{'end_at'=> "But Sarpedon and gallant Glaucus from Lycia afar>"}],
 
   [ [3,1], "But after they had each been marshalled along with their leaders"],
+  [ [3,18], "but he brandishing two spears tipped with brass"],
 
 ]
 
@@ -127,6 +128,8 @@ format = ENV['FORMAT']
 if format.nil? then $stderr.print "FORMAT environment variable not set\n"; exit(-1) end
 if !(['whole','booklet_short'].include?(format)) then $stderr.print "FORMAT environment variable set to illegal value #{format}\n"; exit(-1) end
 if format=='booklet_short' then breaks = breaks[0..17] end
+
+dry_run = !(ENV['DRY_RUN'].nil?)
 
 current_chapter = -999
 vocab_by_chapter = []
@@ -137,7 +140,9 @@ vocab_by_chapter = []
   if a[0][0]>current_chapter then current_chapter=a[0][0]; starting_ch=current_chapter end
   a_opts = a[2] # hash or nil
   if !a_opts.nil? && a_opts.has_key?('end_at') then end_at=a_opts['end_at'] else end_at=b[1] end
-  four_page_layout(stuff,a[0],b[0],a[1],end_at,vocab_by_chapter,start_chapter:starting_ch)
+  g1,g2,t1,t2 = a[0],b[0],a[1],end_at
+  sanity_check(g1,g2,t1,t2,greek,translation) # raises an exception if something seems wrong
+  if !dry_run then four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:starting_ch) end
 }
 1.upto(vocab_by_chapter.length-1) { |ch|
   filename = sprintf("vocab_ch_%02d.txt",ch)

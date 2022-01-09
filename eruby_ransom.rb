@@ -27,6 +27,28 @@ end
 
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
 
+def sanity_check(g1,g2,t1,t2,greek,translation,max_chars:5000)
+    # g1 and g2 are line refs of the form [book,line]
+    # t1 and t2 are word globs
+    # FIXME: This duplicates a lot of code from eruby
+    rg1,rg2 = greek.line_to_hard_ref(g1[0],g1[1]),greek.line_to_hard_ref(g2[0],g2[1])
+    t1 = Patch_names.antipatch(t1)
+    t2 = Patch_names.antipatch(t2)
+    hr1 = translation.word_glob_to_hard_ref(t1)
+    hr2 = translation.word_glob_to_hard_ref(t2)
+    if hr1[1] then raise "ambiguous word glob: #{t1}, #{hr1[2]}" end
+    if hr2[1] then raise "ambiguous word glob: #{t2}, #{hr2[2]}"end
+    rt1,rt2 = hr1[0],hr2[0]
+    if rt1.nil? || rt2.nil? then raise "bad word glob, #{t1}->#{rt1} or #{t2}->#{rt2}" end
+    translation_text = translation.extract(rt1,rt2)
+    max_chars = 5000
+    if translation_text.length>max_chars || translation_text.length==0 then
+      raise "page of translated text has #{translation_text.length} characters, failing sanity " \
+           +"check:\n  '#{t1}-'\n  '#{t2}'\n  #{rt1}-#{rt2}"
+    end
+end
+
+
 def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil,max_chars:5000)  
   # g1 and g2 are line refs of the form [book,line]
   # t1 and t2 are word globs

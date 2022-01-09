@@ -507,6 +507,7 @@ class Epos
 
   def Epos.strip_pg_footnotes(s)
     # This works on a single paragraph terminated by a newline.
+    # For an example of how to use this from an external script, see remove_pg_footnotes.rb .
     s = s.gsub(/Footnote \d+([^\n]+\n)+/,'')
     s = s.gsub(/^ +([^\s][^\n]*\n?)+/,'')
     # indented lines sometimes occur inside footnotes, with blank lines above and below; also sometimes we have a footnote consisting of verse

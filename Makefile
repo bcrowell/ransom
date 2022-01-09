@@ -41,6 +41,12 @@ book_no_copy: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@./fruby $(BOOK).rbtex '{$(GENERIC),"render_glosses":true}' >$(BOOK).tex
 	@$(COMPILE)
 
+dry_run: export DRY_RUN=1
+dry_run: export FORMAT=whole
+dry_run: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
+	@echo "checking that Epos globs are valid, doing sanity checks on their results..."
+	./fruby $(BOOK).rbtex '{$(GENERIC),"clean":true}' >$(BOOK).tex
+
 # The following target creates pdf versions of the svg figures.
 # For this to work, the scripts in the scripts directory need to be executable.
 # Inkscape 0.47 or later is required.
