@@ -25,76 +25,91 @@ class Options
   end
 end
 
-if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
-
-def sanity_check(g1,g2,t1,t2,greek,translation,max_chars:5000)
+class Bilingual
+  def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000)
     # g1 and g2 are line refs of the form [book,line]
     # t1 and t2 are word globs
     # FIXME: This duplicates a lot of code from eruby
-    rg1,rg2 = greek.line_to_hard_ref(g1[0],g1[1]),greek.line_to_hard_ref(g2[0],g2[1])
+    @foreign_hr1,@foreign_hr2 = foreign.line_to_hard_ref(g1[0],g1[1]),foreign.line_to_hard_ref(g2[0],g2[1])
+    @foreign_ch1,@foreign_ch2 = @foreign_hr1[0],@foreign_hr2[0]
+    @foreign_text = foreign.extract(foreign_hr1,foreign_hr2)
+    # Let word globs contain, e.g., Hera rather than Juno:
     t1 = Patch_names.antipatch(t1)
     t2 = Patch_names.antipatch(t2)
-    hr1 = translation.word_glob_to_hard_ref(t1)
-    hr2 = translation.word_glob_to_hard_ref(t2)
-    if hr1[1] then raise "ambiguous word glob: #{t1}, #{hr1[2]}" end
-    if hr2[1] then raise "ambiguous word glob: #{t2}, #{hr2[2]}"end
-    rt1,rt2 = hr1[0],hr2[0]
-    if rt1.nil? || rt2.nil? then raise "bad word glob, #{t1}->#{rt1} or #{t2}->#{rt2}" end
-    translation_text = translation.extract(rt1,rt2)
+    translation_hr1_with_errs = translation.word_glob_to_hard_ref(t1)
+    translation_hr2_with_errs = translation.word_glob_to_hard_ref(t2)
+    translation_hr1,translation_hr2 = translation_hr1_with_errs[0],translation_hr2_with_errs[0]
+    if translation_hr1_with_errs[1] then raise "ambiguous word glob: #{t1}, #{translation_hr1_with_errs[2]}" end
+    if translation_hr2_with_errs[1] then raise "ambiguous word glob: #{t2}, #{translation_hr2_with_errs[2]}"end
+    if translation_hr1.nil? || translation_hr2.nil? then raise "bad word glob, #{t1}->#{translation_hr1} or #{t2}->#{translation_hr2}" end
+    @translation_text = translation.extract(translation_hr1,translation_hr2)
+    @translation_text = Patch_names.patch(@translation_text) # change, e.g., Juno to Hera
     max_chars = 5000
-    if translation_text.length>max_chars || translation_text.length==0 then
-      raise "page of translated text has #{translation_text.length} characters, failing sanity " \
-           +"check:\n  '#{t1}-'\n  '#{t2}'\n  #{rt1}-#{rt2}"
+    if @translation_text.length>max_chars || @translation_text.length==0 then
+      raise "page of translated text has #{@translation_text.length} characters, failing sanity " \
+           +"check:\n  '#{t1}-'\n  '#{t2}'\n  #{translation_hr1}-#{translation_hr2}"
     end
+  end
+  attr_reader :foreign_hr1,:foreign_hr2,:foreign_ch1,:foreign_ch2,:foreign_text,:translation_text
 end
 
+if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
 
-def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil,max_chars:5000)  
+def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil,dry_run:false)
   # g1 and g2 are line refs of the form [book,line]
   # t1 and t2 are word globs
-  # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
-  ch = g1[0]
   treebank,freq_file,greek,translation,notes,core = stuff
-  core = core.map { |x| remove_accents(x).downcase }
-  rg1,rg2 = greek.line_to_hard_ref(g1[0],g1[1]),greek.line_to_hard_ref(g2[0],g2[1])
-  if rg1[0]!=rg2[0] then
+  bilingual = Bilingual.new(g1,g2,t1,t2,greek,translation)
+  return if dry_run
+  print_four_page_layout(stuff,bilingual,vocab_by_chapter,start_chapter)
+end
+
+def print_four_page_layout(stuff,bilingual,vocab_by_chapter,start_chapter)  
+  # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
+  treebank,freq_file,greek,translation,notes,core = stuff
+  ch = bilingual.foreign_ch1
+  first_line_number = bilingual.foreign_hr1[1]
+  core,vl,vocab_by_chapter = four_page_layout_vocab_helper(bilingual,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
+  if bilingual.foreign_ch1!=bilingual.foreign_ch2 then
     # This should only happen in the case where reference 2 is to the very first line of the next book.
-    if !(rg2[1]<=5 && rg2[0]==rg1[0]+1) then raise "four-page layout spans books, #{rg1} - #{rg2}" end
+    if !(bilingual.foreign_hr2[1]<=5 && bilingual.foreign_hr2[0]==bilingual.foreign_hr1[0]+1) then
+      raise "four-page layout spans books, #{bilingual.foreign_hr1} - #{bilingual.foreign_hr2}"
+    end
   end
-  first_line_number = g1[1]
-  greek_text = greek.extract(rg1,rg2)
-  vl = Vlist.from_text(greek_text,treebank,freq_file,exclude_glosses:list_exclude_glosses(g1,g2,notes))
+  print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,first_line_number,notes)
+end
+
+def four_page_layout_vocab_helper(bilingual,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
+  core = core.map { |x| remove_accents(x).downcase }
+  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
   if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
   if vocab_by_chapter[ch].nil? then vocab_by_chapter[ch]=[] end
   vocab_by_chapter[ch] = alpha_sort((vocab_by_chapter[ch]+vl.all_lexicals).uniq)
+  return core,vl,vocab_by_chapter
+end
+
+def print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,first_line_number,notes)
+  # prints
   v = vocab(vl,core) # prints
-  print "\\renewcommand{\\rightheaderinfo}{#{g1[0]}.#{g1[1]}}%\n"
-  print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatvocab}%\n"
-  print "\\pagebreak\n\n"
-  print "\\renewcommand{\\leftheaderinfo}{#{g1[0]}.#{g1[1]}}%\n"
+  print header_latex(bilingual)
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
-  print foreign(greek_text,first_line_number),"\n\n"
+  print foreign(bilingual.foreign_text,first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatglosses}%\n"
-  print ransom(greek_text,v,first_line_number),"\n\n"
-  # Let word globs contain, e.g., Hera rather than Juno.
-  t1 = Patch_names.antipatch(t1)
-  t2 = Patch_names.antipatch(t2)
-  hr1 = translation.word_glob_to_hard_ref(t1)
-  hr2 = translation.word_glob_to_hard_ref(t2)
-  if hr1[1] then raise "ambiguous word glob: #{t1}, #{hr1[2]}" end
-  if hr2[1] then raise "ambiguous word glob: #{t2}, #{hr2[2]}"end
-  rt1,rt2 = hr1[0],hr2[0]
-  if rt1.nil? || rt2.nil? then raise "bad word glob, #{t1}->#{rt1} or #{t2}->#{rt2}" end
-  translation_text = translation.extract(rt1,rt2)
-  if translation_text.length>max_chars || translation_text.length==0 then
-    raise "page of translated text has #{translation_text.length} characters, failing sanity " \
-         +"check:\n  '#{t1}-'\n  '#{t2}'\n  #{rt1}-#{rt2}"
-  end
-  translation_text = Patch_names.patch(translation_text)
+  print ransom(bilingual.foreign_text,v,first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
-  print translation_text
-  print notes_to_latex(g1,g2,notes)
+  print bilingual.translation_text
+  print notes_to_latex(bilingual.foreign_hr1,bilingual.foreign_hr2,notes)
+end
+
+def header_latex(bilingual)
+  foreign_header = "#{bilingual.foreign_hr1[0]}.#{bilingual.foreign_hr1[1]}" # e.g., 2.217 for book 2, line 217
+  x = ''
+  x += "\\renewcommand{\\rightheaderinfo}{#{foreign_header}}%\n"
+  x += "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatvocab}%\n"
+  x += "\\pagebreak\n\n"
+  x += "\\renewcommand{\\leftheaderinfo}{#{foreign_header}}%\n"
+  return x
 end
 
 def notes_to_latex(lineref1,lineref2,notes)

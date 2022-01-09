@@ -141,8 +141,7 @@ vocab_by_chapter = []
   a_opts = a[2] # hash or nil
   if !a_opts.nil? && a_opts.has_key?('end_at') then end_at=a_opts['end_at'] else end_at=b[1] end
   g1,g2,t1,t2 = a[0],b[0],a[1],end_at
-  sanity_check(g1,g2,t1,t2,greek,translation) # raises an exception if something seems wrong
-  if !dry_run then four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:starting_ch) end
+  four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run)
 }
 1.upto(vocab_by_chapter.length-1) { |ch|
   filename = sprintf("vocab_ch_%02d.txt",ch)
