@@ -29,7 +29,7 @@ class Bilingual
   def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000)
     # g1 and g2 are line refs of the form [book,line]
     # t1 and t2 are word globs
-    # FIXME: This duplicates a lot of code from eruby
+    @foreign_first_line_number = g1[1]
     @foreign_hr1,@foreign_hr2 = foreign.line_to_hard_ref(g1[0],g1[1]),foreign.line_to_hard_ref(g2[0],g2[1])
     @foreign_ch1,@foreign_ch2 = @foreign_hr1[0],@foreign_hr2[0]
     @foreign_text = foreign.extract(foreign_hr1,foreign_hr2)
@@ -50,7 +50,7 @@ class Bilingual
            +"check:\n  '#{t1}-'\n  '#{t2}'\n  #{translation_hr1}-#{translation_hr2}"
     end
   end
-  attr_reader :foreign_hr1,:foreign_hr2,:foreign_ch1,:foreign_ch2,:foreign_text,:translation_text
+  attr_reader :foreign_hr1,:foreign_hr2,:foreign_ch1,:foreign_ch2,:foreign_text,:translation_text,:foreign_first_line_number
 end
 
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
@@ -68,7 +68,6 @@ def print_four_page_layout(stuff,bilingual,vocab_by_chapter,start_chapter)
   # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
   treebank,freq_file,greek,translation,notes,core = stuff
   ch = bilingual.foreign_ch1
-  first_line_number = bilingual.foreign_hr1[1]
   core,vl,vocab_by_chapter = four_page_layout_vocab_helper(bilingual,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
   if bilingual.foreign_ch1!=bilingual.foreign_ch2 then
     # This should only happen in the case where reference 2 is to the very first line of the next book.
@@ -76,7 +75,7 @@ def print_four_page_layout(stuff,bilingual,vocab_by_chapter,start_chapter)
       raise "four-page layout spans books, #{bilingual.foreign_hr1} - #{bilingual.foreign_hr2}"
     end
   end
-  print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,first_line_number,notes)
+  print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,notes)
 end
 
 def four_page_layout_vocab_helper(bilingual,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
@@ -88,15 +87,15 @@ def four_page_layout_vocab_helper(bilingual,core,treebank,freq_file,notes,vocab_
   return core,vl,vocab_by_chapter
 end
 
-def print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,first_line_number,notes)
+def print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,notes)
   # prints
   v = vocab(vl,core) # prints
   print header_latex(bilingual)
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
-  print foreign(bilingual.foreign_text,first_line_number),"\n\n"
+  print foreign(bilingual.foreign_text,bilingual.foreign_first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatglosses}%\n"
-  print ransom(bilingual.foreign_text,v,first_line_number),"\n\n"
+  print ransom(bilingual.foreign_text,v,bilingual.foreign_first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print bilingual.translation_text
   print notes_to_latex(bilingual.foreign_hr1,bilingual.foreign_hr2,notes)
