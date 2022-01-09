@@ -1,3 +1,4 @@
+# coding: utf-8
 =begin
 
 This is a general-purpose library for use in selecting or referring to
@@ -505,8 +506,11 @@ class Epos
   end
 
   def Epos.strip_pg_footnotes(s)
+    # This works on a single paragraph terminated by a newline.
     s = s.gsub(/Footnote \d+([^\n]+\n)+/,'')
-    s = s.gsub(/^ \s*[^\s][^\n]*/,'') # indented lines sometimes occur inside footnotes, with blank lines above and below
+    s = s.gsub(/^ +([^\s][^\n]*\n?)+/,'')
+    # indented lines sometimes occur inside footnotes, with blank lines above and below; also sometimes we have a footnote consisting of verse
+    # which has the first line indented, but not the later lines
     return s
   end
 
