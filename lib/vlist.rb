@@ -156,7 +156,10 @@ def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:5
       whine.each { |complaint| f.print "#{complaint}\n" }
     }
   end
-  if gloss_help.length>0 then Vlist.give_gloss_help(gloss_help) end
+  if gloss_help.length>0 then
+    gloss_help_summary_info = Vlist.give_gloss_help(gloss_help)
+    $stderr.print gloss_help_summary_info,"\n" if !gloss_help_summary_info.nil?
+  end
   vl = Vlist.new(result2)
   if whine.length>0 then vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n" end
   return vl
@@ -179,11 +182,13 @@ end
 def Vlist.give_gloss_help(gloss_help)
   gloss_help_dir = "help_gloss"
   unless File.directory?(gloss_help_dir) then Dir.mkdir(gloss_help_dir) end
-  $stderr.print "====writing gloss help to #{gloss_help_dir}, checking for missing help from among #{gloss_help.length} lemmas ====\n"
+  gloss_help = gloss_help.filter { |h| h['lemma']==h['lemma'].downcase } # filter out things that look like proper nouns
+  return nil if gloss_help.length==0
+  list_written = []
   gloss_help.each { |h|
-    next if h['lemma']!=h['lemma'].downcase # probably a proper noun
     filename = dir_and_file_to_path(gloss_help_dir,h['filename'])
     next if File.exist?(filename)
+    list_written.push(h['lemma'])
     File.open(filename,"w") { |f|
       x = %Q(
         // #{h['url']}
@@ -209,6 +214,12 @@ def Vlist.give_gloss_help(gloss_help)
       f.print "</p>\n"
     }
   }
+  list_written = alpha_sort(list_written)
+  n_written = list_written.length
+  if n_written==0 then return nil end
+  if n_written<=10 then ll=list_written; suffix='' else ll = list_written[0..9]; suffix=" (more...) " end
+  return "====wrote gloss help to #{gloss_help_dir} for #{n_written} lemmas that previously had no help: ====\n" \
+        + "  " + ll.join(" ") + suffix + "\n"
 end
 
 end # class Vlist
