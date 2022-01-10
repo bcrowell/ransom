@@ -179,12 +179,12 @@ end
 def Vlist.give_gloss_help(gloss_help)
   gloss_help_dir = "help_gloss"
   unless File.directory?(gloss_help_dir) then Dir.mkdir(gloss_help_dir) end
-  $stderr.print "====writing gloss help to #{gloss_help_dir} ====\n"
+  $stderr.print "====writing gloss help to #{gloss_help_dir}, checking for missing help from among #{gloss_help.length} lemmas ====\n"
   gloss_help.each { |h|
     next if h['lemma']!=h['lemma'].downcase # probably a proper noun
-    filename = dir_and_file_to_path(gloss_help_dir,"__links.html")
+    filename = dir_and_file_to_path(gloss_help_dir,h['filename'])
     next if File.exist?(filename)
-    File.open(dir_and_file_to_path(gloss_help_dir,h['filename']),"w") { |f|
+    File.open(filename,"w") { |f|
       x = %Q(
         // #{h['url']}
         // #{h['wikt']}
