@@ -122,6 +122,18 @@ def Gloss.get(word,prefer_length:1)
     if w0!=w1 && w1==word then e=entries_found[1][1]; ambiguous=false end
     if w0!=w1 && w0==word then ambiguous=false end
   end
+  if ambiguous && entries_found.length>=2 then
+    # Use a point system to try to resolve more difficult ambiguities. This gets activated for δαίς/δάϊς/δάις.
+    entries_found = entries_found.sort_by { |x| Gloss.similarity_of_lemmas(word,x[1]['word']) }
+    pts = [0,0]
+    0.upto(1) { |j|
+      x = entries_found[j]
+      pts[j] = 2*Gloss.similarity_of_lemmas(word,x[1]['word'])
+      if x[0]=='perseus' then pts[j] += 1 end
+    }
+    if pts[0]<pts[1] || entries_found[0][1]['medium']==entries_found[1][1]['medium'] then ambiguous=false; e=entries_found[0][1] end
+    # $stderr.print "WARNING: Ambiguity of #{word} resolved in favor of #{entries_found[0][1]['word']}: #{entries_found[0][1]['medium']} over #{entries_found[1][1]['word']}: #{entries_found[1][1]['medium']}\n"
+  end
   if ambiguous then
     $stderr.print "********* WARNING: ambiguous glosses found for #{word}: #{entries_found}\n"
   end
@@ -130,6 +142,17 @@ def Gloss.get(word,prefer_length:1)
   if prefer_length==0 && e.has_key?('short') then e['gloss']=e['short'] end
   if prefer_length==2 && e.has_key?('long') then e['gloss']=e['long'] end
   return e
+end
+
+def Gloss.similarity_of_lemmas(a,b)
+  if a==b then return 0 end
+  if Gloss.standardize_diaresis(a)==Gloss.standardize_diaresis(b) then return 1 end
+  if remove_accents(a)==remove_accents(b) then return 2 end
+  return 999
+end
+
+def Gloss.standardize_diaresis(s)
+  return s.gsub(/άϊ/,'άι').gsub(/έϊ/,'έι')
 end
 
 def Gloss.validate(key)
