@@ -43,8 +43,8 @@ good core words:
   kind of background they have.
 words_added_by_hand:
   A good candidate for this list could be:
-  -A word that occurs more frequently in compounds and derived terms than would be indicated by its
-   low frequency as an independent word (e.g., μῆτις, λέχος, ἥμισυς, χῶρος).
+  -A word that occurs more frequently in compounds, derived terms, or multiple forms than
+   would be indicated by its low frequency as an independent word (e.g., μῆτις, λέχος, ἥμισυς, χῶρος, ἐλεέω).
   -A word that is easy to learn because it has obvious cognates (e.g., κλέπτω, γλῶσσα).
   -A word for a basic human concept that one should know in any
    language one is learning (e.g., ἀδελφός, γελάω).
@@ -60,7 +60,7 @@ words_added_by_hand = (<<-'BY_HAND'
 γλῶσσα κρατέω κρίνω γηθέω σῶς βαρύς ὀνομάζω αἰδέομαι χώομαι χραισμέω μῆτις γελάω
 ἀδελφός δάω ἀΐω πέρθω εἴδω εὐνάω ἥμισυς καρδία μήν μόνος νεφέλη ὅρκος ὄμνυμι
 ἄγχι σχεδόν πονέω κάμνω τέλος
-τρεῖς τέσσαρες δέκα ἑκατόν νεῖκος ὑσμίνη χῶρος
+τρεῖς τέσσαρες δέκα ἑκατόν νεῖκος ὑσμίνη χῶρος ἐλεέω
 BY_HAND
 ).split(/\s/)
 
