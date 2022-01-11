@@ -11,6 +11,7 @@ require_relative "lib/gloss"
 require_relative "lib/clown"
 require_relative "greek/nouns"
 require_relative "greek/verbs"
+require_relative "greek/lemma_util"
 require_relative "greek/writing"
 
 class Options

@@ -4,6 +4,7 @@ require "./lib/string_util.rb"
 require "./lib/file_util.rb"
 require "./lib/gloss.rb"
 require "./lib/vlist.rb"
+require "./greek/lemma_util.rb"
 
 =begin
 

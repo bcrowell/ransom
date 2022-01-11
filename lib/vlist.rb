@@ -74,13 +74,17 @@ def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:5
   did_lemma = {}
   warn_ambig = {}
   t.scan(/[^\s—]+/).each { |word_raw|
-    word = word_raw.gsub(/[^[:alpha:]᾽']/,'') # word_raw is super useless, may e.g. have a command on the end
+    word = word_raw.gsub(/[^[:alpha:]᾽']/,'') # word_raw is super useless, may e.g. have a comma on the end
     next unless word=~/[[:alpha:]]/
     lemma_entry = treebank.word_to_lemma_entry(word)
     if lemma_entry.nil? then whine.push("error: no index entry for #{word}, key=#{word}"); next end
     lemma,lemma_number,pos,count,if_ambiguous,ambig = lemma_entry
-    if if_ambiguous then 
-      warn_ambig[word]= "warning: lemma for #{word} is ambiguous, taking most common one; #{ambig}"
+    if if_ambiguous then
+      sadness,ii = LemmaUtil.disambiguate_lemmatization(word,ambig)
+      if sadness>0 then
+        warn_ambig[word]= "warning in Vlist.from_text: lemma for #{word} is ambiguous, taking most common one; #{ambig}\n  sadness=#{sadness}"
+        lemma,lemma_number,pos,count,if_ambiguous = ambig[ii]
+      end
     end
     if lemma.nil? then whine.push("lemma is nil for #{word} in lemmas file"); next end
     next if did_lemma.has_key?(lemma)
@@ -244,6 +248,8 @@ class Proper_noun
     Μυρμιδών αχαιις ατη ατρειδης βρισευς διος εκτωρ αιγαιων αιγειδην εξαδιος ευρυβατης ηετιων θετις θηβη θησευς ιδομενευς καινευς
     καρδια κρονιων μενοιτιαδης μυρμιδονες πατροκλος πειριθοος πολυφημος ποσειδεων ταλθυβιος
     αιθιοψ κρονιδης πηλευς δρυας κορος Ἀτρείων ηφαιστος λημνος ουρανιωνες σιντιες
+    Ἀλέξανδρος Ἀφροδίτη Ἑλένη Πάρις Τρῳάς Τρωιός Μῃονίη Φρύγιος Λακεδαίμων Πριαμίδης Λυκάων Ἀίδης Ἀντήνωρ Ἴδη Σκαιαί Ἰδαῖος Πολυδεύκης
+    Κρήτηθεν Κρής Κάστωρ Ὀτρεύς Φρύξ Σαγγάριος Μύγδων Πιτθεύς Πάνθοος Οὐκαλέγων Λάμπος Κλυμένη Θυμοίτης Αἴθρη Ἄρης Ἑλικάων
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Proper_noun.is(word,lemma,require_cap:true)
     if require_cap && word[0].downcase==word[0] then return false end

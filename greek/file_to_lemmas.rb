@@ -17,6 +17,7 @@ require_relative "../lib/vlist"
 require_relative "../lib/gloss"
 require_relative "../lib/clown"
 require_relative "nouns"
+require_relative "lemma_util"
 
 text_file = ARGV[0]
 
@@ -38,7 +39,7 @@ words.each { |word_raw|
   lemma_entry = Vlist.get_lemma_helper(lemmas,word)
   if lemma_entry.nil? then whine.push("error: no index entry for #{word_raw}, key=#{word}"); next end
   lemma,lemma_number,pos,count,if_ambiguous,ambig = lemma_entry
-  if if_ambiguous then whine.push("warning: lemma for #{word_raw} is ambiguous, taking most common one; #{ambig}") end
+  if if_ambiguous then whine.push("warning in standalone script file_to_lemmas.rb: lemma for #{word_raw} is ambiguous, taking most common one; #{ambig}") end
   if lemma.nil? then whine.push("lemma is nil for #{word} in lemmas file"); next end
   results.push(lemma)
 }
