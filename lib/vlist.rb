@@ -74,19 +74,28 @@ def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:5
   did_lemma = {}
   warn_ambig = {}
   t.scan(/[^\s—]+/).each { |word_raw|
-    word = word_raw.gsub(/[^[:alpha:]᾽']/,'') # word_raw is super useless, may e.g. have a comma on the end
+    word = word_raw.gsub(/[^[:alpha:]᾽']/,'') # word_raw is mostly useless, may e.g. have a comma on the end; may also contain elision mark
     next unless word=~/[[:alpha:]]/
     lemma_entry = treebank.word_to_lemma_entry(word)
-    if lemma_entry.nil? then whine.push("error: no index entry for #{word}, key=#{word}"); next end
+    elision = contains_greek_elision(word_raw)
+    # ... elision produces so much ambiguity that we aren't going to try to gloss elided forms; if I was going to do improve this, I would
+    #     need to stop filtering out elided forms when constructing the csv file, and implement disambiguation based on the line-by-line treebank data
+    ουδε_μηδε = ["ουδε","μηδε"].include?(remove_accents(word))
+    # ... I don't understand why, but these seem to occur in Perseus treebank only as lemmas, never as inflected forms, although they are in the text.
+    do_not_try = (elision || ουδε_μηδε)
+    if lemma_entry.nil? && !do_not_try then whine.push("error(vlist): no index entry for #{word}, raw=#{word_raw}"); next end
     lemma,lemma_number,pos,count,if_ambiguous,ambig = lemma_entry
     if if_ambiguous then
       sadness,ii = LemmaUtil.disambiguate_lemmatization(word,ambig)
       if sadness>0 then
-        warn_ambig[word]= "warning in Vlist.from_text: lemma for #{word} is ambiguous, taking most common one; #{ambig}\n  sadness=#{sadness}"
+        warn_ambig[word]= "warning(vlist): lemma for #{word} is ambiguous, sadness=#{sadness}, taking most common one; #{ambig}"
         lemma,lemma_number,pos,count,if_ambiguous = ambig[ii]
       end
     end
-    if lemma.nil? then whine.push("lemma is nil for #{word} in lemmas file"); next end
+    if lemma.nil? then
+      if !do_not_try then whine.push("warning(vlist): lemma is nil for #{word} in lemmas file") end
+      next
+    end
     next if did_lemma.has_key?(lemma)
     excl = false
     [lemma,word].each { |x| excl = excl || exclude_glosses.include?(remove_accents(x).downcase) }
@@ -249,7 +258,8 @@ class Proper_noun
     καρδια κρονιων μενοιτιαδης μυρμιδονες πατροκλος πειριθοος πολυφημος ποσειδεων ταλθυβιος
     αιθιοψ κρονιδης πηλευς δρυας κορος Ἀτρείων ηφαιστος λημνος ουρανιωνες σιντιες
     Ἀλέξανδρος Ἀφροδίτη Ἑλένη Πάρις Τρῳάς Τρωιός Μῃονίη Φρύγιος Λακεδαίμων Πριαμίδης Λυκάων Ἀίδης Ἀντήνωρ Ἴδη Σκαιαί Ἰδαῖος Πολυδεύκης
-    Κρήτηθεν Κρής Κάστωρ Ὀτρεύς Φρύξ Σαγγάριος Μύγδων Πιτθεύς Πάνθοος Οὐκαλέγων Λάμπος Κλυμένη Θυμοίτης Αἴθρη Ἄρης Ἑλικάων
+    Κρήτηθεν Κρής Κάστωρ Ὀτρεύς Φρύξ Σαγγάριος Μύγδων Πιτθεύς Πάνθοος Οὐκαλέγων Λάμπος Κλυμένη Θυμοίτης Αἴθρη Ἄρης Ἑλικάων Δάρδανος
+    Ἀθηναῖος  Γερήνιος Αἰτωλός Ὀιλεύς Νήριτος Λήιτος
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Proper_noun.is(word,lemma,require_cap:true)
     if require_cap && word[0].downcase==word[0] then return false end

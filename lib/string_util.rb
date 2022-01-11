@@ -276,6 +276,10 @@ def char_unicode_property(c,property)
   return result
 end
 
+def contains_greek_elision(s)
+  if s=~/[᾽’]/ then return true else return false end
+end
+
 def escape_double_quotes(s)
   return s.gsub(/"/,'\\"') # escape double quotes
 end
