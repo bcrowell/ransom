@@ -128,6 +128,10 @@ class IliadNotes
     'about_what'    => %q{},
     'explain'       => %q{Nine lines are repeated verbatim from 1.12-25.}
   }],
+  ["1.536" , {
+    'about_what'    => %q{εὐνὰς},
+    'explain'       => %q{Here, anchor stones rather than beds.}
+  }],
 ]
 
 def IliadNotes.notes

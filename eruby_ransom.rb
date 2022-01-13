@@ -47,7 +47,8 @@ class Bilingual
     translation_hr1,translation_hr2 = translation_hr1_with_errs[0],translation_hr2_with_errs[0]
     if translation_hr1_with_errs[1] then raise "ambiguous word glob: #{t1}, #{translation_hr1_with_errs[2]}" end
     if translation_hr2_with_errs[1] then raise "ambiguous word glob: #{t2}, #{translation_hr2_with_errs[2]}"end
-    if translation_hr1.nil? || translation_hr2.nil? then raise "bad word glob, #{t1}->#{translation_hr1} or #{t2}->#{translation_hr2}" end
+    if translation_hr1.nil? then raise "bad word glob, #{t1}" end
+    if translation_hr2.nil? then raise "bad word glob, #{t2}" end
     @translation_text = translation.extract(translation_hr1,translation_hr2)
     @translation_text = Patch_names.patch(@translation_text) # change, e.g., Juno to Hera
     max_chars = 5000
