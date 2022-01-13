@@ -4,6 +4,7 @@
   "word":"τίνω",
   "short":"pay",
   "medium":"pay, pay a penalty",
+  "cog":"τίνυμαι",
   "notes":"Normally verbs with roots ending in ν don't take a sigma in the aorist, but τίνω has aorist ἔτισα."
   // Beekes says it comes from τίνϝω, and I assume the digamma is what explains this.
 }
