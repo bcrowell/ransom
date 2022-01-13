@@ -1,7 +1,8 @@
 {
   "word":"χωρέω",
   "medium":"withdraw, give way to (+dat)",
-  "notes":"in later dialects, also to advance",
-  "etym":"χώρη, location",
-  "cog":"χῶρη, χωρέω, ἀναχωρέω, χωρίς"
+  "notes":"In later dialects, also to advance. Of the three synonyms, χάζομαι is somewhat more common than χωρέω and ἀναχωρέω.",
+  "etym":"χώρη, locationm, from PIE ghe, release, let go",
+  "cog":"go, heir, χῶρη, χωρέω, ἀναχωρέω, χωρίς, χάζομαι",
+  "syn":"χάζομαι"
 }

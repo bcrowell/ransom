@@ -153,7 +153,7 @@ def do_one_lemma(lemma,selector_strings,homer,sel,verbose:true,extra_indentation
   end
   if warnings.length>0 then
     result_string.push("**************************** WARNINGS *****************************")
-    result_string += w
+    result_string += warnings
   end
   if result_string.length==0 then return [false,nil] end
   return [true,result_string.join("\n")+"\n"]
