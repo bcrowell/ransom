@@ -124,9 +124,25 @@ class IliadNotes
     'about_what'    => %q{οὐδέ σ᾽ ὀΐω},
     'explain'       => %q{But neither do I think that for your sake}
   }],
+  ["1.351" , {
+    'about_what'    => %q{},
+    'explain'       => %q{Achilles prays for help to his mother, the sea nymph Thetis.}
+  }],
   ["1.371" , {
     'about_what'    => %q{},
     'explain'       => %q{Nine lines are repeated verbatim from 1.12-25.}
+  }],
+  ["1.397" , {
+    'about_what'    => %q{Κρονίωνι},
+    'explain'       => %q{The son of Cronus is Zeus.}
+  }],
+  ["1.403" , {
+    'about_what'    => %q{Βριάρεων},
+    'explain'       => %q{Briareus or Aegaeon was a hundred-handed giant who in Homer was a faithful ally of Zeus against the titans.}
+  }],
+  ["1.404" , {
+    'about_what'    => %q{ὃ γὰρ αὖτε βίην οὗ πατρὸς ἀμείνων},
+    'explain'       => %q{Briareus' father was either Uranus or Pontus.}
   }],
   ["1.536" , {
     'about_what'    => %q{εὐνὰς},

@@ -34,6 +34,7 @@ class Bilingual
     #   max_chars -- maximum length of translated text
     #   length_ratio_expected -- expected value of length of translation divided by length of foreign text
     #   length_ratio_tol_factor -- tolerance factor for the above ratio
+    @foreign_linerefs = [g1,g2]
     @foreign_chapter_number = g1[0]
     @foreign_first_line_number = g1[1]
     @foreign_hr1,@foreign_hr2 = foreign.line_to_hard_ref(g1[0],g1[1]),foreign.line_to_hard_ref(g2[0],g2[1])
@@ -74,7 +75,8 @@ class Bilingual
     }
     raise message + "\n  See #{debug_file}"
   end
-  attr_reader :foreign_hr1,:foreign_hr2,:foreign_ch1,:foreign_ch2,:foreign_text,:translation_text,:foreign_first_line_number,:foreign_chapter_number
+  attr_reader :foreign_hr1,:foreign_hr2,:foreign_ch1,:foreign_ch2,:foreign_text,:translation_text,:foreign_first_line_number,:foreign_chapter_number,
+          :foreign_linerefs
 end
 
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
@@ -122,7 +124,7 @@ def print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,notes)
   print ransom(bilingual.foreign_text,v,bilingual.foreign_first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print bilingual.translation_text
-  print notes_to_latex(bilingual.foreign_hr1,bilingual.foreign_hr2,notes)
+  print notes_to_latex(bilingual.foreign_linerefs,notes)
 end
 
 def header_latex(bilingual)
@@ -135,7 +137,9 @@ def header_latex(bilingual)
   return x
 end
 
-def notes_to_latex(lineref1,lineref2,notes)
+def notes_to_latex(linerefs,notes)
+  lineref1,lineref2 = linerefs
+  if lineref2[1]-lineref1[1]>20 then raise "sanity check failed for inputs to notes_to_latex, #{lineref1}->#{lineref2}" end
   stuff = []
   find_notes(lineref1,lineref2,notes).each { |note|
     h = note[1]
@@ -414,7 +418,7 @@ def words(s)
 end
 
 class Patch_names
-  @@patches = {"Latona"=>"Leto","Ulysses"=>"Odysseus","Jove"=>"Zeus","Atrides"=>"Atreides","Minerva"=>"Athena","Juno"=>"Hera"}
+  @@patches = {"Latona"=>"Leto","Ulysses"=>"Odysseus","Jove"=>"Zeus","Atrides"=>"Atreides","Minerva"=>"Athena","Juno"=>"Hera","Saturn"=>"Cronus"}
   def Patch_names.patch(text)
     @@patches.each { |k,v|
       text = text.gsub(/#{k}/,v)
