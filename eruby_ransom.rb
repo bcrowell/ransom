@@ -34,6 +34,8 @@ class Bilingual
     #   max_chars -- maximum length of translated text
     #   length_ratio_expected -- expected value of length of translation divided by length of foreign text
     #   length_ratio_tol_factor -- tolerance factor for the above ratio
+    @foreign = foreign
+    @translation = translation
     @foreign_linerefs = [g1,g2]
     @foreign_chapter_number = g1[0]
     @foreign_first_line_number = g1[1]
@@ -76,7 +78,7 @@ class Bilingual
     raise message + "\n  See #{debug_file}"
   end
   attr_reader :foreign_hr1,:foreign_hr2,:foreign_ch1,:foreign_ch2,:foreign_text,:translation_text,:foreign_first_line_number,:foreign_chapter_number,
-          :foreign_linerefs
+          :foreign_linerefs,:foreign,:translation
 end
 
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
@@ -148,6 +150,7 @@ end
 
 def do_illustration(layout)
   # input layout may be the *next* layout if we're putting each illustration at the end of the one before the layout it represents
+  # FIXME -- This contains lots of hardcoded numbers, styling, and layout info that should be in the class file or somewhere else.
   from,to = layout.foreign_linerefs
   result = ''
   count = 0
@@ -161,7 +164,7 @@ def do_illustration(layout)
       end
       w_in = 4.66 # FIXME -- shouldn't be hardcoded
       pts_per_in = 72.0
-      margin = 0.25 # need this much space in inches between translation and image
+      margin = 0.5 # need this much space in inches between translation and image
       height_needed = w_in*(height.to_f/width.to_f+margin)*pts_per_in
       x = %q{
         \vfill
@@ -169,6 +172,11 @@ def do_illustration(layout)
         \ifdim\measurepage > __MIN_HT__pt \includegraphics[width=\textwidth]{__FILE__} \fi \relax
       }
       result += x.gsub(/__FILE__/,filename).gsub(/__MIN_HT__/,height_needed.to_s)
+      foreign = layout.foreign
+      caption = foreign.extract(foreign.line_to_hard_ref(lineref[0],lineref[1]),foreign.line_to_hard_ref(lineref[0],lineref[1]+1))
+      caption = caption.gsub(/\n/,'')
+      caption = "\\linenumber{#{book}.#{line}}\\hspace{3mm} "+caption
+      result += "\n\n\\hfill{}#{caption}\n\n"
       count +=1
     end
   }
