@@ -83,11 +83,14 @@ if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, 
 
 class Illustrations
   @@illus = []
-  Dir.each_child('iliad/figs') { |filename|
+  d = "iliad/figs"
+  Dir.each_child(d) { |filename|
     base = File.basename(filename)
-    if base=~/(\d+)_(\d+).*\.jpg/ then # naming convention I'm using for Iliad, e.g., 01_029_will_not_release_her.jpg
+    if base=~/(\d+)-(\d+).*\.jpg/ then # naming convention I'm using for Iliad, e.g., 01_029_will_not_release_her.jpg
       book,line = $1.to_i,$2.to_i
-      @@illus.push([book,line,filename])
+      path = "#{d}/#{filename}"
+      width,height = `identify -format '%W' #{path}`,`identify -format '%H' #{path}`
+      @@illus.push([book,line,path,width,height])
     end
   }
   def Illustrations.list_of
@@ -95,13 +98,13 @@ class Illustrations
   end
 end
 
-def four_page_layout(stuff,bilingual,vocab_by_chapter,start_chapter:nil,dry_run:false)
+def four_page_layout(stuff,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
   treebank,freq_file,greek,translation,notes,core = stuff
   return if dry_run
-  print_four_page_layout(stuff,bilingual,vocab_by_chapter,start_chapter)
+  print_four_page_layout(stuff,layout,next_layout,vocab_by_chapter,start_chapter)
 end
 
-def print_four_page_layout(stuff,bilingual,vocab_by_chapter,start_chapter)  
+def print_four_page_layout(stuff,bilingual,next_layout,vocab_by_chapter,start_chapter)  
   # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
   treebank,freq_file,greek,translation,notes,core = stuff
   ch = bilingual.foreign_ch1
@@ -112,7 +115,7 @@ def print_four_page_layout(stuff,bilingual,vocab_by_chapter,start_chapter)
       raise "four-page layout spans books, #{bilingual.foreign_hr1} - #{bilingual.foreign_hr2}"
     end
   end
-  print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,notes)
+  print_four_page_layout_latex_helper(bilingual,next_layout,vl,core,start_chapter,notes)
 end
 
 def four_page_layout_vocab_helper(bilingual,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
@@ -124,7 +127,7 @@ def four_page_layout_vocab_helper(bilingual,core,treebank,freq_file,notes,vocab_
   return core,vl,vocab_by_chapter
 end
 
-def print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,notes)
+def print_four_page_layout_latex_helper(bilingual,next_layout,vl,core,start_chapter,notes)
   # prints
   stuff = vocab(vl,core)
   tex,v = stuff['tex'],stuff['file_lists']
@@ -138,20 +141,38 @@ def print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,notes)
   print ransom(bilingual.foreign_text,v,bilingual.foreign_first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print bilingual.translation_text
-  print %q{
-    \edef\measurepage{\the\dimexpr\pagegoal-\pagetotal-\baselineskip\relax}
-    \measurepage
-    \ifdim\measurepage > 400pt got lots of space \else feeling tight \fi \relax
-  }
   # https://tex.stackexchange.com/a/308934
-  from,to = bilingual.foreign_linerefs
+  layout_for_illustration = next_layout  # place illustration at bottom of page coming immediately before the *next* four-page layout
+  if !layout_for_illustration.nil? then print do_illustration(layout_for_illustration) end
+end
+
+def do_illustration(layout)
+  # input layout may be the *next* layout if we're putting each illustration at the end of the one before the layout it represents
+  from,to = layout.foreign_linerefs
+  result = ''
+  count = 0
   Illustrations.list_of.each { |ill|
-    book,line,filename = ill
+    book,line,filename,width,height = ill
     lineref = [book,line]
     if (from<=>lineref)<=0 && (lineref<=>to)<=0 then
-      $stderr.print "...page #{bilingual.foreign_linerefs} contains illustration #{filename}\n"
+      if count>=1 then
+        $stderr.print "WARNING: layout for #{layout.foreign_linerefs} contained more than one illustration, only one was used\n"
+        next
+      end
+      w_in = 4.66 # FIXME -- shouldn't be hardcoded
+      pts_per_in = 72.0
+      margin = 0.25 # need this much space in inches between translation and image
+      height_needed = w_in*(height.to_f/width.to_f+margin)*pts_per_in
+      x = %q{
+        \vfill
+        \edef\measurepage{\the\dimexpr\pagegoal-\pagetotal-\baselineskip\relax}
+        \ifdim\measurepage > __MIN_HT__pt \includegraphics[width=\textwidth]{__FILE__} \fi \relax
+      }
+      result += x.gsub(/__FILE__/,filename).gsub(/__MIN_HT__/,height_needed.to_s)
+      count +=1
     end
   }
+  return result
 end
 
 def header_latex(bilingual)
