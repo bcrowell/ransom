@@ -81,11 +81,22 @@ end
 
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
 
-def four_page_layout(stuff,g1,g2,t1,t2,vocab_by_chapter,start_chapter:nil,dry_run:false)
-  # g1 and g2 are line refs of the form [book,line]
-  # t1 and t2 are word globs
+class Illustrations
+  @@illus = []
+  Dir.each_child('iliad/figs') { |filename|
+    base = File.basename(filename)
+    if base=~/(\d+)_(\d+).*\.jpg/ then # naming convention I'm using for Iliad, e.g., 01_029_will_not_release_her.jpg
+      book,line = $1.to_i,$2.to_i
+      @@illus.push([book,line,filename])
+    end
+  }
+  def Illustrations.list_of
+    return @@illus
+  end
+end
+
+def four_page_layout(stuff,bilingual,vocab_by_chapter,start_chapter:nil,dry_run:false)
   treebank,freq_file,greek,translation,notes,core = stuff
-  bilingual = Bilingual.new(g1,g2,t1,t2,greek,translation)
   return if dry_run
   print_four_page_layout(stuff,bilingual,vocab_by_chapter,start_chapter)
 end
@@ -115,8 +126,11 @@ end
 
 def print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,notes)
   # prints
-  v = vocab(vl,core) # prints
-  print header_latex(bilingual)
+  stuff = vocab(vl,core)
+  tex,v = stuff['tex'],stuff['file_lists']
+  print tex
+  print notes_to_latex(bilingual.foreign_linerefs,notes) 
+  print header_latex(bilingual) # includes pagebreak
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print foreign(bilingual.foreign_text,bilingual.foreign_first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
@@ -124,7 +138,20 @@ def print_four_page_layout_latex_helper(bilingual,vl,core,start_chapter,notes)
   print ransom(bilingual.foreign_text,v,bilingual.foreign_first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print bilingual.translation_text
-  print notes_to_latex(bilingual.foreign_linerefs,notes)
+  print %q{
+    \edef\measurepage{\the\dimexpr\pagegoal-\pagetotal-\baselineskip\relax}
+    \measurepage
+    \ifdim\measurepage > 400pt got lots of space \else feeling tight \fi \relax
+  }
+  # https://tex.stackexchange.com/a/308934
+  from,to = bilingual.foreign_linerefs
+  Illustrations.list_of.each { |ill|
+    book,line,filename = ill
+    lineref = [book,line]
+    if (from<=>lineref)<=0 && (lineref<=>to)<=0 then
+      $stderr.print "...page #{bilingual.foreign_linerefs} contains illustration #{filename}\n"
+    end
+  }
 end
 
 def header_latex(bilingual)
@@ -203,12 +230,14 @@ end
 def vocab(vl,core)
   # Input is a Vlist object.
   # The three sections are interpreted as common, uncommon, and rare.
-  # Prints latex code for vocab page, and returns the three file lists for later reuse.
+  # Returns {'tex'=>...,'file_lists'=>...}, containing latex code for vocab page and the three file lists for later reuse.
   if Options.if_render_glosses then $stderr.print vl.console_messages end
-  print "\\begin{vocabpage}\n"
-  print vocab_helper('uncommon',vl,0,2,core) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
-  print "\\end{vocabpage}\n"
-  return vl.list.map { |l| l.map{ |entry| entry[1] } }
+  tex = ''
+  tex +=  "\\begin{vocabpage}\n"
+  tex +=  vocab_helper('uncommon',vl,0,2,core) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
+  tex +=  "\\end{vocabpage}\n"
+  v = vl.list.map { |l| l.map{ |entry| entry[1] } }
+  result = {'tex'=>tex,'file_lists'=>v}
 end
 
 def vocab_helper(commonness,vl,lo,hi,core)
