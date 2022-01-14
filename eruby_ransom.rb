@@ -165,17 +165,19 @@ def do_illustration(layout)
       w_in = 4.66 # FIXME -- shouldn't be hardcoded
       pts_per_in = 72.0
       margin = 0.5 # need this much space in inches between translation and image
-      height_needed = w_in*(height.to_f/width.to_f+margin)*pts_per_in
-      x = %q{
-        \vfill
-        \edef\measurepage{\the\dimexpr\pagegoal-\pagetotal-\baselineskip\relax}
-        \ifdim\measurepage > __MIN_HT__pt \includegraphics[width=\textwidth]{__FILE__} \fi \relax
-      }
-      result += x.gsub(/__FILE__/,filename).gsub(/__MIN_HT__/,height_needed.to_s)
+      height_needed = (w_in*(height.to_f/width.to_f)+margin)*pts_per_in
       foreign = layout.foreign
       caption = foreign.extract(foreign.line_to_hard_ref(lineref[0],lineref[1]),foreign.line_to_hard_ref(lineref[0],lineref[1]+1))
       caption = caption.gsub(/\n/,'')
-      caption = "\\linenumber{#{book}.#{line}}\\hspace{3mm} "+caption
+      caption = "\n\n\\linenumber{#{book}.#{line}}\\hspace{3mm} "+caption
+      info = "#{filename}"
+      x = %q{
+        \vfill
+        % illustration and caption, __INFO__
+        \edef\measurepage{\the\dimexpr\pagegoal-\pagetotal-\baselineskip\relax}
+        \ifdim\measurepage > __MIN_HT__pt \includegraphics[width=\textwidth]{__FILE__}__CAPTION__ \fi \relax
+      }
+      result += x.gsub(/__FILE__/,filename).gsub(/__MIN_HT__/,height_needed.to_s).gsub(/__CAPTION__/,caption).gsub(/__INFO__/,info)
       result += "\n\n\\hfill{}#{caption}\n\n"
       count +=1
     end
