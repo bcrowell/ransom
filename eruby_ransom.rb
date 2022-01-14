@@ -24,6 +24,12 @@ class Options
   def Options.has_flag(flag)
     return @@the_options.has_key?(flag) && @@the_options[flag]
   end
+  def Options.set(key,value)
+    @@the_options[key] = value
+  end
+  def Options.get(key)
+    return @@the_options[key]
+  end
 end
 
 class Bilingual
@@ -85,18 +91,45 @@ if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, 
 
 class Illustrations
   @@illus = []
-  d = "iliad/figs"
-  Dir.each_child(d) { |filename|
-    base = File.basename(filename)
-    if base=~/(\d+)-(\d+).*\.jpg/ then # naming convention I'm using for Iliad, e.g., 01_029_will_not_release_her.jpg
-      book,line = $1.to_i,$2.to_i
-      path = "#{d}/#{filename}"
-      width,height = `identify -format '%W' #{path}`,`identify -format '%H' #{path}`
-      @@illus.push([book,line,path,width,height])
-    end
-  }
+  @@label_to_line = {}
+  @@options = {}
+  def Illustrations.init # call this after setting fig_dir in Options
+    d = Options.get('fig_dir')
+    Dir.each_child(d) { |filename|
+      base = File.basename(filename)
+      if base=~/(\d+)-(\d+)-([^.]+).*\.jpg/ then # naming convention I'm using for Iliad, e.g., 01-029-will-not-release-her.jpg
+        book,line,label = $1.to_i,$2.to_i,$3
+        path = "#{d}/#{filename}"
+        width,height = `identify -format '%W' #{path}`,`identify -format '%H' #{path}`
+        @@illus.push([book,line,path,width,height,label])
+        @@label_to_line[label] = [book,line]
+      end
+    }
+    @@credits_data = json_from_file_or_die("#{d}/credits.json")
+    @@options = json_from_file_or_die("#{d}/options.json")
+  end
+  def Illustrations.is_landscape(label)
+    if @@options.has_key?(label) && @@options[label].has_key?('portrait') && @@options[label]['portrait'] then return false end
+    return true
+  end
+  def Illustrations.hand_written_caption(label)
+    if @@options.has_key?(label) && @@options[label].has_key?('caption') then return @@options[label]['caption'] end
+    return nil
+  end
   def Illustrations.list_of
     return @@illus
+  end
+  def Illustrations.credits
+    result = []
+    @@credits_data.keys.sort.each { |artist|
+      list = []
+      @@credits_data[artist].each { |label|
+        book,line = @@label_to_line[label]
+        list.push("#{book}.#{line}")
+      }
+      result.push(list.join(", ") + ": " + artist)
+    }
+    return result.join(". ")+"."
   end
 end
 
@@ -151,34 +184,47 @@ end
 def do_illustration(layout)
   # input layout may be the *next* layout if we're putting each illustration at the end of the one before the layout it represents
   # FIXME -- This contains lots of hardcoded numbers, styling, and layout info that should be in the class file or somewhere else.
+  # FIXME -- It would be better to do this by writing the actual available space to a file and then reading it in on the next pass. The
+  #          method used here is only approximate.
   from,to = layout.foreign_linerefs
   result = ''
   count = 0
   Illustrations.list_of.each { |ill|
-    book,line,filename,width,height = ill
+    book,line,filename,width,height,label = ill
     lineref = [book,line]
     if (from<=>lineref)<=0 && (lineref<=>to)<=0 then
       if count>=1 then
         $stderr.print "WARNING: layout for #{layout.foreign_linerefs} contained more than one illustration, only one was used\n"
         next
       end
-      w_in = 4.66 # FIXME -- shouldn't be hardcoded
-      pts_per_in = 72.0
-      margin = 0.5 # need this much space in inches between translation and image
-      height_needed = (w_in*(height.to_f/width.to_f)+margin)*pts_per_in
+      landscape = Illustrations.is_landscape(label)
+      if landscape then
+        w_in = 4.66
+        pts_per_in = 72.0
+        margin = 0.5 # need this much space in inches between translation and image
+        height_needed = (w_in*(height.to_f/width.to_f)+margin)*pts_per_in
+        width_latex_code = "\\textwidth"
+      else
+        height_needed = 2.5 # inches
+        width_latex_code = (height_needed*(width.to_f/height.to_f)).to_s+"in"
+      end
       foreign = layout.foreign
-      caption = foreign.extract(foreign.line_to_hard_ref(lineref[0],lineref[1]),foreign.line_to_hard_ref(lineref[0],lineref[1]+1))
-      caption = caption.gsub(/\n/,'')
-      caption = "\n\n\\linenumber{#{book}.#{line}}\\hspace{3mm} "+caption
+      if Illustrations.hand_written_caption(label).nil? then
+        caption = foreign.extract(foreign.line_to_hard_ref(lineref[0],lineref[1]),foreign.line_to_hard_ref(lineref[0],lineref[1]+1))
+        caption = caption.gsub(/\n/,' ')
+      else
+        caption = Illustrations.hand_written_caption(label)
+      end
+      caption = "\n\n\\hfill{}\\linenumber{#{book}.#{line}}\\hspace{3mm} "+caption+"\n"
       info = "#{filename}"
       x = %q{
         \vfill
         % illustration and caption, __INFO__
         \edef\measurepage{\the\dimexpr\pagegoal-\pagetotal-\baselineskip\relax}
-        \ifdim\measurepage > __MIN_HT__pt \includegraphics[width=\textwidth]{__FILE__}__CAPTION__ \fi \relax
+        \ifdim\measurepage > __MIN_HT__pt \hfill\includegraphics[width=__WIDTH__]{__FILE__}__CAPTION__ \fi \relax
       }
-      result += x.gsub(/__FILE__/,filename).gsub(/__MIN_HT__/,height_needed.to_s).gsub(/__CAPTION__/,caption).gsub(/__INFO__/,info)
-      result += "\n\n\\hfill{}#{caption}\n\n"
+      result += x.gsub(/__FILE__/,filename).gsub(/__MIN_HT__/,height_needed.to_s).gsub(/__CAPTION__/,caption).gsub(/__INFO__/,info). \
+            gsub(/__WIDTH__/,width_latex_code)
       count +=1
     end
   }

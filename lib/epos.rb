@@ -140,7 +140,7 @@ class Epos
     end
     result = strip_whitespace(result)
     if self.is_verse then result=result+"\n" end
-    if remove_numerals then result.gsub!(/\s+\d+/,'') end
+    if remove_numerals then result = result.gsub(/\s+\d+/,'').gsub(/^\d+/,'') end
     return result
   end
 

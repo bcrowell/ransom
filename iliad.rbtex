@@ -1,16 +1,8 @@
 \documentclass{ransom}
 
-<% load 'eruby_ransom.rb' %>
-
-\begin{document}
-
-\input{iliad/cover}
-
-\pagestyle{fancy}
-
-\input{iliad/intro}
-
 <%
+
+load 'eruby_ransom.rb'
 
 treebank = TreeBank.new('homer')
 freq_file = "lemmas/homer_freq.json"
@@ -22,8 +14,22 @@ load "iliad/notes.rb"
 notes = IliadNotes.notes
 
 stuff = treebank,freq_file,greek,translation,notes,core
+Options.set('fig_dir','iliad/figs')
+Illustrations.init
 
 %>
+
+\begin{document}
+
+\input{iliad/cover}
+
+<% print "Illustrations: "+Illustrations.credits %>
+
+\vfill
+
+\pagestyle{fancy}
+
+\input{iliad/intro}
 
 <%
 
