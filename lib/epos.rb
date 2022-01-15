@@ -120,34 +120,42 @@ class Epos
     #   ruby -e "require './lib/epos.rb'; require './lib/file_util.rb'; require 'json'; require './lib/string_util.rb'; require './lib/clown.rb'; Epos.run_tests()"
     require 'tmpdir'
     Dir.mktmpdir { |d|
-      filename = "#{d}/pooh.txt"
-      File.open(filename,"w") { |f| f.print Epos.pooh_test_text }
-      e = Epos.new(d,'latin',false,use_cache:false)
       tests = [
-        ["sometimes thought sadly","came stumping along",%q{Sometimes he thought},%q{thinking about.},"basic test"],
-        ["old grey","shook his head",%q{The Old},%q{Pooh.},"span paragraphs"],
-        ["sometimes thought sadly","wherefore",%q{Sometimes he thought sadly},%q{Why?"},%q{US-style punctuation}],
-        ["old grey>","shook his head",%q{Sometimes he thought sadly},%q{Pooh.},"> operator"],
-        ["corner of the forest |< his front feet","sometimes sadly",%q{his front},%q{about things.},"| operator"],
+        ['pooh',"sometimes thought sadly","came stumping along",%q{Sometimes he thought},%q{thinking about.},"basic test"],
+        ['pooh',"old grey","shook his head",%q{The Old},%q{Pooh.},"span paragraphs"],
+        ['pooh',"sometimes thought sadly","wherefore",%q{Sometimes he thought sadly},%q{Why?"},%q{US-style punctuation}],
+        ['pooh',"old grey>","shook his head",%q{Sometimes he thought sadly},%q{Pooh.},"> operator"],
+        ['pooh',"corner of the forest |< his front feet","sometimes sadly",%q{his front},%q{about things.},"|< operator"],
+        ['pooh',"Eeyore |< stood by himself","sometimes sadly",%q{stood by himself},%q{about things.},"|< operator after a comma"],
+        ['foo',"b |< c","e",%q{c},%q{d.},"|< operator after a comma"],
       ]
       tests.each { |test|
-        glob1,glob2,at_start,at_end,testing_what = test
+        label,glob1,glob2,at_start,at_end,testing_what = test
+        filename = "#{d}/#{label}.txt"
+        File.open(filename,"w") { |f| f.print Epos.test_text(label) }
+        e = Epos.new(d,'latin',false,use_cache:false)
         r1,non_unique_1,junk = e.word_glob_to_hard_ref(glob1)
         r2,non_unique_2,junk = e.word_glob_to_hard_ref(glob2)
         describe_test = "#{test}"
         if r1.nil? || r2.nil? || non_unique_1 || non_unique_2 then raise "error or not unique on this test: #{describe_test}" end
         re = Regexp.new("\\A#{Regexp::quote(at_start)}.*#{Regexp::quote(at_end)}\\Z",Regexp::MULTILINE)
         s = e.extract(r1,r2)
-        if !re.match?(s) then raise "no match on this test: #{describe_test}\n  result=@@#{s}@@\n  re=#{re}" end
+        if !re.match?(s) then raise "wrong result on this test: #{describe_test}\n  result=@@#{s}@@\n  re=#{re}" end
         #print s,"\n---------------------------\n"
         print "  test passed: #{testing_what}\n"
       }
     }
   end
 
-  def Epos.pooh_test_text
+  def Epos.test_text(label)
+    if label=='foo' then
+    x = %q{
+        a. b, c d. e
+    }
+    end
+    if label=='pooh' then
     # In celebration of Pooh freedom day, 2022:
-    pooh = %q{
+    x = %q{
       The Old Grey Donkey, Eeyore, stood by himself in a thistly corner of the forest, his front feet well apart, his head on one side, and
       thought about things. Sometimes he thought sadly to himself, "Why?" and sometimes he thought, "Wherefore?" and sometimes he
       thought, "Inasmuch as which?" -- and sometimes he didn't quite know what he was thinking about. So when Winnie-the-Pooh came stumping
@@ -159,8 +167,9 @@ class Epos
 
       "Not very how," he said. "I don't seem to have felt at all how for a long time."
     }
-    pooh = pooh.gsub(/^\s+/,'').gsub(/\A\n/,'') # remove indentation and initial newline
-    return pooh
+    end
+    x = x.gsub(/^\s+/,'').gsub(/\A\n/,'') # remove indentation and initial newline
+    return x
   end
 
   def words(s)
@@ -272,7 +281,9 @@ class Epos
       raise "internal error, left=#{left}" unless t=~/(#{left_regex})/ # shouldn't happen, because r1 was not nil
       left_match = $1
       offset = t.index(left_match)
-      result = [r1[0],r1[1]+offset+left_match.length+1]
+      ii = offset+left_match.length+1 # an index into t
+      while ii<t.length-1 && !(t[ii]=~/[[:alpha:]]/) do ii+=1 end # skip past white space
+      result = [r1[0],r1[1]+ii]
       return [result,non_unique,ambig_list]
     end
     return word_glob_to_hard_ref_helper2(glob,constraint)
