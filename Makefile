@@ -100,4 +100,4 @@ flush_epos_cache:
 	rm -f text/*.cache.* text/*.cache.*/
 
 test_epos:
-	ruby -e "require './lib/epos.rb'; require './lib/file_util.rb'; require 'json'; require './lib/string_util.rb'; Epos.run_tests()"
+	ruby -e "require './lib/epos.rb'; require './lib/file_util.rb'; require 'json'; require './lib/string_util.rb'; require './lib/clown.rb'; Epos.run_tests()"

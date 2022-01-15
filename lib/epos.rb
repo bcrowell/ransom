@@ -53,9 +53,12 @@ to just before its own first character.  A string like "irritate me
 not>", with a > at the end, produces a ref to the end of this chunk,
 i.e., it's as if you were referencing the following chunk.
 
-One can also refer to spots within a chunk using the | character. For
-example, "withhold heavy hands | pestilence" refers to the spot
-immediately after the word "hands."
+One can also refer to spots within a chunk using the operator |<. For
+example, "withhold heavy hands |< pestilence" refers to the spot
+immediately after the word "hands." The mnemonic is that we don't have
+a < operator, because going back to the beginning of the chunk is the
+default behavior, but the |< acts sort of like that except that it
+runs into a wall.
 
 Because locating a word glob can be an expensive operation, the
 library automatically caches the resulting hard refs on disk for later
@@ -114,7 +117,7 @@ class Epos
 
   def Epos.run_tests()
     # make test_epos, which does this:
-    #   ruby -e "require './lib/epos.rb'; require './lib/file_util.rb'; require 'json'; require './lib/string_util.rb'; Epos.run_tests()"
+    #   ruby -e "require './lib/epos.rb'; require './lib/file_util.rb'; require 'json'; require './lib/string_util.rb'; require './lib/clown.rb'; Epos.run_tests()"
     require 'tmpdir'
     Dir.mktmpdir { |d|
       filename = "#{d}/pooh.txt"
@@ -123,7 +126,9 @@ class Epos
       tests = [
         ["sometimes thought sadly","came stumping along",%q{Sometimes he thought},%q{thinking about.},"basic test"],
         ["old grey","shook his head",%q{The Old},%q{Pooh.},"span paragraphs"],
-        ["sometimes thought sadly","wherefore",%q{Sometimes he thought sadly},%q{Why?"},%q{? is chunk terminator for latin prose}],
+        ["sometimes thought sadly","wherefore",%q{Sometimes he thought sadly},%q{Why?"},%q{US-style punctuation}],
+        ["old grey>","shook his head",%q{Sometimes he thought sadly},%q{Pooh.},"> operator"],
+        ["corner of the forest |< his front feet","sometimes sadly",%q{his front},%q{about things.},"| operator"],
       ]
       tests.each { |test|
         glob1,glob2,at_start,at_end,testing_what = test
@@ -249,11 +254,14 @@ class Epos
   def word_glob_to_hard_ref_helper(glob,constraint)
     # Handles the case where the result is not cached.
     # Returns [hard ref,if_ambiguous,ambig_list].
+    if glob=~/\|(?!\<)/ then raise "error in glob #{glob}, there is no | operator; did you mean |< ?" end
+    if glob=~/(?<!\|)\</ then raise "error in glob #{glob}, there is no < operator; did you mean |< ?" end
+    if glob=~/\A\s*\|\</ then raise "error in glob #{glob}, |< at beginning of glob, which doesn't make sense" end
     if glob=~/(.*)\>\s*$/ then
       x = word_glob_to_hard_ref_helper2($1,constraint)
       return [self.next_chunk(x[0]),x[1],x[2]]
     end
-    if glob=~/(.*)\|(.*)/ then
+    if glob=~/(.*)\|<(.*)/ then
       left,right = $1,$2
       basic = "#{left} #{right}"
       r1,non_unique,ambig_list = word_glob_to_hard_ref_helper2(basic,constraint) # ref to beginning of chunk
@@ -359,6 +367,11 @@ class Epos
       break if i==0 || (s[i-1]=~/[#{spl}]/)
       break if i>=2 && s[i-1]=="\n" && s[i-2]=="\n" # only relevant for prose, in which double newline is a chunk separator
       i = i-1
+    end
+    # Allow for US-style punctuation:
+    if i>=1 && s[i]=='"' && i<=s.length-2 && s[i-1]=~/[,.?]/ then
+      i += 1
+      while i<=s.length-2 && s[i]=~/\s/ do i+=1 end
     end
     return i
   end
