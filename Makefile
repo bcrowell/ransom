@@ -5,7 +5,7 @@ GENERIC = "pos_file":"$(POS)"
 # ... If I do this, then error messages freeze things.
 COMPILE = xelatex $(BOOK)
 
-.PHONY: clean default check check_glosses core update_github_pages reconfigure_git book_no_copy post flush_epos_cache
+.PHONY: clean default check check_glosses core update_github_pages reconfigure_git book_no_copy post flush_epos_cache test_epos
 
 default:
 	@make --no-print-directory --assume-new iliad.rbtex $(BOOK).pdf
@@ -99,3 +99,5 @@ b'; require './lib/string_util.rb'; Verb_difficulty.test()"
 flush_epos_cache:
 	rm -f text/*.cache.* text/*.cache.*/
 
+test_epos:
+	ruby -e "require './lib/epos.rb'; require './lib/file_util.rb'; require 'json'; require './lib/string_util.rb'; Epos.run_tests()"

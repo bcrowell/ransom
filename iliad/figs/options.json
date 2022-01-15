@@ -2,5 +2,11 @@
   "the-heralds-have-just-now-gone-from-my-tent":{
     "portrait":true,
     "caption":"Achilles wraps his cloak around his face in shame."
+  },
+  "taking-him-by-the-chin":{
+    "portrait":true
+  },
+  "o-deceitful-one":{
+    "width":3.0
   }
 }

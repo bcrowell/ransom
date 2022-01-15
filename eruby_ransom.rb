@@ -116,6 +116,10 @@ class Illustrations
     if @@options.has_key?(label) && @@options[label].has_key?('caption') then return @@options[label]['caption'] end
     return nil
   end
+  def Illustrations.reduced_width(label)
+    if @@options.has_key?(label) && @@options[label].has_key?('width') then return @@options[label]['width'] end
+    return nil
+  end
   def Illustrations.list_of
     return @@illus
   end
@@ -199,13 +203,14 @@ def do_illustration(layout)
       end
       landscape = Illustrations.is_landscape(label)
       if landscape then
-        w_in = 4.66
+        w_in = 4.66 # FIXME -- hardcoded
+        if !Illustrations.reduced_width(label).nil? then w_in=Illustrations.reduced_width(label) end
         pts_per_in = 72.0
         margin = 0.5 # need this much space in inches between translation and image
         height_needed = (w_in*(height.to_f/width.to_f)+margin)*pts_per_in
-        width_latex_code = "\\textwidth"
+        width_latex_code = "#{w_in}in"
       else
-        height_needed = 2.5 # inches
+        height_needed = 3.5 # inches
         width_latex_code = (height_needed*(width.to_f/height.to_f)).to_s+"in"
       end
       foreign = layout.foreign
@@ -216,12 +221,12 @@ def do_illustration(layout)
         caption = Illustrations.hand_written_caption(label)
       end
       caption = "\n\n\\hfill{}\\linenumber{#{book}.#{line}}\\hspace{3mm} "+caption+"\n"
-      info = "#{filename}"
+      info = "#{filename}, height_needed=#{height_needed} in"
       x = %q{
         \vfill
         % illustration and caption, __INFO__
         \edef\measurepage{\the\dimexpr\pagegoal-\pagetotal-\baselineskip\relax}
-        \ifdim\measurepage > __MIN_HT__pt \hfill\includegraphics[width=__WIDTH__]{__FILE__}__CAPTION__ \fi \relax
+        \ifdim\measurepage > __MIN_HT__pt \hfill\includegraphics[width=__WIDTH__]{__FILE__}__CAPTION__ \else \fi \relax
       }
       result += x.gsub(/__FILE__/,filename).gsub(/__MIN_HT__/,height_needed.to_s).gsub(/__CAPTION__/,caption).gsub(/__INFO__/,info). \
             gsub(/__WIDTH__/,width_latex_code)

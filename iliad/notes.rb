@@ -144,6 +144,14 @@ class IliadNotes
     'about_what'    => %q{ὃ γὰρ αὖτε βίην οὗ πατρὸς ἀμείνων},
     'explain'       => %q{Briareus' father was either Uranus or Pontus.}
   }],
+  ["1.534" , {
+    'about_what'    => %q{ἔτλη},
+    'explain'       => %q{take it upon himself, i.e., dare}
+  }],
+  ["1.543" , {
+    'about_what'    => %q{τέτληκας},
+    'explain'       => %q{Take it upon yourself, i.e., deign or bother to. The perfect can be used in place of the nonexistent present.}
+  }],
   ["1.536" , {
     'about_what'    => %q{εὐνὰς},
     'explain'       => %q{Here, anchor stones rather than beds.}

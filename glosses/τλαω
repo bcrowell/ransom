@@ -1,10 +1,8 @@
 {
   "word": "τλάω",
   "princ": "τλήσομαι,ἐτάλασσα/ἔτλην",
-  "medium": "bear",
-  "long": "bear, suffer, undergo; force oneself to do something",
+  "medium": "take upon oneself",
+  "long": "bear, suffer, undergo; take it upon oneself to do something, dare, deign, bother to",
   "notes": "Poetic. The present form τλάω is unattested, and the perfect τέτληκα is used instead.",
-  "cog": "talent (the unit of weight, equal to about 30-60 kg)",
-  "mnem": "A gold talent is weighing down on your head. You force yourself to accept it, even though it will hurt.",
-  "aorist_difficult_to_recognize": 0
+  "cog": "talent (the unit of weight, equal to about 30-60 kg)"
 }

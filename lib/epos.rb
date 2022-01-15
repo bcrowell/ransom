@@ -112,6 +112,52 @@ class Epos
 
   attr_reader :text,:script,:is_verse,:postfilter
 
+  def Epos.run_tests()
+    # make test_epos, which does this:
+    #   ruby -e "require './lib/epos.rb'; require './lib/file_util.rb'; require 'json'; require './lib/string_util.rb'; Epos.run_tests()"
+    require 'tmpdir'
+    Dir.mktmpdir { |d|
+      filename = "#{d}/pooh.txt"
+      File.open(filename,"w") { |f| f.print Epos.pooh_test_text }
+      e = Epos.new(d,'latin',false,use_cache:false)
+      tests = [
+        ["sometimes thought sadly","came stumping along",%q{Sometimes he thought},%q{thinking about.},"basic test"],
+        ["old grey","shook his head",%q{The Old},%q{Pooh.},"span paragraphs"],
+        ["sometimes thought sadly","wherefore",%q{Sometimes he thought sadly},%q{Why?"},%q{? is chunk terminator for latin prose}],
+      ]
+      tests.each { |test|
+        glob1,glob2,at_start,at_end,testing_what = test
+        r1,non_unique_1,junk = e.word_glob_to_hard_ref(glob1)
+        r2,non_unique_2,junk = e.word_glob_to_hard_ref(glob2)
+        describe_test = "#{test}"
+        if r1.nil? || r2.nil? || non_unique_1 || non_unique_2 then raise "error or not unique on this test: #{describe_test}" end
+        re = Regexp.new("\\A#{Regexp::quote(at_start)}.*#{Regexp::quote(at_end)}\\Z",Regexp::MULTILINE)
+        s = e.extract(r1,r2)
+        if !re.match?(s) then raise "no match on this test: #{describe_test}\n  result=@@#{s}@@\n  re=#{re}" end
+        #print s,"\n---------------------------\n"
+        print "  test passed: #{testing_what}\n"
+      }
+    }
+  end
+
+  def Epos.pooh_test_text
+    # In celebration of Pooh freedom day, 2022:
+    pooh = %q{
+      The Old Grey Donkey, Eeyore, stood by himself in a thistly corner of the forest, his front feet well apart, his head on one side, and
+      thought about things. Sometimes he thought sadly to himself, "Why?" and sometimes he thought, "Wherefore?" and sometimes he
+      thought, "Inasmuch as which?" -- and sometimes he didn't quite know what he was thinking about. So when Winnie-the-Pooh came stumping
+      along, Eeyore was very glad to be able to stop thinking for a little, in order to say "How do you do?" in a gloomy manner to him.
+
+      "And how are you" said Winnie-the-Pooh.
+
+      Eeyore shook his head from side to side.
+
+      "Not very how," he said. "I don't seem to have felt at all how for a long time."
+    }
+    pooh = pooh.gsub(/^\s+/,'').gsub(/\A\n/,'') # remove indentation and initial newline
+    return pooh
+  end
+
   def words(s)
     # Split a string into words, discarding any punctuation except for punctuation that can occur in a word, e.g.,
     # the apostrophe in "don't."
@@ -167,7 +213,8 @@ class Epos
     #   ruby -e 'require "sdbm"; require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/ιλιας","greek",true,use_cache:false); print e.word_glob_to_hard_ref("μῆνιν-ἄειδε")'
     #   For a non-unique match, try ῥοδοδάκτυλος-Ἠώς.
     #   rm -f text/buckley_iliad.cache* && ruby -e 'require "sdbm"; require "./lib/epos.rb"; require "./lib/file_util.rb"; require "json"; e=Epos.new("text/buckley_iliad.txt","latin",false); print e.word_glob_to_hard_ref("irritate me not>")'
-    # Returns [hard_ref,non_unique,ambig_list]. Hard_ref is a hard reference, meaning an internal data structure that is not likely to
+    # Returns [hard_ref,non_unique,ambig_list]. On a serious error, hard_ref is nil.
+    # Hard_ref is a hard reference, meaning an internal data structure that is not likely to
     # remain valid when the text is edited. Currently hard_ref is implemented as [file_number,character_index], where both
     # indices are zero-based, and character_index is the first character in the chunk.
     if @use_cache then
