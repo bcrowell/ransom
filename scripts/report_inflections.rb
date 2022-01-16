@@ -13,7 +13,7 @@ require 'set'
 # https://github.com/cltk/greek_treebank_perseus
 $fields = ["pos","person","number","tense","mood","voice","gender","case","degree"]
 $all_values = {'person'=>['1','2','3'],'number'=>['s','d','p'],'tense'=>['p','i','r','l','t','f','a'],'mood'=>['i','s','o','n','m','p'],
-           'voice'=>['a','p','m','e'],'case'=>['n','g','d','a','v','l']}
+           'voice'=>['a','p','m','e'],'case'=>['n','g','d','a','v','l'],'gender'=>['m','f','n']}
 
 =begin
 

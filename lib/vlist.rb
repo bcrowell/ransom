@@ -259,7 +259,7 @@ class Proper_noun
     αιθιοψ κρονιδης πηλευς δρυας κορος Ἀτρείων ηφαιστος λημνος ουρανιωνες σιντιες
     Ἀλέξανδρος Ἀφροδίτη Ἑλένη Πάρις Τρῳάς Τρωιός Μῃονίη Φρύγιος Λακεδαίμων Πριαμίδης Λυκάων Ἀίδης Ἀντήνωρ Ἴδη Σκαιαί Ἰδαῖος Πολυδεύκης
     Κρήτηθεν Κρής Κάστωρ Ὀτρεύς Φρύξ Σαγγάριος Μύγδων Πιτθεύς Πάνθοος Οὐκαλέγων Λάμπος Κλυμένη Θυμοίτης Αἴθρη Ἄρης Ἑλικάων Δάρδανος
-    Ἀθηναῖος  Γερήνιος Αἰτωλός Ὀιλεύς Νήριτος Λήιτος
+    Ἀθηναῖος  Γερήνιος Αἰτωλός Ὀιλεύς Νήριτος Λήιτος Ὠκεανός
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
   def Proper_noun.is(word,lemma,require_cap:true)
     if require_cap && word[0].downcase==word[0] then return false end
@@ -273,11 +273,12 @@ class Ignore_words
   # Words in the following list can be accented or unaccented, lemmatized or inflected. Case is not significant. Accents are stripped.
   # If an inflected form is given here, then it will only match that inflected form.
   # The words οτηερ and υνκνοων are English "other" and "unknown," processed incorrectly as if they were beta code.
+  # Note that τῷ is a lemma in perseus (adverb), and is glossed and not ignored.
   @@index = %q{
     οτηερ υνκνοων
     η τα τον ο τους αυτους εμος αυτου σος ω ουτος τοιος εγω
     ειμι
-    επι ανα μετα απο δια προ προς συν εις αμα ηδη ινα ευς μην ος οδε τω ετι
+    επι ανα μετα απο δια προ προς συν εις αμα ηδη ινα ευς μην ος οδε ετι
     δυω πολλας δη πατηρ πολυ τρις
     κακος ευ παρα περ χειρ
     οτι πως εαν οτε ουδε τοτε οπως ουτε που ωδε δυο

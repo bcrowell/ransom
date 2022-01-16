@@ -20,6 +20,7 @@ warnings
 epos_debug.txt
 core/*
 core.txt
+core/homer.freq
 debug.txt
 iliad/core.tex
 iliad/figs/cover.png

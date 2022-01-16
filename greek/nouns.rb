@@ -138,3 +138,52 @@ def is_feminine_ending_in_os(w)
            "πλινθος","ραβδος","σορος","σποδος","ταφρος","χηλος","ψαμμος","ψηφος"].include?(w)
 
 end
+
+class Pronouns
+  @@memoize_all = nil
+  @@memoize_all_ho = nil
+  @@memoize_all_as_hash = nil
+  def Pronouns.is_one(p)
+    return Pronouns.all_as_hash.has_key?(p)
+  end
+  def Pronouns.all_as_hash
+    if @@memoize_all_as_hash.nil? then @@memoize_all_as_hash=Pronouns.all.to_h { |w| [w,1] } end
+    return @@memoize_all_as_hash
+  end
+  def Pronouns.all
+    # Returns an array containing every pronoun that occurs in homer (there are 242, counting accentuations).
+    # I generated this with the scripts find_all_pronouns.rb and find_all_articles. They took every pronoun tagged in project perseus's tree
+    # bank, and threw out anything that had elision or, if a pronoun, wasn't tagged for case. Articles are not really distinct from pronouns
+    # in Homer, so they're included. Some of these differ only because there is a form with an acute and a form with a grave; to get a list
+    # where these are identified, use Pronouns.all_no_grave.
+    # ruby -e "require './greek/writing.rb'; require './greek/nouns.rb'; 
+    #             require './lib/multistring.rb'; require './lib/string_util.rb'; print Pronouns.all"
+    if @@memoize_all.nil? then
+      x = %q{
+ἅ αἱ αἳ αἵ αἵδε ἄμμε ἄμμες ἄμμι ἄμμιν ἃς ἅς ἄσσα ἅσσά ἅσσα ἑ ἓ ἕ ἐγώ ἐγὼ ἔγωγέ ἔγωγε ἐγών ἐγὼν ἑὲ ἕης ἑθέν ἑθεν ἕθεν εἷο ἐμέ ἐμὲ ἐμέθεν ἐμεῖο ἐμέο ἐμεῦ ἐμοί ἐμοὶ ἔμοιγε ἑο ἕο ἑοῖ εὑ ἣ ἥ ἥδέ ἥδε ἧμας ἡμέας ἡμεῖς ἡμείων ἡμέων ἡμῖν ἥμιν ἧμιν ἣν ἥν ἧς ᾗς κεῖνος μέ με μευ μίν μιν μοί μοι νὼ νῶΐ νῶι νῶϊ νῶιν νῶϊν ὃ ὅ ὅδε οἱ οἳ οἵ οἷ οἵδε οἷσί οἷσι οἷσίν οἷσιν ὃν ὅν ὅου ὃς ὅς ὅστις ὁτέοισιν ὅτευ ὅτεῳ ὅτεῴ ὅτεών ὅτινα ὅτινας ὅτίς ὅτις ὅττεό ὅττευ οὗ οὓς οὕς σέ σε σὲ σέθεν σεῖο σέο σεο σευ σεῦ σοί σοι σοὶ σοῦ σύ σὺ σφας σφε σφέας σφεας σφείων σφέων σφεων σφι σφιν σφίσι σφισι σφίσιν σφισιν σφὼ σφωε σφῶΐ σφῶϊ σφωιν σφωϊν σφῶϊν σφῶν σφῷν τά τάδε ταί ταὶ τάς τὰς τάσδε τάων τεῒν τέο τεο τεοῖο τευ τεῦ τεῳ τέων τῇδέ τήν τὴν τήνδε τῆς τῇς τῆσδέ τῆσδε τῇσι τῇσίν τῇσιν τί τι τίνα τινά τινα τινὰ τινάς τινας τινε τίνες τινές τινες τινι τίς τις τό τὸ τόδε τοί τοι τοὶ τοιάδε τοιαίδε τοιήδε τοῖιν τοῖϊν τοῖο τοιοίδε τοιόνδε τοιόσδε τοιούσδε τοῖσδε τοίσδεσι τοίσδεσσι τοῖσδεσσι τοίσδεσσιν τοῖσί τοῖσι τοῖσίν τοῖσιν τόν τόνδε τοσόνδέ τοσόνδε τοσσάδε τοσσόνδε τοῦ τοῦδέ τοῦδε τούς τοὺς τούσδε τύνη τὼ τῳ τῷ τώδε τῷδε τῶν τῶνδε ὑμέας ὑμεῖς ὑμείων ὑμῖν ὕμιν ὔμμε ὔμμες ὔμμι ὔμμιν χἠμεῖς ὣ ὥ ᾧ ὧν 
+
+αἱ αἵ ἡ ἥ ὁ ὅ οἱ οἵ τά ταί τάς τάων τῇ τήν τῆς τό τοί τοῖιν τοῖο τοῖς τοῖσι τοῖσίν τοῖσιν τόν τοῦ τούς τώ τῷ τῶν}
+      @@memoize_all = alpha_sort(x.scan(/[[:alpha:]]+/)).uniq
+    end
+    return @@memoize_all
+  end
+  def Pronouns.all_no_grave
+    return Pronouns.all.map { |w| grave_to_acute(w) }.uniq
+  end
+  def Pronouns.all_ho
+    # Return a list of all forms of the noun/adjective/relative pronoun ὁ/ὅ, "ho," in Homer.
+    # The following is based on my report_inflections.rb script. These are the acute-accented forms, but we'll also return the unaccented ones.
+    # m: ὅ τοῖο/τοῦ τῷ/οἱ τόν ... οἵ/τοί τῶν τοῖσ(ιν) τούς
+    # f: ἥ τῆς τῇ τήν ... αἵ/ταί τάων/τῶν τῇσ(ιν) τάς
+    # n: τό τοῖο/τοῦ τῷ τό/ὅττι ... τά τῶν τοῖσ(ιν) τά
+    if @@memoize_all_ho.nil? then
+      x = %q{ ὅ τοῖο τοῦ τῷ οἱ τόν       οἵ τοί τῶν τοῖσ τοῖσι τοῖσιν τούς
+              ἥ τῆς τῇ τήν               αἵ ταί τάων τῶν τῇσ τῇσι τῇσιν τάς
+              τό τοῖο τοῦ τῷ τό ὅττι     τά τῶν τοῖσ τοῖσι τοῖσιν τά }
+      x = alpha_sort(x.scan(/[[:alpha:]]+/)).uniq
+      unaccented = x.map { |w| remove_accents(w) }
+      @@memoize_all_ho = Pronouns.all.select { |p| unaccented.include?(remove_accents(p)) }
+    end
+    return @@memoize_all_ho
+  end
+end
