@@ -144,6 +144,14 @@ class IliadNotes
     'about_what'    => %q{ὃ γὰρ αὖτε βίην οὗ πατρὸς ἀμείνων},
     'explain'       => %q{Briareus' father was either Uranus or Pontus.}
   }],
+  ["1.505" , {
+    'about_what'    => %q{μοι υἱὸν ὃς ὠκυμορώτατος ἄλλων ἔπλετ'},
+    'explain'       => %q{my son, who has come at his fate the fastest of them all}
+  }],
+  ["1.514" , {
+    'about_what'    => %q{«Νημερτὲς...},
+    'explain'       => %q{This is not the vocative of ``Nereid,'' and it is again Thetis who is speaking, not Zeus. Nereid, Νημερτής, means literally one who never misses the mark, and the adjective νημερτής means unmistakable. This is the accusative adjectival form, which in Greek can function as an adverb (an adverbial accusative). In a play on words, Thetis is asking Zeus to make her a promise that is unmistakable.}
+  }],
   ["1.534" , {
     'about_what'    => %q{ἔτλη},
     'explain'       => %q{take it upon himself, i.e., dare}

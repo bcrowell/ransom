@@ -1,18 +1,15 @@
 BOOK = iliad
 POS = $(BOOK).pos
 GENERIC = "pos_file":"$(POS)"
-#COMPILE = xelatex $(BOOK) | ruby filter_latex_messages.rb
-# ... If I do this, then error messages freeze things.
-COMPILE = xelatex $(BOOK)
-
-.PHONY: clean default check check_glosses core update_github_pages reconfigure_git book_no_copy post flush_epos_cache test_epos
+.PHONY: clean default check check_glosses core update_github_pages reconfigure_git book_no_post post flush_epos_cache test_epos
 
 default:
 	@make --no-print-directory --assume-new iliad.rbtex $(BOOK).pdf
 
 $(BOOK).pdf: export FORMAT=whole
+$(BOOK).pdf: export OVERWRITE=1
 $(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
-	make book_no_copy
+	make book_no_post
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 
 post: $(BOOK).pdf booklet.pdf
@@ -24,22 +21,26 @@ booklet.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 
 booklet: export FORMAT=booklet_short
 booklet: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
-	make book_no_copy
-	pdfbook2 $(BOOK).pdf
-	mv $(BOOK)-book.pdf booklet.pdf
+	make book_no_post
+	pdfbook2 temp.pdf && rm -f temp.pdf
+	mv temp-book.pdf booklet.pdf
 	# creates booklet.pdf
 	# Instructions for printing: https://tex.stackexchange.com/a/70115/6853
 	# Briefly: (1) Print even pages. (2) Flip about an axis "out of the board." (3) Print odd pages.
 
-book_no_copy: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
+book_no_post: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
+	# makes temp.pdf, which may be either the whole book or some portion, such as the first half of book 1
 	@rm -f warnings help_gloss/__links.html
 	@make figures # renders any figure whose pdf is older than its svg
-	@./fruby $(BOOK).rbtex '{$(GENERIC),"clean":true}' >$(BOOK).tex
-	@$(COMPILE)
-	@./fruby $(BOOK).rbtex '{$(GENERIC),"write_pos":true}' >$(BOOK).tex
-	@$(COMPILE)
-	@./fruby $(BOOK).rbtex '{$(GENERIC),"render_glosses":true}' >$(BOOK).tex
-	@$(COMPILE)
+	@./fruby $(BOOK).rbtex '{$(GENERIC),"clean":true}' >temp.tex
+	xelatex temp
+	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK).pdf ; true
+	@./fruby $(BOOK).rbtex '{$(GENERIC),"write_pos":true}' >temp.tex
+	xelatex temp
+	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK).pdf ; true
+	@./fruby $(BOOK).rbtex '{$(GENERIC),"render_glosses":true}' >temp.tex
+	xelatex temp
+	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK).pdf ; true
 
 dry_run: export DRY_RUN=1
 dry_run: export FORMAT=whole
