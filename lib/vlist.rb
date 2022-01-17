@@ -175,6 +175,7 @@ def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:5
   end
   vl = Vlist.new(result2)
   if whine.length>0 then vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n" end
+
   return vl
 end
 
