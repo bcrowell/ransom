@@ -164,6 +164,10 @@ class IliadNotes
     'about_what'    => %q{εὐνὰς},
     'explain'       => %q{Here, anchor stones rather than beds.}
   }],
+  ["1.590" , {
+    'about_what'    => %q{},
+    'explain'       => %q{In Homer's account, Hephaestus' exile was done by Zeus, and was in retaliation for an attempt to intervene in some unspecified previous marital dispute.}
+  }],
 ]
 
 def IliadNotes.notes
