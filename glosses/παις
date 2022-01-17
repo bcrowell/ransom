@@ -3,5 +3,6 @@
   "gender":"m or f",
   "genitive":"παιδός",
   "medium":"child",
+  "mnemonic_cog":"pediatrician",
   "cog":"pediatrician, Latin puer"
 }

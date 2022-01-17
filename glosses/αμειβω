@@ -4,6 +4,7 @@
   "short": "exchange, answer",
   "medium": "exchange; mp: answer, take turns",
   "long": "exchange; mp: answer, have dialog, take turns, repay, requite",
+  "mnemonic_cog":"amoeba",
   "cog": "amoeba",
   "aorist_difficult_to_recognize": 0
 }

@@ -44,6 +44,7 @@ long
 
 etym
 cog
+mnemonic_cog -- a single English cognate that is helpful as a mnemonic; to be shown in glossaries
 syn
 notes
 
@@ -170,7 +171,7 @@ def Gloss.validate(key)
   if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
   n = a.length
   mandatory_keys = ['word','medium']
-  allowed_keys = ['word','short','medium','long','etym','cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem','vowel_length','aorist_difficult_to_recognize','perseus']
+  allowed_keys = ['word','short','medium','long','etym','cog','mnemonic_cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem','vowel_length','aorist_difficult_to_recognize','perseus']
   # Try to detect duplicate keys.
   allowed_keys.each { |key|
     if json.scan(/\"#{key}\"\s*:/).length>n then return [true,"key #{key} occurs more than #{n} times"] end

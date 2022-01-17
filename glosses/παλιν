@@ -3,6 +3,7 @@
 {
   "word":"πάλιν",
   "medium":"back, again",
+  "mnemonic_cog":"palindrome",
   "cog":"palindrome",
   "syn":"αὖ, αὖτε"
 }
