@@ -2,6 +2,7 @@
 // nominative/accusative/vocative neuter singular of ἔργων (érgōn)
 {
   "word":"ἔργον",
-  "medium":"work"
+  "medium":"work",
+  "mnemonic_cog":"ergonomics"
 }
       

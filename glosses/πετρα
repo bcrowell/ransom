@@ -2,6 +2,7 @@
 // rock formation: cliff, ledge, cave, ridge, stone (as a building material)
 {
   "word":"πέτρα",
-  "medium":"rock"
+  "medium":"rock",
+  "mnemonic_cog":"petrified"
 }
       

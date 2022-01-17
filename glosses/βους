@@ -2,6 +2,8 @@
 // cow, ox, cattle, shield: ὅτι ἐκ βοείων ἐστι δερμάτων συνεκδοχικῶς τὸ ὅπλον. Because the weapon is made of successive bovine skins.
 {
   "word":"βοῦς",
-  "medium":"cow, ox; shield"
+  "medium":"cow, ox; shield",
+  "mnemonic_cog":"bovine",
+  "cog":"bovine, vaccine"
 }
       

@@ -2,6 +2,7 @@
 // alive, living
 {
   "word":"ζωός",
-  "medium":"alive"
+  "medium":"alive",
+  "mnemonic_cog":"zoo"
 }
       

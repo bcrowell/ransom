@@ -2,6 +2,7 @@
 // wind, breeze, gale, any of the four cardinal directions
 {
   "word":"ἄνεμος",
-  "medium":"wind"
+  "medium":"wind",
+  "mnemonic_cog":"anemone"
 }
       

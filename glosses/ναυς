@@ -2,6 +2,7 @@
 // a ship
 {
   "word":"ναῦς",
-  "medium":"ship"
+  "medium":"ship",
+  "mnemonic_cog":"navy"
 }
       

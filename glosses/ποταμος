@@ -2,6 +2,7 @@
 // river, stream, canal
 {
   "word":"ποταμός",
-  "medium":"river"
+  "medium":"river",
+  "mnemonic_cog":"hippopotamus"
 }
       

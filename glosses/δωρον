@@ -2,6 +2,7 @@
 // gift, hand's width
 {
   "word":"δῶρον",
-  "medium":"gift"
+  "medium":"gift",
+  "mnemonic_cog":"donate"
 }
       

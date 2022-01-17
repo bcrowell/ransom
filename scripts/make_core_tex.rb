@@ -20,9 +20,15 @@ if format=='tex' then
   print "% This file is generated automatically by doing a make core_tex. Don't edit it by hand.\n"
 end
 alpha_sort(glosses.keys).each { |lemma|
+  g = glosses[lemma][0]
+  mnemonic_cog = glosses[lemma][1] # is usually nil
   if format=='tex' then
-    print "\\vocab{#{lemma}}{#{glosses[lemma]}}\\\\\n"
+    if mnemonic_cog.nil? then
+      print "\\vocab{#{lemma}}{#{g}}\\\\\n"
+    else
+      print "\\vocabwithcog{#{lemma}}{#{g}}{#{mnemonic_cog}}\\\\\n"
+    end
   else
-    print "#{lemma} #{glosses[lemma]}\n"
+    print "#{lemma} #{g} #{mnemonic_cog}\n"
   end
 }
