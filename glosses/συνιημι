@@ -1,6 +1,8 @@
 {
-  "word": "συνίημι",
-  "princ": "συνήσω,ξυνέηκα",
-  "medium": "send together",
+  "word": "ξυνίημι",
+  "perseus": "συνίημι",
+  "princ": "ξυνήσω,ξυνέηκα",
+  "medium": "send together; (+gen) hear",
+  "notes":"There is also the alternative form συνίημι, which occurs only once in Homer. ἐμέθεν ξύνες is an idiom for 'hear me.'",
   "syn": "ἵστημι"
 }

@@ -44,6 +44,7 @@ def total_entries
 end
 
 def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[])
+  # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],

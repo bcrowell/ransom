@@ -168,6 +168,10 @@ class IliadNotes
     'about_what'    => %q{},
     'explain'       => %q{In Homer's account, Hephaestus' exile was done by Zeus, and was in retaliation for an attempt to intervene in some unspecified previous marital dispute.}
   }],
+  ["2.28" , {
+    'about_what'    => %q{ἐμέθεν ξύνες},
+    'explain'       => %q{'Hear me,' with -θεν marking the genitive rather than meaning 'from.'}
+  }],
 ]
 
 def IliadNotes.notes

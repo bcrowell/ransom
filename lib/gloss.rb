@@ -85,7 +85,8 @@ end
 def Gloss.get(word,prefer_length:1)
   # The input can be accented or unaccented. Accentuation will be used only for disambiguation, which is seldom necessary.
   # Giving the inflected form could in theory disambiguate certain cases where there are two lemmas spelled the same, but
-  # I haven't implemented anything like that yet.
+  # I haven't implemented anything like that yet. If the word has a Homeric form that differs from the standard Perseus
+  # form, then the gloss that is returned will have both a 'word' field and a 'perseus' field. See Gloss.perseus_to_homeric().
   # Return value looks like the following.
   # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state" }
   x = Gloss.get_from_file(word)
@@ -142,6 +143,8 @@ def Gloss.get(word,prefer_length:1)
   e['gloss']=e['medium']
   if prefer_length==0 && e.has_key?('short') then e['gloss']=e['short'] end
   if prefer_length==2 && e.has_key?('long') then e['gloss']=e['long'] end
+  #debug = (word=='συνίημι' || word=='ξυνίημι')
+  #if debug then $stderr.print "................ word=#{word}, e=#{e}\n" end
   return e
 end
 

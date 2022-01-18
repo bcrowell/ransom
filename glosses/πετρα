@@ -1,8 +1,10 @@
 // https://en.wiktionary.org/wiki/πέτρα https://logeion.uchicago.edu/πέτρα
 // rock formation: cliff, ledge, cave, ridge, stone (as a building material)
 {
-  "word":"πέτρα",
-  "medium":"rock",
+  "word":"πέτρη",
+  "perseus":"πέτρα",
+  "short":"rock",
+  "medium":"rock, cliff, reef",
   "mnemonic_cog":"petrified"
 }
       
