@@ -395,25 +395,25 @@ def vocab1(stuff)
   file_under,word,lexical,data = stuff
   entry = Gloss.get(lexical)
   return if entry.nil?
-  preferred_form = entry['word']
+  preferred_lex = entry['word']
   # ...If there is a lexical form used in the database (such as Perseus), but we want some other form (such as Homeric), then
-  #    preferred_form will be different from the form inside stuff.
+  #    preferred_lex will be different from the form inside stuff.
   word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
   if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
   explain_inflection = entry.has_key?('lexical') || (data.has_key?('is_3rd_decl') && data['is_3rd_decl'] && !alpha_equal(word,lexical))
+  # Count chars, and if it looks too long to fit on a line, switch to the short gloss:
   if explain_inflection then
-    text = [word.downcase,lexical,gloss]
+    text = [word.downcase,preferred_lex,gloss]
   else
-    text = [lexical,gloss]
+    text = [preferred_lex,gloss]
   end
   total_chars = text.map { |t| t.length}.sum+text.length-1 # final terms count blanks
   if total_chars>35 && entry.has_key?('short') then gloss=entry['short'] end
-  #debug = (preferred_form=='συνίημι' || preferred_form=='ξυνίημι')
-  #if debug then $stderr.print "............ #{preferred_form}\n" end # qwe
+  # Generate latex:
   if explain_inflection then
-    s = "\\vocabinflection{#{word.downcase}}{#{preferred_form}}{#{gloss}}"
+    s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}}"
   else
-    s = "\\vocab{#{preferred_form}}{#{gloss}}"
+    s = "\\vocab{#{preferred_lex}}{#{gloss}}"
   end
   return s
 end
