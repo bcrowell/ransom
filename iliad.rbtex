@@ -201,6 +201,7 @@ layouts = []
 \fancyhead[LO]{Grammar}
 \input{iliad/grammar}
 \fancyhead[LO]{Core vocabulary}
+\sloppy
 \twocolumn[\formatlikechapter{Core vocabulary for Homer}]\label{core-vocab}
 \input{iliad/core}
 \label{core-vocab-end}

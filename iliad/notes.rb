@@ -172,6 +172,18 @@ class IliadNotes
     'about_what'    => %q{ἐμέθεν ξύνες},
     'explain'       => %q{'Hear me,' with -θεν marking the genitive rather than meaning 'from.'}
   }],
+  ["2.33" , {
+    'about_what'    => %q{σῇσιν},
+    'explain'       => %q{fem.~pl.~dat.~σός}
+  }],
+  ["2.34" , {
+    'about_what'    => %q{ἀνήῃ},
+    'explain'       => %q{aor.~subj.~ἀνίημι}
+  }],
+  ["2.37" , {
+    'about_what'    => %q{φῆ},
+    'explain'       => %q{here, to think (as often with φήμι + inf.)}
+  }],
 ]
 
 def IliadNotes.notes

@@ -2,6 +2,10 @@
 // infant, child
 {
   "word":"νήπιος",
-  "medium":"infant, child"
+  "short":"childish",
+  "medium":"childish, credulous",
+  "long":"childish, naive, credulous, foolish",
+  "etym":"unknown",
+  "notes":"in Attic, also a noun"
 }
       
