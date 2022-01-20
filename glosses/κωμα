@@ -2,6 +2,9 @@
   "word":"κῶμα",
   "short":"sleep",
   "medium":"deep sleep",
-  "syn":"ὕπνος"
+  "syn":"ὕπνος",
+  "mnemonic_cog":"coma",
+  "cog":"coma, possibly incumbent",
+  "etym":"unknown, probably not related to κεῖμαι"
 }
       
