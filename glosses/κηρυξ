@@ -4,7 +4,10 @@
   "word":"κῆρυξ",
   "gender":"m",
   "genitive":"κήρυκος",
-  "medium":"herald",
-  "cog":"κηρύσσω"
+  "short":"henchman",
+  "medium":"henchman, gofer",
+  "notes":"In the Homeric era, a κῆρυξ was a low-level attendant who did jobs like building fires, translating, or bringing people to the lord. The ceremonialization of the office came later.",
+  "cog":"κηρύσσω",
+  "etym":"unknown"
 }
       

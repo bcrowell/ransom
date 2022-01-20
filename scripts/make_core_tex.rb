@@ -24,9 +24,9 @@ alpha_sort(glosses.keys).each { |lemma|
   mnemonic_cog = glosses[lemma][1] # is usually nil
   if format=='tex' then
     if mnemonic_cog.nil? then
-      print "\\vocab{#{lemma}}{#{g}}\\\\\n"
+      print "\\vocab{#{lemma}}{#{g}}\\par\n"
     else
-      print "\\vocabwithcog{#{lemma}}{#{g}}{#{mnemonic_cog}}\\\\\n"
+      print "\\vocabwithcog{#{lemma}}{#{g}}{#{mnemonic_cog}}\\par\n"
     end
   else
     print "#{lemma} #{g} #{mnemonic_cog}\n"

@@ -17,7 +17,7 @@
 \RequirePackage{greekransom}
 
 \RequirePackage{graphicx} % needed for \resizebox
-\RequirePackage{multicol,xcolor,calc,titlesec,fancyhdr}
+\RequirePackage{multicol,xcolor,calc,titlesec,fancyhdr,hyphenat,ifthen}
 \RequirePackage{parskip} % disables indentation at the beginning of a paragraph
 \RequirePackage[absolute,overlay]{textpos}
 
@@ -52,17 +52,44 @@
 \newcommand{\from}{\raisebox{.25ex}{{\tiny{$\prec$}}}\hardspace{0.2em}}
 
 \newcommand{\hardspace}[1]{\unskip\hspace{#1}\ignorespaces} % https://tex.stackexchange.com/a/89096/6853
-\newcommand{\vocab}[2]{\begin{boldgreek}#1\end{boldgreek} \hardspace{1em} #2}
-\newcommand{\vocabwithcog}[3]{\begin{boldgreek}#1\end{boldgreek} \hardspace{1em} #2 $\sim$\emph{#3}}
+\newcommand{\vocabbasic}[2]{\begin{boldgreek}#1\end{boldgreek} \hardspace{1em} #2}
+\newcommand{\vocabwithcogbasic}[3]{\begin{boldgreek}#1\end{boldgreek} \hardspace{1em} #2 $\sim$\emph{#3}}
+\newcommand{\vocab}[2]{\glosstrailingrightpara{\vocabbasic{#1}{#2}}}
+\newcommand{\vocabwithcog}[3]{\glosstrailingrightpara{\vocabwithcogbasic{#1}{#2}{#3}}}
 \newcommand{\vocabnospace}[2]{\begin{boldgreek}#1\end{boldgreek} #2}
-\newcommand{\vocabnouninflection}[3]{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3}
-\newcommand{\vocabverbinflection}[3]{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3}
-\newcommand{\vocabinflection}[3]{\vocab{#1}{\from{}{\greekfont #2}}, #3}
+\newcommand{\vocabinflection}[3]{\glosstrailingrightpara{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3}}
+\newcommand{\vocabnouninflection}[3]{\vocabinflection{#1}{#2}{#3}}
+\newcommand{\vocabverbinflection}[3]{\vocabinflection{#1}{#2}{#3}}
 \newcommand{\vocabinflectiononly}[2]{\vocab{#1}{\from{}{\greekfont #2}}}
 \newcommand{\vocaballheader}{\textit{vocabulary}}
 \newcommand{\formsheader}[1]{\textit{#1}}
 
-\newenvironment{vocabpage}{\cleardoublepage\begin{raggedright}\begin{multicols}{2}}{\end{multicols}\end{raggedright}}
+%------------------------------------------------------------------
+% Code for typesetting glossary entries. When an entry is one line, left-justify it. When it's more than
+% one line, justify it, but right-justify the final line.
+% https://tex.stackexchange.com/a/630789/261851
+
+% https://tex.stackexchange.com/a/406722
+% For a single paragraph of text, determines how many lines it will take to typeset.
+% #1=text, #2=width, #3=variable to store result in
+\def\CalcNumber#1#2#3{%
+  \setbox0\vbox{\hsize=#2 \noindent#1\par\xdef#3{\the\prevgraf}}}
+
+% https://tex.stackexchange.com/a/43239/261851
+% Typeset a paragraph so that the text is justified, and the final line is right-aligned:
+\newcommand{\lastlinerightaligned}[1]{\begingroup \leftskip=0pt plus .5fil\rightskip=0pt plus -.5fil\parfillskip=0pt plus .5fil{}#1\par \endgroup}
+
+\newcommand{\glossmultiline}[1]{\lastlinerightaligned{\nohyphens{#1}}}
+
+% Typeset a paragraph so that if it's a single line, it's left-justified, but if it's multiple lines,
+% it's justified except for the last line, which is right-justified.
+\newcommand{\glosstrailingrightpara}[1]{\CalcNumber{#1}{\columnwidth}{\NLines}\ifthenelse{\NLines>1}{\glossmultiline{#1\par}}{#1\par}}
+
+
+%------------------------------------------------------------------
+
+%\newenvironment{vocabpage}{\cleardoublepage\begin{raggedright}\begin{multicols}{2}}{\end{multicols}\end{raggedright}}
+\newenvironment{vocabpage}{\cleardoublepage\setlength{\parskip}{0pt}\begin{multicols}{2}}{\end{multicols}}
 \newenvironment{conjugations}{\formsheader{conjugations}\\}{}
 \newenvironment{declensions}{\formsheader{declensions}\\}{}
 \newenvironment{vocaball}{\vocaballheader\\}{}
@@ -89,10 +116,13 @@
 
 % The following need to be in their own separate paragraphs.
 \newcommand{\bigseparator}{
-  \vspace{-0.5\baselineskip}% % ...affects the space below, not above -- why?; but cutting this causes the hspace to have no effect
-  \hspace{0.27\textwidth}%
-  \noindent\makebox[\linewidth]{\resizebox{0.3333\linewidth}{1pt}{$\bullet$}}\bigskip%
-  \vspace{-0.5\baselineskip}
+  \par
+  %\vspace{-0.5\baselineskip}% % ...affects the space below, not above -- why?; but cutting this causes the hspace to have no effect
+  %\hspace{0.27\textwidth}%
+  \noindent\makebox[\linewidth]{\resizebox{0.3333\linewidth}{1pt}{$\bullet$}}
+  %\bigskip%
+  \vspace{-1.25\baselineskip}
+  \par
 }
 % ... https://tex.stackexchange.com/a/130763/6853
 \newcommand{\smallseparator}{%

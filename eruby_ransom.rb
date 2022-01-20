@@ -361,7 +361,7 @@ def vocab_helper(commonness,vl,lo,hi,core)
         if type=='gloss' then s=vocab1(entry) end
         if type=='conjugation' || type=='declension' then s=vocab_inflection(entry) end
         if !(s.nil?) then
-          this_sec += clean_up_unicode("#{s}\\\\\n")
+          this_sec += clean_up_unicode("#{s}\n")
         else
           die("unrecognized vocab type: #{type}")
         end
