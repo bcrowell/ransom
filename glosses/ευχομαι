@@ -2,7 +2,11 @@
 // to pray, offer prayers, to pray for, wish for, long for, to vow or promise to do, to profess loudly, to boast, vaunt
 {
   "word":"εὔχομαι",
-  "medium":"pray, pray for",
-  "cog":"εὐχή"
+  "short":"declare; pray",
+  "medium":"declare, boast; pray",
+  "long":"declare, boast, promise solemnly; pray, pray for",
+  "mnemonic_cog":"vow",
+  "cog":"vow, vote, devote, devout, εὐχή; not cognate with εὔχομαι, vow, et al., or with prefix εὐ-",
+  "etym":"PIE h1uegwh, proclaim, promise, praise"
 }
       

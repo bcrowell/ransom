@@ -2,6 +2,11 @@
 // have to, ought, should
 {
   "word":"χρή",
-  "medium":"it is necessary (χράω)"
+  "short":"must, should",
+  "medium":"it is necessary, must, should",
+  "long":"(+inf., acc.) it is necessary, one must, one should",
+  "mnemonic_cog":"chresard",
+  "cog":"chrestomathy, chresard",
+  "etym":"unknown, any PIE root is speculative"
 }
       

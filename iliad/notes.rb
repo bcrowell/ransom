@@ -184,6 +184,10 @@ class IliadNotes
     'about_what'    => %q{φῆ},
     'explain'       => %q{here, to think (as often with φήμι + inf.)}
   }],
+  ["2.81" , {
+    'about_what'    => %q{ψεῦδός κεν φαῖμεν καὶ νοσφιζοίμεθα},
+    'explain'       => %q{Homer uses the present optative for contrary-to-fact suppositions in the present.}
+  }],
 ]
 
 def IliadNotes.notes

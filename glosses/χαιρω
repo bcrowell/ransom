@@ -3,8 +3,9 @@
   "princ": "χαιρήσω,ἐχηράμην",
   "medium": "rejoice",
   "long": "to rejoice; to enjoy (+dat/part)",
-  "cog": "χάρμα",
+  "mnemonic_cog":"eucharist",
+  "cog": "yearn, greedy, exhort, charisma, eucharist, χάρμα; modern greeting χαίρετε; not cognate with εὔχομαι, vow, et al.",
   "notes": "The future means to make glad. Other tenses mean to be made glad, in both active and mp. In Homer, forms with reduplication such as κεχάροντο are about as common as those without.",
   "syn": "γηθέω",
-  "aorist_difficult_to_recognize": 0
+  "etym":"PIE gher(H), desire, enjoy, like, want"
 }
