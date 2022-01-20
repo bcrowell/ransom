@@ -275,10 +275,11 @@ class Epos
       basic = "#{left} #{right}"
       r1,non_unique,ambig_list = word_glob_to_hard_ref_helper2(basic,constraint) # ref to beginning of chunk
       if r1.nil? then return [nil,nil,nil] end
+      if non_unique then return [nil,non_unique,ambig_list] end
       r2,garbage,garbage2 = word_glob_to_hard_ref_helper("#{basic} >",constraint) # ref to end (recurse because helper2 doesn't support >)
       t = extract(r1,r2,remove_numerals:false)
       left_regex = plain_glob_to_regex(left)
-      raise "internal error, left=#{left}" unless t=~/(#{left_regex})/ # shouldn't happen, because r1 was not nil
+      raise "internal error, left=#{left}, r1=#{r1}, r2=#{r2}" unless t=~/(#{left_regex})/ # shouldn't happen, because r1 was not nil
       left_match = $1
       offset = t.index(left_match)
       ii = offset+left_match.length+1 # an index into t

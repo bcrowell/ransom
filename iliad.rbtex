@@ -76,7 +76,7 @@ breaks = [
   [ [2,17], "And quickly it came to the swift ships of the Greeks"],
   [ [2,35], "Thus then having spoken, he departed, and left him there pondering"],
   [ [2,52], "They therefore summoned them, and the people were very speedily assembled"],
-  [ [2,69], "for Juno, supplicating, has bent all"],
+  [ [2,69], "Hera supplicating has bent all to her will |< and woes from Zeus are impending over the Trojans"],
   [ [2,85], "and obeyed the shepherd of the tribes, and the hosts rushed forward"],
   [ [2,102], "Vulcan in the first place gave it to king Jove, the son of Saturn"],
   [ [2,119], "For this were disgraceful even for posterity to hear"],
@@ -204,8 +204,11 @@ layouts = []
 \sloppy
 
 \twocolumn[\formatlikechapter{Core vocabulary for Homer}]\label{core-vocab}
+\begingroup
+\setlength{\parskip}{0pt}
 \input{iliad/core}
 \label{core-vocab-end}
+\endgroup
 \onecolumn
 
 

@@ -66,8 +66,14 @@
 
 %------------------------------------------------------------------
 % Code for typesetting glossary entries. When an entry is one line, left-justify it. When it's more than
-% one line, justify it, but right-justify the final line.
+% one line, justify it, but right-justify the final line -- currently disabled, see below.
 % https://tex.stackexchange.com/a/630789/261851
+% Macro to typeset a paragraph so that if it's a single line, it's left-justified, but if it's multiple lines,
+% it's justified except for the last line, which is right-justified.
+\newcommand{\xglosstrailingrightpara}[1]{\CalcNumber{#1}{\columnwidth}{\NLines}\ifthenelse{\NLines>1}{\glossmultiline{#1\par}}{#1\par}}
+% ... x in front is so it's disabled
+\newcommand{\glosstrailingrightpara}[1]{#1\par}
+% ... go back to doing it the normal-looking way instead
 
 % https://tex.stackexchange.com/a/406722
 % For a single paragraph of text, determines how many lines it will take to typeset.
@@ -81,15 +87,10 @@
 
 \newcommand{\glossmultiline}[1]{\lastlinerightaligned{\nohyphens{#1}}}
 
-% Typeset a paragraph so that if it's a single line, it's left-justified, but if it's multiple lines,
-% it's justified except for the last line, which is right-justified.
-\newcommand{\glosstrailingrightpara}[1]{\CalcNumber{#1}{\columnwidth}{\NLines}\ifthenelse{\NLines>1}{\glossmultiline{#1\par}}{#1\par}}
-
 
 %------------------------------------------------------------------
 
-%\newenvironment{vocabpage}{\cleardoublepage\begin{raggedright}\begin{multicols}{2}}{\end{multicols}\end{raggedright}}
-\newenvironment{vocabpage}{\cleardoublepage\setlength{\parskip}{0pt}\begin{multicols}{2}}{\end{multicols}}
+\newenvironment{vocabpage}{\cleardoublepage\begin{raggedright}\setlength{\parskip}{0pt}\begin{multicols}{2}}{\end{multicols}\end{raggedright}}
 \newenvironment{conjugations}{\formsheader{conjugations}\\}{}
 \newenvironment{declensions}{\formsheader{declensions}\\}{}
 \newenvironment{vocaball}{\vocaballheader\\}{}
