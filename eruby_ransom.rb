@@ -52,9 +52,10 @@ class Bilingual
       @foreign_hr1,@foreign_hr2 = foreign.line_to_hard_ref(g1[0],g1[1]),foreign.line_to_hard_ref(g2[0],g2[1])
       @foreign_ch1,@foreign_ch2 = @foreign_hr1[0],@foreign_hr2[0]
     else
-      @foreign_hr1,@foreign_hr2 = foreign.word_glob_to_hard_ref(g1),foreign.word_glob_to_hard_ref(g2)
+      $stderr.print "g1 -> #{foreign.word_glob_to_hard_ref(g1)}\n"
+      @foreign_hr1,@foreign_hr2 = foreign.word_glob_to_hard_ref(g1)[0],foreign.word_glob_to_hard_ref(g2)[0]
     end
-    @foreign_text = foreign.extract(foreign_hr1,foreign_hr2)
+    @foreign_text = foreign.extract(@foreign_hr1,@foreign_hr2)
     # Let word globs contain, e.g., Hera rather than Juno:
     t1 = Patch_names.antipatch(t1)
     t2 = Patch_names.antipatch(t2)
@@ -174,11 +175,15 @@ end
 
 def four_page_layout_vocab_helper(bilingual,genos,db,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
   core = core.map { |x| remove_accents(x).downcase }
-  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,genos,db, \
+  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,genos,db,core:core, \
                exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
-  if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
-  if vocab_by_chapter[ch].nil? then vocab_by_chapter[ch]=[] end
-  vocab_by_chapter[ch] = alpha_sort((vocab_by_chapter[ch]+vl.all_lexicals).uniq)
+  if !ch.nil? then
+    if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
+    if vocab_by_chapter[ch].nil? then vocab_by_chapter[ch]=[] end
+    vocab_by_chapter[ch] = alpha_sort((vocab_by_chapter[ch]+vl.all_lexicals).uniq)
+  else
+    vocab_by_chapter = []
+  end
   return core,vl,vocab_by_chapter
 end
 
@@ -187,13 +192,13 @@ def print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_c
   stuff = vocab(db,vl,core)
   tex,v = stuff['tex'],stuff['file_lists']
   print tex
-  print notes_to_latex(bilingual.foreign_linerefs,notes) 
+  if notes.length>0 then print notes_to_latex(bilingual.foreign_linerefs,notes) end # FIXME: won't work if foreign text is prose, doesn't have linerefs
   print header_latex(bilingual) # includes pagebreak
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
-  print foreign(db,bilingual.foreign_text,bilingual.foreign_first_line_number),"\n\n"
+  print foreign(db,bilingual,bilingual.foreign_first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatglosses}%\n"
-  print ransom(db,bilingual.foreign_text,v,bilingual.foreign_first_line_number),"\n\n"
+  print ransom(db,bilingual,v,bilingual.foreign_first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print bilingual.translation_text
   # https://tex.stackexchange.com/a/308934
@@ -435,17 +440,30 @@ def vocab1(db,stuff)
 end
 
 
-def foreign(db,t,first_line_number)
-  foreign_helper(db,t,false,first_line_number,left_page_verse:true)
+def foreign(db,bilingual,first_line_number)
+  if bilingual.foreign.is_verse then
+    foreign_verse(db,bilingual,false,first_line_number,left_page_verse:true)
+  else
+    foreign_prose(db,bilingual,false,first_line_number,left_page_verse:true)
+  end
 end
 
-def ransom(db,t,v,first_line_number)
+def ransom(db,bilingual,v,first_line_number)
   common,uncommon,rare = v
-  foreign_helper(db,t,true,first_line_number,gloss_these:rare)
+  if bilingual.foreign.is_verse then
+    foreign_verse(db,bilingual,true,first_line_number,gloss_these:rare)
+  else
+    foreign_prose(db,bilingual,true,first_line_number,gloss_these:rare)
+  end
 end
 
-def foreign_helper(db,t,ransom,first_line_number,gloss_these:[],left_page_verse:false)
+def foreign_prose(db,bilingual,ransom,first_line_number,gloss_these:[],left_page_verse:false)
+  return "dummy text"
+end
+
+def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page_verse:false)
   # If gloss_these isn't empty, then we assume it contains a list of rare lemmatized forms.
+  t = bilingual.foreign_text
   gloss_code = ''
   main_code = "\\begin{foreignpage}\n"
   if ransom then main_code = main_code + "\\begin{graytext}\n" end

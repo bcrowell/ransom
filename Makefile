@@ -105,3 +105,17 @@ flush_epos_cache:
 
 test_epos:
 	ruby -e "require './lib/epos.rb'; require './lib/file_util.rb'; require 'json'; require './lib/string_util.rb'; require './lib/clown.rb'; Epos.run_tests()"
+
+demo: export FORMAT=whole
+demo: export OVERWRITE=1
+demo: lib/*rb eruby_ransom.rb demo.rbtex
+	@rm -f warnings help_gloss/__links.html
+	@./fruby demo.rbtex '{$(GENERIC),"clean":true}' >temp.tex
+	xelatex temp
+	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true
+	@./fruby demo.rbtex '{$(GENERIC),"write_pos":true}' >temp.tex
+	xelatex temp
+	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true
+	@./fruby demo.rbtex '{$(GENERIC),"render_glosses":true}' >temp.tex
+	xelatex temp
+	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true

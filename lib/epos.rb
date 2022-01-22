@@ -212,8 +212,8 @@ class Epos
     if r.nil? then ok=false; reason="nil" end
     if ok && !(r.kind_of?(Array)) then ok=false; reason="not an array" end
     if ok && !(r.length==2) then ok=false; reason="length=#{r.length}" end
-    if ok && !(r[0].class==1.class && r[1].class==1.class) then ok=false; reason="ref=#{ref}, elements not integers" end
-    if !ok && die_if_bad then raise reason end
+    if ok && !(r[0].class==1.class && r[1].class==1.class) then ok=false; reason="ref=#{r}, elements not integers" end
+    if !ok && die_if_bad then raise "hard ref fails sanity check\n  reason=#{reason}\n  ref=#{r}\n" end
     return [ok,reason]    
   end
 

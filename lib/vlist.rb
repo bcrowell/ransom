@@ -43,22 +43,29 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[])
+def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil)
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
-  freq = json_from_file_or_die(freq_file)
+  if freq_file.nil?
+    then freq = {} # Frequencies are not really crucial.
+    using_thresholds = false
+    if core.nil? then raise "both freq_file and core are nil" end
+  else
+    freq = json_from_file_or_die(freq_file)
+    using_thresholds = true
+  end
   freq_list = freq.to_a
   freq_list.sort! { |a,b| b[1] <=> a[1]} # descending order by frequency; is probably already sorted, so this will be fast
-  # ... a list of pairs like [["δέ", 12136], ["ὁ" , 5836], ...]
+  # ... a list of pairs like [["δέ", 12136], ["ὁ" , 5836], ...]; not a problem if it's empty
   whine = []
 
   t.gsub!(/\d/,'')
   if genos.greek then t.gsub!(/᾽(?=[[:alpha:]])/,"᾽ ") end # e.g., ποτ᾽Ἀθήνη
   t = t.unicode_normalize(:nfc)
 
-  freq_rank = {}
+  freq_rank = {} # if freq_file was not supplied, then this ranking will be random/undefined
   rank = 1
   freq_list.each { |a|
     lemma,count = a
@@ -66,6 +73,7 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_
     rank += 1
   }
 
+  # If no frequency file is supplied, then the following are not actually used; we just gloss every word that's not in the core list.
   threshold_difficult = thresholds[0] # words ranked lower than this may be glossed if they're difficult forms to recognize
   threshold_no_gloss = thresholds[1] # words ranked higher than this are not normally glossed
   threshold = thresholds[2] # words ranked higher than this are listed as common
@@ -118,7 +126,12 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_
       if is_3rd_decl then misc['is_3rd_decl']=true end
       if is_epic then misc['is_epic']=true end
     end
-    next unless rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize)
+    if using_thresholds then
+      gloss_this = ( rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize) )
+    else
+      gloss_this = !(core.include?(lemma))
+    end
+    next unless gloss_this
     misc['difficult_to_recognize'] = difficult_to_recognize
     entry = word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc
     # ... word and word_raw are not super useful, in many cases will be just the first example in this passage
@@ -149,7 +162,7 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_
       word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc = entry
       next if Proper_noun.is(word_raw,lemma) # ... use word_raw to preserve capitalization, since some proper nouns have the same letters as other words
       next if Ignore_words.patch(word) || Ignore_words.patch(lemma)
-      next unless rank>=threshold_difficult
+      next unless !rank.nil? && rank>=threshold_difficult
       next if rank<threshold_no_gloss && !difficult_to_recognize      
       next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
       key = remove_accents(lemma).downcase

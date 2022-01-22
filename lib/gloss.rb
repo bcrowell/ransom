@@ -253,6 +253,9 @@ class GlossDB
       if genos.period==genos.period_name_to_number("epic") then return GlossDB.new("glosses","perseus","word") end
       if genos.period==genos.period_name_to_number("attic") then return GlossDB.new("glosses","perseus","perseus") end
     end
+    if genos.latin then
+      return GlossDB.new("glosses/_latin","perseus","perseus")
+    end
     raise "unsupported genos: #{genos}"
   end
 
