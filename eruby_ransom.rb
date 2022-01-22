@@ -139,17 +139,17 @@ class Illustrations
   end
 end
 
-def four_page_layout(stuff,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
+def four_page_layout(stuff,genos,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
   treebank,freq_file,greek,translation,notes,core = stuff
   return if dry_run
-  print_four_page_layout(stuff,layout,next_layout,vocab_by_chapter,start_chapter)
+  print_four_page_layout(stuff,genos,layout,next_layout,vocab_by_chapter,start_chapter)
 end
 
-def print_four_page_layout(stuff,bilingual,next_layout,vocab_by_chapter,start_chapter)  
+def print_four_page_layout(stuff,genos,bilingual,next_layout,vocab_by_chapter,start_chapter)  
   # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
   treebank,freq_file,greek,translation,notes,core = stuff
   ch = bilingual.foreign_ch1
-  core,vl,vocab_by_chapter = four_page_layout_vocab_helper(bilingual,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
+  core,vl,vocab_by_chapter = four_page_layout_vocab_helper(bilingual,genos,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
   if bilingual.foreign_ch1!=bilingual.foreign_ch2 then
     # This should only happen in the case where reference 2 is to the very first line of the next book.
     if !(bilingual.foreign_hr2[1]<=5 && bilingual.foreign_hr2[0]==bilingual.foreign_hr1[0]+1) then
@@ -159,9 +159,10 @@ def print_four_page_layout(stuff,bilingual,next_layout,vocab_by_chapter,start_ch
   print_four_page_layout_latex_helper(bilingual,next_layout,vl,core,start_chapter,notes)
 end
 
-def four_page_layout_vocab_helper(bilingual,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
+def four_page_layout_vocab_helper(bilingual,genos,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
   core = core.map { |x| remove_accents(x).downcase }
-  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
+  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,genos, \
+               exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
   if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
   if vocab_by_chapter[ch].nil? then vocab_by_chapter[ch]=[] end
   vocab_by_chapter[ch] = alpha_sort((vocab_by_chapter[ch]+vl.all_lexicals).uniq)

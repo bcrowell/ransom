@@ -181,7 +181,7 @@ layouts = []
 0.upto(breaks.length-2) { |i|
   bilingual,starting_ch,dry_run = layouts[i]
   if i<breaks.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
-  four_page_layout(stuff,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run)
+  four_page_layout(stuff,greek.genos,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run)
 }
 1.upto(vocab_by_chapter.length-1) { |ch|
   filename = sprintf("vocab_ch_%02d.txt",ch)

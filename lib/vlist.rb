@@ -43,7 +43,7 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[])
+def Vlist.from_text(t,treebank,freq_file,genos,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[])
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
@@ -55,7 +55,7 @@ def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:5
   whine = []
 
   t.gsub!(/\d/,'')
-  t.gsub!(/᾽(?=[[:alpha:]])/,"᾽ ") # e.g., ποτ᾽Ἀθήνη
+  if genos.greek then t.gsub!(/᾽(?=[[:alpha:]])/,"᾽ ") end # e.g., ποτ᾽Ἀθήνη
   t = t.unicode_normalize(:nfc)
 
   freq_rank = {}
@@ -78,10 +78,10 @@ def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:5
     word = word_raw.gsub(/[^[:alpha:]᾽']/,'') # word_raw is mostly useless, may e.g. have a comma on the end; may also contain elision mark
     next unless word=~/[[:alpha:]]/
     lemma_entry = treebank.word_to_lemma_entry(word)
-    elision = contains_greek_elision(word_raw)
+    elision = genos.greek && contains_greek_elision(word_raw)
     # ... elision produces so much ambiguity that we aren't going to try to gloss elided forms; if I was going to do improve this, I would
     #     need to stop filtering out elided forms when constructing the csv file, and implement disambiguation based on the line-by-line treebank data
-    ουδε_μηδε = ["ουδε","μηδε"].include?(remove_accents(word))
+    ουδε_μηδε = genos.greek && ["ουδε","μηδε"].include?(remove_accents(word))
     # ... I don't understand why, but these seem to occur in Perseus treebank only as lemmas, never as inflected forms, although they are in the text.
     do_not_try = (elision || ουδε_μηδε)
     if lemma_entry.nil? && !do_not_try then whine.push("error(vlist): no index entry for #{word}, raw=#{word_raw}"); next end
@@ -104,20 +104,22 @@ def Vlist.from_text(t,treebank,freq_file,thresholds:[1,50,700,700],max_entries:5
     did_lemma[lemma] = 1
     rank = freq_rank[lemma]
     f = freq[lemma]
-    is_3rd_decl = guess_whether_third_declension(word,lemma,pos)
-    is_epic = Epic_form.is(word)
+    misc = {}
     is_verb = (pos=~/^[vt]/)
     difficult_to_recognize = false
-    if !alpha_equal(word,lemma) then
-      difficult_to_recognize ||= (is_3rd_decl && guess_difficulty_of_recognizing_declension(word,lemma,pos)[0])
-      difficult_to_recognize ||= is_epic
-      difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lemma,pos)[0])
+    if genos.greek then
+      is_3rd_decl = guess_whether_third_declension(word,lemma,pos)
+      is_epic = Epic_form.is(word)
+      if !alpha_equal(word,lemma) then
+        difficult_to_recognize ||= (is_3rd_decl && guess_difficulty_of_recognizing_declension(word,lemma,pos)[0])
+        difficult_to_recognize ||= is_epic
+        difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lemma,pos)[0])
+      end
+      if is_3rd_decl then misc['is_3rd_decl']=true end
+      if is_epic then misc['is_epic']=true end
     end
     next unless rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize)
-    misc = {}
     misc['difficult_to_recognize'] = difficult_to_recognize
-    if is_3rd_decl then misc['is_3rd_decl']=true end
-    if is_epic then misc['is_epic']=true end
     entry = word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc
     # ... word and word_raw are not super useful, in many cases will be just the first example in this passage
     #$stderr.print "entry=#{entry}\n"
