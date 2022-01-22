@@ -68,6 +68,11 @@ class Bilingual
     if translation_hr2.nil? then raise "bad word glob, #{t2}" end
     @translation_text = translation.extract(translation_hr1,translation_hr2)
     @translation_text = Patch_names.patch(@translation_text) # change, e.g., Juno to Hera
+
+    # A hash that is intended to be unique to this particular spread. For example, Homer sometimes repeats entire passages,
+    # but this hash should still be different for the different passages. This is needed by foreign_verse in eruby_ransom.rb.
+    @hash = Digest::MD5.hexdigest([translation_hr1,translation_hr2,@foreign_hr1,@foreign_hr2].to_s)
+
     max_chars = 5000
     if @translation_text.length>max_chars || @translation_text.length==0 then
       message = "page of translated text has #{@translation_text.length} characters, failing sanity check"
@@ -100,7 +105,7 @@ class Bilingual
     raise message + "\n  See #{debug_file}"
   end
   attr_reader :foreign_hr1,:foreign_hr2,:foreign_ch1,:foreign_ch2,:foreign_text,:translation_text,:foreign_first_line_number,:foreign_chapter_number,
-          :foreign_linerefs,:foreign,:translation
+          :foreign_linerefs,:foreign,:translation,:hash
 end
 
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
@@ -471,7 +476,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
   if gloss_these.length>0 then
     gg = gloss_these.map { |x| remove_accents(x)}
     0.upto(lines.length-1) { |i|
-      line_hash = Digest::MD5.hexdigest(lines[i]+"_"+first_line_number.to_s)
+      line_hash = Digest::MD5.hexdigest([lines[i],bilingual.hash,i].to_s) # should be totally unique to this line, even if a line of poetry is repeated
       w = words(lines[i])
       ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
       gg.each { |x|
@@ -487,9 +492,10 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
             # We write a separate text file such as iliad.pos, which records the position of each word on the ransom-note page.
             # This allows us, on a later pass, to place the glosses at the correct positions.
             # format of .pos file:
-            #     unique hash                     ,page,line,key,x,y,width,height,depth
+            #     unique hash                     ,page,line,lemma,x,y,width,height,depth
             #     9d8e0859efef6dc6d2d23419e0de8e7a,7,0,μηνις,,,31.32986pt,8.7386pt,2.80527pt
             #     9d8e0859efef6dc6d2d23419e0de8e7a,7,0,μηνις,3789043,36515889,,,
+            #     Here line is a 0-based count from the top of the page.
             # We obtain the (x,y) and (w,h,d) information at different points, and therefore we have two separate lines, each of them
             # containing one part of the information.
             # Re the need for \immediate in the following, see https://tex.stackexchange.com/q/604110/6853
