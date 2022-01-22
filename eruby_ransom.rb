@@ -35,13 +35,14 @@ end
 
 class Bilingual
   def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000,length_ratio_expected:1.23,length_ratio_tol_factor:1.38)
-    # foreign and translation are Epos objects, which should have non-nil genos
-    # g1 and g2 are line refs of the form [book,line]
-    # t1 and t2 are word globs
+    # Foreign and translation are Epos objects, which should have non-nil genos with is_verse set correctly.
+    # G1, g2, t1, and t2 are references for input to Epos initializer. If a text is verse, then these should be
+    # of the form [book,line]. If prose, then they should be word globs.
     # sanity checks:
     #   max_chars -- maximum length of translated text
     #   length_ratio_expected -- expected value of length of translation divided by length of foreign text
     #   length_ratio_tol_factor -- tolerance factor for the above ratio
+    Bilingual.type_check_refs_helper(g1,g2,t1,t2,foreign,translation)
     @foreign = foreign
     @translation = translation
     @foreign_linerefs = [g1,g2]
@@ -74,6 +75,14 @@ class Bilingual
       message = "length ratio=#{length_ratio}, outside of expected range of #{lo}-#{hi}"
       self.raise_failed_sanity_check(message,t1,t2,translation_hr1,translation_hr2)
     end
+  end
+  def Bilingual.type_check_refs_helper(foreign1,foreign2,t1,t2,foreign,translation)
+    Bilingual.type_check_refs_helper2(foreign1,foreign2,foreign)
+    Bilingual.type_check_refs_helper2(t1,t2,translation)
+  end
+  def Bilingual.type_check_refs_helper2(ref1,ref2,epos)
+    if epos.is_verse && !(ref1.kind_of?(Array) && ref2.kind_of?(Array)) then raise "epos says verse, but refs are not arrays" end
+    if !epos.is_verse && !(ref1.kind_of?(String) && ref2.kind_of?(String)) then raise "epos says prose, but refs are not strings" end
   end
   def raise_failed_sanity_check(basic_message,t1,t2,translation_hr1,translation_hr2)
     debug_file = "epos_debug.txt"

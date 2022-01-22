@@ -13,7 +13,10 @@ class Genos
     if ['en','la'].include?(@lang) then @script='latin' end
     if ['grc'].include?(@lang) then @script='greek' end
     if ['hbo'].include?(@lang) then @script='hebrew' end
+    @is_verse = is_verse
   end
+
+  attr_reader :is_verse
 
   def to_s
     return "lang=#{@lang}, script=#{@script}"
