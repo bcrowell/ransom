@@ -232,7 +232,9 @@ end
 end
 
 class GlossDB
-  # an instance of this class encapsulates information about where to obtain glosses for a particular language and dialect
+  # An instance of this class encapsulates information about where to obtain glosses for a particular language and dialect.
+  # It's cleaner to call from_genos() rather than using this initializer directly.
+  # FIXME: Some installation-specific stuff is hardcoded in from_genos() (but at least it's in one place).
   def initialize(path,lemma_tag,prefer_tag)
     # If path is "glosses", then each gloss is in a file in ./glosses.
     # In my initial setup for Homer, each gloss file has a mandatory 'word' tag, which is the Homeric form, and
@@ -247,7 +249,11 @@ class GlossDB
   attr_reader :prefer_tag,:lemma_tag
 
   def GlossDB.from_genos(genos)
-    return GlossDB.new("glosses","perseus","word")
+    if genos.greek then
+      if genos.period==genos.period_name_to_number("epic") then return GlossDB.new("glosses","perseus","word") end
+      if genos.period==genos.period_name_to_number("attic") then return GlossDB.new("glosses","perseus","perseus") end
+    end
+    raise "unsupported genos: #{genos}"
   end
 
   def get_from_file(word)

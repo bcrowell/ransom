@@ -6,9 +6,10 @@ load 'eruby_ransom.rb'
 
 treebank = TreeBank.new('homer')
 freq_file = "lemmas/homer_freq.json"
-db = GlossDB.new("glosses","perseus","word")
+greek_genos = GreekGenos.new('epic',is_verse:true)
+db = GlossDB.from_genos(greek_genos)
 core = json_from_file_or_die("core/homer.json").keys # array containing lemmas not to put in vocab lists, because they're in core vocab in back
-greek = Epos.new("text/ιλιας","greek",true,genos:GreekGenos.new('epic',is_verse:true))
+greek = Epos.new("text/ιλιας","greek",true,genos:greek_genos)
 translation = Epos.new("text/buckley_iliad.txt","latin",false,genos:Genos.new('en',is_verse:false),postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
 
 load "iliad/notes.rb"

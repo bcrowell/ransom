@@ -15,6 +15,10 @@ class Genos
     if ['hbo'].include?(@lang) then @script='hebrew' end
   end
 
+  def to_s
+    return "lang=#{@lang}, script=#{@script}"
+  end
+
   def english() return (@lang=='en') end
   def latin() return (@lang=='la') end
   def greek() return (@lang=='grc') end
@@ -23,11 +27,21 @@ class Genos
 end
 
 class GreekGenos < Genos
+  @@period_labels = {'mycenaean'=>0, 'epic'=>1, 'attic'=>2, 'koine'=>3, 'νεα_ελληνικα'=>4} # https://en.wikipedia.org/wiki/Modern_Greek
   def initialize(period,is_verse:false)
     # See below for allowed values of the string period.
     super('grc',is_verse:is_verse)
-    period_labels = {'mycenaean'=>0, 'epic'=>1, 'attic'=>2, 'koine'=>3, 'νεα_ελληνικα'=>4} # https://en.wikipedia.org/wiki/Modern_Greek
-    @period = period_labels[period]
-    if @period.nil? then raise "unrecognized period: #{period}, allowed values are #{period_labels.keys.join(' ')}" end
+    @period = @@period_labels[period]
+    if @period.nil? then raise "unrecognized period: #{period}, allowed values are #{@@period_labels.keys.join(' ')}" end
+  end
+
+  attr_reader :period
+
+  def period_name_to_number(name)
+    return @@period_labels[name]
+  end
+
+  def to_s
+    return "lang=#{@lang}, script=#{@script}, period=#{@@period_labels.invert[@period]}"
   end
 end
