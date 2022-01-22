@@ -6,6 +6,7 @@ require_relative "lib/string_util"
 require_relative "lib/multistring"
 require_relative "lib/treebank"
 require_relative "lib/epos"
+require_relative "lib/genos"
 require_relative "lib/vlist"
 require_relative "lib/gloss"
 require_relative "lib/clown"
@@ -34,6 +35,7 @@ end
 
 class Bilingual
   def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000,length_ratio_expected:1.23,length_ratio_tol_factor:1.38)
+    # foreign and translation are Epos objects, which should have non-nil genos
     # g1 and g2 are line refs of the form [book,line]
     # t1 and t2 are word globs
     # sanity checks:

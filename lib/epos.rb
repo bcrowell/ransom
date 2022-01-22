@@ -99,7 +99,7 @@ or less verbose.
 
 class Epos
 
-  def initialize(text,script,is_verse,postfilter:nil,use_cache:true)
+  def initialize(text,script,is_verse,postfilter:nil,use_cache:true,genos:nil)
     # Text is the pathname of either a file or a directory containing some files. If it's a directory, then
     # any files inside it are taken to be texts, unless they have extensions .freq, .index, .dir, .pag, or .meta.
     # Script can be 'latin', 'greek', or 'hebrew'.
@@ -111,9 +111,10 @@ class Epos
     @postfilter = postfilter
     @use_cache = use_cache
     @contents = nil
+    @genos = genos # optional object of Genos class
   end
 
-  attr_reader :text,:script,:is_verse,:postfilter
+  attr_reader :text,:script,:is_verse,:postfilter,:genos
 
   def Epos.run_tests()
     # make test_epos, which does this:
