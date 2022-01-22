@@ -1,7 +1,11 @@
 require "json"
 
+author = ARGV[0]
+
+$stderr.print "author=#{author}\n"
+
 lemmas = nil
-File.open("homer_lemmas.json","r") { |f| 
+File.open("#{author}_lemmas.json","r") { |f| 
   lemmas=JSON.parse(f.gets(nil))
 }
 

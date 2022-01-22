@@ -3,9 +3,13 @@ require 'sdbm' # part of the standard ruby distribution, https://en.wikipedia.or
 require "../lib/string_util.rb"
 require "../lib/file_util.rb"
 
-log_file = "homer_lemmas.log"
-json_file = "homer_lemmas.json"
-sdbm_file = "homer_lemmas" # gets expanded to two files, .dir and .pag
+author = ARGV[0]
+
+$stderr.print "author=#{author}\n"
+
+log_file = "#{author}_lemmas.log"
+json_file = "#{author}_lemmas.json"
+sdbm_file = "#{author}_lemmas" # gets expanded to two files, .dir and .pag
 
 def die(message)
   #  $stderr.print message,"\n"
