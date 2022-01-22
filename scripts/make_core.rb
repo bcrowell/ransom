@@ -3,6 +3,7 @@ require "set"
 require "./lib/string_util.rb"
 require "./lib/file_util.rb"
 require "./lib/gloss.rb"
+require "./lib/genos.rb"
 require "./lib/vlist.rb"
 require "./greek/lemma_util.rb"
 
@@ -111,10 +112,13 @@ words = words.select { |w| ! (scum.include?(w) || goofy.include?(w))}
 
 #print words,"\n"
 
+greek_genos = GreekGenos.new('epic')
+db = GlossDB.from_genos(greek_genos)
+
 glosses = {}
 words.each { |w|
   if w=='πάτηρ' then w='πατήρ' end # Perseus has vocative πάτηρ as its own lemma???
-  data = Gloss.get(w) # change optional arg prefer_length if I want the long def
+  data = Gloss.get(db,w) # change optional arg prefer_length if I want the long def
   # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
   # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
   if data.nil? then $stderr.print "gloss not found for #{w}\n"; exit(-1) end
