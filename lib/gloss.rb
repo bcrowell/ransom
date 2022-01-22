@@ -84,26 +84,13 @@ end
 
 def Gloss.get(db,word,prefer_length:1)
   # The input db is a GlossDB object.
-  # The input can be accented or unaccented. Accentuation will be used only for disambiguation, which is seldom necessary.
+  # The input word can be accented or unaccented. Accentuation will be used only for disambiguation, which is seldom necessary.
   # Giving the inflected form could in theory disambiguate certain cases where there are two lemmas spelled the same, but
   # I haven't implemented anything like that yet. If the word has a Homeric form that differs from the standard Perseus
   # form, then the gloss that is returned will have both a 'word' field and a 'perseus' field. See Gloss.perseus_to_homeric().
   # Return value looks like the following.
   # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state" }
-  x = db.get_from_file(word)
-  if x.nil? then return nil end
-  if !(x.kind_of?(Array)) then x=[x] end
-  # We can have words like δαίς/δάϊς that have the same key and therefore live in
-  # the same file. Even if that's not the case, convert x to an array for convenience.
-  # Also handle words where there's a perseus spelling that differs from our preferred Homeric spelling.
-  entries_found = []
-  ['perseus','word'].each { |tag|
-    x.each { |entry|
-      if !entry[tag].nil? && alpha_compare(entry[tag],word)==0 then
-        entries_found.push([tag,entry])
-      end
-    }
-  }
+  entries_found = db.search(word)
   if entries_found.length>0 then
     e = entries_found[0][1]
   else
@@ -264,6 +251,27 @@ class GlossDB
 
   def word_to_key(s)
     return remove_accents(s).downcase.sub(/᾽/,'')
+  end
+
+  def search(word)
+    # Returns a list whose elements are of the form [tag,entry]. For example, if we're looking up a word in Homer,
+    # it could have a 'word' field that is the Homeric form, and a different 'perseus' field that is Project Perseus's preferred
+    # (Attic) lemma.
+    x = self.get_from_file(word)
+    if x.nil? then return [] end
+    if !(x.kind_of?(Array)) then x=[x] end
+    # We can have words like δαίς/δάϊς that have the same key and therefore live in
+    # the same file. Even if that's not the case, convert x to an array for convenience.
+    # Also handle words where there's a perseus spelling that differs from our preferred Homeric spelling.
+    entries_found = []
+    ['perseus','word'].each { |tag|
+      x.each { |entry|
+        if !entry[tag].nil? && alpha_compare(entry[tag],word)==0 then
+          entries_found.push([tag,entry])
+        end
+      }
+    }
+    return entries_found
   end
 
 end
