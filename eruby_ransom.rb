@@ -471,7 +471,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
   if gloss_these.length>0 then
     gg = gloss_these.map { |x| remove_accents(x)}
     0.upto(lines.length-1) { |i|
-      line_hash = Digest::MD5.hexdigest(lines[i])
+      line_hash = Digest::MD5.hexdigest(lines[i]+"_"+first_line_number.to_s)
       w = words(lines[i])
       ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
       gg.each { |x|
@@ -484,6 +484,14 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
           code = nil
           new_gloss_code = nil
           if Options.if_write_pos then
+            # We write a separate text file such as iliad.pos, which records the position of each word on the ransom-note page.
+            # This allows us, on a later pass, to place the glosses at the correct positions.
+            # format of .pos file:
+            #     unique hash                     ,page,line,key,x,y,width,height,depth
+            #     9d8e0859efef6dc6d2d23419e0de8e7a,7,0,μηνις,,,31.32986pt,8.7386pt,2.80527pt
+            #     9d8e0859efef6dc6d2d23419e0de8e7a,7,0,μηνις,3789043,36515889,,,
+            # We obtain the (x,y) and (w,h,d) information at different points, and therefore we have two separate lines, each of them
+            # containing one part of the information.
             # Re the need for \immediate in the following, see https://tex.stackexchange.com/q/604110/6853
             code = %q{\savebox{\myboxregister}{WORD}%
               \makebox{\pdfsavepos\usebox{\myboxregister}}%
