@@ -31,7 +31,8 @@ require_relative "../lib/file_util"
 require_relative "../lib/string_util"
 require_relative "../lib/treebank"
 
-all_glossed_lemmas = Gloss.all_lemmas().to_set
+db = GlossDB.new("glosses")
+all_glossed_lemmas = Gloss.all_lemmas(db).to_set
 
 part_of_speech_code_to_word = {
 'n'=>'noun',
@@ -113,7 +114,7 @@ x.each { |word,data|
     word = to_single_accent(word)
     if !(all_glossed_lemmas.include?(lemma)) then next end
     if lemma=='ἦ' then lemma='ἠμί' end # why do I need this? is it because the homophone is too common to include?
-    g = Gloss.get(lemma,prefer_length:2)
+    g = Gloss.get(db,lemma,prefer_length:2)
     if g.nil? then $stderr.print "no gloss found for #{lemma}, #{word}\n"; exit(-1) end
     grammatical_info = part_of_speech_word # default for cases like interjections; in most cases this gets overwritten
     number_info = number_code_to_word[number]

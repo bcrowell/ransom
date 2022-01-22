@@ -61,7 +61,7 @@ logdiff [+1 means consider it as difficult as a word whose freq
 mnem -- a mnemonic; may be idiosyncratic and only of interest to me; I use these only when there is no cognate that helps
 =end
 
-def Gloss.all_lemmas(file_glob:'glosses/*',prefer_perseus:false)
+def Gloss.all_lemmas(db,file_glob:'glosses/*',prefer_perseus:false)
   lemmas = []
   Dir.glob(file_glob).sort.each { |filename|
     next if (filename=~/~/ || filename=~/README/ )
@@ -70,7 +70,7 @@ def Gloss.all_lemmas(file_glob:'glosses/*',prefer_perseus:false)
     err,message = Gloss.validate(key)
     if err then print "error in file #{key}\n  ",message,"\n" end
     # In the following, we don't need to do error checking because any errors would have been caught by Gloss.validate().
-    path = Gloss.key_to_path(key)
+    path = db.key_to_path(key)
     json,err = slurp_file_with_detailed_error_reporting(path)
     x = JSON.parse(json)
     if x.kind_of?(Array) then a=x else a=[x] end
@@ -82,14 +82,15 @@ def Gloss.all_lemmas(file_glob:'glosses/*',prefer_perseus:false)
   return alpha_sort(lemmas)
 end
 
-def Gloss.get(word,prefer_length:1)
+def Gloss.get(db,word,prefer_length:1)
+  # The input db is a GlossDB object.
   # The input can be accented or unaccented. Accentuation will be used only for disambiguation, which is seldom necessary.
   # Giving the inflected form could in theory disambiguate certain cases where there are two lemmas spelled the same, but
   # I haven't implemented anything like that yet. If the word has a Homeric form that differs from the standard Perseus
   # form, then the gloss that is returned will have both a 'word' field and a 'perseus' field. See Gloss.perseus_to_homeric().
   # Return value looks like the following.
   # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state" }
-  x = Gloss.get_from_file(word)
+  x = db.get_from_file(word)
   if x.nil? then return nil end
   if !(x.kind_of?(Array)) then x=[x] end
   # We can have words like δαίς/δάϊς that have the same key and therefore live in
@@ -232,28 +233,37 @@ def Gloss.split_princ(princ)
   return [f,a]
 end
 
-def Gloss.get_from_file(word)
-  key = Gloss.word_to_key(word)
-  x = Gloss.get_from_file_helper(key)
-  return x
-end
-
-def Gloss.get_from_file_helper(key)
-  path = Gloss.key_to_path(key)
-  if FileTest.exist?(path) then return json_from_file_or_die(path) else return nil end
-end
-
-def Gloss.key_to_path(key)
-  return "glosses/#{key}"
-end
-
-def Gloss.word_to_key(s)
-  return remove_accents(s).downcase.sub(/᾽/,'')
-end
-
 def Gloss.macronized_to_underbar_style(s)
   x = s.gsub(/([ᾱῑῡ])/) { "#{remove_macrons_and_breves($1)}_" }
   return remove_macrons_and_breves(x)
 end
+
+end
+
+class GlossDB
+  # an instance of this class encapsulates information about where to obtain glosses for a particular language and dialect
+  def initialize(path)
+    # e.g., if path is "glosses", then each gloss is in a file in ./glosses
+    @path = path
+  end
+
+  def get_from_file(word)
+    key = word_to_key(word)
+    x = get_from_file_helper(key)
+    return x
+  end
+
+  def get_from_file_helper(key)
+    path = key_to_path(key)
+    if FileTest.exist?(path) then return json_from_file_or_die(path) else return nil end
+  end
+
+  def key_to_path(key)
+    return "#{@path}/#{key}"
+  end
+
+  def word_to_key(s)
+    return remove_accents(s).downcase.sub(/᾽/,'')
+  end
 
 end

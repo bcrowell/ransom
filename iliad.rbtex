@@ -6,6 +6,7 @@ load 'eruby_ransom.rb'
 
 treebank = TreeBank.new('homer')
 freq_file = "lemmas/homer_freq.json"
+db = GlossDB.new("glosses")
 core = json_from_file_or_die("core/homer.json").keys # array containing lemmas not to put in vocab lists, because they're in core vocab in back
 greek = Epos.new("text/ιλιας","greek",true,genos:GreekGenos.new('epic',is_verse:true))
 translation = Epos.new("text/buckley_iliad.txt","latin",false,genos:Genos.new('en',is_verse:false),postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
@@ -181,7 +182,7 @@ layouts = []
 0.upto(breaks.length-2) { |i|
   bilingual,starting_ch,dry_run = layouts[i]
   if i<breaks.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
-  four_page_layout(stuff,greek.genos,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run)
+  four_page_layout(stuff,greek.genos,db,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run)
 }
 1.upto(vocab_by_chapter.length-1) { |ch|
   filename = sprintf("vocab_ch_%02d.txt",ch)

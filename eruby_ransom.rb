@@ -139,29 +139,29 @@ class Illustrations
   end
 end
 
-def four_page_layout(stuff,genos,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
+def four_page_layout(stuff,genos,db,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
   treebank,freq_file,greek,translation,notes,core = stuff
   return if dry_run
-  print_four_page_layout(stuff,genos,layout,next_layout,vocab_by_chapter,start_chapter)
+  print_four_page_layout(stuff,genos,db,layout,next_layout,vocab_by_chapter,start_chapter)
 end
 
-def print_four_page_layout(stuff,genos,bilingual,next_layout,vocab_by_chapter,start_chapter)  
+def print_four_page_layout(stuff,genos,db,bilingual,next_layout,vocab_by_chapter,start_chapter)  
   # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
   treebank,freq_file,greek,translation,notes,core = stuff
   ch = bilingual.foreign_ch1
-  core,vl,vocab_by_chapter = four_page_layout_vocab_helper(bilingual,genos,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
+  core,vl,vocab_by_chapter = four_page_layout_vocab_helper(bilingual,genos,db,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
   if bilingual.foreign_ch1!=bilingual.foreign_ch2 then
     # This should only happen in the case where reference 2 is to the very first line of the next book.
     if !(bilingual.foreign_hr2[1]<=5 && bilingual.foreign_hr2[0]==bilingual.foreign_hr1[0]+1) then
       raise "four-page layout spans books, #{bilingual.foreign_hr1} - #{bilingual.foreign_hr2}"
     end
   end
-  print_four_page_layout_latex_helper(bilingual,next_layout,vl,core,start_chapter,notes)
+  print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_chapter,notes)
 end
 
-def four_page_layout_vocab_helper(bilingual,genos,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
+def four_page_layout_vocab_helper(bilingual,genos,db,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
   core = core.map { |x| remove_accents(x).downcase }
-  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,genos, \
+  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,genos,db, \
                exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
   if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
   if vocab_by_chapter[ch].nil? then vocab_by_chapter[ch]=[] end
@@ -169,18 +169,18 @@ def four_page_layout_vocab_helper(bilingual,genos,core,treebank,freq_file,notes,
   return core,vl,vocab_by_chapter
 end
 
-def print_four_page_layout_latex_helper(bilingual,next_layout,vl,core,start_chapter,notes)
+def print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_chapter,notes)
   # prints
-  stuff = vocab(vl,core)
+  stuff = vocab(db,vl,core)
   tex,v = stuff['tex'],stuff['file_lists']
   print tex
   print notes_to_latex(bilingual.foreign_linerefs,notes) 
   print header_latex(bilingual) # includes pagebreak
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
-  print foreign(bilingual.foreign_text,bilingual.foreign_first_line_number),"\n\n"
+  print foreign(db,bilingual.foreign_text,bilingual.foreign_first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatglosses}%\n"
-  print ransom(bilingual.foreign_text,v,bilingual.foreign_first_line_number),"\n\n"
+  print ransom(db,bilingual.foreign_text,v,bilingual.foreign_first_line_number),"\n\n"
   if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
   print bilingual.translation_text
   # https://tex.stackexchange.com/a/308934
@@ -312,20 +312,20 @@ def find_notes_one_book(lineref1,lineref2,notes)
   return result.sort { |a,b| a[0] <=> b[0] } # array comparison is lexical
 end
 
-def vocab(vl,core)
+def vocab(db,vl,core)
   # Input is a Vlist object.
   # The three sections are interpreted as common, uncommon, and rare.
   # Returns {'tex'=>...,'file_lists'=>...}, containing latex code for vocab page and the three file lists for later reuse.
   if Options.if_render_glosses then $stderr.print vl.console_messages end
   tex = ''
   tex +=  "\\begin{vocabpage}\n"
-  tex +=  vocab_helper('uncommon',vl,0,2,core) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
+  tex +=  vocab_helper(db,'uncommon',vl,0,2,core) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
   tex +=  "\\end{vocabpage}\n"
   v = vl.list.map { |l| l.map{ |entry| entry[1] } }
   result = {'tex'=>tex,'file_lists'=>v}
 end
 
-def vocab_helper(commonness,vl,lo,hi,core)
+def vocab_helper(db,commonness,vl,lo,hi,core)
   l = []
   lo.upto(hi) { |i|
     vl.list[i].each { |entry|
@@ -333,7 +333,7 @@ def vocab_helper(commonness,vl,lo,hi,core)
       if data.nil? then data={} end
       pos = data['pos']
       is_verb = (pos=~/^[vt]/)
-      g = Gloss.get(lexical)
+      g = Gloss.get(db,lexical)
       next if g.nil?
       difficult_to_recognize = data['difficult_to_recognize']
       debug = (word=='ἐρυσσάμενος')
@@ -361,7 +361,7 @@ def vocab_helper(commonness,vl,lo,hi,core)
       this_sec += "\\begin{#{envir}}\n"
       ll.sort { |a,b| alpha_compare(a[0],b[0])}.each { |entry|
         s = nil
-        if type=='gloss' then s=vocab1(entry) end
+        if type=='gloss' then s=vocab1(db,entry) end
         if type=='conjugation' || type=='declension' then s=vocab_inflection(entry) end
         if !(s.nil?) then
           this_sec += clean_up_unicode("#{s}\n")
@@ -394,9 +394,9 @@ def vocab_inflection(stuff)
   return "\\vocabinflectiononly{#{word.downcase}}{#{lexical}}"
 end
 
-def vocab1(stuff)
+def vocab1(db,stuff)
   file_under,word,lexical,data = stuff
-  entry = Gloss.get(lexical)
+  entry = Gloss.get(db,lexical)
   return if entry.nil?
   preferred_lex = entry['word']
   # ...If there is a lexical form used in the database (such as Perseus), but we want some other form (such as Homeric), then
@@ -422,16 +422,16 @@ def vocab1(stuff)
 end
 
 
-def foreign(t,first_line_number)
-  foreign_helper(t,false,first_line_number,left_page_verse:true)
+def foreign(db,t,first_line_number)
+  foreign_helper(db,t,false,first_line_number,left_page_verse:true)
 end
 
-def ransom(t,v,first_line_number)
+def ransom(db,t,v,first_line_number)
   common,uncommon,rare = v
-  foreign_helper(t,true,first_line_number,gloss_these:rare)
+  foreign_helper(db,t,true,first_line_number,gloss_these:rare)
 end
 
-def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:false)
+def foreign_helper(db,t,ransom,first_line_number,gloss_these:[],left_page_verse:false)
   # If gloss_these isn't empty, then we assume it contains a list of rare lemmatized forms.
   gloss_code = ''
   main_code = "\\begin{foreignpage}\n"
@@ -448,7 +448,7 @@ def foreign_helper(t,ransom,first_line_number,gloss_these:[],left_page_verse:fal
           j = ww.index(x)
           word = w[j] # original inflected form
           key = to_key(x)
-          entry = Gloss.get(x,prefer_length:0) # it doesn't matter whether inputs have accents
+          entry = Gloss.get(db,x,prefer_length:0) # it doesn't matter whether inputs have accents
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil

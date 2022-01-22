@@ -43,7 +43,7 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,treebank,freq_file,genos,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[])
+def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[])
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
@@ -154,7 +154,7 @@ def Vlist.from_text(t,treebank,freq_file,genos,thresholds:[1,50,700,700],max_ent
       next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
       key = remove_accents(lemma).downcase
       filename = "glosses/#{key}"
-      if Options.if_render_glosses && Gloss.get(lemma).nil? then
+      if Options.if_render_glosses && Gloss.get(db,lemma).nil? then
         gloss_help.push(Vlist.gloss_help_help_helper(key,lemma))
         whine.push("no glossary entry for #{lemma} , see gloss help file")
       end
