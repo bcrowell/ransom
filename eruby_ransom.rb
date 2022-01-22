@@ -45,11 +45,15 @@ class Bilingual
     Bilingual.type_check_refs_helper(g1,g2,t1,t2,foreign,translation)
     @foreign = foreign
     @translation = translation
-    @foreign_linerefs = [g1,g2]
-    @foreign_chapter_number = g1[0]
-    @foreign_first_line_number = g1[1]
-    @foreign_hr1,@foreign_hr2 = foreign.line_to_hard_ref(g1[0],g1[1]),foreign.line_to_hard_ref(g2[0],g2[1])
-    @foreign_ch1,@foreign_ch2 = @foreign_hr1[0],@foreign_hr2[0]
+    if foreign.genos.is_verse then
+      @foreign_linerefs = [g1,g2]
+      @foreign_chapter_number = g1[0]
+      @foreign_first_line_number = g1[1]
+      @foreign_hr1,@foreign_hr2 = foreign.line_to_hard_ref(g1[0],g1[1]),foreign.line_to_hard_ref(g2[0],g2[1])
+      @foreign_ch1,@foreign_ch2 = @foreign_hr1[0],@foreign_hr2[0]
+    else
+      @foreign_hr1,@foreign_hr2 = foreign.word_glob_to_hard_ref(g1),foreign.word_glob_to_hard_ref(g2)
+    end
     @foreign_text = foreign.extract(foreign_hr1,foreign_hr2)
     # Let word globs contain, e.g., Hera rather than Juno:
     t1 = Patch_names.antipatch(t1)
