@@ -31,7 +31,7 @@ require_relative "../lib/file_util"
 require_relative "../lib/string_util"
 require_relative "../lib/treebank"
 
-db = GlossDB.new("glosses")
+db = GlossDB.new("glosses","perseus","word")
 all_glossed_lemmas = Gloss.all_lemmas(db).to_set
 
 part_of_speech_code_to_word = {

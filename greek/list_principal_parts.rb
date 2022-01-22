@@ -8,7 +8,7 @@ require_relative "../lib/gloss"
 require_relative "../lib/file_util"
 require_relative "../lib/string_util"
 
-db = GlossDB.new("glosses")
+db = GlossDB.new("glosses","perseus","word")
 
 Gloss.all_lemmas().each { |lemma|
   g = Gloss.get(db,lemma)

@@ -8,6 +8,9 @@ Sometimes two words have the same key, e.g.,
 δαίς and δάϊς. Then the data structure inside
 the file is an array containing the two entries.
 
+The following comments were written when my code was hard-coded as if we would always prefer Homeric forms over
+Project Perseus's Attic lemmas, but actually I've cleaned that up now and GlossDB can be initialized either way.
+
 mandatory keys:
 
 word
@@ -114,12 +117,13 @@ def Gloss.get(db,word,prefer_length:1)
   end
   if ambiguous && entries_found.length>=2 then
     # Use a point system to try to resolve more difficult ambiguities. This gets activated for δαίς/δάϊς/δάις.
-    entries_found = entries_found.sort_by { |x| Gloss.similarity_of_lemmas(word,x[1]['word']) }
+    # Higher scores are worse matches.
+    entries_found = entries_found.sort_by { |x| Gloss.dissimilarity_of_lemmas(word,x[1]['word']) }
     pts = [0,0]
     0.upto(1) { |j|
       x = entries_found[j]
-      pts[j] = 2*Gloss.similarity_of_lemmas(word,x[1]['word'])
-      if x[0]=='perseus' then pts[j] += 1 end
+      pts[j] = 2*Gloss.dissimilarity_of_lemmas(word,x[1]['word'])
+      if db.prefer_tag!=db.lemma_tag && x[0]==db.lemma_tag then pts[j] += 1 end
     }
     if pts[0]<pts[1] || entries_found[0][1]['medium']==entries_found[1][1]['medium'] then ambiguous=false; e=entries_found[0][1] end
     # $stderr.print "WARNING: Ambiguity of #{word} resolved in favor of #{entries_found[0][1]['word']}: #{entries_found[0][1]['medium']} over #{entries_found[1][1]['word']}: #{entries_found[1][1]['medium']}\n"
@@ -136,7 +140,7 @@ def Gloss.get(db,word,prefer_length:1)
   return e
 end
 
-def Gloss.similarity_of_lemmas(a,b)
+def Gloss.dissimilarity_of_lemmas(a,b)
   if a==b then return 0 end
   if Gloss.standardize_diaresis(a)==Gloss.standardize_diaresis(b) then return 1 end
   if remove_accents(a)==remove_accents(b) then return 2 end
@@ -229,9 +233,21 @@ end
 
 class GlossDB
   # an instance of this class encapsulates information about where to obtain glosses for a particular language and dialect
-  def initialize(path)
-    # e.g., if path is "glosses", then each gloss is in a file in ./glosses
+  def initialize(path,lemma_tag,prefer_tag)
+    # If path is "glosses", then each gloss is in a file in ./glosses.
+    # In my initial setup for Homer, each gloss file has a mandatory 'word' tag, which is the Homeric form, and
+    # an optional 'perseus' tag, which is the Attic lemma used by Project Perseus. If we prefer the Homeric
+    # form, then we call this initializer with lemma_tag='perseus' and prefer_tag='word'. If we prefer
+    # the attic form, then we set lemma_tag='perseus' and prefer_tag='perseus'.
     @path = path
+    @lemma_tag = lemma_tag
+    @prefer_tag = prefer_tag
+  end
+
+  attr_reader :prefer_tag,:lemma_tag
+
+  def GlossDB.from_genos(genos)
+    return GlossDB.new("glosses","perseus","word")
   end
 
   def get_from_file(word)
@@ -264,7 +280,7 @@ class GlossDB
     # the same file. Even if that's not the case, convert x to an array for convenience.
     # Also handle words where there's a perseus spelling that differs from our preferred Homeric spelling.
     entries_found = []
-    ['perseus','word'].each { |tag|
+    [@lemma_tag,@prefer_tag].uniq.each { |tag|
       x.each { |entry|
         if !entry[tag].nil? && alpha_compare(entry[tag],word)==0 then
           entries_found.push([tag,entry])
