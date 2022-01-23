@@ -20,6 +20,9 @@
 \RequirePackage{multicol,xcolor,calc,titlesec,fancyhdr,hyphenat,ifthen}
 \RequirePackage{parskip} % disables indentation at the beginning of a paragraph
 \RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{lineno}
+% for prose; numbering is off by default; provides \thelinenumber and a counter linenumber
+% Not sure if this will work. See https://tex.stackexchange.com/questions/332056/line-number-inside-line-lineno-package
 
 \newcommand{\formatlikechapter}[1]{{\Large\textbf{#1}}}
 \newcommand{\formatlikesection}[1]{{\large\textbf{#1}}}

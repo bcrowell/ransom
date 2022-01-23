@@ -158,6 +158,41 @@ class Illustrations
   end
 end
 
+class WhereAt
+  # A utility class for a database of locations on the pages where words in the "ransom note" occur.
+  @@path = nil
+  def WhereAt.open(path)
+    @@path = path
+  end
+  def WhereAt.latex_code_to_print_and_write_line(word,lemma_key,hashable,line_number:nil)
+    # We write a separate text file such as iliad.pos, which records the position of each word on the ransom-note page.
+    # This allows us, on a later pass, to place the glosses at the correct positions.
+    # format of .pos file:
+    #     unique hash                     ,page,line,lemma,x,y,width,height,depth
+    #     9d8e0859efef6dc6d2d23419e0de8e7a,7,0,μηνις,,,31.32986pt,8.7386pt,2.80527pt
+    #     9d8e0859efef6dc6d2d23419e0de8e7a,7,0,μηνις,3789043,36515889,,,
+    #     Here line is a 0-based count from the top of the page.
+    # Inputs:
+    #   word = the word that is actually going to be typeset on the page
+    #   lemma_key = a convenient key, which is normally the lemma for the word, stripped of accents
+    #   hashable = data that, if possible, are totally unique to this line on the page, even if a line of poetry is repeated
+    #   line_number = if known, the line number; for prose, this probably has to be nil, will experiment with lineno package
+    # We obtain the (x,y) and (w,h,d) information at different points, and therefore we have two separate lines, each of them
+    # containing one part of the information.
+    # Re the need for \immediate in the following, see https://tex.stackexchange.com/q/604110/6853
+    code = %q{\savebox{\myboxregister}{WORD}%
+      \makebox{\pdfsavepos\usebox{\myboxregister}}%
+      \immediate\write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,,,\the\wd\myboxregister,\the\ht\myboxregister,\the\dp\myboxregister}%
+      \write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,\the\pdflastxpos,\the\pdflastypos,,,}}
+    line_hash = Digest::MD5.hexdigest(hashable.to_s) 
+    code.gsub!(/LINE_HASH/,line_hash)
+    code.gsub!(/WORD/,word)
+    code.gsub!(/LINE/,line_number.to_s)
+    code.gsub!(/KEY/,lemma_key)
+    return code
+  end
+end
+
 def four_page_layout(stuff,genos,db,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
   treebank,freq_file,greek,translation,notes,core = stuff
   return if dry_run
@@ -476,7 +511,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
   if gloss_these.length>0 then
     gg = gloss_these.map { |x| remove_accents(x)}
     0.upto(lines.length-1) { |i|
-      line_hash = Digest::MD5.hexdigest([lines[i],bilingual.hash,i].to_s) # should be totally unique to this line, even if a line of poetry is repeated
+      hashable = [lines[i],bilingual.hash,i] # should be totally unique to this line, even if a line of poetry is repeated
       w = words(lines[i])
       ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
       gg.each { |x|
@@ -488,26 +523,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil
-          if Options.if_write_pos then
-            # We write a separate text file such as iliad.pos, which records the position of each word on the ransom-note page.
-            # This allows us, on a later pass, to place the glosses at the correct positions.
-            # format of .pos file:
-            #     unique hash                     ,page,line,lemma,x,y,width,height,depth
-            #     9d8e0859efef6dc6d2d23419e0de8e7a,7,0,μηνις,,,31.32986pt,8.7386pt,2.80527pt
-            #     9d8e0859efef6dc6d2d23419e0de8e7a,7,0,μηνις,3789043,36515889,,,
-            #     Here line is a 0-based count from the top of the page.
-            # We obtain the (x,y) and (w,h,d) information at different points, and therefore we have two separate lines, each of them
-            # containing one part of the information.
-            # Re the need for \immediate in the following, see https://tex.stackexchange.com/q/604110/6853
-            code = %q{\savebox{\myboxregister}{WORD}%
-              \makebox{\pdfsavepos\usebox{\myboxregister}}%
-              \immediate\write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,,,\the\wd\myboxregister,\the\ht\myboxregister,\the\dp\myboxregister}%
-              \write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,\the\pdflastxpos,\the\pdflastypos,,,}}
-            code.gsub!(/LINE_HASH/,line_hash)
-            code.gsub!(/WORD/,word)
-            code.gsub!(/LINE/,i.to_s)
-            code.gsub!(/KEY/,key)
-          end
+          if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_line(word,key,hashable,line_number:i)  end
           if Options.if_render_glosses then
             pos = Init.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
             if pos.nil? then raise "in foreign_helper, rendering ransom notes, position is nil for line_hash=#{line_hash}, key=#{key}" end
