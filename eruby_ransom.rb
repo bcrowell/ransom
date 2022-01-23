@@ -160,11 +160,15 @@ end
 
 class WhereAt
   # A utility class for a database of locations on the pages where words in the "ransom note" occur.
-  @@path = nil
-  def WhereAt.open(path)
-    @@path = path
+  def WhereAt.file_path
+    return Options.pos_file
   end
-  def WhereAt.latex_code_to_print_and_write_line(word,lemma_key,hashable,line_number:nil)
+  def WhereAt.hash(hashable)
+    # input = data that, if possible, are totally unique to this line on the page, even if a line of poetry is repeated
+    # I've tried doing this with a flat array whose elements are strings and integers, and it works fine.
+    return Digest::MD5.hexdigest(hashable.to_s) 
+  end
+  def WhereAt.latex_code_to_print_and_write_line(word,lemma_key,line_hash,line_number:nil)
     # We write a separate text file such as iliad.pos, which records the position of each word on the ransom-note page.
     # This allows us, on a later pass, to place the glosses at the correct positions.
     # format of .pos file:
@@ -175,7 +179,7 @@ class WhereAt
     # Inputs:
     #   word = the word that is actually going to be typeset on the page
     #   lemma_key = a convenient key, which is normally the lemma for the word, stripped of accents
-    #   hashable = data that, if possible, are totally unique to this line on the page, even if a line of poetry is repeated
+    #   line_hash = output of function hash above
     #   line_number = if known, the line number; for prose, this probably has to be nil, will experiment with lineno package
     # We obtain the (x,y) and (w,h,d) information at different points, and therefore we have two separate lines, each of them
     # containing one part of the information.
@@ -184,7 +188,6 @@ class WhereAt
       \makebox{\pdfsavepos\usebox{\myboxregister}}%
       \immediate\write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,,,\the\wd\myboxregister,\the\ht\myboxregister,\the\dp\myboxregister}%
       \write\posoutputfile{LINE_HASH,\thepage,LINE,KEY,\the\pdflastxpos,\the\pdflastypos,,,}}
-    line_hash = Digest::MD5.hexdigest(hashable.to_s) 
     code.gsub!(/LINE_HASH/,line_hash)
     code.gsub!(/WORD/,word)
     code.gsub!(/LINE/,line_number.to_s)
@@ -512,6 +515,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
     gg = gloss_these.map { |x| remove_accents(x)}
     0.upto(lines.length-1) { |i|
       hashable = [lines[i],bilingual.hash,i] # should be totally unique to this line, even if a line of poetry is repeated
+      line_hash = WhereAt.hash(hashable)
       w = words(lines[i])
       ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
       gg.each { |x|
@@ -523,7 +527,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil
-          if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_line(word,key,hashable,line_number:i)  end
+          if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_line(word,key,line_hash,line_number:i)  end
           if Options.if_render_glosses then
             pos = Init.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
             if pos.nil? then raise "in foreign_helper, rendering ransom notes, position is nil for line_hash=#{line_hash}, key=#{key}" end
