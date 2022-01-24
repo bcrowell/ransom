@@ -108,14 +108,15 @@ test_epos:
 
 demo: export FORMAT=whole
 demo: export OVERWRITE=1
+demo: export OPTIONS = "pos_file":"demo.pos"
 demo: lib/*rb eruby_ransom.rb demo.rbtex
 	@rm -f warnings help_gloss/__links.html
-	@./fruby demo.rbtex '{$(GENERIC),"clean":true}' >temp.tex
+	@./fruby demo.rbtex '{$(OPTIONS),"clean":true}' >temp.tex
 	xelatex temp
 	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true
-	@./fruby demo.rbtex '{$(GENERIC),"write_pos":true}' >temp.tex
+	@./fruby demo.rbtex '{$(OPTIONS),"write_pos":true}' >temp.tex
 	xelatex temp
 	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true
-	@./fruby demo.rbtex '{$(GENERIC),"render_glosses":true}' >temp.tex
+	@./fruby demo.rbtex '{$(OPTIONS),"render_glosses":true}' >temp.tex
 	xelatex temp
 	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true

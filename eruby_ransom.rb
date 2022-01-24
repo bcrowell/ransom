@@ -234,7 +234,8 @@ class WhereAt
     extra_data = %q({"otherline":OTHERLINE})
     extra_data.gsub!(/OTHERLINE/,%q(\arabic{linenumber}))
     # ... from lineno package, my attempt to get line numbering to work for prose, where it's latex that's in charge of the line breaks.
-    #     In \immediate\write, this seems to give a line number that is lower by 1 than in \write, so that the values in extra1 and extra2 will differ.
+    #     In \immediate\write, this seems to give a different line number than is lower by 1 than in \write, so that the values in extra1
+    #      and extra2 will differ; the one in extra2 seems to be garbage, possibly the final line number on the page.
     code.gsub!(/LINE_HASH/,line_hash)
     code.gsub!(/WORD/,word)
     code.gsub!(/LINE/,line_number.to_s)
@@ -533,19 +534,24 @@ end
 
 def foreign(db,bilingual,first_line_number)
   if bilingual.foreign.is_verse then
-    foreign_verse(db,bilingual,false,first_line_number,left_page_verse:true)
+    return foreign_verse(db,bilingual,false,first_line_number,left_page_verse:true)
   else
-    foreign_prose(db,bilingual,false,first_line_number,left_page_verse:true)
+    return foreign_prose(db,bilingual,false,first_line_number,left_page_verse:true)
   end
 end
 
 def ransom(db,bilingual,v,first_line_number)
   common,uncommon,rare = v
   if bilingual.foreign.is_verse then
-    foreign_verse(db,bilingual,true,first_line_number,gloss_these:rare)
+    x = foreign_verse(db,bilingual,true,first_line_number,gloss_these:rare)
   else
-    foreign_prose(db,bilingual,true,first_line_number,gloss_these:rare)
+    x = foreign_prose(db,bilingual,true,first_line_number,gloss_these:rare)
   end
+  if bilingual.foreign.genos.is_verse then y="" else y=%q(\renewcommand\thelinenumber{\linenumber{\roman{linenumber}}}) end
+  # ... here \linenumber{...} is my own style macro, whereas linenumber is a counter in the lineno package
+  return "#{y}\\begin{linenumbers}\n#{x}\\end{linenumbers}\n"
+  # ...for prose, where latex controls line breaks; uses lineno package; for verse, this is harmless because actual 
+  #    printing of line numbers is deactivated by default in the cls file, where we define \thelinenumber to be a null string
 end
 
 def foreign_prose(db,bilingual,ransom,first_line_number,gloss_these:[],left_page_verse:false)
