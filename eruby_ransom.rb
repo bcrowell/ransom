@@ -168,6 +168,38 @@ class WhereAt
     # I've tried doing this with a flat array whose elements are strings and integers, and it works fine.
     return Digest::MD5.hexdigest(hashable.to_s) 
   end
+  def WhereAt.latex_code_to_create_pos_file()
+    return %Q{
+      \\newsavebox\\myboxregister
+      \\newwrite\\posoutputfile
+      \\immediate\\openout\\posoutputfile=#{WhereAt.file_path}
+    }
+  end
+  def WhereAt.get_pos_data(line_hash,word_key)
+    # returns a hash whose keys are "x","y","width","height","depth", all in units of pts
+    return @@pos[[line_hash,word_key].join(",")]
+  end
+  def WhereAt.read_back_pos_file()
+    @@pos = {} # will be a hash of hashes, @@pos[gloss_key][name_of_datum]
+    IO.foreach(WhereAt.file_path) { |line| 
+      line.sub!(/\s+$/,'') # trim trailing whitespace, such as a newline
+      a = line.split(/,/,-1)
+      line_hash,page,line,word_key,x,y,width,height,depth = a
+      key = [line_hash,word_key].join(",")
+      data = [x,y,width,height,depth]
+      if !(@@pos.has_key?(key)) then @@pos[key] = {} end
+      0.upto(data.length-1) { |i|
+        name_of_datum = ["x","y","width","height","depth"][i]
+        value = data[i]
+        next if value==''
+        value.sub!(/pt/,'')
+        value = value.to_f
+        if ["x","y"].include?(name_of_datum) then value = value/65536.0 end # convert to points
+        if @@pos[key][name_of_datum].nil? then @@pos[key][name_of_datum]=value end
+      }
+    }
+    return @@pos
+  end  
   def WhereAt.latex_code_to_print_and_write_line(word,lemma_key,line_hash,line_number:nil)
     # We write a separate text file such as iliad.pos, which records the position of each word on the ransom-note page.
     # This allows us, on a later pass, to place the glosses at the correct positions.
@@ -529,7 +561,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
           new_gloss_code = nil
           if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_line(word,key,line_hash,line_number:i)  end
           if Options.if_render_glosses then
-            pos = Init.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
+            pos = WhereAt.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
             if pos.nil? then raise "in foreign_helper, rendering ransom notes, position is nil for line_hash=#{line_hash}, key=#{key}" end
             x,y,width,height = pos['x'],pos['y'],pos['width'],pos['height'] # all floats in units of pts
             if x>254.0 then
@@ -640,38 +672,9 @@ class Init
   # Code that gets run when the eruby script starts, but after code that's higher up in the file.
   require 'fileutils'
   require 'digest'
-  if Options.if_clean then FileUtils.rm_f(Options.pos_file) end # Currently I open the file to write, not append, so this isn't necessary.
-  if Options.if_write_pos then
-    print %Q{
-      \\newsavebox\\myboxregister
-      \\newwrite\\posoutputfile
-      \\immediate\\openout\\posoutputfile=#{Options.pos_file}
-    }
-  end
-  @@pos = {} # will be a hash of hashes, @@pos[gloss_key][name_of_datum]
-  if Options.if_render_glosses then
-    IO.foreach(Options.pos_file) { |line| 
-      line.sub!(/\s+$/,'') # trim trailing whitespace, such as a newline
-      a = line.split(/,/,-1)
-      line_hash,page,line,word_key,x,y,width,height,depth = a
-      key = [line_hash,word_key].join(",")
-      data = [x,y,width,height,depth]
-      if !(@@pos.has_key?(key)) then @@pos[key] = {} end
-      0.upto(data.length-1) { |i|
-        name_of_datum = ["x","y","width","height","depth"][i]
-        value = data[i]
-        next if value==''
-        value.sub!(/pt/,'')
-        value = value.to_f
-        if ["x","y"].include?(name_of_datum) then value = value/65536.0 end # convert to points
-        if @@pos[key][name_of_datum].nil? then @@pos[key][name_of_datum]=value end
-      }
-    }
-  end
-  def Init.get_pos_data(line_hash,word_key)
-    # returns a hash whose keys are "x","y","width","height","depth", all in units of pts
-    return @@pos[[line_hash,word_key].join(",")]
-  end
+  if Options.if_clean then FileUtils.rm_f(WhereAt.file_path) end # Currently I open the file to write, not append, so this isn't necessary.
+  if Options.if_write_pos then print WhereAt.latex_code_to_create_pos_file() end
+  if Options.if_render_glosses then @@pos=WhereAt.read_back_pos_file()  end
 end
 
 END {
