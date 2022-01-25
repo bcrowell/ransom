@@ -2,7 +2,7 @@
 \ProvidesClass{ransom}
 
 \LoadClass[12pt]{book}
-\RequirePackage[paperheight=9in,paperwidth=6in,bindingoffset=0.3in, left=0.5in, right=0.5in, bottom=0.3in]{geometry} 
+\RequirePackage[xetex,paperheight=9in,paperwidth=6in,bindingoffset=0.3in, left=0.5in, right=0.5in, bottom=0.3in]{geometry} 
 % https://tex.stackexchange.com/q/80520/6853
 % Bindingoffset refers to the gutter.
 

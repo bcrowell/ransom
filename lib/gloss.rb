@@ -70,7 +70,7 @@ def Gloss.all_lemmas(db,file_glob:'glosses/*',prefer_perseus:false)
     next if (filename=~/~/ || filename=~/README/ )
     filename=~/([[:alpha:]]+)$/
     key = $1
-    err,message = Gloss.validate(key)
+    err,message = Gloss.validate(db,key)
     if err then print "error in file #{key}\n  ",message,"\n" end
     # In the following, we don't need to do error checking because any errors would have been caught by Gloss.validate().
     path = db.key_to_path(key)
@@ -151,10 +151,10 @@ def Gloss.standardize_diaresis(s)
   return s.gsub(/άϊ/,'άι').gsub(/έϊ/,'έι')
 end
 
-def Gloss.validate(key)
+def Gloss.validate(db,key)
   # Returns [err,message].
   if key!=remove_accents(key).downcase then return [true,"filename #{key} contains accents or uppercase, should be #{remove_accents(key).downcase}"] end
-  path = Gloss.key_to_path(key)
+  path = db.key_to_path(key)
   if !FileTest.exist?(path) then return [true,"file #{path} doesn't exist"] end
   json,err = slurp_file_with_detailed_error_reporting(path)
   if !(err.nil?) then return [true,err] end
@@ -249,6 +249,7 @@ class GlossDB
   attr_reader :prefer_tag,:lemma_tag
 
   def GlossDB.from_genos(genos)
+    # If it's Greek, the period should be set.
     if genos.greek then
       if genos.period==genos.period_name_to_number("epic") then return GlossDB.new("glosses","perseus","word") end
       if genos.period==genos.period_name_to_number("attic") then return GlossDB.new("glosses","perseus","perseus") end
