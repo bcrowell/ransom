@@ -96,9 +96,9 @@
 \newenvironment{vocaball}{\vocaballheader\\}{}
 \newenvironment{widespacing}{\linespread{1.5}}{}
 \newenvironment{foreignpage}{%
-  \begin{greek}\begin{raggedright}\begin{widespacing} \large%
+  \begin{raggedright}\begin{widespacing} \large%
 }{%
-  \end{widespacing}\end{raggedright}\end{greek}\pagebreak%
+  \end{widespacing}\end{raggedright}\pagebreak%
 }
 
 % xcolor package, https://tex.stackexchange.com/a/17105/6853

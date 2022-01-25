@@ -301,21 +301,6 @@ def print_four_page_layout(stuff,genos,db,bilingual,next_layout,vocab_by_chapter
   print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_chapter,notes)
 end
 
-def four_page_layout_vocab_helper(bilingual,genos,db,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
-  # doesn't get called if if_prose_trial_run is set
-  core = core.map { |x| remove_accents(x).downcase }
-  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,genos,db,core:core, \
-               exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
-  if !ch.nil? then
-    if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
-    if vocab_by_chapter[ch].nil? then vocab_by_chapter[ch]=[] end
-    vocab_by_chapter[ch] = alpha_sort((vocab_by_chapter[ch]+vl.all_lexicals).uniq)
-  else
-    vocab_by_chapter = []
-  end
-  return core,vl,vocab_by_chapter
-end
-
 def print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_chapter,notes)
   # prints
   # Doesn't get called if Options.if_prose_trial_run is set
@@ -334,6 +319,21 @@ def print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_c
   # https://tex.stackexchange.com/a/308934
   layout_for_illustration = next_layout  # place illustration at bottom of page coming immediately before the *next* four-page layout
   if !layout_for_illustration.nil? then print do_illustration(layout_for_illustration) end
+end
+
+def four_page_layout_vocab_helper(bilingual,genos,db,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
+  # doesn't get called if if_prose_trial_run is set
+  core = core.map { |x| remove_accents(x).downcase }
+  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,genos,db,core:core, \
+               exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
+  if !ch.nil? then
+    if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
+    if vocab_by_chapter[ch].nil? then vocab_by_chapter[ch]=[] end
+    vocab_by_chapter[ch] = alpha_sort((vocab_by_chapter[ch]+vl.all_lexicals).uniq)
+  else
+    vocab_by_chapter = []
+  end
+  return core,vl,vocab_by_chapter
 end
 
 def do_illustration(layout)
@@ -596,7 +596,8 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
   # If gloss_these isn't empty, then we assume it contains a list of rare lemmatized forms.
   t = bilingual.foreign_text
   gloss_code = ''
-  main_code = "\\begin{foreignpage}\n"
+  main_code = ''
+  main_code += "\\begin{foreignpage}\n"
   if ransom then main_code = main_code + "\\begin{graytext}\n" end
   lines = t.split(/\s*\n\s*/)
   if gloss_these.length>0 then
@@ -651,6 +652,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
   if ransom then main_code = main_code + "\\end{graytext}\n" end
   gloss_code = "\n{\\linespread{1.0}\\footnotesize #{gloss_code} }\n"
   code = main_code + gloss_code + "\\end{foreignpage}\n"
+  if bilingual.foreign.genos.greek then code = "\\begin{greek}\n#{code}\\end{greek}\n" end
   code = clean_up_unicode(code)
   print code
 end
