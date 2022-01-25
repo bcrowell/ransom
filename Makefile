@@ -111,12 +111,16 @@ demo: export OVERWRITE=1
 demo: export OPTIONS = "pos_file":"demo.pos"
 demo: lib/*rb eruby_ransom.rb demo.rbtex
 	@rm -f warnings help_gloss/__links.html
-	@./fruby demo.rbtex '{$(OPTIONS),"clean":true}' >temp.tex
+	@./fruby demo.rbtex '{"pos_file":"demo.prose","write_pos":true,"clean":true,"prose_trial_run":true}' >temp.tex
+	xelatex temp
+	mv temp.pdf a.pdf
+	exit 1
+	@./fruby demo.rbtex '{"pos_file":"demo.pos","clean":true}' >temp.tex
 	xelatex temp
 	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true
-	@./fruby demo.rbtex '{$(OPTIONS),"write_pos":true}' >temp.tex
+	@./fruby demo.rbtex '{"pos_file":"demo.pos","write_pos":true}' >temp.tex
 	xelatex temp
 	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true
-	@./fruby demo.rbtex '{$(OPTIONS),"render_glosses":true}' >temp.tex
+	@./fruby demo.rbtex '{"pos_file":"demo.pos","render_glosses":true}' >temp.tex
 	xelatex temp
 	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true

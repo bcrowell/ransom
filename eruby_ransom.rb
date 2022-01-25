@@ -18,9 +18,10 @@ require_relative "greek/writing"
 class Options
   if ARGV.length<1 then die("no command-line argument supplied") end
   @@the_options = JSON.parse(ARGV[0])
+  def Options.if_prose_trial_run() return Options.has_flag('prose_trial_run') end
   def Options.if_write_pos() return Options.has_flag('write_pos') end
   def Options.if_render_glosses() return Options.has_flag('render_glosses') end
-  def Options.if_clean() return Options.has_flag('clean') end
+  def Options.if_clean() return Options.has_flag('clean') end # pre-delete .pos file; not actually needed, since we open it to write
   def Options.pos_file() return @@the_options['pos_file'] end
   def Options.has_flag(flag)
     return @@the_options.has_key?(flag) && @@the_options[flag]
@@ -206,9 +207,28 @@ class WhereAt
     }
     return @@pos
   end  
+  def WhereAt.adorn_string_with_commands_to_write_pos_data(text)
+    adorned = text.dup
+    k = 0
+    substitutions = []
+    text.split(/\s+/) { |word|
+      code = WhereAt.latex_code_to_print_and_write_line(word,nil,'')
+      code.sub!(/%\s+$/,'') # remove final %
+      adorned.sub!(/#{Regexp::quote(word)}/) {"__GLUBBA__#{k}__"}
+      substitutions.push(code)
+      k += 1
+    }
+    k = 0
+    text.split(/\s+/) { |word|
+      adorned.sub!(/__GLUBBA__#{k}__/,substitutions[k])
+      k += 1
+    }
+    return adorned
+  end
   def WhereAt.latex_code_to_print_and_write_line(word,lemma_key,line_hash,line_number:nil)
     # We write a separate text file such as iliad.pos, which records the position of each word on the ransom-note page.
     # This allows us, on a later pass, to place the glosses at the correct positions.
+    # The code returned by this function includes the code that actually prints the word on the page.
     # format of .pos file:
     #     unique hash                     ;page;line;lemma;x;y;width;height;depth;extra1;extra2
     #     9d8e0859efef6dc6d2d23419e0de8e7a;7;0;μηνις;;;31.32986pt;8.7386pt;2.80527pt;;
@@ -222,20 +242,17 @@ class WhereAt
     #   word = the word that is actually going to be typeset on the page
     #   lemma_key = a convenient key, which is normally the lemma for the word, stripped of accents
     #   line_hash = output of function hash above
-    #   line_number = if known, the line number; for prose, this probably has to be nil, will experiment with lineno package
+    #   line_number = if known, the line number
     # We obtain the (x,y) and (w,h,d) information at different points, and therefore we have two separate lines, each of them
     # containing one part of the information.
     # Re the need for \immediate in the following, see https://tex.stackexchange.com/q/604110/6853
+    if lemma_key.nil? then lemma_key=word end
     code = %q(\savebox{\myboxregister}{WORD}%
       \makebox{\pdfsavepos\usebox{\myboxregister}}%
       \immediate\write\posoutputfile{LINE_HASH;\thepage;LINE;KEY;;;\the\wd\myboxregister;\the\ht\myboxregister;\the\dp\myboxregister;EXTRA;}%
       \write\posoutputfile{LINE_HASH;\thepage;LINE;KEY;\the\pdflastxpos;\the\pdflastypos;;;;EXTRA}%
     )
-    extra_data = %q({"otherline":OTHERLINE})
-    extra_data.gsub!(/OTHERLINE/,%q(\arabic{linenumber}))
-    # ... from lineno package, my attempt to get line numbering to work for prose, where it's latex that's in charge of the line breaks.
-    #     In \immediate\write, this seems to give a different line number than is lower by 1 than in \write, so that the values in extra1
-    #      and extra2 will differ; the one in extra2 seems to be garbage, possibly the final line number on the page.
+    extra_data = %q({}) # json hash
     code.gsub!(/LINE_HASH/,line_hash)
     code.gsub!(/WORD/,word)
     code.gsub!(/LINE/,line_number.to_s)
@@ -246,6 +263,7 @@ class WhereAt
 end
 
 def four_page_layout(stuff,genos,db,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
+  # doesn't get called if if_prose_trial_run is set
   treebank,freq_file,greek,translation,notes,core = stuff
   return if dry_run
   print_four_page_layout(stuff,genos,db,layout,next_layout,vocab_by_chapter,start_chapter)
@@ -253,6 +271,7 @@ end
 
 def print_four_page_layout(stuff,genos,db,bilingual,next_layout,vocab_by_chapter,start_chapter)  
   # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
+  # doesn't get called if if_prose_trial_run is set
   treebank,freq_file,greek,translation,notes,core = stuff
   ch = bilingual.foreign_ch1
   core,vl,vocab_by_chapter = four_page_layout_vocab_helper(bilingual,genos,db,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
@@ -266,6 +285,7 @@ def print_four_page_layout(stuff,genos,db,bilingual,next_layout,vocab_by_chapter
 end
 
 def four_page_layout_vocab_helper(bilingual,genos,db,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
+  # doesn't get called if if_prose_trial_run is set
   core = core.map { |x| remove_accents(x).downcase }
   vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,genos,db,core:core, \
                exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
@@ -281,6 +301,7 @@ end
 
 def print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_chapter,notes)
   # prints
+  # Doesn't get called if Options.if_prose_trial_run is set
   stuff = vocab(db,vl,core)
   tex,v = stuff['tex'],stuff['file_lists']
   print tex
@@ -543,19 +564,15 @@ end
 def ransom(db,bilingual,v,first_line_number)
   common,uncommon,rare = v
   if bilingual.foreign.is_verse then
-    x = foreign_verse(db,bilingual,true,first_line_number,gloss_these:rare)
+    return foreign_verse(db,bilingual,true,first_line_number,gloss_these:rare)
   else
-    x = foreign_prose(db,bilingual,true,first_line_number,gloss_these:rare)
+    return foreign_prose(db,bilingual,true,first_line_number,gloss_these:rare)
   end
-  if bilingual.foreign.genos.is_verse then y="" else y=%q(\renewcommand\thelinenumber{\linenumber{\roman{linenumber}}}) end
-  # ... here \linenumber{...} is my own style macro, whereas linenumber is a counter in the lineno package
-  return "#{y}\\begin{linenumbers}\n#{x}\\end{linenumbers}\n"
-  # ...for prose, where latex controls line breaks; uses lineno package; for verse, this is harmless because actual 
-  #    printing of line numbers is deactivated by default in the cls file, where we define \thelinenumber to be a null string
+  return x
 end
 
 def foreign_prose(db,bilingual,ransom,first_line_number,gloss_these:[],left_page_verse:false)
-  return "dummy text"
+  return "dummy text from foreign-prose: #{[first_line_number]}"
 end
 
 def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page_verse:false)

@@ -20,11 +20,6 @@
 \RequirePackage{multicol,xcolor,calc,titlesec,fancyhdr,hyphenat,ifthen}
 \RequirePackage{parskip} % disables indentation at the beginning of a paragraph
 \RequirePackage[absolute,overlay]{textpos}
-\RequirePackage[modulo,switch]{lineno}
-% for prose; numbering is off by default; provides \thelinenumber and a counter linenumber
-% Not sure if this will work. See https://tex.stackexchange.com/questions/332056/line-number-inside-line-lineno-package
-\nolinenumbers % turn off line numbering until it's appropriate
-\renewcommand\thelinenumber{} % make line numbers invisible by default; only want them on the appropriate pages and in the case where it's prose
 
 \newcommand{\formatlikechapter}[1]{{\Large\textbf{#1}}}
 \newcommand{\formatlikesection}[1]{{\large\textbf{#1}}}
@@ -113,7 +108,6 @@
 \newenvironment{whitetext}{\color{white}}{}
 
 \newcommand{\linenumber}[1]{\begin{mediumgraytext}{\footnotesize{}#1}\end{mediumgraytext}}
-% ... doesn't seem to conflict with any command in lineno package
 \newcommand{\leftpageverseline}[2]{\noindent\rlap{#1}\hskip 20mm minus 20mm \hbox{#2}\\}
 % ... https://tex.stackexchange.com/a/605040/6853
 %     The "minus 20mm" allows the text to push all the way to the left margin if necessary; to avoid making this
