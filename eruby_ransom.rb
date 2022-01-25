@@ -192,6 +192,7 @@ class WhereAt
       line.sub!(/\s+$/,'') # trim trailing whitespace, such as a newline
       a = line.split(/;/,-1)
       line_hash,page,line,word_key,x,y,width,height,depth = a
+      word_key.gsub!(/__SEMICOLON__/,';')
       key = [line_hash,word_key].join(",")
       data = [x,y,width,height,depth]
       if !(@@pos.has_key?(key)) then @@pos[key] = {} end
@@ -233,14 +234,15 @@ class WhereAt
     #     unique hash                     ;page;line;lemma;x;y;width;height;depth;extra1;extra2
     #     9d8e0859efef6dc6d2d23419e0de8e7a;7;0;μηνις;;;31.32986pt;8.7386pt;2.80527pt;;
     #     9d8e0859efef6dc6d2d23419e0de8e7a;7;0;μηνις;3789043;36515889;;;;;
-    #     Here line is a 0-based count from the top of the page, if the text is in verse.
     #     Lines starting with ? are ignored.
+    #     Here line is a 0-based count from the top of the page, if the text is in verse.
+    #     If the lemma string contains a semicolon, that will be replaced with __SEMICOLON__.
     #     The extra1 and extra2 strings are JSON hashes designed to make it convenient to add enhancements to this system.
     #     Extra1 is written using \immediate\write, extra2 using \write. Even if they have some of the same latex source code,
     #     what gets written to the .pos file can be different because it depends on whether we use \immediate.
     # Inputs:
     #   word = the word that is actually going to be typeset on the page
-    #   lemma_key = a convenient key, which is normally the lemma for the word, stripped of accents
+    #   lemma_key = a convenient key, which for verse is normally the lemma for the word, stripped of accents
     #   line_hash = output of function hash above
     #   line_number = if known, the line number
     # We obtain the (x,y) and (w,h,d) information at different points, and therefore we have two separate lines, each of them
@@ -256,7 +258,7 @@ class WhereAt
     code.gsub!(/LINE_HASH/,line_hash)
     code.gsub!(/WORD/,word)
     code.gsub!(/LINE/,line_number.to_s)
-    code.gsub!(/KEY/,lemma_key)
+    code.gsub!(/KEY/,lemma_key.gsub(/;/,'__SEMICOLON__'))
     code.gsub!(/EXTRA/,extra_data)
     return code
   end
