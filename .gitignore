@@ -24,3 +24,5 @@ core/homer.freq
 debug.txt
 iliad/core.tex
 iliad/figs/cover.png
+temp.tex
+*.prose
