@@ -164,10 +164,24 @@ class WhereAt
   def WhereAt.file_path
     return Options.pos_file
   end
+  # Hashes:
+  # Because of the design of latex, it's not possible to determine both the position on the page and the size of the word on the
+  # page at the same time. Therefore we write two separate lines to the .pos or .prose file containing these different types of data,
+  # and later on we need to match up these lines. What I've been doing in verse mode is to construct a hash based on data like the 
+  # line number, the text of the line, and the word itself. This doesn't work well when we are starting with prose that hasn't yet
+  # been broken up into lines, and this is the purpose of the @@auto_hash, which is based on a running hash of every word that
+  # we've looked at so far.
+  #
+  @@auto_hash = ''
   def WhereAt.hash(hashable)
     # input = data that, if possible, are totally unique to this line on the page, even if a line of poetry is repeated
     # I've tried doing this with a flat array whose elements are strings and integers, and it works fine.
     return Digest::MD5.hexdigest(hashable.to_s) 
+  end
+  def WhereAt.auto_hash(hashable)
+    # Hashable should be something that has a .to_s method and the kind of thing that could be fed to WhereAt.hash().
+    @@auto_hash = WhereAt.hash(@@auto_hash+hashable.to_s)
+    return @@auto_hash
   end
   def WhereAt.latex_code_to_create_pos_file()
     return %Q{
@@ -213,7 +227,7 @@ class WhereAt
     k = 0
     substitutions = []
     text.split(/\s+/) { |word|
-      code = WhereAt.latex_code_to_print_and_write_line(word,nil,'')
+      code = WhereAt.latex_code_to_print_and_write_line(word,nil,nil)
       code.sub!(/%\s+$/,'') # remove final %
       adorned.sub!(/#{Regexp::quote(word)}/) {"__GLUBBA__#{k}__"}
       substitutions.push(code)
@@ -243,12 +257,13 @@ class WhereAt
     # Inputs:
     #   word = the word that is actually going to be typeset on the page
     #   lemma_key = a convenient key, which for verse is normally the lemma for the word, stripped of accents
-    #   line_hash = output of function hash above
+    #   line_hash = output of function hash above; can be nil, which then causes us to use auto_hash mechanism
     #   line_number = if known, the line number
     # We obtain the (x,y) and (w,h,d) information at different points, and therefore we have two separate lines, each of them
     # containing one part of the information.
     # Re the need for \immediate in the following, see https://tex.stackexchange.com/q/604110/6853
     if lemma_key.nil? then lemma_key=word end
+    if line_hash.nil? then line_hash=WhereAt.auto_hash(word) end
     code = %q(\savebox{\myboxregister}{WORD}%
       \makebox{\pdfsavepos\usebox{\myboxregister}}%
       \immediate\write\posoutputfile{LINE_HASH;\thepage;LINE;KEY;;;\the\wd\myboxregister;\the\ht\myboxregister;\the\dp\myboxregister;EXTRA;}%
