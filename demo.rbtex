@@ -40,7 +40,9 @@ if format=='booklet_short' then breaks = breaks[0..17] end
 dry_run = !(ENV['DRY_RUN'].nil?)
 
 if Options.if_prose_trial_run then
-  print WhereAt.adorn_string_with_commands_to_write_pos_data(latin.get_contents.join("\n\n"))
+  print %q(\begin{foreignprose}),"\n"
+  print WhereAt.adorn_string_with_commands_to_write_pos_data(latin.get_contents.join("\n\n")),"\n\n"
+  print %q(\end{foreignprose}),"\n"
 else
   current_chapter = -999
   vocab_by_chapter = []

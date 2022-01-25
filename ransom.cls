@@ -2,7 +2,21 @@
 \ProvidesClass{ransom}
 
 \LoadClass[12pt]{book}
-\RequirePackage[xetex,paperheight=9in,paperwidth=6in,bindingoffset=0.3in, left=0.5in, right=0.5in, bottom=0.3in]{geometry} 
+
+\newcommand{\foreignprosebottommargin}{1.5in}
+\newcommand{\foreignversebottommargin}{0.3in}
+\newcommand{\othertextbottommargin}{0.5in}
+% When doing poetry, I want to set the length of each page so that it ends close to a sentence break and also so that there is a reasonable
+% bottom margin. But if for any reason I need a page to go a little long, I want it to extend as far as possible, rather than spilling
+% over and making a two-page spread out of what was supposed to be a single page.
+% But for prose, I let latex pour the text onto pages, so on foreign-prose pages I want the margin to be set to something much larger.
+% In general, I want lots of whitespace on foreign-text pages, both between lines and in margins. This is partly just to limit the
+% amount of text on the page to something that can be glossed reasonably. I also want space to be able to write notes in pencil,
+% and I don't want to be intimidated by huge walls of text.
+\newcommand{\foreignproseoutermargin}{1.2in}
+% ... Extra margin on outside of foreign prose pages, for line numbers. This doesn't have to be as big as for verse, because
+%     there is no such thing as a line that is too long and needs to push into the margin.
+\RequirePackage[xetex,paperheight=9in,paperwidth=6in,bindingoffset=0.3in, inner=0.5in, outer=0.5in, bottom=\othertextbottommargin]{geometry} 
 % https://tex.stackexchange.com/q/80520/6853
 % Bindingoffset refers to the gutter.
 
@@ -94,11 +108,14 @@
 \newenvironment{conjugations}{\formsheader{conjugations}\\}{}
 \newenvironment{declensions}{\formsheader{declensions}\\}{}
 \newenvironment{vocaball}{\vocaballheader\\}{}
-\newenvironment{widespacing}{\linespread{1.5}}{}
-\newenvironment{foreignpage}{%
+\newenvironment{widespacing}{\linespread{1.5}\selectfont}{}
+% ... \selectfont is needed or else \linespread won't take effect until the next change of font
+\newenvironment{foreignprose}{\sloppy\newgeometry{bottom=\foreignprosebottommargin,outer=\foreignproseoutermargin}\begin{widespacing}}{\end{widespacing}\restoregeometry}
+\newenvironment{foreignverse}{%
+  \newgeometry{bottom=\foreignversebottommargin}%
   \begin{raggedright}\begin{widespacing} \large%
 }{%
-  \end{widespacing}\end{raggedright}\pagebreak%
+  \end{widespacing}\end{raggedright}\restoregeometry\pagebreak%
 }
 
 % xcolor package, https://tex.stackexchange.com/a/17105/6853

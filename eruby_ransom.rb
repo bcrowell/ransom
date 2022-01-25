@@ -597,7 +597,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
   t = bilingual.foreign_text
   gloss_code = ''
   main_code = ''
-  main_code += "\\begin{foreignpage}\n"
+  main_code += "\\begin{foreignverse}\n"
   if ransom then main_code = main_code + "\\begin{graytext}\n" end
   lines = t.split(/\s*\n\s*/)
   if gloss_these.length>0 then
@@ -651,7 +651,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
   main_code = main_code + verse_lines_to_latex(lines,first_line_number,left_page_verse) + "\n\n"
   if ransom then main_code = main_code + "\\end{graytext}\n" end
   gloss_code = "\n{\\linespread{1.0}\\footnotesize #{gloss_code} }\n"
-  code = main_code + gloss_code + "\\end{foreignpage}\n"
+  code = main_code + gloss_code + "\\end{foreignverse}\n"
   if bilingual.foreign.genos.greek then code = "\\begin{greek}\n#{code}\\end{greek}\n" end
   code = clean_up_unicode(code)
   print code
