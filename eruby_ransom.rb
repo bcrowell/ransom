@@ -259,14 +259,14 @@ class WhereAt
     #   lemma_key = a convenient key, which for verse is normally the lemma for the word, stripped of accents
     #   line_hash = output of function hash above; can be nil, which then causes us to use auto_hash mechanism
     #   line_number = if known, the line number
-    # We obtain the (x,y) and (w,h,d) information at different points, and therefore we have two separate lines, each of them
+    # We obtain the (page,x,y) and (w,h,d) information at different points, and therefore we have two separate lines, each of them
     # containing one part of the information.
     # Re the need for \immediate in the following, see https://tex.stackexchange.com/q/604110/6853
     if lemma_key.nil? then lemma_key=word end
     if line_hash.nil? then line_hash=WhereAt.auto_hash(word) end
     code = %q(\savebox{\myboxregister}{WORD}%
       \makebox{\pdfsavepos\usebox{\myboxregister}}%
-      \immediate\write\posoutputfile{LINE_HASH;\thepage;LINE;KEY;;;\the\wd\myboxregister;\the\ht\myboxregister;\the\dp\myboxregister;EXTRA;}%
+      \immediate\write\posoutputfile{LINE_HASH;;LINE;KEY;;;\the\wd\myboxregister;\the\ht\myboxregister;\the\dp\myboxregister;EXTRA;}%
       \write\posoutputfile{LINE_HASH;\thepage;LINE;KEY;\the\pdflastxpos;\the\pdflastypos;;;;EXTRA}%
     )
     extra_data = %q({}) # json hash
