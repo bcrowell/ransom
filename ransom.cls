@@ -43,7 +43,6 @@
 \titleformat{\section}{\large\bfseries}{}{}{}{}
 \titlespacing*{\chapter}{0pt}{-30pt}{10pt}
 \newcommand{\mychapter}[1]{\formatlikechapter{#1}}
-\newcommand{\myransomchapter}[1]{\begin{graytext}\mychapter{#1}\end{graytext}}
 \setlength\headheight{15pt} % https://tex.stackexchange.com/questions/327285/what-does-this-warning-mean-fancyhdr-and-headheight
 
 %--- fancyhdr ---

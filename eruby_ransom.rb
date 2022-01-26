@@ -319,12 +319,9 @@ def print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_c
   print tex
   if notes.length>0 then print notes_to_latex(bilingual.foreign_linerefs,notes) end # FIXME: won't work if foreign text is prose, doesn't have linerefs
   print header_latex(bilingual) # includes pagebreak
-  if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
-  print foreign(db,bilingual,bilingual.foreign_first_line_number),"\n\n"
-  if !(start_chapter.nil?) then print "\\myransomchapter{#{start_chapter}}\n\n" end
+  print foreign(db,bilingual,bilingual.foreign_first_line_number,start_chapter),"\n\n"
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatglosses}%\n"
-  print ransom(db,bilingual,v,bilingual.foreign_first_line_number),"\n\n"
-  if !(start_chapter.nil?) then print "\\mychapter{#{start_chapter}}\n\n" end
+  print ransom(db,bilingual,v,bilingual.foreign_first_line_number,start_chapter),"\n\n"
   print bilingual.translation_text
   # https://tex.stackexchange.com/a/308934
   layout_for_illustration = next_layout  # place illustration at bottom of page coming immediately before the *next* four-page layout
@@ -580,35 +577,36 @@ def vocab1(db,stuff)
 end
 
 
-def foreign(db,bilingual,first_line_number)
+def foreign(db,bilingual,first_line_number,start_chapter)
   if bilingual.foreign.is_verse then
-    return foreign_verse(db,bilingual,false,first_line_number,left_page_verse:true)
+    return foreign_verse(db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
   else
-    return foreign_prose(db,bilingual,false,first_line_number,left_page_verse:true)
+    return foreign_prose(db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
   end
 end
 
-def ransom(db,bilingual,v,first_line_number)
+def ransom(db,bilingual,v,first_line_number,start_chapter)
   common,uncommon,rare = v
   if bilingual.foreign.is_verse then
-    return foreign_verse(db,bilingual,true,first_line_number,gloss_these:rare)
+    return foreign_verse(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
   else
-    return foreign_prose(db,bilingual,true,first_line_number,gloss_these:rare)
+    return foreign_prose(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
   end
   return x
 end
 
-def foreign_prose(db,bilingual,ransom,first_line_number,gloss_these:[],left_page_verse:false)
+def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
   return "dummy text from foreign-prose: #{[first_line_number]}"
 end
 
-def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page_verse:false)
+def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
   # If gloss_these isn't empty, then we assume it contains a list of rare lemmatized forms.
   t = bilingual.foreign_text
   gloss_code = ''
   main_code = ''
   main_code += "\\begin{foreignverse}\n"
-  if ransom then main_code = main_code + "\\begin{graytext}\n" end
+  if ransom then main_code += "\\begin{graytext}\n" end
+  if !(start_chapter.nil?) then main_code += "\\mychapter{#{start_chapter}}\n\n" end # will be gray if on ransom page, because inside graytext environment
   lines = t.split(/\s*\n\s*/)
   if gloss_these.length>0 then
     gg = gloss_these.map { |x| remove_accents(x)}
