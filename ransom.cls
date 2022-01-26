@@ -3,6 +3,8 @@
 
 \LoadClass[12pt]{book}
 
+\newcommand{\genericgeometryoptions}{bindingoffset=0.3in, inner=0.5in, outer=0.5in}
+% FIXME: These values are also hardcoded in the definition of foreignverse, see comment there and link to SE question.
 \newcommand{\foreignprosebottommargin}{1.5in}
 \newcommand{\foreignversebottommargin}{0.3in}
 \newcommand{\othertextbottommargin}{0.5in}
@@ -16,7 +18,7 @@
 \newcommand{\foreignproseoutermargin}{1.2in}
 % ... Extra margin on outside of foreign prose pages, for line numbers. This doesn't have to be as big as for verse, because
 %     there is no such thing as a line that is too long and needs to push into the margin.
-\RequirePackage[xetex,paperheight=9in,paperwidth=6in,bindingoffset=0.3in, inner=0.5in, outer=0.5in, bottom=\othertextbottommargin]{geometry} 
+\RequirePackage[xetex,paperheight=9in,paperwidth=6in,\genericgeometryoptions, bottom=\othertextbottommargin]{geometry} 
 % https://tex.stackexchange.com/q/80520/6853
 % Bindingoffset refers to the gutter.
 
@@ -111,8 +113,11 @@
 % ... \selectfont is needed or else \linespread won't take effect until the next change of font
 \newenvironment{foreignprose}{\sloppy\newgeometry{bottom=\foreignprosebottommargin,outer=\foreignproseoutermargin}\begin{widespacing}}{\end{widespacing}\restoregeometry}
 \newenvironment{foreignverse}{%
-  %\newgeometry{bottom=\foreignversebottommargin}%
-  % ... including this line causes long lines to push out into margin where they didn't before, e.g., Iliad 1.10
+  \newgeometry{bindingoffset=0.3in, inner=0.5in, outer=0.5in, bottom=\foreignversebottommargin}%
+  % ... If I don't reiterate the generic values here, then they seem to get reset to the default valuee. The symptom is that
+  %     long lines push out into margin where they didn't before, e.g., Iliad 1.10, as a side-effect of an unintended
+  %     reduction of the inner margin
+  %     https://tex.stackexchange.com/questions/631609/changing-some-options-in-newgeometry-while-retaining-all-others-by-default
   \begin{raggedright}\begin{widespacing} \large%
 }{%
   \end{widespacing}\end{raggedright}\restoregeometry\pagebreak%
