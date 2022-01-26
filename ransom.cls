@@ -111,7 +111,8 @@
 % ... \selectfont is needed or else \linespread won't take effect until the next change of font
 \newenvironment{foreignprose}{\sloppy\newgeometry{bottom=\foreignprosebottommargin,outer=\foreignproseoutermargin}\begin{widespacing}}{\end{widespacing}\restoregeometry}
 \newenvironment{foreignverse}{%
-  \newgeometry{bottom=\foreignversebottommargin}%
+  %\newgeometry{bottom=\foreignversebottommargin}%
+  % ... including this line causes long lines to push out into margin where they didn't before, e.g., Iliad 1.10
   \begin{raggedright}\begin{widespacing} \large%
 }{%
   \end{widespacing}\end{raggedright}\restoregeometry\pagebreak%

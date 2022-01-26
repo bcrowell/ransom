@@ -2,6 +2,11 @@
 // order, lawful order, government, mode, fashion, ornament, decoration, honour, credit, ruler, world, universe, the earth, mankind
 {
   "word":"κόσμος",
-  "medium":"order, lawful order, government, mode, fashion, ornament, decoration, honour, credit, ruler, world, universe, the earth, mankind"
+  "short":"order; adornment",
+  "medium":"order, good behavior; adornment",
+  "etym":"PIE keNs",
+  "cog":"cosmos, cosmetics, censure, κοσμήτωρ, ἄκοσμος",
+  "mnemonic_cog":"cosmos",
+  "notes":"Beekes speculates that the original sense was something like the imposition of order by someone speaking. This would then drift and spread ito other meanings like wearing proper dress and the world of the concrete as opposed to the rules by which the world runs."
 }
       
