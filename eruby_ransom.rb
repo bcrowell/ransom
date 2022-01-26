@@ -202,6 +202,7 @@ class WhereAt
   def WhereAt.read_back_pos_file()
     @@pos = {} # will be a hash of hashes, @@pos[gloss_key][name_of_datum]
     IO.foreach(WhereAt.file_path) { |line|
+      # some of the following code is duplicated in scrape_prose_layout.rb
       next if line=~/^\?/
       line.sub!(/\s+$/,'') # trim trailing whitespace, such as a newline
       a = line.split(/;/,-1)
