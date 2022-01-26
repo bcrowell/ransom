@@ -276,14 +276,15 @@ class WhereAt
     if line_hash.nil? then line_hash=WhereAt.auto_hash(word) end
     code = %q(\savebox{\myboxregister}{WORD}%
       \makebox{\pdfsavepos\usebox{\myboxregister}}%
-      \immediate\write\posoutputfile{LINE_HASH;;LINE;KEY;;;\the\wd\myboxregister;\the\ht\myboxregister;\the\dp\myboxregister;EXTRA;}%
-      \write\posoutputfile{LINE_HASH;\thepage;LINE;KEY;\the\pdflastxpos;\the\pdflastypos;;;;EXTRA}%
+      \immediate\write\posoutputfile{LINE_HASH;;LINE;KEY;;;\the\wd\myboxregister;\the\ht\myboxregister;\the\dp\myboxregister;EXTRA1;}%
+      \write\posoutputfile{LINE_HASH;\thepage;LINE;KEY;\the\pdflastxpos;\the\pdflastypos;;;;EXTRA2}%
     )
     code.gsub!(/LINE_HASH/,line_hash)
     code.gsub!(/WORD/,word)
     code.gsub!(/LINE/,line_number.to_s)
     code.gsub!(/KEY/,lemma_key.gsub(/;/,'__SEMICOLON__'))
-    code.gsub!(/EXTRA/,JSON.generate(extra_data))
+    code.gsub!(/EXTRA1/,JSON.generate(extra_data))
+    code.gsub!(/EXTRA2/,"{}")
     return code
   end
 end
