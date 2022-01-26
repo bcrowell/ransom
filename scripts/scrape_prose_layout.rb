@@ -26,6 +26,7 @@ input_files.each { |filename|
   texts.push(slurp_file(filename))
 }
 
+# Merge output from the two passes of latex:
 data = [] # array of hashes, one per word
 word_index = {} # key is hash, value is index into data
 IO.foreach(prose_file) { |line| 
@@ -33,13 +34,23 @@ IO.foreach(prose_file) { |line|
   next if line=~/^\?/
   line.sub!(/\s+$/,'') # trim trailing whitespace, such as a newline
   a = line.split(/;/,-1)
-  line_hash,page,line_garbage,word,x,y,width,height,depth = a
+  hash,page,line_garbage,word,x,y,width,height,depth = a
   # line_garbage is always empty, need to infer it myself
   word.gsub!(/__SEMICOLON__/,';')
-  if !(line=~/([^;]*;){9}(.*);$/) then raise "bad line, not enough fields: #{line}" end
-  extra = JSON.parse($2)
-  print "#{a}, #{extra}\n"
-  exit(-1)
+  if !(line=~/([^;]*;){9}(.*);(.*)/) then raise "bad line, not enough fields: #{line}" end
+  extra1_json,extra2_json = [$2,$3]
+  if extra1_json!='' then extra1 = JSON.parse(extra1_json) else extra1={} end
+  if extra2_json!='' then extra2 = JSON.parse(extra2_json) else extra2={} end
+  d = {'word'=>word,'x'=>x,'y'=>y,'width'=>width,'height'=>height,'depth'=>depth,
+          'offset'=>extra1['offset'],'length'=>extra1['length'],'para'=>extra1['para'],'file'=>extra1['file']}
+  d.keys.each { |k|
+    if d[k].nil? || d[k]=='' then d.delete(k) end
+  }
+  if !word_index.has_key?(hash) then
+    data.push(d)
+    word_index[hash] = data.length-1
+  else
+    i = word_index[hash]
+    data[i] = data[i].merge(d)
+  end
 }
-
-
