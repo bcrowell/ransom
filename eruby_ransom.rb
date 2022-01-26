@@ -222,12 +222,22 @@ class WhereAt
     }
     return @@pos
   end  
-  def WhereAt.adorn_string_with_commands_to_write_pos_data(text)
+  def WhereAt.adorn_string_with_commands_to_write_pos_data(text,paragraph_count:nil,file_count:nil)
     adorned = text.dup
     k = 0
+    text =~ /^(\s*)/ # match leading whitespace; match is guaranteed to succeed, but may be a null string
+    offset = $1.length # a pointer into the file; initialize it to point past any initial whitespace
     substitutions = []
-    text.split(/\s+/) { |word|
-      code = WhereAt.latex_code_to_print_and_write_line(word,nil,nil)
+    a = text.scan(/([^\s]+)(\s+)/) # produces an array like [['The',' '],['quick',' '],...], without last word
+    if text=~/([^\s]+)$/ then a.push([$1,'']) end # add final word
+    a.each { |x|
+      word,whitespace = x
+      l = word.length+whitespace.length
+      d = {'offset':offset,'length':l}
+      if !paragraph_count.nil? then d['para']=paragraph_count end
+      if !file_count.nil? then d['file']=file_count end
+      code = WhereAt.latex_code_to_print_and_write_pos(word,nil,nil,extra_data:d)
+      offset += l
       code.sub!(/%\s+$/,'') # remove final %
       adorned.sub!(/#{Regexp::quote(word)}/) {"__GLUBBA__#{k}__"}
       substitutions.push(code)
@@ -240,7 +250,7 @@ class WhereAt
     }
     return adorned
   end
-  def WhereAt.latex_code_to_print_and_write_line(word,lemma_key,line_hash,line_number:nil)
+  def WhereAt.latex_code_to_print_and_write_pos(word,lemma_key,line_hash,line_number:nil,extra_data:{})
     # We write a separate text file such as iliad.pos, which records the position of each word on the ransom-note page.
     # This allows us, on a later pass, to place the glosses at the correct positions.
     # The code returned by this function includes the code that actually prints the word on the page.
@@ -269,12 +279,11 @@ class WhereAt
       \immediate\write\posoutputfile{LINE_HASH;;LINE;KEY;;;\the\wd\myboxregister;\the\ht\myboxregister;\the\dp\myboxregister;EXTRA;}%
       \write\posoutputfile{LINE_HASH;\thepage;LINE;KEY;\the\pdflastxpos;\the\pdflastypos;;;;EXTRA}%
     )
-    extra_data = %q({}) # json hash
     code.gsub!(/LINE_HASH/,line_hash)
     code.gsub!(/WORD/,word)
     code.gsub!(/LINE/,line_number.to_s)
     code.gsub!(/KEY/,lemma_key.gsub(/;/,'__SEMICOLON__'))
-    code.gsub!(/EXTRA/,extra_data)
+    code.gsub!(/EXTRA/,JSON.generate(extra_data))
     return code
   end
 end
@@ -616,7 +625,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,gloss_these:[],left_page
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil
-          if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_line(word,key,line_hash,line_number:i)  end
+          if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_pos(word,key,line_hash,line_number:i)  end
           if Options.if_render_glosses then
             pos = WhereAt.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
             if pos.nil? then raise "in foreign_helper, rendering ransom notes, position is nil for line_hash=#{line_hash}, key=#{key}" end

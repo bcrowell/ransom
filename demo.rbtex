@@ -41,7 +41,16 @@ dry_run = !(ENV['DRY_RUN'].nil?)
 
 if Options.if_prose_trial_run then
   print %q(\begin{foreignprose}),"\n"
-  print WhereAt.adorn_string_with_commands_to_write_pos_data(latin.get_contents.join("\n\n")),"\n\n"
+  count_files = 0
+  count_paragraphs = 0
+  latin.get_contents.each { |file_contents|
+    file_contents.split(/(?:\n[ \t]*){2,}/).each { |paragraph|
+      print "\n\n%%%%%% paragraph #{count_paragraphs} %%%%%%\n\n"
+      print WhereAt.adorn_string_with_commands_to_write_pos_data(paragraph,paragraph_count:count_paragraphs,file_count:count_files),"\n\n"
+      count_paragraphs += 1
+    }
+    count_files += 1
+  }
   print %q(\end{foreignprose}),"\n"
 else
   current_chapter = -999
