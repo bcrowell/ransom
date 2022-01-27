@@ -63,7 +63,7 @@ chunk = [] # accumulates lines until it's time to flush it
 line = [] # accumulates words until it's time to flush it
 data.each { |d|
   x,y,page,para = d['x'],d['y'],d['page'],d['para']
-  if x<current_x then chunk.push(line); line=[] end
+  if x<current_x then chunk.push(line.map { |x| x['word'] }.join(' ')); line=[] end
   line.push(d)
   current_x = x
   if_page_break = (y<current_y)
@@ -71,6 +71,10 @@ data.each { |d|
   current_para = para
   if if_page_break || if_para_break then
     # FIXME: flush chunk
+    flags = []
+    if if_para_break then flags.push('para') end
+    if if_page_break then flags.push('page') end
+    
     chunk = []
   end
   current_y = y
