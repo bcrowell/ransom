@@ -56,8 +56,9 @@ IO.foreach(prose_file) { |line|
 }
 
 # Walk through the text word by word. When I get to the end of a line or chunk, flush it.
+all_chunks = []
 current_x = -999 # When x decreases, we've hit a line break.
-current_y = -999 # When y decreases, we've hit a page break.
+current_y = nil # When y increases by ~3x10^7, we've hit a page break. Initial nil value is to be construed as infinity.
 current_para = 0
 chunk = [] # accumulates lines until it's time to flush it
 line = [] # accumulates words until it's time to flush it
@@ -66,17 +67,21 @@ data.each { |d|
   if x<current_x then chunk.push(line.map { |x| x['word'] }.join(' ')); line=[] end
   line.push(d)
   current_x = x
-  if_page_break = (y<current_y)
+  if_page_break = (!current_y.nil? && y>current_y)
   if_para_break = (para>current_para)
   current_para = para
   if if_page_break || if_para_break then
-    # FIXME: flush chunk
     flags = []
     if if_para_break then flags.push('para') end
     if if_page_break then flags.push('page') end
-    
+    dressed_chunk = {'flags'=>flags,'lines'=>chunk}
+    all_chunks.push(dressed_chunk)
     chunk = []
   end
   current_y = y
-  
 }
+
+print "[\n"
+print all_chunks.map { |c| JSON.generate(c) }.join(",\n")
+print "\n"
+print "]\n"
