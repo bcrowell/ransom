@@ -19,7 +19,7 @@ require "./lib/file_util.rb"
 prose_file = ARGV[0]
 input_files = ARGV[1..-1]
 
-$stderr.print "input files: #{prose_file}, #{input_files}\n"
+#$stderr.print "input files: #{prose_file}, #{input_files}\n"
 
 texts = []
 input_files.each { |filename|
@@ -57,20 +57,27 @@ IO.foreach(prose_file) { |line|
 
 # Walk through the text word by word. When I get to the end of a line or chunk, flush it.
 all_chunks = []
-current_x = -999 # When x decreases, we've hit a line break.
+current_x = -999 # When x fails to increase, or when y decreases, we've hit a line break.
+                 # Note tricky case where you have paragraph indentation, the final line of a para is short, and the x increases across the break.
 current_y = nil # When y increases by ~3x10^7, we've hit a page break. Initial nil value is to be construed as infinity.
 current_para = 0
 chunk = [] # accumulates lines until it's time to flush it
 line = [] # accumulates words until it's time to flush it
+data.push(nil) # marker for final flushing
 data.each { |d|
+  if_final_flush = d.nil?
+  if if_final_flush then d={} end
   x,y,page,para = d['x'],d['y'],d['page'],d['para']
-  if x<current_x then chunk.push(line.map { |x| x['word'] }.join(' ')); line=[] end
-  line.push(d)
+  if_line_break = (if_final_flush || x<=current_x || (!current_y.nil? && y<current_y))
+  if_page_break = (!if_final_flush && (!current_y.nil? && y>current_y))
+  if_para_break = (if_final_flush || para>current_para)
+  #if d['word']=~/(stelas|numero|Deinde)/ then debug=true else debug=false end
+  #if debug then print "...#{d['word']}, line,page,para=#{if_line_break},#{if_page_break},#{if_para_break} line=#{line}\n" end
+  if if_line_break then chunk.push(line.map { |x| x['word'] }.join(' ')); line=[] end
+  line.push(d) unless if_final_flush
   current_x = x
-  if_page_break = (!current_y.nil? && y>current_y)
-  if_para_break = (para>current_para)
   current_para = para
-  if if_page_break || if_para_break then
+  if if_page_break || if_para_break || if_final_flush then
     flags = []
     if if_para_break then flags.push('para') end
     if if_page_break then flags.push('page') end
