@@ -43,9 +43,9 @@ IO.foreach(prose_file) { |line|
   if extra2_json!='' then extra2 = JSON.parse(extra2_json) else extra2={} end
   d = {'word'=>word,'x'=>x,'y'=>y,'width'=>width,'height'=>height,'depth'=>depth,
           'offset'=>extra1['offset'],'length'=>extra1['length'],'para'=>extra1['para'],'file'=>extra1['file']}
-  d.keys.each { |k|
-    if d[k].nil? || d[k]=='' then d.delete(k) end
-  }
+  d.keys.each { |k| if d[k].nil? || d[k]=='' then d.delete(k) end }
+  ['x','y'].each { |k| if d.has_key?(k) then d[k] = d[k].to_i end}
+  ['width','height','depth'].each { |k| if d.has_key?(k) then d[k] = d[k].sub(/pt$/,'').to_f end}
   if !word_index.has_key?(hash) then
     data.push(d)
     word_index[hash] = data.length-1
@@ -53,4 +53,26 @@ IO.foreach(prose_file) { |line|
     i = word_index[hash]
     data[i] = data[i].merge(d)
   end
+}
+
+# Walk through the text word by word. When I get to the end of a line or chunk, flush it.
+current_x = -999 # When x decreases, we've hit a line break.
+current_y = -999 # When y decreases, we've hit a page break.
+current_para = 0
+chunk = [] # accumulates lines until it's time to flush it
+line = [] # accumulates words until it's time to flush it
+data.each { |d|
+  x,y,page,para = d['x'],d['y'],d['page'],d['para']
+  if x<current_x then chunk.push(line); line=[] end
+  line.push(d)
+  current_x = x
+  if_page_break = (y<current_y)
+  if_para_break = (para>current_para)
+  current_para = para
+  if if_page_break || if_para_break then
+    # FIXME: flush chunk
+    chunk = []
+  end
+  current_y = y
+  
 }
