@@ -68,7 +68,7 @@ else
 {"flags":["para"],"lines":[["Deinde ut respexi ad comitem, ille exuit se et omnia",0,53],["vestimenta secundum viam posuit. Mihi anima in naso esse;",53,111],["stabam tanquam mortuus. At ille circumminxit vestimenta",111,167],["sua, et subito lupus factus est. Nolite me iocari putare;",167,225],["ut mentiar, nullius patrimonium tanti facio. Sed, quod",225,280],["coeperam dicere, postquam lupus factus est, ululare coepit",280,339],["et in silvas fugit. Ego primitus nesciebam ubi essem; deinde",339,400],["accessi, ut vestimenta eius tollerem: illa autem lapidea facta",400,463],["sunt. Qui mori timore nisi ego? Gladium tamen strinxi et",463,520],["<in tota via> umbras cecidi, donec ad villam amicae meae",520,577],["pervenirem.",577,589]]},
 ...
 ]
-  def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000,length_ratio_expected:1.23,length_ratio_tol_factor:1.38)
+  def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000,length_ratio_tol_factor:1.38)
     # Foreign and translation are Epos objects, which should have non-nil genos with is_verse set correctly.
     # G1, g2, t1, and t2 are references for input to Epos initializer. If a text is verse, then these should be
     # of the form [book,line]. If prose, then they should be either word globs or hard refs.
@@ -109,7 +109,7 @@ else
     dry_run = false
     t1 = latin.interpolate_bitext(translation,matches_latin,matches_translation,foreign_hr1)
     t2 = latin.interpolate_bitext(translation,matches_latin,matches_translation,foreign_hr2)
-    layouts.push([Bilingual.new(foreign_hr1,foreign_hr2,t1,t2,latin,translation),starting_ch,dry_run])
+    layouts.push([Bilingual.new(foreign_hr1,foreign_hr2,t1,t2,latin,translation,length_ratio_tol_factor:3.0),starting_ch,dry_run])
   }
   vocab_by_chapter = []
   0.upto(layouts.length-1) { |i|

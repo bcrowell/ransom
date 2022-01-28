@@ -26,6 +26,14 @@ class Genos
   def latin() return (@lang=='la') end
   def greek() return (@lang=='grc') end
   def hebrew() return (@lang=='hbo') end
+
+  def verbosity()
+    # For use in making sanity checks more precise. A measure of how verbose this language is.
+    return 1.0 if self.english()
+    return 0.8 if self.greek() # possibly this is just for Homeric, which is probably terser than Attic or Koine?
+    return 1.2 if self.latin()
+    return 1.0
+  end
   
 end
 

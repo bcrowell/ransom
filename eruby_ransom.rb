@@ -35,7 +35,7 @@ class Options
 end
 
 class Bilingual
-  def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000,length_ratio_expected:1.23,length_ratio_tol_factor:1.38)
+  def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000,length_ratio_tol_factor:1.38)
     # Foreign and translation are Epos objects, which should have non-nil genos with is_verse set correctly.
     # G1, g2, t1, and t2 are references for input to Epos initializer. If a text is verse, then these should be
     # of the form [book,line]. If prose, then they should be either word globs or hard refs.
@@ -43,6 +43,7 @@ class Bilingual
     #   max_chars -- maximum length of translated text
     #   length_ratio_expected -- expected value of length of translation divided by length of foreign text
     #   length_ratio_tol_factor -- tolerance factor for the above ratio
+    length_ratio_expected = translation.genos.verbosity()/foreign.genos.verbosity()
     Bilingual.type_check_refs_helper(g1,g2,t1,t2,foreign,translation)
     @foreign = foreign
     @translation = translation
