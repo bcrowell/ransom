@@ -107,7 +107,7 @@ else
     dry_run = false
     t1 = latin.interpolate_bitext(translation,matches_latin,matches_translation,foreign_hr1)
     t2 = latin.interpolate_bitext(translation,matches_latin,matches_translation,foreign_hr2)
-    layouts.push([Bilingual.new(foreign_hr1,foreign_hr2,t1,t2,latin,translation,length_ratio_tol_factor:3.0),starting_ch,dry_run])
+    layouts.push([Bilingual.new(foreign_hr1,foreign_hr2,t1,t2,latin,translation,length_ratio_tol_factor:2.0),starting_ch,dry_run])
   }
   vocab_by_chapter = []
   0.upto(layouts.length-1) { |i|

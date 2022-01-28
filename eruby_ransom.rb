@@ -615,7 +615,11 @@ def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   code = ''
   code += "\\begin{foreignprose}\n"
   code += "\\enlargethispage{\\baselineskip}\n"
-  code += bilingual.foreign_text+"\n\n"
+  code += bilingual.foreign_text.sub(/\s+/,'') # strip trailing newlines so that the following code works...
+  code += '{\parfillskip=0pt \emergencystretch=.5\textwidth \par}'
+  # ... Force the final paragraph to be typeset as a paragraph, which is how it was typeset in the trial run.
+  #     https://tex.stackexchange.com/a/116573
+  code += "\n\n"
   code += "\\end{foreignprose}\n"
   return code
 end
