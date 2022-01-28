@@ -38,7 +38,7 @@ class Bilingual
   def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000,length_ratio_expected:1.23,length_ratio_tol_factor:1.38)
     # Foreign and translation are Epos objects, which should have non-nil genos with is_verse set correctly.
     # G1, g2, t1, and t2 are references for input to Epos initializer. If a text is verse, then these should be
-    # of the form [book,line]. If prose, then they should be word globs.
+    # of the form [book,line]. If prose, then they should be either word globs or hard refs.
     # sanity checks:
     #   max_chars -- maximum length of translated text
     #   length_ratio_expected -- expected value of length of translation divided by length of foreign text
@@ -53,8 +53,11 @@ class Bilingual
       @foreign_hr1,@foreign_hr2 = foreign.line_to_hard_ref(g1[0],g1[1]),foreign.line_to_hard_ref(g2[0],g2[1])
       @foreign_ch1,@foreign_ch2 = @foreign_hr1[0],@foreign_hr2[0]
     else
-      $stderr.print "g1 -> #{foreign.word_glob_to_hard_ref(g1)}\n"
-      @foreign_hr1,@foreign_hr2 = foreign.word_glob_to_hard_ref(g1)[0],foreign.word_glob_to_hard_ref(g2)[0]
+      if g1.kind_of?(String) then
+        @foreign_hr1,@foreign_hr2 = foreign.word_glob_to_hard_ref(g1)[0],foreign.word_glob_to_hard_ref(g2)[0]
+      else
+        @foreign_hr1,@foreign_hr2 = [g1,g2] # they're already hard refs
+      end
     end
     @foreign_text = foreign.extract(@foreign_hr1,@foreign_hr2)
     # Let word globs contain, e.g., Hera rather than Juno:

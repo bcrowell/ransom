@@ -17,7 +17,10 @@ The output file consists of a list of chunks of text, each of which is
 either a paragraph or, if interrupted by a page break, part of a
 paragraph. In the latter case, the flags will include "page," and in
 this case we will need to take special measures later to make sure the
-final line is properly justified.
+final line is properly justified. The lines of text are given in two
+forms: (1) strings with a single space character separating words;
+(2) offsets into the original file. Presently I'm using only the second
+form, since that's what's needed in order to create an Epos object.
 
 The code should work if there is paragraph intendation, but I haven't
 tested that. It will not work with hyphenation.
@@ -34,10 +37,9 @@ sample input:
 sample output:
 
 [
-{"flags":["para"],"lines":["Forte dominus Capuae exierat ad scruta scita expedienda.","Nactus ego occasionem persuadeo hospitem nostrum, ut","mecum ad quintum miliarium veniat. Erat autem miles,","fortis tanquam Orcus. Apoculamus nos circa gallicinia; luna","lucebat tanquam meridie. Venimus inter monimenta: homo","meus coepit ad stelas facere; sedeo ego cantabundus et stelas","numero."]},
-{"flags":["para"],"lines":["Deinde ut respexi ad comitem, ille exuit se et omnia","vestimenta secundum viam posuit. Mihi anima in naso esse;","stabam tanquam mortuus. At ille circumminxit vestimenta","sua, et subito lupus factus est. Nolite me iocari putare;","ut mentiar, nullius patrimonium tanti facio. Sed, quod","coeperam dicere, postquam lupus factus est, ululare coepit","et in silvas fugit. Ego primitus nesciebam ubi essem; deinde","accessi, ut vestimenta eius tollerem: illa autem lapidea facta","sunt. Qui mori timore nisi ego? Gladium tamen strinxi et","<in tota via> umbras cecidi, donec ad villam amicae meae","pervenirem."]},
-{"flags":["page"],"lines":["In larvam intravi, paene animam ebullivi, sudor mihi per","bifurcum volabat, oculi mortui; vix unquam refectus sum.","Melissa mea mirari coepit, quod tam sero ambularem, et: 'Si"]},
-{"flags":["para"],"lines":["ante, inquit, venisses, saltem nobis adiutasses; lupus enim","villam intravit et omnia pecora tanquam lanius sanguinem","illis misit. Nec tamen derisit, etiamsi fugit; senius enim","noster lancea collum eius traiecit'. Haec ut audivi, operire","oculos amplius non potui, sed luce clara Gai nostri domum","fugi tanquam copo compilatus; et postquam veni in illum","locum, in quo lapidea vestimenta erant facta, nihil inveni","nisi sanguinem. Vt vero domum veni, iacebat miles meus","in lecto tanquam bovis, et collum illius medicus curabat.","Intellexi illum versipellem esse, nec postea cum illo panem","gustare potui, non si me occidisses. Viderint quid de hoc alii","exopinissent; ego si mentior, genios vestros iratos habeam."]}
+{"flags":["para"],"lines":[["Forte dominus Capuae exierat ad scruta scita expedienda.",0,57],["Nactus ego occasionem persuadeo hospitem nostrum, ut",57,110],["mecum ad quintum miliarium veniat. Erat autem miles,",110,163],["fortis tanquam Orcus. Apoculamus nos circa gallicinia; luna",163,223],["lucebat tanquam meridie. Venimus inter monimenta: homo",223,278],["meus coepit ad stelas facere; sedeo ego cantabundus et stelas",278,340],["numero.",340,348]]},
+{"flags":["para"],"lines":[["Deinde ut respexi ad comitem, ille exuit se et omnia",0,53],["vestimenta secundum viam posuit. Mihi anima in naso esse;",53,111],["stabam tanquam mortuus. At ille circumminxit vestimenta",111,167],["sua, et subito lupus factus est. Nolite me iocari putare;",167,225],["ut mentiar, nullius patrimonium tanti facio. Sed, quod",225,280],["coeperam dicere, postquam lupus factus est, ululare coepit",280,339],["et in silvas fugit. Ego primitus nesciebam ubi essem; deinde",339,400],["accessi, ut vestimenta eius tollerem: illa autem lapidea facta",400,463],["sunt. Qui mori timore nisi ego? Gladium tamen strinxi et",463,520],["<in tota via> umbras cecidi, donec ad villam amicae meae",520,577],["pervenirem.",577,589]]},
+...
 ]
 
 =end
@@ -92,7 +94,11 @@ data.each { |d|
   if_para_break = (if_final_flush || para>current_para)
   #if d['word']=~/(stelas|numero|Deinde)/ then debug=true else debug=false end
   #if debug then print "...#{d['word']}, line,page,para=#{if_line_break},#{if_page_break},#{if_para_break} line=#{line}\n" end
-  if if_line_break then chunk.push(line.map { |x| x['word'] }.join(' ')); line=[] end
+  if if_line_break then
+    text_of_line = line.map { |x| x['word'] }.join(' ')
+    chunk.push([text_of_line,line[0]['offset'],line[-1]['offset']+line[-1]['word'].length+1])
+    line=[] 
+  end
   line.push(d) unless if_final_flush
   current_x = x
   current_para = para
