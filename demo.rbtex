@@ -97,14 +97,12 @@ else
     if x[0].nil? then raise "error in word glob #{matches[i][1]}" end
     matches_translation.push(x[0])
   }
-  $stderr.print "****************\nmatches_latin=#{matches_latin}\nmatches_translation=#{matches_translation}\n******************\n" # qwe
   layouts = []
   pages.each { |page|
     foreign_offset_1 = page[0]['lines'][0][1]
     foreign_offset_2 = page[-1]['lines'][-1][2]
     foreign_hr1 = [0,foreign_offset_1] # assumes a single file
     foreign_hr2 = [0,foreign_offset_2]
-    $stderr.print "=============\nforeign hard refs=#{foreign_hr1}, #{foreign_hr2}\n===========\n" # qwe
     starting_ch = 0
     dry_run = false
     t1 = latin.interpolate_bitext(translation,matches_latin,matches_translation,foreign_hr1)

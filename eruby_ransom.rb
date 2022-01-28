@@ -614,6 +614,7 @@ end
 def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
   code = ''
   code += "\\begin{foreignprose}\n"
+  code += "\\enlargethispage{\\baselineskip}\n"
   code += bilingual.foreign_text+"\n\n"
   code += "\\end{foreignprose}\n"
   return code

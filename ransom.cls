@@ -110,7 +110,9 @@
 \newenvironment{vocaball}{\vocaballheader\\}{}
 \newenvironment{widespacing}{\linespread{1.5}\selectfont}{}
 % ... \selectfont is needed or else \linespread won't take effect until the next change of font
-\newenvironment{foreignprose}{\sloppy\newgeometry{bottom=\foreignprosebottommargin,outer=\foreignproseoutermargin}\begin{widespacing}}{\end{widespacing}\restoregeometry}
+\newenvironment{foreignprose}%
+     {\sloppy\newgeometry{bottom=\foreignprosebottommargin,outer=\foreignproseoutermargin}\begin{widespacing}}%
+     {\end{widespacing}\restoregeometry}
 \newenvironment{foreignverse}{%
   \expandafter\newgeometry\expandafter{\genericgeometryoptions,bottom=\foreignversebottommargin}
   % ... re the expandafter stuff, see https://tex.stackexchange.com/q/631609
