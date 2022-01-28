@@ -477,7 +477,6 @@ class Epos
     n = list_a.length
     # find j such that we lie between j and j+1 in the two lists
     j=0
-    $stderr.print "list_a=#{list_a}\n" # qwe
     while j+1<=n-2 && (list_a[j+1]<=>hr)<=0 do j+=1 end
     fa1,fa2,fa = [self.hard_ref_to_percentage(list_a[j]),self.hard_ref_to_percentage(list_a[j+1]),self.hard_ref_to_percentage(hr)]
     fb1,fb2 = [self.hard_ref_to_percentage(list_b[j]),self.hard_ref_to_percentage(list_b[j+1])]

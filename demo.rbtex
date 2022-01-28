@@ -71,12 +71,13 @@ else
 =end
 
   paras = json_from_file_or_die("demo.para") # FIXME -- hardcoded filename
+  paras.push(nil) # marker for end
   pages = []
   page = [] # accumulates paragraphs until a page break
   paras.each { |p|
     # p is either a paragraph or part of a paragraph that has been split by a page break
-    page.push(p)
-    if p['flags'].include?('page') then pages.push(page); page=[] end # flush page
+    page.push(p) unless p.nil?
+    if p.nil? || p['flags'].include?('page') then pages.push(page); page=[] end # flush page
   }
   matches_latin = []
   matches_translation = []
@@ -101,7 +102,7 @@ else
     layouts.push([Bilingual.new(foreign_hr1,foreign_hr2,t1,t2,latin,translation),starting_ch,dry_run])
   }
   vocab_by_chapter = []
-  0.upto(layouts.length-2) { |i|
+  0.upto(layouts.length-1) { |i|
     bilingual,starting_ch,dry_run = layouts[i]
     if i<layouts.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
     four_page_layout(stuff,latin.genos,db,bilingual,next_layout,vocab_by_chapter,dry_run:dry_run)

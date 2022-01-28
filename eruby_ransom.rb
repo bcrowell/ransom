@@ -304,6 +304,7 @@ end
 
 def four_page_layout(stuff,genos,db,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
   # doesn't get called if if_prose_trial_run is set
+  $stderr.print "************** in four_page_layout ***************\n"
   treebank,freq_file,greek,translation,notes,core = stuff
   return if dry_run
   print_four_page_layout(stuff,genos,db,layout,next_layout,vocab_by_chapter,start_chapter)
