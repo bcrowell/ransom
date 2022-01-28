@@ -95,8 +95,13 @@ class Bilingual
     Bilingual.type_check_refs_helper2(t1,t2,translation)
   end
   def Bilingual.type_check_refs_helper2(ref1,ref2,epos)
-    if epos.is_verse && !(ref1.kind_of?(Array) && ref2.kind_of?(Array)) then raise "epos says verse, but refs are not arrays" end
-    if !epos.is_verse && !(ref1.kind_of?(String) && ref2.kind_of?(String)) then raise "epos says prose, but refs are not strings" end
+    if epos.is_verse then
+      if !(ref1.kind_of?(Array) && ref2.kind_of?(Array)) then raise "epos says verse, but refs are not arrays" end
+    else
+      if ref1.kind_of?(String) && ref2.kind_of?(String) then return end
+      if ref1.kind_of?(Array) && ref2.kind_of?(Array) then return end
+      raise "epos says prose, but refs are not strings or arrays"
+    end
   end
   def raise_failed_sanity_check(basic_message,t1,t2,translation_hr1,translation_hr2)
     debug_file = "epos_debug.txt"

@@ -113,7 +113,6 @@ demo: lib/*rb eruby_ransom.rb demo.rbtex
 	@./fruby demo.rbtex '{"pos_file":"demo.prose","write_pos":true,"clean":true,"prose_trial_run":true}' >temp.tex
 	xelatex temp
 	./scripts/scrape_prose_layout.rb <demo.prose >demo.para
-	exit 1
 	@./fruby demo.rbtex '{"pos_file":"demo.pos","clean":true}' >temp.tex
 	xelatex temp
 	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true

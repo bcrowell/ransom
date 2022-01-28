@@ -53,7 +53,6 @@ if Options.if_prose_trial_run then
   }
   print %q(\end{foreignprose}),"\n"
 else
-  raise "now use Epos.interpolate_bitext()" #################### work on this
 
 =begin
 [
@@ -79,12 +78,20 @@ else
     page.push(p)
     if p['flags'].include?('page') then pages.push(page); page=[] end # flush page
   }
-  matches_latin = matches.map { |x| x[0] }
-  matches_translation = matches.map { |x| x[1] }
+  matches_latin = []
+  matches_translation = []
+  0.upto(matches.length-1) { |i|
+    x = latin.word_glob_to_hard_ref(matches[i][0])
+    if x[0].nil? then raise "error in word glob #{matches[i][0]}" end # TO DO: provide better debugging info using other parts of x
+    matches_latin.push(x[0])
+    x = translation.word_glob_to_hard_ref(matches[i][1])
+    if x[0].nil? then raise "error in word glob #{matches[i][1]}" end
+    matches_translation.push(x[0])
+  }
   layouts = []
   pages.each { |page|
-    foreign_offset_1 = page[0][0][1]
-    foreign_offset_2 = page[-1][-1][2]
+    foreign_offset_1 = page[0]['lines'][0][1]
+    foreign_offset_2 = page[-1]['lines'][-1][2]
     foreign_hr1 = [0,foreign_offset_1] # assumes a single file
     foreign_hr2 = [0,foreign_offset_2]
     starting_ch = 0
