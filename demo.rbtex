@@ -44,9 +44,17 @@ if Options.if_prose_trial_run then
   count_files = 0
   count_paragraphs = 0
   latin.get_contents.each { |file_contents|
-    file_contents.split(/(?:\n[ \t]*){2,}/).each { |paragraph|
-      print "\n\n%%%%%% paragraph #{count_paragraphs} %%%%%%\n\n"
-      print WhereAt.adorn_string_with_commands_to_write_pos_data(paragraph,paragraph_count:count_paragraphs,file_count:count_files),"\n\n"
+    file_offset = 0
+    paras_and_delimiters = file_contents.split(/(\s*(?:\n[ \t]*){2,}\s*)/) # even indices=paragraphs, odd=delimiters
+    0.upto(paras_and_delimiters.length-2) { |i|
+      paragraph = paras_and_delimiters[i]
+      delim = paras_and_delimiters[i+1]
+      if paragraph!='' then
+        print "\n\n%%%%%% paragraph #{count_paragraphs} %%%%%%\n\n"
+        print WhereAt.adorn_string_with_commands_to_write_pos_data(paragraph,paragraph_count:count_paragraphs,
+                              file_count:count_files,starting_offset:file_offset),"\n\n"
+      end
+      file_offset += paragraph.length+delim.length
       count_paragraphs += 1
     }
     count_files += 1
@@ -89,12 +97,14 @@ else
     if x[0].nil? then raise "error in word glob #{matches[i][1]}" end
     matches_translation.push(x[0])
   }
+  $stderr.print "****************\nmatches_latin=#{matches_latin}\nmatches_translation=#{matches_translation}\n******************\n" # qwe
   layouts = []
   pages.each { |page|
     foreign_offset_1 = page[0]['lines'][0][1]
     foreign_offset_2 = page[-1]['lines'][-1][2]
     foreign_hr1 = [0,foreign_offset_1] # assumes a single file
     foreign_hr2 = [0,foreign_offset_2]
+    $stderr.print "=============\nforeign hard refs=#{foreign_hr1}, #{foreign_hr2}\n===========\n" # qwe
     starting_ch = 0
     dry_run = false
     t1 = latin.interpolate_bitext(translation,matches_latin,matches_translation,foreign_hr1)

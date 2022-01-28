@@ -34,7 +34,6 @@ a.each { |word,entry|
   else
     process(t,lemma,pos,word)
   end
-  break if t.keys.length>=10000 # qwe
 }
 
 # Ruby orders hash keys in insertion order by default, so make a version ordered that way.

@@ -235,9 +235,10 @@ class WhereAt
     }
     return @@pos
   end  
-  def WhereAt.adorn_string_with_commands_to_write_pos_data(text,paragraph_count:nil,file_count:nil)
+  def WhereAt.adorn_string_with_commands_to_write_pos_data(text,paragraph_count:nil,file_count:nil,starting_offset:0)
     adorned = text.dup
     k = 0
+    if !text.kind_of?(String) then raise "text=#{text} is not a string" end
     text =~ /^(\s*)/ # match leading whitespace; match is guaranteed to succeed, but may be a null string
     offset = $1.length # a pointer into the file; initialize it to point past any initial whitespace
     substitutions = []
@@ -246,7 +247,7 @@ class WhereAt
     a.each { |x|
       word,whitespace = x
       l = word.length+whitespace.length
-      d = {'offset':offset,'length':l}
+      d = {'offset':offset+starting_offset,'length':l}
       if !paragraph_count.nil? then d['para']=paragraph_count end
       if !file_count.nil? then d['file']=file_count end
       code = WhereAt.latex_code_to_print_and_write_pos(word,nil,nil,extra_data:d)
@@ -304,7 +305,6 @@ end
 
 def four_page_layout(stuff,genos,db,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
   # doesn't get called if if_prose_trial_run is set
-  $stderr.print "************** in four_page_layout ***************\n"
   treebank,freq_file,greek,translation,notes,core = stuff
   return if dry_run
   print_four_page_layout(stuff,genos,db,layout,next_layout,vocab_by_chapter,start_chapter)
@@ -602,15 +602,20 @@ end
 def ransom(db,bilingual,v,first_line_number,start_chapter)
   common,uncommon,rare = v
   if bilingual.foreign.is_verse then
-    return foreign_verse(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
+    code = foreign_verse(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
   else
-    return foreign_prose(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
+    code = foreign_prose(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
   end
-  return x
+  code = clean_up_unicode(code)
+  print code
 end
 
 def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
-  print bilingual.foreign_text
+  code = ''
+  code += "\\begin{foreignprose}\n"
+  code += bilingual.foreign_text
+  code += "\\end{foreignprose}\n"
+  return code
 end
 
 def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
@@ -675,8 +680,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   gloss_code = "\n{\\linespread{1.0}\\footnotesize #{gloss_code} }\n"
   code = main_code + gloss_code + "\\end{foreignverse}\n"
   if bilingual.foreign.genos.greek then code = "\\begin{greek}\n#{code}\\end{greek}\n" end
-  code = clean_up_unicode(code)
-  print code
+  return code
 end
 
 def clean_up_unicode(s)

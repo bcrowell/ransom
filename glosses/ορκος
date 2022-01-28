@@ -4,7 +4,8 @@
   "word":"ὅρκος",
   "short":"oath",
   "medium":"what is sworn by, witness, oath",
-  "cog":"ἕρκος, fence; sartorial",
+  "mnemonic_cog":"orc",
+  "cog":"ogre, orc, ἕρκος, fence; sartorial; Latin orcus, Greco-Roman god Ὅρκος/Orcus, avenger of false oaths; fearsome god Orcus is probably the origin of Old French 'ogre,' a term for a fearsome non-Christian; similarly Italian 'orco,' Old English 'orc,' and Tolkein's 'orc,' although Tolkein disbelieved the link between the Anglo-Saxon word and the Latin one",
   "etym":"PIE serk, to mend; Latin sarcio",
   "syn":"ὅρκιον"
 }
