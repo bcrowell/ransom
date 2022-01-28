@@ -610,7 +610,7 @@ def ransom(db,bilingual,v,first_line_number,start_chapter)
 end
 
 def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
-  return "dummy text from foreign-prose: #{[first_line_number]}"
+  print bilingual.foreign_text
 end
 
 def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
