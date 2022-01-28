@@ -25,7 +25,7 @@ stuff = treebank,freq_file,latin,translation,notes,core
 
 <%
 
-breaks = [
+matches = [
   [ "Forte dominus Capuae exierat ad scruta", "It so happened that our master" ],
   [ "In larvam intravi", "I looked like a ghost" ],
   [ "Intellexi illum versipellem esse>", "I hope your geniuses will all get after me if I lie>" ],
@@ -35,7 +35,7 @@ breaks = [
 format = ENV['FORMAT']
 if format.nil? then $stderr.print "FORMAT environment variable not set\n"; exit(-1) end
 if !(['whole','booklet_short'].include?(format)) then $stderr.print "FORMAT environment variable set to illegal value #{format}\n"; exit(-1) end
-if format=='booklet_short' then breaks = breaks[0..17] end
+if format=='booklet_short' then matches = matches[0..17] end
 
 dry_run = !(ENV['DRY_RUN'].nil?)
 
@@ -53,18 +53,19 @@ if Options.if_prose_trial_run then
   }
   print %q(\end{foreignprose}),"\n"
 else
+  raise "now use Epos.interpolate_bitext()" #################### work on this
   current_chapter = -999
   vocab_by_chapter = []
   layouts = []
-  0.upto(breaks.length-2) { |i|
-    a,b = breaks[i],breaks[i+1]
+  0.upto(matches.length-2) { |i|
+    a,b = matches[i],matches[i+1]
     latin1,latin2,t1,t2 = a[0],b[0],a[1],b[1]
     starting_ch = nil
     layouts.push([Bilingual.new(latin1,latin2,t1,t2,latin,translation),starting_ch,dry_run])
   }
-  0.upto(breaks.length-2) { |i|
+  0.upto(matches.length-2) { |i|
     bilingual,starting_ch,dry_run = layouts[i]
-    if i<breaks.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
+    if i<matches.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
     four_page_layout(stuff,latin.genos,db,bilingual,next_layout,vocab_by_chapter,dry_run:dry_run)
   }
   1.upto(vocab_by_chapter.length-1) { |ch|

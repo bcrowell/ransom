@@ -467,6 +467,62 @@ class Epos
     return ((r1 <=> r2) <=0 )
   end
 
+  def interpolate_bitext(b,list_a,list_b,hr)
+    # a is another name for self
+    # b is another epos object
+    # list_a,list_b are lists of corresponding hard refs
+    # use interpolation to approximate a hard ref in b given a hard ref in a
+    # FIXME: won't play nicely with postfiltering
+    a = self # a label for convenience
+    n = list_a.length
+    # find j such that we lie between j and j+1 in the two lists
+    j=0
+    while j+1<=n-2 && list_a[j+1]<hr do j+=1 end
+    fa1,fa2,fa = [self.hard_ref_to_percentage(list_a[j]),self.hard_ref_to_percentage(list_a[j+1]),self.hard_ref_to_percentage(hr)]
+    fb1,fb2 = [self.hard_ref_to_percentage(list_b[j]),self.hard_ref_to_percentage(list_b[j+1])]
+    slope = (fb2-fb1)/(fa2-fa1)
+    fb = fb1+slope*(fa-fa1)
+    hrb = b.percentage_to_hard_ref(fb)
+    hrb = b.round_hard_ref_to_word_boundary(hrb)
+    return hrb
+  end
+
+  def round_hard_ref_to_word_boundary(hr)
+    offset_right = self.round_hard_ref_to_word_boundary_helper(hr,1)
+    offset_left  = self.round_hard_ref_to_word_boundary_helper(hr,-1)
+    if offset_right<=offset_left then
+      return [hr[0],hr[1]+offset_right]
+    else
+      return [hr[0],hr[1]-offset_left]
+    end
+  end
+
+  def round_hard_ref_to_word_boundary_helper(hr,direction)
+    j=0
+    l=self.get_contents[hr[0]].length
+    while true do
+      hr2 = [hr[0],hr[1]+direction*j]
+      hr3 = [hr[0],hr[1]+direction*j+1]
+      if direction<0 && hr2[1]<0 then return 0 end
+      if direction>0 && hr2[1]>l-1 then return l-1 end # FIXME: should be in next file
+      c = self.extract(hr2,hr3)
+      if !(c=~/[[:alpha:]]/) then return j end
+      j += 1
+    end
+  end
+
+  def hard_ref_to_percentage(hr)
+    l = self.get_contents.map { |s| s.length }
+    n = l.length
+    total = l.sum
+    chars_before = 0
+    0.upto(hr[0]-1) { |i|
+      chars_before += l[i]
+    }
+    chars_before += hr[1]
+    return 100.0*chars_before.to_f/total.to_f
+  end
+
   def percentage_to_hard_ref(pct)
     # Inputs outside of 0-100% are silently brought into that range.
     if pct<0.0 then pct=0.0 end

@@ -4,7 +4,6 @@
 \LoadClass[12pt]{book}
 
 \newcommand{\genericgeometryoptions}{bindingoffset=0.3in, inner=0.5in, outer=0.5in}
-% FIXME: These values are also hardcoded in the definition of foreignverse, see comment there and link to SE question.
 \newcommand{\foreignprosebottommargin}{1.5in}
 \newcommand{\foreignversebottommargin}{0.3in}
 \newcommand{\othertextbottommargin}{0.5in}
@@ -113,7 +112,8 @@
 % ... \selectfont is needed or else \linespread won't take effect until the next change of font
 \newenvironment{foreignprose}{\sloppy\newgeometry{bottom=\foreignprosebottommargin,outer=\foreignproseoutermargin}\begin{widespacing}}{\end{widespacing}\restoregeometry}
 \newenvironment{foreignverse}{%
-  \newgeometry{bindingoffset=0.3in, inner=0.5in, outer=0.5in, bottom=\foreignversebottommargin}%
+  \expandafter\newgeometry\expandafter{\genericgeometryoptions,bottom=\foreignversebottommargin}
+  % ... re the expandafter stuff, see https://tex.stackexchange.com/q/631609
   % ... If I don't reiterate the generic values here, then they seem to get reset to the default valuee. The symptom is that
   %     long lines push out into margin where they didn't before, e.g., Iliad 1.10, as a side-effect of an unintended
   %     reduction of the inner margin

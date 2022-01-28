@@ -108,12 +108,11 @@ test_epos:
 
 demo: export FORMAT=whole
 demo: export OVERWRITE=1
-demo: export OPTIONS = "pos_file":"demo.pos"
 demo: lib/*rb eruby_ransom.rb demo.rbtex
 	@rm -f warnings help_gloss/__links.html
 	@./fruby demo.rbtex '{"pos_file":"demo.prose","write_pos":true,"clean":true,"prose_trial_run":true}' >temp.tex
 	xelatex temp
-	mv temp.pdf a.pdf
+	./scripts/scrape_prose_layout.rb <demo.prose >demo.para
 	exit 1
 	@./fruby demo.rbtex '{"pos_file":"demo.pos","clean":true}' >temp.tex
 	xelatex temp
