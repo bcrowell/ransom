@@ -82,7 +82,7 @@ else
   matches_translation = []
   0.upto(matches.length-1) { |i|
     x = latin.word_glob_to_hard_ref(matches[i][0])
-    if x[0].nil? then raise "error in word glob #{matches[i][0]}" end # TO DO: provide better debugging info using other parts of x
+    if x[0].nil? then raise "error in word glob #{matches[i][0]}; for better debugging info, add code as in eruby_ransom.rb, Bilingual class" end
     matches_latin.push(x[0])
     x = translation.word_glob_to_hard_ref(matches[i][1])
     if x[0].nil? then raise "error in word glob #{matches[i][1]}" end
@@ -100,6 +100,7 @@ else
     t2 = latin.interpolate_bitext(translation,matches_latin,matches_translation,foreign_hr2)
     layouts.push([Bilingual.new(foreign_hr1,foreign_hr2,t1,t2,latin,translation),starting_ch,dry_run])
   }
+  vocab_by_chapter = []
   0.upto(layouts.length-2) { |i|
     bilingual,starting_ch,dry_run = layouts[i]
     if i<layouts.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end

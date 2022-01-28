@@ -60,16 +60,20 @@ class Bilingual
       end
     end
     @foreign_text = foreign.extract(@foreign_hr1,@foreign_hr2)
-    # Let word globs contain, e.g., Hera rather than Juno:
-    t1 = Patch_names.antipatch(t1)
-    t2 = Patch_names.antipatch(t2)
-    translation_hr1_with_errs = translation.word_glob_to_hard_ref(t1)
-    translation_hr2_with_errs = translation.word_glob_to_hard_ref(t2)
-    translation_hr1,translation_hr2 = translation_hr1_with_errs[0],translation_hr2_with_errs[0]
-    if translation_hr1_with_errs[1] then raise "ambiguous word glob: #{t1}, #{translation_hr1_with_errs[2]}" end
-    if translation_hr2_with_errs[1] then raise "ambiguous word glob: #{t2}, #{translation_hr2_with_errs[2]}"end
-    if translation_hr1.nil? then raise "bad word glob, #{t1}" end
-    if translation_hr2.nil? then raise "bad word glob, #{t2}" end
+    if t1.kind_of?(String) then # translation is referred to by word glob
+      # Let word globs contain, e.g., Hera rather than Juno:
+      t1 = Patch_names.antipatch(t1)
+      t2 = Patch_names.antipatch(t2)
+      translation_hr1_with_errs = translation.word_glob_to_hard_ref(t1)
+      translation_hr2_with_errs = translation.word_glob_to_hard_ref(t2)
+      translation_hr1,translation_hr2 = translation_hr1_with_errs[0],translation_hr2_with_errs[0]
+      if translation_hr1_with_errs[1] then raise "ambiguous word glob: #{t1}, #{translation_hr1_with_errs[2]}" end
+      if translation_hr2_with_errs[1] then raise "ambiguous word glob: #{t2}, #{translation_hr2_with_errs[2]}"end
+      if translation_hr1.nil? then raise "bad word glob, #{t1}" end
+      if translation_hr2.nil? then raise "bad word glob, #{t2}" end
+    else
+      translation_hr1,translation_hr2 = [t1,t2]
+    end
     @translation_text = translation.extract(translation_hr1,translation_hr2)
     @translation_text = Patch_names.patch(@translation_text) # change, e.g., Juno to Hera
 
