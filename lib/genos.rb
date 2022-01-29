@@ -1,3 +1,4 @@
+# coding: utf-8
 =begin
 An object of the Genos class represents a particular language and dialect,
 such as English or Homeric Greek. Variations such as dialects are implemented
@@ -16,7 +17,7 @@ class Genos
     @is_verse = is_verse
   end
 
-  attr_reader :is_verse
+  attr_reader :is_verse,:lang
 
   def to_s
     return "lang=#{@lang}, script=#{@script}"

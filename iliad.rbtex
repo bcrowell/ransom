@@ -8,6 +8,8 @@ author = "homer"
 treebank = TreeBank.new(author)
 freq_file = "lemmas/#{author}_freq.json"
 greek_genos = GreekGenos.new('epic',is_verse:true)
+greek_wikt = WiktionaryGlosses.new(greek_genos)
+if greek_wikt.invalid then greek_wikt=nil end
 db = GlossDB.from_genos(greek_genos)
 core = json_from_file_or_die("core/homer.json").keys # array containing lemmas not to put in vocab lists, because they're in core vocab in back
 greek = Epos.new("text/ιλιας","greek",true,genos:greek_genos)
@@ -184,7 +186,7 @@ layouts = []
 0.upto(breaks.length-2) { |i|
   bilingual,starting_ch,dry_run = layouts[i]
   if i<breaks.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
-  four_page_layout(stuff,greek.genos,db,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run)
+  four_page_layout(stuff,greek.genos,db,greek_wikt,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run)
 }
 1.upto(vocab_by_chapter.length-1) { |ch|
   filename = sprintf("vocab_ch_%02d.txt",ch)

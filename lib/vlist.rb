@@ -43,11 +43,12 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil)
+def Vlist.from_text(t,treebank,freq_file,genos,db,wikt,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil)
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
   # The frequency list is optional; if not using one, then set freq_file to nil. The main use of it is that if the
   # glossary would be too long, we delete the most common words to cut it down to an appropriate length. If no frequency
   # file is given, then the choice of which words to cut is random/undefined.
+  # The wikt argument is a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated.
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -174,7 +175,7 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_
         next if skip
       end
       key = remove_accents(lemma).downcase
-      if Gloss.get(db,lemma).nil? then gloss_help.push(GlossHelp.prep(key,lemma)) end # it's OK if this was done in a previous pass
+      if !wikt.nil? && Gloss.get(db,lemma).nil? then gloss_help.push(GlossHelp.prep(wikt,key,lemma)) end # it's OK if this was done in a previous pass
       if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end
       # stuff some more info in the misc element:
       misc['pos'] = pos # lemma and pos may be wrong if the same word can occur in more than one way
@@ -207,13 +208,20 @@ class GlossHelp
 @@already_done = {}
 # ... already done during this invocation of the ruby code, don't do again; there is separate code that avoids wasting the user's attention
 #     with messages if the gloss help was already provided in a previous invocation
+@@warned_fatal = false
 
-def GlossHelp.prep(key,lemma)
+def GlossHelp.prep(wikt,key,lemma)
+  if wikt.nil? && !@@warned_fatal then
+    $stderr.print "*********** warning: wikt is nil in GlossHelp.prep, no gloss help can be generated\n"
+    @@warned_fatal = true
+  end
+  if wikt.nil? then return {} end
+  # wikt is a WiktionaryGlosses object for the appropriate language
   h = {
     'filename'=>key,
     'lemma'=>lemma,
     'url'=> "https://en.wiktionary.org/wiki/#{lemma} https://logeion.uchicago.edu/#{lemma}",
-    'wikt'=> WiktionaryGlosses.get_glosses(lemma).join(', ')
+    'wikt'=> wikt.get_glosses(lemma).join(', ')
   }
   debug_gloss = false
   if debug_gloss then

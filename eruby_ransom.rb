@@ -305,19 +305,21 @@ class WhereAt
   end
 end
 
-def four_page_layout(stuff,genos,db,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
-  # doesn't get called if if_prose_trial_run is set
+def four_page_layout(stuff,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
+  # Doesn't get called if if_prose_trial_run is set.
+  # The parameter wikt should be a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated,
+  # and only a brief warning will be printed to stderr.
   treebank,freq_file,greek,translation,notes,core = stuff
   return if dry_run
-  print_four_page_layout(stuff,genos,db,layout,next_layout,vocab_by_chapter,start_chapter)
+  print_four_page_layout(stuff,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter)
 end
 
-def print_four_page_layout(stuff,genos,db,bilingual,next_layout,vocab_by_chapter,start_chapter)  
+def print_four_page_layout(stuff,genos,db,wikt,bilingual,next_layout,vocab_by_chapter,start_chapter)  
   # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
   # doesn't get called if if_prose_trial_run is set
   treebank,freq_file,greek,translation,notes,core = stuff
   ch = bilingual.foreign_ch1
-  core,vl,vocab_by_chapter = four_page_layout_vocab_helper(bilingual,genos,db,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
+  core,vl,vocab_by_chapter = four_page_layout_vocab_helper(bilingual,genos,db,wikt,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
   if bilingual.foreign_ch1!=bilingual.foreign_ch2 then
     # This should only happen in the case where reference 2 is to the very first line of the next book.
     if !(bilingual.foreign_hr2[1]<=5 && bilingual.foreign_hr2[0]==bilingual.foreign_hr1[0]+1) then
@@ -344,10 +346,10 @@ def print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_c
   if !layout_for_illustration.nil? then print do_illustration(layout_for_illustration) end
 end
 
-def four_page_layout_vocab_helper(bilingual,genos,db,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
-  # doesn't get called if if_prose_trial_run is set
+def four_page_layout_vocab_helper(bilingual,genos,db,wikt,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
+  # Doesn't get called if if_prose_trial_run is set.
   core = core.map { |x| remove_accents(x).downcase }
-  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,genos,db,core:core, \
+  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,genos,db,wikt,core:core, \
                exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
   if !ch.nil? then
     if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
