@@ -2,76 +2,8 @@
 
 =begin
 class WiktionaryGlosses -- accesses wiktextract entries from a file on disk
-class GenerateWiktionary -- generates wiktionary entries from my gloss files
 =end
 
-class GenerateWiktionary
-  
-  def GenerateWiktionary.generate(gloss,treebank,force:false)
-    # Inputs: gloss is a hash in the format returned by Gloss.get.
-    # returns [lemma,text,if_err,error_code,error_message]
-    # If force is true, then we return a result even if there is already a wiktionary entry in the weekly wiktextract download.
-    if ["φοῖβος","σμινθεύς","βορέης"].include?(gloss['word'].downcase) then
-      return [nil,nil,true,'proper_noun',"the word #{gloss['word']} is lemmatized by Perseus as a proper noun"]
-    end
-    possible_perseus_lemmas = treebank.word_to_lemmas([gloss['word'],gloss['perseus']]).map { |x| x[0] }
-    if gloss.has_key?('perseus') then possible_perseus_lemmas.push(gloss['perseus']) end
-    # ... happens, e.g., for ὠλένη, which occurs in Homer only in the compound λευκωλενος
-    if possible_perseus_lemmas.length==0 then return [nil,nil,true,'no_perseus_lemma',"can't find perseus lemmatization for #{gloss['word']}"] end
-    possible_lemmas = ([gloss['word'],gloss['perseus']]+possible_perseus_lemmas).uniq.filter { |x| !(x.nil?)}
-    # ...It's OK if perseus gloss is nil, gets filtered out.
-    if WiktionaryGlosses.has_gloss(possible_lemmas) && !force then return [nil,nil,true,'exists',"entry exists already as one of: #{possible_lemmas}"] end
-    # ...This only tests against the weekly wiktextract download, not the current live version.
-    if gloss.has_key?('perseus') then
-      perseus_lemma=gloss['perseus']
-      alt=gloss['word']
-    else
-      if possible_perseus_lemmas.length==1 then
-        perseus_lemma=possible_perseus_lemmas[0]
-        alt=gloss['word']
-      else
-        return [nil,nil,true,'unclear_lemma',
-                     "gloss doesn't have perseus tag, and perseus doesn't give unambiguous lemmatization, gives: #{possible_perseus_lemmas}"]
-      end
-    end
-    if alt==perseus_lemma then alt=nil end
-    pos_list = treebank.lemma_to_pos(perseus_lemma)
-    if pos_list.length>1 then return [nil,nil,true,'ambiguous_pos',"POS is ambiguous: #{pos_list}"] end
-    pos = pos_list[0]
-    pos_long = {'n'=>'noun','v'=>'verb','a'=>'adjective','d'=>'adverb'}[pos]
-    if pos_long.nil? then return [nil,nil,true,'unsupported_pos',"unsupported part of speech: #{pos}"] end
-    lemma = perseus_lemma
-    if pos=='n' then
-      gender=treebank.noun_to_gender(perseus_lemma)
-      if gender.nil? then return [nil,nil,true,'no_gender',"unable to determine gender for lemma #{lemma}; perhaps this isn't the Perseus lemma"] end
-    end
-    pieces = []
-    pieces.push("==Ancient Greek==")
-    if !(alt.nil?) then
-      pieces.push("===Alternative forms===\n* #{alt} (epic)")
-    end
-    if gloss.has_key?('etym') then
-      pieces.push("===Etymology===\n#{gloss['etym']}")
-    end
-    pieces.push("===Pronunciation===\n{{grc-IPA}}")
-    if pos=='n' then
-      if gender=='c' then x="|m or f" else x="|#{gender}" end
-    else
-      x=''
-    end
-    pieces.push("===#{pos_long.capitalize}===\n{{grc-#{pos_long}#{x}}}")
-    english = gloss['gloss']
-    if english.nil? then return [nil,nil,true,'no_gloss',"no gloss field exists in: #{gloss}"] end
-    x = []
-    english.split(/;/).each { |d|
-      # I've tried to do a consistent style in which entirely separate senses are separated by semicolons
-      x.push("# #{d}")
-    }
-    pieces.push(x.join("\n"))
-    text = pieces.join("\n\n")+"\n"
-    return [lemma,text,false,nil,nil]
-  end
-end
 
 class WiktionaryGlosses
 

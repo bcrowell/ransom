@@ -110,15 +110,15 @@ demo: export FORMAT=whole
 demo: export OVERWRITE=1
 demo: lib/*rb eruby_ransom.rb demo.rbtex
 	@rm -f warnings help_gloss/__links.html
-	@./fruby demo.rbtex '{"pos_file":"demo.prose","write_pos":true,"clean":true,"prose_trial_run":true}' >temp.tex
-	xelatex temp
+	@./fruby demo.rbtex '{"pos_file":"demo.prose","write_pos":true,"clean":true,"prose_trial_run":true}' >temp_demo.tex
+	xelatex temp_demo
 	./scripts/scrape_prose_layout.rb <demo.prose >demo.para
-	@./fruby demo.rbtex '{"pos_file":"demo.pos","clean":true}' >temp.tex
-	xelatex temp
-	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true
-	@./fruby demo.rbtex '{"pos_file":"demo.pos","write_pos":true}' >temp.tex
-	xelatex temp
-	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true
-	@./fruby demo.rbtex '{"pos_file":"demo.pos","render_glosses":true}' >temp.tex
-	xelatex temp
-	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf demo.pdf ; true
+	@./fruby demo.rbtex '{"pos_file":"demo.pos","clean":true}' >temp_demo.tex
+	xelatex temp_demo
+	[ "$(OVERWRITE)" = "1" ] && mv temp_demo.pdf demo.pdf ; true
+	@./fruby demo.rbtex '{"pos_file":"demo.pos","write_pos":true}' >temp_demo.tex
+	xelatex temp_demo
+	[ "$(OVERWRITE)" = "1" ] && mv temp_demo.pdf demo.pdf ; true
+	@./fruby demo.rbtex '{"pos_file":"demo.pos","render_glosses":true}' >temp_demo.tex
+	xelatex temp_demo
+	[ "$(OVERWRITE)" = "1" ] && mv temp_demo.pdf demo.pdf ; true

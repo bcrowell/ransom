@@ -7,6 +7,7 @@ require_relative "lib/multistring"
 require_relative "lib/treebank"
 require_relative "lib/epos"
 require_relative "lib/genos"
+require_relative "lib/wiktionary"
 require_relative "lib/vlist"
 require_relative "lib/gloss"
 require_relative "lib/clown"
@@ -507,11 +508,11 @@ def vocab_helper(db,commonness,vl,lo,hi,core)
       next if g.nil?
       difficult_to_recognize = data['difficult_to_recognize']
       debug = (word=='ἐρυσσάμενος')
-      if debug then File.open("debug.txt","a") { |f| f.print "... 100 #{word} #{lexical} #{difficult_to_recognize}\n" } end # qwe
+      if debug then File.open("debug.txt","a") { |f| f.print "... 100 #{word} #{lexical} #{difficult_to_recognize}\n" } end
       difficult_to_recognize ||= (not_nil_or_zero(g['aorist_difficult_to_recognize']) && /^...a/.match?(pos) )
-      if debug then File.open("debug.txt","a") { |f| f.print "... 150 #{word} #{lexical} #{difficult_to_recognize} #{not_nil_or_zero(g['aorist_difficult_to_recognize'])}\n" } end # qwe
+      if debug then File.open("debug.txt","a") { |f| f.print "... 150 #{word} #{lexical} #{difficult_to_recognize} #{not_nil_or_zero(g['aorist_difficult_to_recognize'])}\n" } end
       difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lexical,pos)[0])
-      if debug then File.open("debug.txt","a") { |f| f.print "... 200 #{word} #{lexical} #{difficult_to_recognize} #{Verb_difficulty.guess(word,lexical,pos)[0]}\n" } end # qwe
+      if debug then File.open("debug.txt","a") { |f| f.print "... 200 #{word} #{lexical} #{difficult_to_recognize} #{Verb_difficulty.guess(word,lexical,pos)[0]}\n" } end
       data['difficult_to_recognize'] = difficult_to_recognize
       data['core'] = core.include?(remove_accents(lexical).downcase)
       entry_type = nil
@@ -543,7 +544,11 @@ def vocab_helper(db,commonness,vl,lo,hi,core)
       secs.push(this_sec)
     end
   }
-  return secs.join("\n\\bigseparator\\vspace{2mm}\n")
+  if secs.length!=0 then
+    return secs.join("\n\\bigseparator\\vspace{2mm}\n")
+  else
+    return "\n\nThere is no vocabulary for this page.\n\n"
+  end
 end
 
 def not_nil_or_zero(x)
@@ -557,7 +562,7 @@ def vocab_inflection(stuff)
     return "\\vocabnouninflection{#{word.downcase}}{#{lexical}}{#{describe_declension(pos,true)[0]}}"
   end
   if pos[0]=~/[vt]/ then
-    # File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} \n" } # qwe
+    # File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} \n" }
     return "\\vocabverbinflection{#{word.downcase}}{#{lexical}}{#{Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical,
                    omit_easy_number_and_person:true,omit_voice:true)}}"
   end

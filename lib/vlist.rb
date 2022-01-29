@@ -45,11 +45,14 @@ end
 
 def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil)
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
+  # The frequency list is optional; if not using one, then set freq_file to nil. The main use of it is that if the
+  # glossary would be too long, we delete the most common words to cut it down to an appropriate length. If no frequency
+  # file is given, then the choice of which words to cut is random/undefined.
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
   if freq_file.nil?
-    then freq = {} # Frequencies are not really crucial.
+    then freq = {}
     using_thresholds = false
     if core.nil? then raise "both freq_file and core are nil" end
   else
@@ -139,6 +142,7 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_
     result.push(entry)
   }
 
+  # If we have too many words, delete the most common ones.
   result.sort! { |a,b| b[4] <=> a[4] } # descending order by frequency
   while result.length>max_entries do
     kill_em = nil
@@ -162,15 +166,15 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_
       word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc = entry
       next if Proper_noun.is(word_raw,lemma) # ... use word_raw to preserve capitalization, since some proper nouns have the same letters as other words
       next if Ignore_words.patch(word) || Ignore_words.patch(lemma)
-      next unless !rank.nil? && rank>=threshold_difficult
-      next if rank<threshold_no_gloss && !difficult_to_recognize      
-      next unless rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2
-      key = remove_accents(lemma).downcase
-      filename = "glosses/#{key}"
-      if Options.if_render_glosses && Gloss.get(db,lemma).nil? then
-        gloss_help.push(Vlist.gloss_help_help_helper(key,lemma))
-        whine.push("no glossary entry for #{lemma} , see gloss help file")
+      if !freq_file.nil? then
+        skip = false
+        skip = skip || !(!rank.nil? && rank>=threshold_difficult)
+        skip = skip || (rank<threshold_no_gloss && !difficult_to_recognize)
+        skip = skip || !(rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2)
+        next if skip
       end
+      key = remove_accents(lemma).downcase
+      if Gloss.get(db,lemma).nil? then gloss_help.push(GlossHelp.prep(key,lemma)) end # it's OK if this was done in a previous pass
       if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end
       # stuff some more info in the misc element:
       misc['pos'] = pos # lemma and pos may be wrong if the same word can occur in more than one way
@@ -178,6 +182,11 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_
     }
     result2.push(this_part_of_result2)
   }
+  if gloss_help.length>0 then
+    gloss_help_summary_info,individual_info = GlossHelp.give(gloss_help)
+    whine = whine+individual_info
+    $stderr.print gloss_help_summary_info,"\n" if !gloss_help_summary_info.nil?
+  end
   whine = whine + ambig_warnings
   if whine.length>0 then
     whiny_file = "warnings"
@@ -185,17 +194,21 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,thresholds:[1,50,700,700],max_
       whine.each { |complaint| f.print "#{complaint}\n" }
     }
   end
-  if gloss_help.length>0 then
-    gloss_help_summary_info = Vlist.give_gloss_help(gloss_help)
-    $stderr.print gloss_help_summary_info,"\n" if !gloss_help_summary_info.nil?
-  end
   vl = Vlist.new(result2)
   if whine.length>0 then vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n" end
 
   return vl
 end
 
-def Vlist.gloss_help_help_helper(key,lemma)
+end # class Vlist
+
+class GlossHelp
+
+@@already_done = {}
+# ... already done during this invocation of the ruby code, don't do again; there is separate code that avoids wasting the user's attention
+#     with messages if the gloss help was already provided in a previous invocation
+
+def GlossHelp.prep(key,lemma)
   h = {
     'filename'=>key,
     'lemma'=>lemma,
@@ -209,16 +222,20 @@ def Vlist.gloss_help_help_helper(key,lemma)
   return h
 end
 
-def Vlist.give_gloss_help(gloss_help)
+def GlossHelp.give(gloss_help)
   gloss_help_dir = "help_gloss"
   unless File.directory?(gloss_help_dir) then Dir.mkdir(gloss_help_dir) end
   gloss_help = gloss_help.filter { |h| h['lemma']==h['lemma'].downcase } # filter out things that look like proper nouns
-  return nil if gloss_help.length==0
+  return [nil,[]] if gloss_help.length==0
+  individual_info = []
   list_written = []
   gloss_help.each { |h|
+    next if @@already_done.has_key?(h['lemma'])
+    @@already_done[h['lemma']] = 1
     filename = dir_and_file_to_path(gloss_help_dir,h['filename'])
-    next if File.exist?(filename)
+    next if File.exist?(filename) # already done in a previous invocation
     list_written.push(h['lemma'])
+    individual_info.push("no glossary entry for #{h['lemma']} , see gloss help file")
     File.open(filename,"w") { |f|
       x = %Q(
         // #{h['url']}
@@ -246,13 +263,14 @@ def Vlist.give_gloss_help(gloss_help)
   }
   list_written = alpha_sort(list_written)
   n_written = list_written.length
-  if n_written==0 then return nil end
+  if n_written==0 then return [nil,[]] end
   if n_written<=10 then ll=list_written; suffix='' else ll = list_written[0..9]; suffix=" (more...) " end
-  return "====wrote gloss help to #{gloss_help_dir} for #{n_written} lemmas that previously had no help: ====\n" \
+  summary_info = "====wrote gloss help to #{gloss_help_dir} for #{n_written} lemmas that previously had no help: ====\n" \
         + "  " + ll.join(" ") + suffix + "\n"
+  return [summary_info,individual_info]
 end
 
-end # class Vlist
+end # class GlossHelp
 
 class Epic_form
   @@index = %q{
