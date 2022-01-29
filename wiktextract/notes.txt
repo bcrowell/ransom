@@ -1,5 +1,8 @@
-https://pypi.org/project/wiktextract/
-https://kaikki.org/dictionary/Ancient%20Greek/index.html ... 44 Mb
+For Greek and Latin:
+  use the two targets in the Makefile in this directory
 
-scroll to bottom for json file
-run makefile in this directory
+Background info:
+  https://pypi.org/project/wiktextract/
+  https://kaikki.org/dictionary/Ancient%20Greek/index.html ... 44 Mb
+  https://kaikki.org/dictionary/Latin/index.html
+  scroll to bottom of kaikki.org page for json file
