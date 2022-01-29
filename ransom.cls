@@ -30,6 +30,14 @@
 \newcommand{\rightheaderwhatvocab}{Minivocab} % gets redefined by, e.g., greekransom.sty
 \newcommand{\rightheaderwhatglosses}{Ransom notes}
 \RequirePackage{greekransom}
+\newcommand{\foreignisgreekscript}{%
+  \renewcommand{\boldforeign}[1]{\begin{boldgreek}##1\end{boldgreek}}
+}
+\newcommand{\foreignislatinscript}{%
+  \renewcommand{\boldforeign}[1]{\textbf{##1}}
+}
+\newcommand{\boldforeign}[1]{Boldforeign will immediately be redefined below.}
+\foreignislatinscript
 
 \RequirePackage{graphicx} % needed for \resizebox
 \RequirePackage{multicol,xcolor,calc,titlesec,fancyhdr,hyphenat,ifthen}
@@ -66,11 +74,11 @@
 \newcommand{\from}{\raisebox{.25ex}{{\tiny{$\prec$}}}\hardspace{0.2em}}
 
 \newcommand{\hardspace}[1]{\unskip\hspace{#1}\ignorespaces} % https://tex.stackexchange.com/a/89096/6853
-\newcommand{\vocabbasic}[2]{\begin{boldgreek}#1\end{boldgreek} \hardspace{1em} #2}
-\newcommand{\vocabwithcogbasic}[3]{\begin{boldgreek}#1\end{boldgreek} \hardspace{1em} #2 $\sim$\emph{#3}}
+\newcommand{\vocabbasic}[2]{\boldforeign{#1} \hardspace{1em} #2}
+\newcommand{\vocabwithcogbasic}[3]{\boldforeign{#1} \hardspace{1em} #2 $\sim$\emph{#3}}
 \newcommand{\vocab}[2]{\glosstrailingrightpara{\vocabbasic{#1}{#2}}}
 \newcommand{\vocabwithcog}[3]{\glosstrailingrightpara{\vocabwithcogbasic{#1}{#2}{#3}}}
-\newcommand{\vocabnospace}[2]{\begin{boldgreek}#1\end{boldgreek} #2}
+\newcommand{\vocabnospace}[2]{\boldforeign{#1} #2}
 \newcommand{\vocabinflection}[3]{\glosstrailingrightpara{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3}}
 \newcommand{\vocabnouninflection}[3]{\vocabinflection{#1}{#2}{#3}}
 \newcommand{\vocabverbinflection}[3]{\vocabinflection{#1}{#2}{#3}}

@@ -7,17 +7,19 @@ load 'eruby_ransom.rb'
 author = "petronius"
 treebank = TreeBank.new(author)
 freq_file = nil # "lemmas/#{author}_freq.json"
-latin_genos = Genos.new('la')
-db = GlossDB.from_genos(latin_genos)
-latin_wikt = WiktionaryGlosses.new(latin_genos)
+foreign_genos = Genos.new('la')
+db = GlossDB.from_genos(foreign_genos)
+latin_wikt = WiktionaryGlosses.new(foreign_genos)
 if latin_wikt.invalid then latin_wikt=nil end
 core = json_from_file_or_die("core/latin.json").keys # array containing lemmas not to put in vocab lists, because they're in core vocab in back
-latin = Epos.new("text/petronius/satyricon_62.txt","latin",false,genos:latin_genos)
+latin = Epos.new("text/petronius/satyricon_62.txt","latin",false,genos:foreign_genos)
 translation = Epos.new("text/petronius/satyricon_62_firebaugh.txt","latin",false,genos:Genos.new('en',is_verse:false),postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
 
 notes = []
 
 stuff = treebank,freq_file,latin,translation,notes,core
+
+if foreign_genos.greek then print "\n\n\\foreignisgreekscript\n\n" end
 
 %>
 

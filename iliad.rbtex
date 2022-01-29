@@ -7,12 +7,12 @@ load 'eruby_ransom.rb'
 author = "homer"
 treebank = TreeBank.new(author)
 freq_file = "lemmas/#{author}_freq.json"
-greek_genos = GreekGenos.new('epic',is_verse:true)
-greek_wikt = WiktionaryGlosses.new(greek_genos)
+foreign_genos = GreekGenos.new('epic',is_verse:true)
+greek_wikt = WiktionaryGlosses.new(foreign_genos)
 if greek_wikt.invalid then greek_wikt=nil end
-db = GlossDB.from_genos(greek_genos)
+db = GlossDB.from_genos(foreign_genos)
 core = json_from_file_or_die("core/homer.json").keys # array containing lemmas not to put in vocab lists, because they're in core vocab in back
-greek = Epos.new("text/ιλιας","greek",true,genos:greek_genos)
+greek = Epos.new("text/ιλιας","greek",true,genos:foreign_genos)
 translation = Epos.new("text/buckley_iliad.txt","latin",false,genos:Genos.new('en',is_verse:false),postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
 
 load "iliad/notes.rb"
@@ -21,6 +21,8 @@ notes = IliadNotes.notes
 stuff = treebank,freq_file,greek,translation,notes,core
 Options.set('fig_dir','iliad/figs')
 Illustrations.init
+
+if foreign_genos.greek then print "\n\n\\foreignisgreekscript\n\n" end
 
 %>
 
