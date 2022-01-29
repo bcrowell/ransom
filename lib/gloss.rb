@@ -246,7 +246,7 @@ class GlossDB
     @prefer_tag = prefer_tag
   end
 
-  attr_reader :prefer_tag,:lemma_tag
+  attr_reader :prefer_tag,:lemma_tag,:path
 
   def GlossDB.from_genos(genos)
     # If it's Greek, the period should be set.
@@ -290,7 +290,7 @@ class GlossDB
     # the same file. Even if that's not the case, convert x to an array for convenience.
     # Also handle words where there's a perseus spelling that differs from our preferred Homeric spelling.
     entries_found = []
-    [@lemma_tag,@prefer_tag].uniq.each { |tag|
+    ["word",@lemma_tag,@prefer_tag].uniq.each { |tag|
       x.each { |entry|
         if !entry[tag].nil? && alpha_compare(entry[tag],word)==0 then
           entries_found.push([tag,entry])
