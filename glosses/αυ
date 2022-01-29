@@ -2,7 +2,9 @@
 // Again, anew, afresh, in turn; often after ordinal numerals; in a question, expressing impatience, Further, moreover, On the other hand after δέ (dé) in μέν ... δέ ... (mén ... dé ...)
 {
   "word":"αὖ",
-  "medium":"again",
+  "short":"again, then again",
+  "medium":"again; on the other hand; in return",
+  "long":"again; then again, on the other hand; in return",
   "syn":"πάλιν, αὖτε"
 }
       

@@ -2,8 +2,10 @@
 // 
 {
   "word":"εὐχωλή",
-  "medium":"prayer, offering, boast",
+  "medium":"glory; prayer, offering, boast",
   "short":"prayer",
-  "syn":"εὐχή, λιτή, ἀρή"
+  "mnemonic_cog":"vow",
+  "etym":"PIE h1uegwh, to speak solemnly",
+  "syn":"εὖχος, εὐχή, λιτή, ἀρή"
 }
       
