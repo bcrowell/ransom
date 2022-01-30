@@ -29,6 +29,7 @@ require_relative "lib/epos"
 require_relative "lib/genos"
 require_relative "lib/wiktionary"
 require_relative "lib/vlist"
+require_relative "lib/vocab_page"
 require_relative "lib/bilingual"
 require_relative "lib/illustrations"
 require_relative "lib/latex"
@@ -55,7 +56,7 @@ def print_four_page_layout(stuff,genos,db,wikt,bilingual,next_layout,vocab_by_ch
   # doesn't get called if if_prose_trial_run is set
   treebank,freq_file,greek,translation,notes,core = stuff
   ch = bilingual.foreign_ch1
-  core,vl,vocab_by_chapter = four_page_layout_vocab_helper(bilingual,genos,db,wikt,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
+  core,vl,vocab_by_chapter = VocabPage.helper(bilingual,genos,db,wikt,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
   if bilingual.foreign_ch1!=bilingual.foreign_ch2 then
     # This should only happen in the case where reference 2 is to the very first line of the next book.
     if !(bilingual.foreign_hr2[1]<=5 && bilingual.foreign_hr2[0]==bilingual.foreign_hr1[0]+1) then
@@ -68,7 +69,7 @@ end
 def print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_chapter,notes)
   # prints
   # Doesn't get called if Options.if_prose_trial_run is set
-  stuff = vocab(db,vl,core)
+  stuff = VocabPage.make(db,vl,core)
   tex,v = stuff['tex'],stuff['file_lists']
   print tex
   if notes.length>0 then print notes_to_latex(bilingual.foreign_linerefs,notes) end # FIXME: won't work if foreign text is prose, doesn't have linerefs
@@ -80,21 +81,6 @@ def print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_c
   # https://tex.stackexchange.com/a/308934
   layout_for_illustration = next_layout  # place illustration at bottom of page coming immediately before the *next* four-page layout
   if !layout_for_illustration.nil? then print Illustrations.do_one(layout_for_illustration) end
-end
-
-def four_page_layout_vocab_helper(bilingual,genos,db,wikt,core,treebank,freq_file,notes,vocab_by_chapter,start_chapter,ch)
-  # Doesn't get called if if_prose_trial_run is set.
-  core = core.map { |x| remove_accents(x).downcase }
-  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq_file,genos,db,wikt,core:core, \
-               exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
-  if !ch.nil? then
-    if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end
-    if vocab_by_chapter[ch].nil? then vocab_by_chapter[ch]=[] end
-    vocab_by_chapter[ch] = alpha_sort((vocab_by_chapter[ch]+vl.all_lexicals).uniq)
-  else
-    vocab_by_chapter = []
-  end
-  return core,vl,vocab_by_chapter
 end
 
 def header_latex(bilingual)
@@ -168,74 +154,6 @@ def find_notes_one_book(lineref1,lineref2,notes)
     end
   }
   return result.sort { |a,b| a[0] <=> b[0] } # array comparison is lexical
-end
-
-def vocab(db,vl,core)
-  # Input is a Vlist object.
-  # The three sections are interpreted as common, uncommon, and rare.
-  # Returns {'tex'=>...,'file_lists'=>...}, containing latex code for vocab page and the three file lists for later reuse.
-  if Options.if_render_glosses then $stderr.print vl.console_messages end
-  tex = ''
-  tex +=  "\\begin{vocabpage}\n"
-  tex +=  vocab_helper(db,'uncommon',vl,0,2,core) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
-  tex +=  "\\end{vocabpage}\n"
-  v = vl.list.map { |l| l.map{ |entry| entry[1] } }
-  result = {'tex'=>tex,'file_lists'=>v}
-end
-
-def vocab_helper(db,commonness,vl,lo,hi,core)
-  l = []
-  lo.upto(hi) { |i|
-    vl.list[i].each { |entry|
-      word,lexical,data = entry
-      if data.nil? then data={} end
-      pos = data['pos']
-      is_verb = (pos=~/^[vt]/)
-      g = Gloss.get(db,lexical)
-      next if g.nil?
-      difficult_to_recognize = data['difficult_to_recognize']
-      debug = (word=='ἐρυσσάμενος')
-      if debug then File.open("debug.txt","a") { |f| f.print "... 100 #{word} #{lexical} #{difficult_to_recognize}\n" } end
-      difficult_to_recognize ||= (not_nil_or_zero(g['aorist_difficult_to_recognize']) && /^...a/.match?(pos) )
-      if debug then File.open("debug.txt","a") { |f| f.print "... 150 #{word} #{lexical} #{difficult_to_recognize} #{not_nil_or_zero(g['aorist_difficult_to_recognize'])}\n" } end
-      difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lexical,pos)[0])
-      if debug then File.open("debug.txt","a") { |f| f.print "... 200 #{word} #{lexical} #{difficult_to_recognize} #{Verb_difficulty.guess(word,lexical,pos)[0]}\n" } end
-      data['difficult_to_recognize'] = difficult_to_recognize
-      data['core'] = core.include?(remove_accents(lexical).downcase)
-      entry_type = nil
-      if !data['core'] then entry_type='gloss' end
-      if data['core'] && difficult_to_recognize then
-        if is_verb then entry_type='conjugation' else entry_type='declension' end
-      end
-      if !entry_type.nil? then l.push([entry_type,[lexical,word,lexical,data]]) end
-    }
-  }
-  secs = []
-  ['gloss','conjugation','declension'].each { |type|
-    envir = {'gloss'=>'vocaball','conjugation'=>'conjugations','declension'=>'declensions'}[type]
-    ll = l.select { |entry| entry[0]==type }.map { |entry| entry[1] }
-    if ll.length>0 then
-      this_sec = ''
-      this_sec += "\\begin{#{envir}}\n"
-      ll.sort { |a,b| alpha_compare(a[0],b[0])}.each { |entry|
-        s = nil
-        if type=='gloss' then s=vocab1(db,entry) end
-        if type=='conjugation' || type=='declension' then s=vocab_inflection(entry) end
-        if !(s.nil?) then
-          this_sec += clean_up_unicode("#{s}\n")
-        else
-          die("unrecognized vocab type: #{type}")
-        end
-      }
-      this_sec += "\\end{#{envir}}\n"
-      secs.push(this_sec)
-    end
-  }
-  if secs.length!=0 then
-    return secs.join("\n\\bigseparator\\vspace{2mm}\n")
-  else
-    return "\n\nThere is no vocabulary for this page.\n\n"
-  end
 end
 
 def not_nil_or_zero(x)
