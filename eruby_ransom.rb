@@ -1,21 +1,6 @@
 require 'json'
 require 'sdbm'
 require 'set'
-require_relative "lib/file_util"
-require_relative "lib/string_util"
-require_relative "lib/multistring"
-require_relative "lib/treebank"
-require_relative "lib/epos"
-require_relative "lib/genos"
-require_relative "lib/wiktionary"
-require_relative "lib/vlist"
-require_relative "lib/latex"
-require_relative "lib/gloss"
-require_relative "lib/clown"
-require_relative "greek/nouns"
-require_relative "greek/verbs"
-require_relative "greek/lemma_util"
-require_relative "greek/writing"
 
 class Options
   if ARGV.length<1 then die("no command-line argument supplied") end
@@ -36,143 +21,25 @@ class Options
   end
 end
 
-class Bilingual
-  def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000,length_ratio_tol_factor:1.38)
-    # Foreign and translation are Epos objects, which should have non-nil genos with is_verse set correctly.
-    # G1, g2, t1, and t2 are references for input to Epos initializer. If a text is verse, then these should be
-    # of the form [book,line]. If prose, then they should be either word globs or hard refs.
-    # sanity checks:
-    #   max_chars -- maximum length of translated text
-    #   length_ratio_expected -- expected value of length of translation divided by length of foreign text
-    #   length_ratio_tol_factor -- tolerance factor for the above ratio
-    length_ratio_expected = translation.genos.verbosity()/foreign.genos.verbosity()
-    Bilingual.type_check_refs_helper(g1,g2,t1,t2,foreign,translation)
-    @foreign = foreign
-    @translation = translation
-    if foreign.genos.is_verse then
-      @foreign_linerefs = [g1,g2]
-      @foreign_chapter_number = g1[0]
-      @foreign_first_line_number = g1[1]
-      @foreign_hr1,@foreign_hr2 = foreign.line_to_hard_ref(g1[0],g1[1]),foreign.line_to_hard_ref(g2[0],g2[1])
-      @foreign_ch1,@foreign_ch2 = @foreign_hr1[0],@foreign_hr2[0]
-    else
-      if g1.kind_of?(String) then
-        @foreign_hr1,@foreign_hr2 = foreign.word_glob_to_hard_ref(g1)[0],foreign.word_glob_to_hard_ref(g2)[0]
-      else
-        @foreign_hr1,@foreign_hr2 = [g1,g2] # they're already hard refs
-      end
-    end
-    @foreign_text = foreign.extract(@foreign_hr1,@foreign_hr2)
-    if t1.kind_of?(String) then # translation is referred to by word glob
-      # Let word globs contain, e.g., Hera rather than Juno:
-      t1 = Patch_names.antipatch(t1)
-      t2 = Patch_names.antipatch(t2)
-      translation_hr1_with_errs = translation.word_glob_to_hard_ref(t1)
-      translation_hr2_with_errs = translation.word_glob_to_hard_ref(t2)
-      translation_hr1,translation_hr2 = translation_hr1_with_errs[0],translation_hr2_with_errs[0]
-      if translation_hr1_with_errs[1] then raise "ambiguous word glob: #{t1}, #{translation_hr1_with_errs[2]}" end
-      if translation_hr2_with_errs[1] then raise "ambiguous word glob: #{t2}, #{translation_hr2_with_errs[2]}"end
-      if translation_hr1.nil? then raise "bad word glob, #{t1}" end
-      if translation_hr2.nil? then raise "bad word glob, #{t2}" end
-    else
-      translation_hr1,translation_hr2 = [t1,t2]
-    end
-    @translation_text = translation.extract(translation_hr1,translation_hr2)
-    @translation_text = Patch_names.patch(@translation_text) # change, e.g., Juno to Hera
-
-    # A hash that is intended to be unique to this particular spread. For example, Homer sometimes repeats entire passages,
-    # but this hash should still be different for the different passages. This is needed by foreign_verse in eruby_ransom.rb.
-    @hash = Digest::MD5.hexdigest([translation_hr1,translation_hr2,@foreign_hr1,@foreign_hr2].to_s)
-
-    max_chars = 5000
-    if @translation_text.length>max_chars || @translation_text.length==0 then
-      message = "page of translated text has #{@translation_text.length} characters, failing sanity check"
-      self.raise_failed_sanity_check(message,t1,t2,translation_hr1,translation_hr2)
-    end
-    l_t,l_f = @translation_text.length,@foreign_text.length
-    length_ratio = l_t.to_f/l_f.to_f
-    lo,hi = length_ratio_expected/length_ratio_tol_factor,length_ratio_expected*length_ratio_tol_factor
-    if length_ratio<lo || length_ratio>hi then
-      message = "length ratio=#{length_ratio}, outside of expected range of #{lo}-#{hi}"
-      self.raise_failed_sanity_check(message,t1,t2,translation_hr1,translation_hr2)
-    end
-  end
-  def Bilingual.type_check_refs_helper(foreign1,foreign2,t1,t2,foreign,translation)
-    Bilingual.type_check_refs_helper2(foreign1,foreign2,foreign)
-    Bilingual.type_check_refs_helper2(t1,t2,translation)
-  end
-  def Bilingual.type_check_refs_helper2(ref1,ref2,epos)
-    if epos.is_verse then
-      if !(ref1.kind_of?(Array) && ref2.kind_of?(Array)) then raise "epos says verse, but refs are not arrays" end
-    else
-      if ref1.kind_of?(String) && ref2.kind_of?(String) then return end
-      if ref1.kind_of?(Array) && ref2.kind_of?(Array) then return end
-      raise "epos says prose, but refs are not strings or arrays"
-    end
-  end
-  def raise_failed_sanity_check(basic_message,t1,t2,translation_hr1,translation_hr2)
-    debug_file = "epos_debug.txt"
-    message = "Epos text selection fails sanity check\n" \
-         + basic_message + "\n" \
-         + "  '#{t1}-'\n  '#{t2}'\n  #{translation_hr1}-#{translation_hr2}\n"
-    File.open(debug_file,"w") { |f|
-      f.print message,"\n-------------------\n",self.foreign_text,"\n-------------------\n",self.translation_text,"\n"
-    }
-    raise message + "\n  See #{debug_file}"
-  end
-  attr_reader :foreign_hr1,:foreign_hr2,:foreign_ch1,:foreign_ch2,:foreign_text,:translation_text,:foreign_first_line_number,:foreign_chapter_number,
-          :foreign_linerefs,:foreign,:translation,:hash
-end
-
+require_relative "lib/file_util"
+require_relative "lib/string_util"
+require_relative "lib/multistring"
+require_relative "lib/treebank"
+require_relative "lib/epos"
+require_relative "lib/genos"
+require_relative "lib/wiktionary"
+require_relative "lib/vlist"
+require_relative "lib/bilingual"
+require_relative "lib/illustrations"
+require_relative "lib/latex"
+require_relative "lib/gloss"
+require_relative "lib/clown"
+require_relative "greek/nouns"
+require_relative "greek/verbs"
+require_relative "greek/lemma_util"
+require_relative "greek/writing"
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
 
-class Illustrations
-  @@illus = []
-  @@label_to_line = {}
-  @@options = {}
-  def Illustrations.init # call this after setting fig_dir in Options
-    d = Options.get('fig_dir')
-    Dir.each_child(d) { |filename|
-      base = File.basename(filename)
-      if base=~/(\d+)-(\d+)-([^.]+).*\.jpg/ then # naming convention I'm using for Iliad, e.g., 01-029-will-not-release-her.jpg
-        book,line,label = $1.to_i,$2.to_i,$3
-        path = "#{d}/#{filename}"
-        width,height = `identify -format '%W' #{path}`,`identify -format '%H' #{path}`
-        @@illus.push([book,line,path,width,height,label])
-        @@label_to_line[label] = [book,line]
-      end
-    }
-    @@credits_data = json_from_file_or_die("#{d}/credits.json")
-    @@options = json_from_file_or_die("#{d}/options.json")
-  end
-  def Illustrations.is_landscape(label)
-    if @@options.has_key?(label) && @@options[label].has_key?('portrait') && @@options[label]['portrait'] then return false end
-    return true
-  end
-  def Illustrations.hand_written_caption(label)
-    if @@options.has_key?(label) && @@options[label].has_key?('caption') then return @@options[label]['caption'] end
-    return nil
-  end
-  def Illustrations.reduced_width(label)
-    if @@options.has_key?(label) && @@options[label].has_key?('width') then return @@options[label]['width'] end
-    return nil
-  end
-  def Illustrations.list_of
-    return @@illus
-  end
-  def Illustrations.credits
-    result = []
-    @@credits_data.keys.sort.each { |artist|
-      list = []
-      @@credits_data[artist].each { |label|
-        book,line = @@label_to_line[label]
-        list.push("#{book}.#{line}")
-      }
-      result.push(list.join(", ") + ": " + artist)
-    }
-    return result.join(". ")+"."
-  end
-end
 
 def four_page_layout(stuff,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
   # Doesn't get called if if_prose_trial_run is set.
