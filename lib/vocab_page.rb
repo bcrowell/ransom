@@ -64,8 +64,8 @@ def VocabPage.make_helper(db,commonness,vl,lo,hi,core)
       this_sec += "\\begin{#{envir}}\n"
       ll.sort { |a,b| alpha_compare(a[0],b[0])}.each { |entry|
         s = nil
-        if type=='gloss' then s=vocab1(db,entry) end
-        if type=='conjugation' || type=='declension' then s=vocab_inflection(entry) end
+        if type=='gloss' then s=VocabPage.entry(db,entry) end
+        if type=='conjugation' || type=='declension' then s=VocabPage.inflection(entry) end
         if !(s.nil?) then
           this_sec += clean_up_unicode("#{s}\n")
         else
@@ -81,6 +81,47 @@ def VocabPage.make_helper(db,commonness,vl,lo,hi,core)
   else
     return "\n\nThere is no vocabulary for this page.\n\n"
   end
+end
+
+def VocabPage.entry(db,stuff)
+  file_under,word,lexical,data = stuff
+  entry = Gloss.get(db,lexical)
+  return if entry.nil?
+  preferred_lex = entry['word']
+  # ...If there is a lexical form used in the database (such as Perseus), but we want some other form (such as Homeric), then
+  #    preferred_lex will be different from the form inside stuff.
+  word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
+  if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
+  explain_inflection = entry.has_key?('lexical') || (data.has_key?('is_3rd_decl') && data['is_3rd_decl'] && !alpha_equal(word,lexical))
+  # Count chars, and if it looks too long to fit on a line, switch to the short gloss:
+  if explain_inflection then
+    text = [word.downcase,preferred_lex,gloss]
+  else
+    text = [preferred_lex,gloss]
+  end
+  total_chars = text.map { |t| t.length}.sum+text.length-1 # final terms count blanks
+  if total_chars>35 && entry.has_key?('short') then gloss=entry['short'] end
+  # Generate latex:
+  if explain_inflection then
+    s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}}"
+  else
+    s = "\\vocab{#{preferred_lex}}{#{gloss}}"
+  end
+  return s
+end
+
+def VocabPage.inflection(stuff)
+  file_under,word,lexical,data = stuff
+  pos = data['pos']
+  if pos[0]=='n' then
+    return "\\vocabnouninflection{#{word.downcase}}{#{lexical}}{#{describe_declension(pos,true)[0]}}"
+  end
+  if pos[0]=~/[vt]/ then
+    # File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} \n" }
+    return "\\vocabverbinflection{#{word.downcase}}{#{lexical}}{#{Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical,
+                   omit_easy_number_and_person:true,omit_voice:true)}}"
+  end
+  return "\\vocabinflectiononly{#{word.downcase}}{#{lexical}}"
 end
 
 end
