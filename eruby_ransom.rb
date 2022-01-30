@@ -173,6 +173,20 @@ class Illustrations
   end
 end
 
+class RansomGloss
+  # A utility class to generate latex code that places glosses superimposed on a ransom-note page.
+  def RansomGloss.text_in_box_at_position(text,x,y,width,height)
+    code = %q(\begin{textblock*}{_WIDTH_pt}(_XPOS_,_YPOS_)_GLOSS_\end{textblock*}) + "\n"
+    code.sub!(/_WIDTH_/,"#{width}")
+    code.sub!(/_XPOS_/,"#{x}pt")
+    code.sub!(/_YPOS_/,"\\pdfpageheight-#{y}pt-#{0.7*height}pt")
+    # ... Uses calc package; textpos's coordinate system goes from top down, pdfsavepos from bottom up.
+    #     The final term scoots up the gloss so that its top is almost as high as the top of the Greek text.
+    code.sub!(/_GLOSS_/,text)
+    return code
+  end
+end
+
 class WhereAt
   # A utility class for a database of locations on the pages where words in the "ransom note" occur.
   def WhereAt.file_path
@@ -672,13 +686,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
             a.sub!(/WIDTH/,     "#{width}pt"  )
             a.sub!(/CONTENTS/,  %q(\begin{blacktext}\begin{latin}__\end{latin}\end{blacktext})  )
             a.sub!(/__/,        gloss  )
-            new_gloss_code = %q(\begin{textblock*}{_WIDTH_pt}(_XPOS_,_YPOS_)_GLOSS_\end{textblock*}) + "\n"
-            new_gloss_code.sub!(/_WIDTH_/,"#{width}")
-            new_gloss_code.sub!(/_XPOS_/,"#{x}pt")
-            new_gloss_code.sub!(/_YPOS_/,"\\pdfpageheight-#{y}pt-#{0.7*height}pt")
-            # ... Uses calc package; textpos's coordinate system goes from top down, pdfsavepos from bottom up.
-            #     The final term scoots up the gloss so that its top is almost as high as the top of the Greek text.
-            new_gloss_code.sub!(/_GLOSS_/,a)
+            new_gloss_code = RansomGloss.text_in_box_at_position(a,x,y,width,height)
             code = %q{\begin{whitetext}WORD\end{whitetext}}
             code.gsub!(/WORD/,word)
           end
