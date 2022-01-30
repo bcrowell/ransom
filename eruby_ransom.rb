@@ -502,6 +502,7 @@ end
 
 def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
   # If gloss_these isn't empty, then we assume it contains a list of rare lemmatized forms.
+  # Returns a string containing latex code.
   t = bilingual.foreign_text
   gloss_code = ''
   main_code = ''
@@ -526,15 +527,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
           code = nil
           new_gloss_code = nil
           if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_pos(word,key,line_hash,line_number:i)  end
-          if Options.if_render_glosses then
-            pos = WhereAt.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
-            if pos.nil? then raise "in foreign_helper, rendering ransom notes, position is nil for line_hash=#{line_hash}, key=#{key}" end
-            pos = RansomGloss.tweak_gloss_geom_kludge_fixme(pos)
-            a = RansomGloss.text_in_box(gloss,pos['width'],bilingual.translation.genos)
-            new_gloss_code = RansomGloss.text_at_position(a,pos)
-            code = %q{\begin{whitetext}WORD\end{whitetext}}
-            code.gsub!(/WORD/,word)
-          end
+          if Options.if_render_glosses then code,new_gloss_code=render_gloss_for_foreign_page(line_hash,word,key,gloss,bilingual) end
           if !(new_gloss_code.nil?) then gloss_code = gloss_code + new_gloss_code end
           if !(code.nil?) then lines[i] = lines[i].sub(/#{word}/,code) end
         end
@@ -547,6 +540,20 @@ def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   code = main_code + gloss_code + "\\end{foreignverse}\n"
   if bilingual.foreign.genos.greek then code = "\\begin{greek}\n#{code}\\end{greek}\n" end
   return code
+end
+
+def render_gloss_for_foreign_page(line_hash,word,key,gloss,bilingual)
+  # Word is the inflected string. Key is the database key, i.e., the lemma with no accents. Gloss is a string.
+  # Returns [code,new_gloss_code], where code writes the original word in white ink, i.e., erases it, and
+  # new_gloss_code is the latex code to put the gloss in black, positioned on top of that.
+  pos = WhereAt.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
+  if pos.nil? then raise "in foreign_helper, rendering ransom notes, position is nil for line_hash=#{line_hash}, key=#{key}" end
+  pos = RansomGloss.tweak_gloss_geom_kludge_fixme(pos)
+  a = RansomGloss.text_in_box(gloss,pos['width'],bilingual.translation.genos)
+  new_gloss_code = RansomGloss.text_at_position(a,pos)
+  code = %q{\begin{whitetext}WORD\end{whitetext}}
+  code.gsub!(/WORD/,word)
+  return [code,new_gloss_code]
 end
 
 def clean_up_unicode(s)
