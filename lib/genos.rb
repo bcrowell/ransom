@@ -11,13 +11,14 @@ class Genos
     if lang=='el' then lang='grc' end
     if lang=='he' then lang='hbo' end
     @lang = lang
+    # Whatever string is returned by genos.script has to be the	name of	an appropriate latex environment.
     if ['en','la'].include?(@lang) then @script='latin' end
     if ['grc'].include?(@lang) then @script='greek' end
     if ['hbo'].include?(@lang) then @script='hebrew' end
     @is_verse = is_verse
   end
 
-  attr_reader :is_verse,:lang
+  attr_reader :is_verse,:lang,:script
 
   def to_s
     return "lang=#{@lang}, script=#{@script}"

@@ -136,7 +136,7 @@
 % xcolor package, https://tex.stackexchange.com/a/17105/6853
 \newenvironment{graytext}{\color{black!25}}{}
 \newenvironment{mediumgraytext}{\color{black!50}}{} % used for line numbers
-\newenvironment{blacktext}{\color{black}}{}
+\newenvironment{blacktext}{\color{black}}{} % used in RansomGloss.text_in_box
 \newenvironment{whitetext}{\color{white}}{}
 
 \newcommand{\linenumber}[1]{\begin{mediumgraytext}{\footnotesize{}#1}\end{mediumgraytext}}
