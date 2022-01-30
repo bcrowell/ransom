@@ -1,3 +1,9 @@
+class Latex
+  def Latex.envir(environment,contents)
+    return "\\begin{#{environment}}\n" + contents + "\\end{#{environment}}\n"
+  end
+end
+
 class RansomGloss
   # A utility class to generate latex code that places glosses superimposed on a ransom-note page.
   def RansomGloss.tweak_gloss_geom_kludge_fixme(pos)

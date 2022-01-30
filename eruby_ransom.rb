@@ -115,10 +115,7 @@ def foreign(db,bilingual,first_line_number,start_chapter)
   else
     main_code,garbage,environment = foreign_prose(db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
   end
-  code = envir(environment,main_code)
-  if bilingual.foreign.genos.greek then code = envir('greek',code) end
-  code = clean_up_unicode(code)
-  print code
+  print postprocess_foreign_or_ransom('foreign',bilingual,main_code,environment,start_chapter)
 end
 
 def ransom(db,bilingual,v,first_line_number,start_chapter)
@@ -128,15 +125,7 @@ def ransom(db,bilingual,v,first_line_number,start_chapter)
   else
     main_code,gloss_code,environment = foreign_prose(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
   end
-  main_code = envir('graytext',main_code)
-  code = envir(environment,main_code+gloss_code)
-  if bilingual.foreign.genos.greek then code = envir('greek',code) end
-  code = clean_up_unicode(code)
-  print code
-end
-
-def envir(environment,contents)
-  return "\\begin{#{environment}}\n" + contents + "\\end{#{environment}}\n"
+  print postprocess_foreign_or_ransom('ransom',bilingual,main_code,environment,start_chapter,gloss_code:gloss_code)
 end
 
 def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
@@ -157,7 +146,6 @@ def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   t = bilingual.foreign_text
   gloss_code = ''
   main_code = ''
-  if !(start_chapter.nil?) then main_code += "\\mychapter{#{start_chapter}}\n\n" end # will be gray if on ransom page, because inside graytext environment
   lines = t.split(/\s*\n\s*/)
   if gloss_these.length>0 then
     gg = gloss_these.map { |x| remove_accents(x)}
@@ -186,6 +174,18 @@ def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   main_code = main_code + verse_lines_to_latex(lines,first_line_number,left_page_verse) + "\n\n"
   gloss_code = "\n{\\linespread{1.0}\\footnotesize #{gloss_code} }\n"
   return [main_code,gloss_code,'foreignverse']
+end
+
+def postprocess_foreign_or_ransom(which,bilingual,main_code,environment,start_chapter,gloss_code:nil)
+  # which is 'foreign' or 'ransom'
+  # gloss_code can be omitted or garbage if which is 'foreign'
+  # start_chapter should be nil if this isn't the start of a chapter
+  main_code = add_chapter_header(main_code,start_chapter)
+  if which=='ransom' then main_code = Latex.envir('graytext',main_code)+gloss_code end
+  code = Latex.envir(environment,main_code)
+  if bilingual.foreign.genos.greek then code = Latex.envir('greek',code) end
+  code = clean_up_unicode(code)
+  return code
 end
 
 def render_gloss_for_foreign_page(line_hash,word,key,gloss,bilingual)
@@ -225,6 +225,14 @@ def verse_lines_to_latex(lines,first_line_number,left_page_verse)
     cooked.push(c)
   }
   return cooked.join("\n")
+end
+
+def add_chapter_header(main_code,start_chapter)
+  if !(start_chapter.nil?) then
+    return "\\mychapter{#{start_chapter}}\n\n"+main_code # will be gray if on ransom page, because inside graytext environment
+  else
+    return main_code
+  end
 end
 
 def to_key(word)
