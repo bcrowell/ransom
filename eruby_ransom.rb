@@ -529,16 +529,9 @@ def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
           if Options.if_render_glosses then
             pos = WhereAt.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
             if pos.nil? then raise "in foreign_helper, rendering ransom notes, position is nil for line_hash=#{line_hash}, key=#{key}" end
-            x,y,width,height = pos['x'],pos['y'],pos['width'],pos['height'] # all floats in units of pts
-            if x>254.0 then
-              width=355.0-x
-            else
-              if x>235.0 && width<42.0 then width=42.0 end # less aggressive, for cases where the width is super narrow, and we're fairly far to the right
-            end
-            # ... Likely to be the last glossed word on line, so extend its width.
-            #     Kludge, fixme: hardcoded numbers, guessing whether last glossed word on line.
-            a = RansomGloss.text_in_box(gloss,width,bilingual.translation.genos)
-            new_gloss_code = RansomGloss.text_at_position(a,x,y,width,height)
+            pos = RansomGloss.tweak_gloss_geom_kludge_fixme(pos)
+            a = RansomGloss.text_in_box(gloss,pos['width'],bilingual.translation.genos)
+            new_gloss_code = RansomGloss.text_at_position(a,pos)
             code = %q{\begin{whitetext}WORD\end{whitetext}}
             code.gsub!(/WORD/,word)
           end

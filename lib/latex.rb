@@ -1,5 +1,21 @@
 class RansomGloss
   # A utility class to generate latex code that places glosses superimposed on a ransom-note page.
+  def RansomGloss.tweak_gloss_geom_kludge_fixme(pos)
+    # The argument pos is a hash with keys "x","y","width","height","depth", as obtained from WhereAt.get_pos_data, all in units of pts.
+    # Returns a tweaked version of the hash in which the width may be increased if it seems like there's space.
+    # This implementation is a total kludge, with hardcoded numbers, and needs to be fixed.
+    x,y,width,height = pos['x'],pos['y'],pos['width'],pos['height'] # all floats in units of pts
+    if x>254.0 then
+      width=355.0-x
+    else
+      if x>235.0 && width<42.0 then width=42.0 end # less aggressive, for cases where the width is super narrow, and we're fairly far to the right
+    end
+    # ... Likely to be the last glossed word on line, so extend its width.
+    #     Kludge, fixme: hardcoded numbers, guessing whether last glossed word on line.
+    pos2 = clown(pos)
+    pos2['width'] = width
+    return pos2
+  end
   def RansomGloss.text_in_box(text,width,genos)
     # The argument width should be in units of points. We temporarily switch to black rather than gray text, using the graytext environment.
     # Genos should be the language that we're switching into temporarily for the gloss.
@@ -13,9 +29,11 @@ class RansomGloss
     code.sub!(/__/,        text_with_script_change  )
     return code
   end
-  def RansomGloss.text_at_position(text,x,y,width,height)
+  def RansomGloss.text_at_position(text,pos)
     # The argument text should be some latex code that typesets some text in a box with the given width and height.
+    # The hash pos should have keys x, y, width, and height, and values should all be in pts.
     # This function surrounds that with additional latex code that positions it at the given location.
+    x,y,width,height = pos['x'],pos['y'],pos['width'],pos['height']
     code = %q(\begin{textblock*}{_WIDTH_pt}(_XPOS_,_YPOS_)_GLOSS_\end{textblock*}) + "\n"
     code.sub!(/_WIDTH_/,"#{width}")
     code.sub!(/_XPOS_/,"#{x}pt")
