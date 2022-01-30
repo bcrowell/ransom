@@ -49,6 +49,7 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,wikt,thresholds:[1,50,700,700]
   # glossary would be too long, we delete the most common words to cut it down to an appropriate length. If no frequency
   # file is given, then the choice of which words to cut is random/undefined.
   # The wikt argument is a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated.
+  # FIXME: rereads the frequency file and processes it every time it's called
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -172,8 +173,10 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,wikt,thresholds:[1,50,700,700]
         skip = skip || !(!rank.nil? && rank>=threshold_difficult)
         skip = skip || (rank<threshold_no_gloss && !difficult_to_recognize)
         skip = skip || !(rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2)
-        next if skip
+      else
+        skip = (commonness!=0) # without frequency data, no way to judge, so just arbitrarily put everything in class 0
       end
+      next if skip
       key = remove_accents(lemma).downcase
       if !wikt.nil? && Gloss.get(db,lemma).nil? then gloss_help.push(GlossHelp.prep(wikt,key,lemma)) end # it's OK if this was done in a previous pass
       if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end

@@ -3,8 +3,8 @@
 
 class TreeBank
   def initialize(corpus)
-    if corpus!='homer' then $stderr.print "warning: unrecognized corpus #{corpus}\n" end
-    data_dir = "#{Dir.home}/Documents/programming/ransom/lemmas"
+    # fails by raising an exception if the appropriate file doesn't exist
+    data_dir = "lemmas"
     @lemmas_file = "#{data_dir}/#{corpus}_lemmas.json"
     @lemmas = json_from_file_or_die(@lemmas_file)
     @inverse_index = nil
