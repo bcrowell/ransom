@@ -174,7 +174,9 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,wikt,thresholds:[1,50,700,700]
         skip = skip || (rank<threshold_no_gloss && !difficult_to_recognize)
         skip = skip || !(rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2)
       else
-        skip = (commonness!=0) # without frequency data, no way to judge, so just arbitrarily put everything in class 0
+        skip = (commonness!=2)
+        # Without frequency data, no way to judge, so just arbitrarily put everything in class 2, rare. When we do
+        # ransom-note glosses, we normally gloss everything in the rare category.
       end
       next if skip
       key = remove_accents(lemma).downcase

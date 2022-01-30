@@ -105,41 +105,50 @@ def list_exclude_glosses(lineref1,lineref2,notes)
   return result
 end
 
-
 def not_nil_or_zero(x)
   return !(x.nil? || x==0)
 end
 
 def foreign(db,bilingual,first_line_number,start_chapter)
   if bilingual.foreign.is_verse then
-    return foreign_verse(db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
+    main_code,garbage,environment = foreign_verse(db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
   else
-    return foreign_prose(db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
+    main_code,garbage,environment = foreign_prose(db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
   end
+  code = envir(environment,main_code)
+  if bilingual.foreign.genos.greek then code = envir('greek',code) end
+  code = clean_up_unicode(code)
+  print code
 end
 
 def ransom(db,bilingual,v,first_line_number,start_chapter)
   common,uncommon,rare = v
   if bilingual.foreign.is_verse then
-    code = foreign_verse(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
+    main_code,gloss_code,environment = foreign_verse(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
   else
-    code = foreign_prose(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
+    main_code,gloss_code,environment = foreign_prose(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
   end
+  main_code = envir('graytext',main_code)
+  code = envir(environment,main_code+gloss_code)
+  if bilingual.foreign.genos.greek then code = envir('greek',code) end
   code = clean_up_unicode(code)
   print code
 end
 
+def envir(environment,contents)
+  return "\\begin{#{environment}}\n" + contents + "\\end{#{environment}}\n"
+end
+
 def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
-  code = ''
-  code += "\\begin{foreignprose}\n"
-  code += "\\enlargethispage{\\baselineskip}\n"
-  code += bilingual.foreign_text.sub(/\s+$/,'') # strip trailing newlines to make sure that there is no paragraph break before the following:
-  code += '{\parfillskip=0pt \emergencystretch=.5\textwidth \par}'
+  main_code = ''
+  main_code += "\\enlargethispage{\\baselineskip}\n"
+  main_code += bilingual.foreign_text.sub(/\s+$/,'') # strip trailing newlines to make sure that there is no paragraph break before the following:
+  main_code += '{\parfillskip=0pt \emergencystretch=.5\textwidth \par}'
   # ... Force the final paragraph to be typeset as a paragraph, which is how it was typeset in the trial run.
   #     https://tex.stackexchange.com/a/116573
-  code += "\n\n"
-  code += "\\end{foreignprose}\n"
-  return code
+  main_code += "\n\n"
+  gloss_code = ''
+  return [main_code,gloss_code,'foreignprose']
 end
 
 def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
@@ -148,8 +157,6 @@ def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   t = bilingual.foreign_text
   gloss_code = ''
   main_code = ''
-  main_code += "\\begin{foreignverse}\n"
-  if ransom then main_code += "\\begin{graytext}\n" end
   if !(start_chapter.nil?) then main_code += "\\mychapter{#{start_chapter}}\n\n" end # will be gray if on ransom page, because inside graytext environment
   lines = t.split(/\s*\n\s*/)
   if gloss_these.length>0 then
@@ -177,11 +184,8 @@ def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
     }
   end
   main_code = main_code + verse_lines_to_latex(lines,first_line_number,left_page_verse) + "\n\n"
-  if ransom then main_code = main_code + "\\end{graytext}\n" end
   gloss_code = "\n{\\linespread{1.0}\\footnotesize #{gloss_code} }\n"
-  code = main_code + gloss_code + "\\end{foreignverse}\n"
-  if bilingual.foreign.genos.greek then code = "\\begin{greek}\n#{code}\\end{greek}\n" end
-  return code
+  return [main_code,gloss_code,'foreignverse']
 end
 
 def render_gloss_for_foreign_page(line_hash,word,key,gloss,bilingual)
