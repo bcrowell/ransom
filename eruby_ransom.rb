@@ -132,17 +132,35 @@ def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   main_code = ''
   main_code += "\\enlargethispage{\\baselineskip}\n"
   text = bilingual.foreign_text
-  paras_and_delimiters = split_string_into_paragraphs(text)
-  0.upto(paras_and_delimiters.length/2-1) { |i| # guaranteed to be divisible by 2, see above
-    paragraph,delim = [paras_and_delimiters[2*i],paras_and_delimiters[2*i+1]]
-    a = split_string_at_whitespace(paragraph)
-    # ... returns an array like [['The',' '],['quick',' '],...]. Every element is guaranteed to be a two-element list.
-    a.each { |x|
-      word,whitespace = x
-      hash=WhereAt.auto_hash(word) # use this to pick data out of pos file
-      # do something with word and hash
+  if gloss_these.length>0 then
+    gg = gloss_these.map { |x| remove_accents(x)}
+    hashes = []
+    split_string_at_whitespace(text).each { |x|
+      word_for_hash,whitespace = x
+      hashes.push([word_for_hash,WhereAt.auto_hash(word_for_hash)]) # use this to pick data out of pos file
     }
-  }
+    j = 0 # index into words(text)
+    k = 0 # index into hashes
+    all_words = words(text)
+    match_up = []
+    while j<=all_words.length-1 && k<=hashes.length-1 do
+      # The two word-splitting algorithms differ a little, so if they get out of step, try to get them back in step.
+      # I think the algorithms can disagree on, e.g., "don't" or on a dash with whitespace before and after it, but the following
+      # should suffice for those cases because it's only a glitch that mismatches the two counters by one step.
+      j+= 1 if !(word_match(all_words[j],hashes[k][0])) && j<=all_words.length-2 && word_match(all_words[j+1],hashes[k][0])
+      k+= 1 if !(word_match(all_words[j],hashes[k][0])) && k<=hashes.length-2 && word_match(all_words[j],hashes[k+1][0])
+      if word_match(all_words[j],hashes[k][0]) then
+        match_up.push([all_words[j],hashes[k][1]]) 
+      else
+        raise("can't reconcile word lists, oh shit, j=#{j}, k=#{k}, #{all_words[j]}, #{hashes[k]}\n#{hashes}\n#{all_words}")
+      end
+      j += 1
+      k += 1
+    end
+    match_up.each { |x|
+      word,hash = x
+    }
+  end
   main_code += text.sub(/\s+$/,'') # strip trailing newlines to make sure that there is no paragraph break before the following:
   main_code += '{\parfillskip=0pt \emergencystretch=.5\textwidth \par}'
   # ... Force the final paragraph to be typeset as a paragraph, which is how it was typeset in the trial run.
@@ -150,6 +168,10 @@ def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   main_code += "\n\n"
   gloss_code = ''
   return [main_code,gloss_code,'foreignprose']
+end
+
+def word_match(x,y)
+  return (remove_punctuation(x).downcase==remove_punctuation(y).downcase)
 end
 
 def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
@@ -249,11 +271,6 @@ end
 
 def to_key(word)
   return remove_accents(word).downcase
-end
-
-def words(s)
-  # fixme: handle apostrophes
-  return s.scan(/[[:alpha:]]+/)
 end
 
 class Patch_names
