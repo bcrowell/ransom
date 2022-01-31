@@ -188,6 +188,14 @@ class IliadNotes
     'about_what'    => %q{ψεῦδός κεν φαῖμεν καὶ νοσφιζοίμεθα},
     'explain'       => %q{Homer uses the present optative for contrary-to-fact suppositions in the present.}
   }],
+  ["2.275" , {
+    'about_what'    => %q{ἔσχ(εν)},
+    'explain'       => %q{Ἔχω, usually meaning 'hold,' has a reduplicated form ἴσχω that always means 'hold back,' but sometimes, as here, ἔχω itself means 'hold back.'}
+  }],
+  ["2.275" , {
+    'about_what'    => %q{ἀγοράων},
+    'explain'       => %q{here, things said in assembly, harangues}
+  }],
 ]
 
 def IliadNotes.notes
