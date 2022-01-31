@@ -131,7 +131,19 @@ end
 def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
   main_code = ''
   main_code += "\\enlargethispage{\\baselineskip}\n"
-  main_code += bilingual.foreign_text.sub(/\s+$/,'') # strip trailing newlines to make sure that there is no paragraph break before the following:
+  text = bilingual.foreign_text
+  paras_and_delimiters = split_string_into_paragraphs(text)
+  0.upto(paras_and_delimiters.length/2-1) { |i| # guaranteed to be divisible by 2, see above
+    paragraph,delim = [paras_and_delimiters[2*i],paras_and_delimiters[2*i+1]]
+    a = split_string_at_whitespace(paragraph)
+    # ... returns an array like [['The',' '],['quick',' '],...]. Every element is guaranteed to be a two-element list.
+    a.each { |x|
+      word,whitespace = x
+      hash=WhereAt.auto_hash(word) # use this to pick data out of pos file
+      # do something with word and hash
+    }
+  }
+  main_code += text.sub(/\s+$/,'') # strip trailing newlines to make sure that there is no paragraph break before the following:
   main_code += '{\parfillskip=0pt \emergencystretch=.5\textwidth \par}'
   # ... Force the final paragraph to be typeset as a paragraph, which is how it was typeset in the trial run.
   #     https://tex.stackexchange.com/a/116573
@@ -192,7 +204,7 @@ def render_gloss_for_foreign_page(line_hash,word,key,gloss,bilingual)
   # Word is the inflected string. Key is the database key, i.e., the lemma with no accents. Gloss is a string.
   # Returns [code,new_gloss_code], where code writes the original word in white ink, i.e., erases it, and
   # new_gloss_code is the latex code to put the gloss in black, positioned on top of that.
-  pos = WhereAt.get_pos_data(line_hash,key) # a hash whose keys are "x","y","width","height","depth"
+  pos = WhereAt.get_pos_data(line_hash,key) # returns pos = a hash whose keys are "x","y","width","height","depth"
   if pos.nil? then raise "in foreign_helper, rendering ransom notes, position is nil for line_hash=#{line_hash}, key=#{key}" end
   pos = RansomGloss.tweak_gloss_geom_kludge_fixme(pos)
   a = RansomGloss.text_in_box(gloss,pos['width'],bilingual.translation.genos)

@@ -1,5 +1,25 @@
 # coding: utf-8
 
+def split_string_at_whitespace(text)
+  # Returns an array like [['The',' '],['quick',' '],...]. Every element is guaranteed to be a two-element list.
+  # In the final pair, the whitespace will be a null string if the text doesn't end with whitespace.
+  # This is basically meant for simple, reproducible word-by-word hashing (WhereAt.auto_hash), not for
+  # human-readable text processing, so don't use it for other purposes or fiddle with it to make it work
+  # for that purpose.
+  a = text.scan(/([^\s]+)(\s+)/) # produces an array like [['The',' '],['quick',' '],...], without last word
+  if text=~/([^\s]+)$/ then a.push([$1,'']) end # add final word
+  return a
+end
+
+def split_string_into_paragraphs(text)
+  # Returns a list like ["This is a paragraph.","\n\n","Another paragraph.","\n  \n\t\n",...].
+  # Guaranteed to have even length, so final element may be a null string.
+  # Like split_string_at_whitespace(), this is meant to be used for reproducible creation of hashes.
+  paras_and_delimiters = text.split(/(\s*(?:\n[ \t]*){2,}\s*)/) # even indices=paragraphs, odd=delimiters
+  if paras_and_delimiters.length%2==1 then paras_and_delimiters.push('') end # input doesn't end with a delimiter
+  return paras_and_delimiters
+end
+
 def substr(x,i,len)
   # Basically returns x[i..(i+len-1)], but doesn't do screwy stuff in cases like i=0, len=0.
   result = ''

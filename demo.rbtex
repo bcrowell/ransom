@@ -44,13 +44,13 @@ if format=='booklet_short' then matches = matches[0..17] end
 dry_run = !(ENV['DRY_RUN'].nil?)
 
 if Options.if_prose_trial_run then
+  WhereAt.reinitialize_auto_hash()
   print %q(\begin{foreignprose}),"\n"
   count_files = 0
   count_paragraphs = 0
   latin.get_contents.each { |file_contents|
     file_offset = 0
-    paras_and_delimiters = file_contents.split(/(\s*(?:\n[ \t]*){2,}\s*)/) # even indices=paragraphs, odd=delimiters
-    if paras_and_delimiters.length%2==1 then paras_and_delimiters.push('') end # doesn't end with a delimiter
+    paras_and_delimiters = split_string_into_paragraphs(file_contents)
     0.upto(paras_and_delimiters.length/2-1) { |i| # guaranteed to be divisible by 2, see above
       paragraph,delim = [paras_and_delimiters[2*i],paras_and_delimiters[2*i+1]]
       if paragraph!='' then
@@ -82,6 +82,9 @@ else
     #   length_ratio_tol_factor -- tolerance factor for the above ratio
 =end
 
+  # ... else block ...
+
+  WhereAt.reinitialize_auto_hash()
   paras = json_from_file_or_die("demo.para") # FIXME -- hardcoded filename
   paras.push(nil) # marker for end
   pages = []
@@ -125,7 +128,7 @@ else
       f.print vocab_by_chapter[ch].join("\n")+"\n"
     }
   }
-end
+end # else block
 
 %>
 

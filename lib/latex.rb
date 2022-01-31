@@ -65,6 +65,9 @@ class WhereAt
   # we've looked at so far.
   #
   @@auto_hash = ''
+  def WhereAt.reinitialize_auto_hash()
+    @@auto_hash = ''
+  end
   def WhereAt.hash(hashable)
     # input = data that, if possible, are totally unique to this line on the page, even if a line of poetry is repeated
     # I've tried doing this with a flat array whose elements are strings and integers, and it works fine.
@@ -122,8 +125,7 @@ class WhereAt
     text =~ /^(\s*)/ # match leading whitespace; match is guaranteed to succeed, but may be a null string
     offset = $1.length # a pointer into the file; initialize it to point past any initial whitespace
     substitutions = []
-    a = text.scan(/([^\s]+)(\s+)/) # produces an array like [['The',' '],['quick',' '],...], without last word
-    if text=~/([^\s]+)$/ then a.push([$1,'']) end # add final word
+    a = split_string_at_whitespace(text) # Returns an array like [['The',' '],['quick',' '],...]. Every element is guaranteed to be a two-element list.
     a.each { |x|
       word,whitespace = x
       l = word.length+whitespace.length
