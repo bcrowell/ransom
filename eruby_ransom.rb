@@ -132,33 +132,29 @@ def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   main_code = ''
   main_code += "\\enlargethispage{\\baselineskip}\n"
   text = bilingual.foreign_text
-  if gloss_these.length>0 then
+  if gloss_these.length>0 && Options.if_render_glosses then
     gg = gloss_these.map { |x| remove_accents(x)}
     hashes = []
     split_string_at_whitespace(text).each { |x|
       word_for_hash,whitespace = x
       hashes.push([word_for_hash,WhereAt.auto_hash(word_for_hash)]) # use this to pick data out of pos file
     }
-    j = 0 # index into words(text)
-    k = 0 # index into hashes
-    all_words = words(text)
-    match_up = []
-    while j<=all_words.length-1 && k<=hashes.length-1 do
-      # The two word-splitting algorithms differ a little, so if they get out of step, try to get them back in step.
-      # I think the algorithms can disagree on, e.g., "don't" or on a dash with whitespace before and after it, but the following
-      # should suffice for those cases because it's only a glitch that mismatches the two counters by one step.
-      j+= 1 if !(word_match(all_words[j],hashes[k][0])) && j<=all_words.length-2 && word_match(all_words[j+1],hashes[k][0])
-      k+= 1 if !(word_match(all_words[j],hashes[k][0])) && k<=hashes.length-2 && word_match(all_words[j],hashes[k+1][0])
-      if word_match(all_words[j],hashes[k][0]) then
-        match_up.push([all_words[j],hashes[k][1]]) 
-      else
-        raise("can't reconcile word lists, oh shit, j=#{j}, k=#{k}, #{all_words[j]}, #{hashes[k]}\n#{hashes}\n#{all_words}")
-      end
-      j += 1
-      k += 1
-    end
+    match_up = merge_word_lists(words(text),hashes) # result is list of pairs like [word from words(text),hash]
+    gloss_code = ''
     match_up.each { |x|
       word,hash = x
+      lemma = remove_accents(Lemmatize.lemmatize(word)[0]).downcase  # if the lemmatizer fails, it just returns the original word
+      gg.each { |x|
+        if lemma==x then
+          entry = Gloss.get(db,x,prefer_length:0) # it doesn't matter whether inputs have accents
+          if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
+          code = nil
+          new_gloss_code = nil
+          code,new_gloss_code=render_gloss_for_foreign_page(hash,word,to_key(x),gloss,bilingual)
+          if !(new_gloss_code.nil?) then gloss_code = gloss_code + new_gloss_code end
+          if !(code.nil?) then text = text.sub(/#{word}/,code) end
+        end
+      }
     }
   end
   main_code += text.sub(/\s+$/,'') # strip trailing newlines to make sure that there is no paragraph break before the following:
@@ -168,10 +164,6 @@ def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   main_code += "\n\n"
   gloss_code = ''
   return [main_code,gloss_code,'foreignprose']
-end
-
-def word_match(x,y)
-  return (remove_punctuation(x).downcase==remove_punctuation(y).downcase)
 end
 
 def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
@@ -273,6 +265,33 @@ def to_key(word)
   return remove_accents(word).downcase
 end
 
+def merge_word_lists(a,b)
+  # a is a list like ["Hello","how","are","you"], b is a list like [["Hello,",hash1],["how",hash2],["are",hash3],["you?",hash4]]
+  # returns [["Hello",hash1],["how",hash2],["are",hash3],["you",hash4]], attempting to deal with the differences because of punctuation
+  j = 0 # index into words(text)
+  k = 0 # index into hashes
+  match_up = []
+  while j<=a.length-1 && k<=b.length-1 do
+    # The two word-splitting algorithms differ a little, so if they get out of step, try to get them back in step.
+    # I think the algorithms can disagree on, e.g., "don't" or on a dash with whitespace before and after it, but the following
+    # should suffice for those cases because it's only a glitch that mismatches the two counters by one step.
+    j+= 1 if !(word_match(a[j],b[k][0])) && j<=a.length-2 && word_match(a[j+1],b[k][0])
+    k+= 1 if !(word_match(a[j],b[k][0])) && k<=b.length-2 && word_match(a[j],b[k+1][0])
+    if word_match(a[j],b[k][0]) then
+      match_up.push([a[j],b[k][1]]) 
+    else
+      raise("can't reconcile word lists, oh shit, j=#{j}, k=#{k}, #{a[j]}, #{b[k]}\n#{b}\n#{a}")
+    end
+    j += 1
+    k += 1
+  end
+  return match_up
+end
+
+def word_match(x,y)
+  return (remove_punctuation(x).downcase==remove_punctuation(y).downcase)
+end
+
 class Patch_names
   @@patches = {"Latona"=>"Leto","Ulysses"=>"Odysseus","Jove"=>"Zeus","Atrides"=>"Atreides","Minerva"=>"Athena","Juno"=>"Hera","Saturn"=>"Cronus",
                 "Vulcan"=>"Hephaestus"}
@@ -314,7 +333,7 @@ class Init
   require 'digest'
   if Options.if_clean then FileUtils.rm_f(WhereAt.file_path) end # Currently I open the file to write, not append, so this isn't necessary.
   if Options.if_write_pos then print WhereAt.latex_code_to_create_pos_file() end
-  if Options.if_render_glosses then @@pos=WhereAt.read_back_pos_file()  end
+  if Options.if_render_glosses then WhereAt.read_back_pos_file()  end
 end
 
 END {

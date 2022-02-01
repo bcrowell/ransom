@@ -116,7 +116,6 @@ class WhereAt
         if @@pos[key][name_of_datum].nil? then @@pos[key][name_of_datum]=value end
       }
     }
-    return @@pos
   end  
   def WhereAt.adorn_string_with_commands_to_write_pos_data(text,paragraph_count:nil,file_count:nil,starting_offset:0)
     adorned = text.dup
