@@ -131,7 +131,8 @@ end
 def foreign_prose(treebank,db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
   main_code = ''
   main_code += "\\enlargethispage{\\baselineskip}\n"
-  text = bilingual.foreign_text
+  text = clown(bilingual.foreign_text)
+  gloss_code = ''
   if gloss_these.length>0 then
     gg = gloss_these.map { |x| remove_accents(x)}
     hashes = []
@@ -140,7 +141,6 @@ def foreign_prose(treebank,db,bilingual,ransom,first_line_number,start_chapter,g
       hashes.push([word_for_hash,WhereAt.auto_hash(word_for_hash)]) # use this to pick data out of pos file
     }
     match_up = merge_word_lists(words(text),hashes) # result is list of pairs like [word from words(text),hash]
-    gloss_code = ''
     k = 0
     substitutions = {}
     match_up.each { |x|
@@ -173,7 +173,6 @@ def foreign_prose(treebank,db,bilingual,ransom,first_line_number,start_chapter,g
   # ... Force the final paragraph to be typeset as a paragraph, which is how it was typeset in the trial run.
   #     https://tex.stackexchange.com/a/116573
   main_code += "\n\n"
-  gloss_code = ''
   return [main_code,gloss_code,'foreignprose']
 end
 
