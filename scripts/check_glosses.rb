@@ -11,7 +11,7 @@ require_relative "../lib/string_util"
 count = 0
 count_errs = 0
 db = GlossDB.from_genos(GreekGenos.new('epic'))
-Dir.glob( 'glosses/*').each { |filename|
+Dir.glob(['glosses/*','glosses/_latin/*']).each { |filename|
   next if filename=~/~/
   next if filename=~/README/
   filename=~/(([[:alpha:]]|_)+)$/

@@ -72,7 +72,7 @@ figures:
 
 clean:
 	rm -f *~ *.aux *.log *.idx *.toc *.ilg *.bak *.toc $(BOOK).tex 
-	rm -f glosses/*~ help_gloss/*~
+	rm -f glosses/*~ glosses/_latin/*~ help_gloss/*~
 
 core: core/homer.json
 	#
