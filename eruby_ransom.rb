@@ -64,10 +64,10 @@ def print_four_page_layout(stuff,genos,db,wikt,bilingual,next_layout,vocab_by_ch
       raise "four-page layout spans books, #{bilingual.foreign_hr1} - #{bilingual.foreign_hr2}"
     end
   end
-  print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_chapter,notes)
+  print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,core,start_chapter,notes)
 end
 
-def print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_chapter,notes)
+def print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,core,start_chapter,notes)
   # prints
   # Doesn't get called if Options.if_prose_trial_run is set
   stuff = VocabPage.make(db,vl,core)
@@ -75,9 +75,9 @@ def print_four_page_layout_latex_helper(db,bilingual,next_layout,vl,core,start_c
   print tex
   if notes.length>0 then print Notes.to_latex(bilingual.foreign_linerefs,notes) end # FIXME: won't work if foreign text is prose, doesn't have linerefs
   print header_latex(bilingual) # includes pagebreak
-  print foreign(db,bilingual,bilingual.foreign_first_line_number,start_chapter),"\n\n"
+  print foreign(treebank,db,bilingual,bilingual.foreign_first_line_number,start_chapter),"\n\n"
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatglosses}%\n"
-  print ransom(db,bilingual,v,bilingual.foreign_first_line_number,start_chapter),"\n\n"
+  print ransom(treebank,db,bilingual,v,bilingual.foreign_first_line_number,start_chapter),"\n\n"
   print bilingual.translation_text
   # https://tex.stackexchange.com/a/308934
   layout_for_illustration = next_layout  # place illustration at bottom of page coming immediately before the *next* four-page layout
@@ -109,26 +109,26 @@ def not_nil_or_zero(x)
   return !(x.nil? || x==0)
 end
 
-def foreign(db,bilingual,first_line_number,start_chapter)
+def foreign(treebank,db,bilingual,first_line_number,start_chapter)
   if bilingual.foreign.is_verse then
-    main_code,garbage,environment = foreign_verse(db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
+    main_code,garbage,environment = foreign_verse(treebank,db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
   else
-    main_code,garbage,environment = foreign_prose(db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
+    main_code,garbage,environment = foreign_prose(treebank,db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
   end
   print postprocess_foreign_or_ransom('foreign',bilingual,main_code,environment,start_chapter)
 end
 
-def ransom(db,bilingual,v,first_line_number,start_chapter)
+def ransom(treebank,db,bilingual,v,first_line_number,start_chapter)
   common,uncommon,rare = v
   if bilingual.foreign.is_verse then
-    main_code,gloss_code,environment = foreign_verse(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
+    main_code,gloss_code,environment = foreign_verse(treebank,db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
   else
-    main_code,gloss_code,environment = foreign_prose(db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
+    main_code,gloss_code,environment = foreign_prose(treebank,db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
   end
   print postprocess_foreign_or_ransom('ransom',bilingual,main_code,environment,start_chapter,gloss_code:gloss_code)
 end
 
-def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
+def foreign_prose(treebank,db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
   main_code = ''
   main_code += "\\enlargethispage{\\baselineskip}\n"
   text = bilingual.foreign_text
@@ -145,7 +145,7 @@ def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
     substitutions = {}
     match_up.each { |x|
       word,hash = x
-      lemma = remove_accents(Lemmatize.lemmatize(word)[0]).downcase  # if the lemmatizer fails, it just returns the original word
+      lemma = remove_accents(treebank.lemmatize(word)[0]).downcase  # if the lemmatizer fails, it just returns the original word
       gg.each { |x|
         if lemma==x then
           entry = Gloss.get(db,x,prefer_length:0) # it doesn't matter whether inputs have accents
@@ -177,7 +177,7 @@ def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   return [main_code,gloss_code,'foreignprose']
 end
 
-def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
+def foreign_verse(treebank,db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
   # If gloss_these isn't empty, then we assume it contains a list of rare lemmatized forms.
   # Returns a string containing latex code.
   t = bilingual.foreign_text
@@ -190,7 +190,7 @@ def foreign_verse(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
       hashable = [lines[i],bilingual.hash,i] # should be totally unique to this line, even if a line of poetry is repeated
       line_hash = WhereAt.hash(hashable)
       w = words(lines[i])
-      ww = w.map { |x| remove_accents(Lemmatize.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
+      ww = w.map { |x| remove_accents(treebank.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
       gg.each { |x|
         if ww.include?(x) then # lemmatized version of line includes this rare lemma that we were asked to gloss
           j = ww.index(x)
@@ -317,24 +317,6 @@ class Patch_names
       text = text.gsub(/#{k}/,v)
     }
     return text
-  end
-end
-
-class Lemmatize
-  @@lemmas = TreeBank.new('homer').lemmas
-  # typical entry when there's no ambiguity:
-  #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
-  def Lemmatize.lemmatize(word)
-    # returns [lemma,success]
-    if @@lemmas.has_key?(word) then return Lemmatize.lemma_helper(word) end
-    if @@lemmas.has_key?(word.downcase) then return Lemmatize.lemma_helper(word.downcase) end
-    if @@lemmas.has_key?(capitalize(word)) then return Lemmatize.lemma_helper(capitalize(word)) end
-    return [word,false]
-  end
-
-  def Lemmatize.lemma_helper(word)
-    lemma,lemma_number,pos,count,if_ambiguous,ambig = @@lemmas[word]
-    return [lemma,true]
   end
 end
 

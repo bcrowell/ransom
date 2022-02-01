@@ -11,6 +11,21 @@ class TreeBank
   end
   attr_reader :lemmas,:lemmas_file
 
+  # Why do I have both this and word_to_lemma_entry?
+  def lemmatize(word)
+    # returns [lemma,success]
+    if @lemmas.has_key?(word) then return self.lemma_helper(word) end
+    if @lemmas.has_key?(word.downcase) then return self.lemma_helper(word.downcase) end
+    if @lemmas.has_key?(capitalize(word)) then return self.lemma_helper(capitalize(word)) end
+    return [word,false]
+  end
+
+  def lemma_helper(word)
+    lemma,lemma_number,pos,count,if_ambiguous,ambig = @lemmas[word]
+    return [lemma,true]
+  end
+
+  # Why do I have both this and lemmatize?
   def word_to_lemma_entry(word)
     # This only handles the case where the word occurs as an inflected form of some lemma. If word is a lemma but never occurs
     # in the text (e.g., λύω in the Iliad), then this function returns nil.
