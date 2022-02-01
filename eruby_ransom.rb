@@ -132,7 +132,7 @@ def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
   main_code = ''
   main_code += "\\enlargethispage{\\baselineskip}\n"
   text = bilingual.foreign_text
-  if gloss_these.length>0 && Options.if_render_glosses then
+  if gloss_these.length>0 then
     gg = gloss_these.map { |x| remove_accents(x)}
     hashes = []
     split_string_at_whitespace(text).each { |x|
@@ -141,6 +141,8 @@ def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
     }
     match_up = merge_word_lists(words(text),hashes) # result is list of pairs like [word from words(text),hash]
     gloss_code = ''
+    k = 0
+    substitutions = {}
     match_up.each { |x|
       word,hash = x
       lemma = remove_accents(Lemmatize.lemmatize(word)[0]).downcase  # if the lemmatizer fails, it just returns the original word
@@ -150,11 +152,20 @@ def foreign_prose(db,bilingual,ransom,first_line_number,start_chapter,gloss_thes
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil
-          code,new_gloss_code=render_gloss_for_foreign_page(hash,word,to_key(x),gloss,bilingual)
+          if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_pos(word,to_key(x),hash)  end
+          if Options.if_render_glosses then code,new_gloss_code=render_gloss_for_foreign_page(hash,word,to_key(x),gloss,bilingual) end
           if !(new_gloss_code.nil?) then gloss_code = gloss_code + new_gloss_code end
-          if !(code.nil?) then text = text.sub(/#{word}/,code) end
+          if !(code.nil?) then
+            marker = "__GLOSS#{k}__"
+            k += 1
+            text = text.sub(/#{word}/,marker)
+            substitutions[marker] = code
+          end
         end
       }
+    }
+    substitutions.keys.each { |marker|
+      text.sub!(/#{marker}/,substitutions[marker])
     }
   end
   main_code += text.sub(/\s+$/,'') # strip trailing newlines to make sure that there is no paragraph break before the following:
