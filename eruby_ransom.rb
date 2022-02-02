@@ -142,25 +142,26 @@ def foreign_prose(treebank,db,bilingual,ransom,first_line_number,start_chapter,r
       word_for_hash,whitespace = x
       hashes.push([word_for_hash,WhereAt.auto_hash(word_for_hash)]) # use this to pick data out of pos file
     }
-    match_up = merge_word_lists(words(text),hashes) # result is list of pairs like [word from words(text),hash]
+    match_up = merge_word_lists(words(text),hashes)
+    # result is list of triples like [word from words(text),word from split at whitespace,hash]
     k = 0
     substitutions = {}
     match_up.each { |x|
-      word,hash = x
-      lemma = remove_accents(treebank.lemmatize(word)[0]).downcase  # if the lemmatizer fails, it just returns the original word
+      word_bare,word_with_trailing_punct,hash = x
+      lemma = remove_accents(treebank.lemmatize(word_bare)[0]).downcase  # if the lemmatizer fails, it just returns the original word
       gg.each { |x|
         if lemma==x then
           entry = Gloss.get(db,x,prefer_length:0) # it doesn't matter whether inputs have accents
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil
-          if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_pos(word,to_key(x),hash)  end
-          if Options.if_render_glosses then code,new_gloss_code=render_gloss_for_foreign_page(hash,word,to_key(x),gloss,bilingual) end
+          if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_pos(word_with_trailing_punct,to_key(x),hash)  end
+          if Options.if_render_glosses then code,new_gloss_code=render_gloss_for_foreign_page(hash,word_with_trailing_punct,to_key(x),gloss,bilingual) end
           if !(new_gloss_code.nil?) then gloss_code = gloss_code + new_gloss_code end
           if !(code.nil?) then
             marker = "__GLOSS#{k}__"
             k += 1
-            text = text.sub(/#{word}/,marker)
+            text = text.sub(/#{word_with_trailing_punct}/,marker)
             substitutions[marker] = code
           end
         end
@@ -279,8 +280,9 @@ def to_key(word)
 end
 
 def merge_word_lists(a,b)
-  # a is a list like ["Hello","how","are","you"], b is a list like [["Hello,",hash1],["how",hash2],["are",hash3],["you?",hash4]]
-  # returns [["Hello",hash1],["how",hash2],["are",hash3],["you",hash4]], attempting to deal with the differences because of punctuation
+  # Inputs: a is a list like ["Hello","how","are","you"], b is a list like [["Hello,",hash1],["how",hash2],["are",hash3],["you?",hash4]],
+  # where the main difference between the results of the two splitting algorithms is expected to be that in b, words include trailing punctuation.
+  # Returns [["Hello","Hello,",hash1],...].
   j = 0 # index into words(text)
   k = 0 # index into hashes
   match_up = []
@@ -291,7 +293,7 @@ def merge_word_lists(a,b)
     j+= 1 if !(word_match(a[j],b[k][0])) && j<=a.length-2 && word_match(a[j+1],b[k][0])
     k+= 1 if !(word_match(a[j],b[k][0])) && k<=b.length-2 && word_match(a[j],b[k+1][0])
     if word_match(a[j],b[k][0]) then
-      match_up.push([a[j],b[k][1]]) 
+      match_up.push([a[j],b[k][0],b[k][1]]) 
     else
       raise("can't reconcile word lists, oh shit, j=#{j}, k=#{k}, #{a[j]}, #{b[k]}\n#{b}\n#{a}")
     end

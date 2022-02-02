@@ -119,7 +119,8 @@
 \newenvironment{widespacing}{\linespread{1.5}\selectfont}{}
 % ... \selectfont is needed or else \linespread won't take effect until the next change of font
 \newenvironment{foreignprose}%
-     {\sloppy\newgeometry{bottom=\foreignprosebottommargin,outer=\foreignproseoutermargin}\begin{widespacing}}%
+     {\par\sloppy\newgeometry{bottom=\foreignprosebottommargin,outer=\foreignproseoutermargin}\begin{widespacing}\par}%
+     % ... the \par above is necessary, otherwise \sloppy doesn't take effect yet, and we get hyphenation
      {\end{widespacing}\restoregeometry}
 \newenvironment{foreignverse}{%
   \expandafter\newgeometry\expandafter{\genericgeometryoptions,bottom=\foreignversebottommargin}

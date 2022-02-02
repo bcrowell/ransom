@@ -179,7 +179,7 @@ class WhereAt
     code = %q(\savebox{\myboxregister}{WORD}%
       \makebox{\pdfsavepos\usebox{\myboxregister}}%
       \immediate\write\posoutputfile{LINE_HASH;;LINE;KEY;;;\the\wd\myboxregister;\the\ht\myboxregister;\the\dp\myboxregister;EXTRA1;}%
-      \write\posoutputfile{LINE_HASH;\thepage;LINE;KEY;\the\pdflastxpos;\the\pdflastypos;;;;;EXTRA2}%
+      \write\posoutputfile{LINE_HASH;\thepage;LINE;KEY;\the\pdflastxpos;\the\pdflastypos;;;;;EXTRA2}
     )
     code.gsub!(/LINE_HASH/,line_hash)
     code.gsub!(/WORD/,word)
