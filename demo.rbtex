@@ -6,8 +6,8 @@ load 'eruby_ransom.rb'
 
 author = "petronius"
 treebank = TreeBank.new(author)
-freq_file = nil # "lemmas/#{author}_freq.json"
-foreign_genos = Genos.new('la')
+foreign_genos = LatinGenos.new('classical')
+freq = Frequency.new("lemmas/classical_latin_freq.json")
 db = GlossDB.from_genos(foreign_genos)
 latin_wikt = WiktionaryGlosses.new(foreign_genos)
 if latin_wikt.invalid then latin_wikt=nil end
@@ -17,7 +17,7 @@ translation = Epos.new("text/petronius/satyricon_62_firebaugh.txt","latin",false
 
 notes = []
 
-stuff = treebank,freq_file,latin,translation,notes,core
+stuff = treebank,freq,latin,translation,notes,core
 
 if foreign_genos.greek then print "\n\n\\foreignisgreekscript\n\n" end
 

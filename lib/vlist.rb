@@ -9,8 +9,6 @@ def initialize(list)
   # The pos field is a 9-character string in the format used by Project Perseus:
   #   https://github.com/cltk/greek_treebank_perseus (scroll down)
   # The lexical and pos tagging may be wrong if the word can occur in more than one way.
-  # The difficult_to_recognize flag is not completely accurate at this stage, because we don't look at
-  # the gloss files, which has info about whether the verb has an aorist that is difficult to recognize.
   # The Vlist class and its initializers mostly don't know or care about the gloss files, and a
   # Vlist object doesn't contain an English translation or any of the other data from the gloss file.
   # However, as a convenience, the Vlist.from_text() initializer will try to supply missing glosses from
@@ -43,40 +41,27 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,treebank,freq_file,genos,db,wikt,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil)
+def Vlist.from_text(t,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil)
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
-  # The frequency list is optional; if not using one, then set freq_file to nil. The main use of it is that if the
+  # The frequency list is optional; if not using one, then set freq to nil. The main use of it is that if the
   # glossary would be too long, we delete the most common words to cut it down to an appropriate length. If no frequency
-  # file is given, then the choice of which words to cut is random/undefined.
+  # list is given, then the choice of which words to cut is random/undefined.
   # The wikt argument is a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated.
   # FIXME: rereads the frequency file and processes it every time it's called
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
-  if freq_file.nil?
-    then freq = {}
+  if freq.nil? then
     using_thresholds = false
-    if core.nil? then raise "both freq_file and core are nil" end
+    if core.nil? then raise "both freq and core are nil" end
   else
-    freq = json_from_file_or_die(freq_file)
     using_thresholds = true
   end
-  freq_list = freq.to_a
-  freq_list.sort! { |a,b| b[1] <=> a[1]} # descending order by frequency; is probably already sorted, so this will be fast
-  # ... a list of pairs like [["δέ", 12136], ["ὁ" , 5836], ...]; not a problem if it's empty
   whine = []
 
   t.gsub!(/\d/,'')
   if genos.greek then t.gsub!(/᾽(?=[[:alpha:]])/,"᾽ ") end # e.g., ποτ᾽Ἀθήνη
   t = t.unicode_normalize(:nfc)
-
-  freq_rank = {} # if freq_file was not supplied, then this ranking will be random/undefined
-  rank = 1
-  freq_list.each { |a|
-    lemma,count = a
-    freq_rank[lemma] = rank
-    rank += 1
-  }
 
   # If no frequency file is supplied, then the following are not actually used; we just gloss every word that's not in the core list.
   threshold_difficult = thresholds[0] # words ranked lower than this may be glossed if they're difficult forms to recognize
@@ -115,8 +100,7 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,wikt,thresholds:[1,50,700,700]
     [lemma,word].each { |x| excl = excl || exclude_glosses.include?(remove_accents(x).downcase) }
     next if excl
     did_lemma[lemma] = 1
-    rank = freq_rank[lemma]
-    f = freq[lemma]
+    if freq.nil? then rank=1 else rank=freq.rank(lemma) end
     misc = {}
     is_verb = (pos=~/^[vt]/)
     difficult_to_recognize = false
@@ -132,25 +116,25 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,wikt,thresholds:[1,50,700,700]
       if is_epic then misc['is_epic']=true end
     end
     if using_thresholds then
-      gloss_this = ( rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize) )
+      gloss_this = ( rank.nil? || rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize) )
     else
       gloss_this = !(core.include?(lemma))
     end
     next unless gloss_this
     misc['difficult_to_recognize'] = difficult_to_recognize
-    entry = word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc
+    entry = word_raw,word,lemma,rank,pos,difficult_to_recognize,misc
     # ... word and word_raw are not super useful, in many cases will be just the first example in this passage
     #$stderr.print "entry=#{entry}\n"
     result.push(entry)
   }
 
   # If we have too many words, delete the most common ones.
-  result.sort! { |a,b| b[4] <=> a[4] } # descending order by frequency
+  result.sort! { |a,b| a[3] <=> b[3] } # descending order by frequency (i.e., increasing order by frequency rank)
   while result.length>max_entries do
     kill_em = nil
     count = 0
     result.each { |entry|
-      word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc = entry
+      word_raw,word,lemma,rank,pos,difficult_to_recognize,misc = entry
       if !difficult_to_recognize then kill_em=count; break end
       count += 1
     }
@@ -165,10 +149,10 @@ def Vlist.from_text(t,treebank,freq_file,genos,db,wikt,thresholds:[1,50,700,700]
   0.upto(2) { |commonness|
     this_part_of_result2 = []
     result.sort { |a,b| a[1] <=> b[1] } .each { |entry|
-      word_raw,word,lemma,rank,f,pos,difficult_to_recognize,misc = entry
+      word_raw,word,lemma,rank,pos,difficult_to_recognize,misc = entry
       next if Proper_noun.is(word_raw,lemma) # ... use word_raw to preserve capitalization, since some proper nouns have the same letters as other words
       next if Ignore_words.patch(word) || Ignore_words.patch(lemma)
-      if !freq_file.nil? then
+      if !freq.nil? then
         skip = false
         skip = skip || !(!rank.nil? && rank>=threshold_difficult)
         skip = skip || (rank<threshold_no_gloss && !difficult_to_recognize)

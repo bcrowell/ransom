@@ -6,7 +6,7 @@ load 'eruby_ransom.rb'
 
 author = "homer"
 treebank = TreeBank.new(author)
-freq_file = "lemmas/#{author}_freq.json"
+freq = Frequency.new("lemmas/#{author}_freq.json")
 foreign_genos = GreekGenos.new('epic',is_verse:true)
 greek_wikt = WiktionaryGlosses.new(foreign_genos)
 if greek_wikt.invalid then greek_wikt=nil end
@@ -18,7 +18,7 @@ translation = Epos.new("text/buckley_iliad.txt","latin",false,genos:Genos.new('e
 load "iliad/notes.rb"
 notes = IliadNotes.notes
 
-stuff = treebank,freq_file,greek,translation,notes,core
+stuff = treebank,freq,greek,translation,notes,core
 Options.set('fig_dir','iliad/figs')
 Illustrations.init
 
