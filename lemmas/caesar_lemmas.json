@@ -1,0 +1,7252 @@
+{
+  "-que": [
+    "-que",
+    "1",
+    "c--------",
+    38,
+    true,
+    [
+      [
+        "-que",
+        "1",
+        "c--------",
+        38
+      ],
+      [
+        "-que",
+        "",
+        "c--------",
+        3
+      ]
+    ]
+  ],
+  "Ambianorum": [
+    "Ambianus",
+    "1",
+    "n-p---mg-",
+    1,
+    false,
+    null
+  ],
+  "Andebrogium": [
+    "Andebrogius",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "Atrebatibus": [
+    "Atrebates",
+    "1",
+    "n-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "Atuatucorum": [
+    "Atuatuci",
+    "1",
+    "n-p---mg-",
+    1,
+    false,
+    null
+  ],
+  "Aulercos": [
+    "Aulerci",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "Axonam": [
+    "Axona",
+    "1",
+    "n-s---ma-",
+    2,
+    false,
+    null
+  ],
+  "Baleares": [
+    "Baliaris",
+    "",
+    "a-p---ma_",
+    1,
+    false,
+    null
+  ],
+  "Belgae": [
+    "Belgae",
+    "1",
+    "n-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "Belgarum": [
+    "Belgae",
+    "1",
+    "n-p---mg-",
+    2,
+    false,
+    null
+  ],
+  "Belgas": [
+    "Belgae",
+    "1",
+    "n-p---ma-",
+    3,
+    true,
+    [
+      [
+        "Belgae",
+        "1",
+        "n-p---ma-",
+        3
+      ],
+      [
+        "Belgae",
+        "",
+        "n-p---ma-",
+        1
+      ]
+    ]
+  ],
+  "Belgis": [
+    "Belgae",
+    "1",
+    "n-p---mb-",
+    2,
+    true,
+    [
+      [
+        "Belgae",
+        "1",
+        "n-p---mb-",
+        2
+      ],
+      [
+        "Belgae",
+        "1",
+        "n-p---md-",
+        1
+      ]
+    ]
+  ],
+  "Bellovacorum": [
+    "Bellovaci",
+    "1",
+    "n-p---mg-",
+    1,
+    false,
+    null
+  ],
+  "Caesar": [
+    "Caesar",
+    "1",
+    "n-s---mn-",
+    11,
+    true,
+    [
+      [
+        "Caesar",
+        "1",
+        "n-s---mn-",
+        11
+      ],
+      [
+        "Caesar",
+        "",
+        "n-s---mn-",
+        1
+      ]
+    ]
+  ],
+  "Caesaris": [
+    "Caesar",
+    "1",
+    "n-s---mg-",
+    1,
+    false,
+    null
+  ],
+  "Coriosolitas": [
+    "Coriosolitae",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "Crasso": [
+    "Crassus",
+    "2",
+    "n-s---mb-",
+    1,
+    false,
+    null
+  ],
+  "Cretas": [
+    "Cres",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "Diviciaci": [
+    "Diviciacus",
+    "1",
+    "n-s---mg-",
+    1,
+    false,
+    null
+  ],
+  "Diviciacum": [
+    "Diviciacus",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "Esuvios": [
+    "Esuvii",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "Gallia": [
+    "Gallia",
+    "1",
+    "n-s---fb-",
+    5,
+    true,
+    [
+      [
+        "Gallia",
+        "1",
+        "n-s---fb-",
+        5
+      ],
+      [
+        "Gallia",
+        "",
+        "n-s---fb-",
+        1
+      ]
+    ]
+  ],
+  "Galliae": [
+    "Gallia",
+    "",
+    "n-s---fg-",
+    1,
+    true,
+    [
+      [
+        "Gallia",
+        "",
+        "n-s---fg-",
+        1
+      ],
+      [
+        "Gallia",
+        "1",
+        "n-s---fd-",
+        1
+      ]
+    ]
+  ],
+  "Galliam": [
+    "Gallia",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "Gallis": [
+    "Galli",
+    "1",
+    "n-p---mb-",
+    1,
+    true,
+    [
+      [
+        "Galli",
+        "1",
+        "n-p---mb-",
+        1
+      ],
+      [
+        "Galli",
+        "1",
+        "n-p---md-",
+        1
+      ]
+    ]
+  ],
+  "Germanos": [
+    "Germani",
+    "1",
+    "n-p---ma-",
+    2,
+    false,
+    null
+  ],
+  "Haedui": [
+    "Aedui",
+    "1",
+    "n-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "Haeduorum": [
+    "Aedui",
+    "1",
+    "n-p---mg-",
+    1,
+    false,
+    null
+  ],
+  "Haeduum": [
+    "Aeduus",
+    "",
+    "a-s---ma_",
+    1,
+    false,
+    null
+  ],
+  "Iccio": [
+    "Iccius",
+    "1",
+    "n-s---mb-",
+    1,
+    false,
+    null
+  ],
+  "Iccium": [
+    "Iccius",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "LIII.": [
+    "LIII",
+    "",
+    "m-_---__-",
+    1,
+    false,
+    null
+  ],
+  "Labieni": [
+    "Labienus",
+    "",
+    "n-s---mg-",
+    1,
+    false,
+    null
+  ],
+  "Nervii": [
+    "Nervii",
+    "1",
+    "n-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "Nervios": [
+    "Nervii",
+    "1",
+    "n-p---ma-",
+    2,
+    false,
+    null
+  ],
+  "Numidas": [
+    "Numida",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "Oceanum": [
+    "Oceanus",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "Osismos": [
+    "Osismi",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "P": [
+    "Publius",
+    "",
+    "n-s---mb-",
+    1,
+    false,
+    null
+  ],
+  "Pedium": [
+    "Pedius",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "Q": [
+    "Quintus",
+    "2",
+    "n-s---ma-",
+    2,
+    true,
+    [
+      [
+        "Quintus",
+        "2",
+        "n-s---ma-",
+        2
+      ],
+      [
+        "Quintus",
+        "2",
+        "n-s---mn-",
+        1
+      ]
+    ]
+  ],
+  "Redones": [
+    "Redones",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "Remi": [
+    "Remi",
+    "1",
+    "n-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "Remis": [
+    "Remi",
+    "1",
+    "n-p---mb-",
+    2,
+    true,
+    [
+      [
+        "Remi",
+        "1",
+        "n-p---mb-",
+        2
+      ],
+      [
+        "Remi",
+        "1",
+        "n-p---md-",
+        1
+      ]
+    ]
+  ],
+  "Remorum": [
+    "Remi",
+    "1",
+    "n-p---mg-",
+    3,
+    false,
+    null
+  ],
+  "Remos": [
+    "Remi",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "Rhenum": [
+    "Rhenus",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "Romani": [
+    "Romanus",
+    "1",
+    "a-s---mg-",
+    3,
+    false,
+    null
+  ],
+  "Romano": [
+    "Romanus",
+    "1",
+    "a-s---md-",
+    1,
+    false,
+    null
+  ],
+  "Romanorum": [
+    "Romanus",
+    "",
+    "a-p---mg_",
+    1,
+    false,
+    null
+  ],
+  "Romanum": [
+    "Romanus",
+    "",
+    "a-s---ma_",
+    1,
+    true,
+    [
+      [
+        "Romanus",
+        "",
+        "a-s---ma_",
+        1
+      ],
+      [
+        "Romanus",
+        "1",
+        "a-s---ma-",
+        1
+      ]
+    ]
+  ],
+  "Sabim": [
+    "Sabis",
+    "1",
+    "n-s---ma-",
+    2,
+    false,
+    null
+  ],
+  "Sabinum": [
+    "Sabinus",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "Senonibus": [
+    "Senones",
+    "1",
+    "n-p---md-",
+    1,
+    false,
+    null
+  ],
+  "Suessiones": [
+    "Suessiones",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "Titurium": [
+    "Titurius",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "Titurius": [
+    "Titurius",
+    "1",
+    "n-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "Venellos": [
+    "Venelli",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "Venetos": [
+    "Veneti",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "Viromanduis": [
+    "Viromandui",
+    "1",
+    "n-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "a": [
+    "ab",
+    "1",
+    "r--------",
+    7,
+    false,
+    null
+  ],
+  "ab": [
+    "ab",
+    "1",
+    "r--------",
+    15,
+    true,
+    [
+      [
+        "ab",
+        "1",
+        "r--------",
+        15
+      ],
+      [
+        "ab",
+        "1",
+        "r--------",
+        1
+      ],
+      [
+        "ab",
+        "1",
+        "r--------",
+        1
+      ]
+    ]
+  ],
+  "abditi": [
+    "abdo",
+    "",
+    "v-prppmn-",
+    1,
+    false,
+    null
+  ],
+  "abesse": [
+    "absum",
+    "1",
+    "v--pna---",
+    2,
+    false,
+    null
+  ],
+  "ac": [
+    "atque",
+    "1",
+    "c--------",
+    3,
+    false,
+    null
+  ],
+  "accepturos": [
+    "accipio",
+    "1",
+    "v-pfpama-",
+    1,
+    false,
+    null
+  ],
+  "accessit": [
+    "accedo",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "acciperent": [
+    "accipio",
+    "1",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "acclivitate": [
+    "acclivitas",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "aciem": [
+    "acies",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "acies": [
+    "acies",
+    "1",
+    "n-p---fa-",
+    1,
+    false,
+    null
+  ],
+  "acriter": [
+    "acer",
+    "2",
+    "d-------_",
+    1,
+    false,
+    null
+  ],
+  "ad": [
+    "ad",
+    "1",
+    "r--------",
+    28,
+    true,
+    [
+      [
+        "ad",
+        "1",
+        "r--------",
+        28
+      ],
+      [
+        "ad",
+        "1",
+        "d--------",
+        1
+      ]
+    ]
+  ],
+  "adduceretur": [
+    "adduco",
+    "1",
+    "v3sisp---",
+    1,
+    false,
+    null
+  ],
+  "adduci": [
+    "adduco",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "adferebantur": [
+    "affero",
+    "",
+    "v3piip---",
+    1,
+    false,
+    null
+  ],
+  "adgrederentur": [
+    "aggredior",
+    "",
+    "v3pisd---",
+    1,
+    false,
+    null
+  ],
+  "adire": [
+    "adeo",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "aditum": [
+    "aditus",
+    "2",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "aditus": [
+    "aditus",
+    "2",
+    "n-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "adpropinquabat": [
+    "appropinquo",
+    "1",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "adventu": [
+    "adventus",
+    "1",
+    "n-s---mb-",
+    1,
+    false,
+    null
+  ],
+  "adventum": [
+    "adventus",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "adverso": [
+    "adverto",
+    "",
+    "v-srppmb-",
+    1,
+    false,
+    null
+  ],
+  "adversus": [
+    "adverto",
+    "",
+    "v-srppmn-",
+    1,
+    false,
+    null
+  ],
+  "aedificiis": [
+    "aedificium",
+    "1",
+    "n-p---nb-",
+    1,
+    false,
+    null
+  ],
+  "aequaliter": [
+    "aequalis",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "aestate": [
+    "aestas",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "aetatem": [
+    "aetas",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "agmen": [
+    "agmen",
+    "1",
+    "n-s---na-",
+    1,
+    false,
+    null
+  ],
+  "agminis": [
+    "agmen",
+    "1",
+    "n-s---ng-",
+    1,
+    false,
+    null
+  ],
+  "agros": [
+    "ager",
+    "1",
+    "n-p---ma-",
+    3,
+    false,
+    null
+  ],
+  "aliter": [
+    "alius",
+    "2",
+    "d-------_",
+    1,
+    false,
+    null
+  ],
+  "altera": [
+    "alter",
+    "1",
+    "a-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "altitudinem": [
+    "altitudo",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "altitudo": [
+    "altitudo",
+    "1",
+    "n-s---fn-",
+    1,
+    false,
+    null
+  ],
+  "amplius": [
+    "amplus",
+    "",
+    "d-------c",
+    2,
+    false,
+    null
+  ],
+  "animi": [
+    "animus",
+    "1",
+    "n-s---mg-",
+    1,
+    false,
+    null
+  ],
+  "animos": [
+    "animus",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "ante": [
+    "ante",
+    "1",
+    "d--------",
+    2,
+    false,
+    null
+  ],
+  "aperta": [
+    "aperio",
+    "1",
+    "v-prppnn-",
+    1,
+    false,
+    null
+  ],
+  "aperto": [
+    "aperio",
+    "",
+    "v-srppmb-",
+    1,
+    false,
+    null
+  ],
+  "apertus": [
+    "aperio",
+    "",
+    "v-srppmn-",
+    1,
+    false,
+    null
+  ],
+  "apud": [
+    "apud",
+    "1",
+    "r--------",
+    2,
+    false,
+    null
+  ],
+  "arduus": [
+    "arduus",
+    "1",
+    "a-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "armis": [
+    "arma",
+    "1",
+    "n-p---nb-",
+    4,
+    false,
+    null
+  ],
+  "ascensus": [
+    "ascensus",
+    "2",
+    "n-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "atque": [
+    "atque",
+    "1",
+    "c--------",
+    13,
+    false,
+    null
+  ],
+  "attingebant": [
+    "attingo",
+    "1",
+    "v3piia---",
+    1,
+    false,
+    null
+  ],
+  "attingunt": [
+    "attingo",
+    "1",
+    "v3ppia---",
+    1,
+    false,
+    null
+  ],
+  "auctoritate": [
+    "auctoritas",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "auderent": [
+    "audeo",
+    "1",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "aut": [
+    "aut",
+    "1",
+    "c--------",
+    2,
+    false,
+    null
+  ],
+  "autem": [
+    "autem",
+    "1",
+    "c--------",
+    2,
+    false,
+    null
+  ],
+  "belli": [
+    "bellum",
+    "1",
+    "n-s---ng-",
+    1,
+    false,
+    null
+  ],
+  "bellum": [
+    "bellum",
+    "1",
+    "n-s---na-",
+    1,
+    false,
+    null
+  ],
+  "capitum": [
+    "caput",
+    "1",
+    "n-p---ng-",
+    1,
+    false,
+    null
+  ],
+  "captivis": [
+    "captivus",
+    "1",
+    "n-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "castellis": [
+    "castellum",
+    "1",
+    "n-p---nb-",
+    1,
+    false,
+    null
+  ],
+  "castellum": [
+    "castellum",
+    "1",
+    "n-s---na-",
+    1,
+    false,
+    null
+  ],
+  "castra": [
+    "castrum",
+    "1",
+    "n-p---na-",
+    9,
+    true,
+    [
+      [
+        "castrum",
+        "1",
+        "n-p---na-",
+        9
+      ],
+      [
+        "castrum",
+        "1",
+        "n-p---nn-",
+        1
+      ]
+    ]
+  ],
+  "castris": [
+    "castrum",
+    "1",
+    "n-p---nb-",
+    1,
+    true,
+    [
+      [
+        "castrum",
+        "1",
+        "n-p---nb-",
+        1
+      ],
+      [
+        "castrum",
+        "",
+        "n-p---nd-",
+        1
+      ]
+    ]
+  ],
+  "castrorum": [
+    "castrum",
+    "1",
+    "n-p---ng-",
+    1,
+    false,
+    null
+  ],
+  "causa": [
+    "causa",
+    "1",
+    "n-s---fb-",
+    2,
+    false,
+    null
+  ],
+  "causas": [
+    "causa",
+    "1",
+    "n-p---fa-",
+    1,
+    false,
+    null
+  ],
+  "cc": [
+    "centum",
+    "",
+    "m-_---__-",
+    1,
+    false,
+    null
+  ],
+  "cedentes": [
+    "cedo",
+    "1",
+    "v-ppp-ma-",
+    1,
+    false,
+    null
+  ],
+  "celaverant": [
+    "celo",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "celeritate": [
+    "celeritas",
+    "1",
+    "n-s---fb-",
+    2,
+    false,
+    null
+  ],
+  "celeriter": [
+    "celeriter",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "celerius": [
+    "celer",
+    "1",
+    "d-------c",
+    1,
+    false,
+    null
+  ],
+  "certior": [
+    "certus",
+    "",
+    "a-s---mnc",
+    1,
+    true,
+    [
+      [
+        "certus",
+        "",
+        "a-s---mnc",
+        1
+      ],
+      [
+        "certus",
+        "1",
+        "a-s---mnc",
+        1
+      ]
+    ]
+  ],
+  "certiorem": [
+    "certus",
+    "1",
+    "a-s---mac",
+    1,
+    false,
+    null
+  ],
+  "ceteris": [
+    "ceterus",
+    "1",
+    "a-p---fb-",
+    1,
+    false,
+    null
+  ],
+  "circiter": [
+    "circiter",
+    "1",
+    "d--------",
+    3,
+    false,
+    null
+  ],
+  "cis": [
+    "cis",
+    "1",
+    "r--------",
+    1,
+    false,
+    null
+  ],
+  "citeriore": [
+    "citer",
+    "",
+    "a-s---fbc",
+    1,
+    true,
+    [
+      [
+        "citer",
+        "",
+        "a-s---fbc",
+        1
+      ],
+      [
+        "citer",
+        "1",
+        "a-s---fbc",
+        1
+      ]
+    ]
+  ],
+  "civitas": [
+    "civitas",
+    "1",
+    "n-s---fn-",
+    1,
+    false,
+    null
+  ],
+  "civitates": [
+    "civitas",
+    "1",
+    "n-p---fn-",
+    1,
+    true,
+    [
+      [
+        "civitas",
+        "1",
+        "n-p---fn-",
+        1
+      ],
+      [
+        "civitas",
+        "1",
+        "n-p---fa-",
+        1
+      ]
+    ]
+  ],
+  "civitatibus": [
+    "civitas",
+    "1",
+    "n-p---fb-",
+    1,
+    false,
+    null
+  ],
+  "civitatis": [
+    "civitas",
+    "1",
+    "n-s---fg-",
+    1,
+    false,
+    null
+  ],
+  "claudebant": [
+    "claudo",
+    "1",
+    "v3piia---",
+    1,
+    false,
+    null
+  ],
+  "claudi": [
+    "claudo",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "coactas": [
+    "cogo",
+    "1",
+    "v-prppfa-",
+    1,
+    false,
+    null
+  ],
+  "coeperint": [
+    "coepio",
+    "",
+    "v3prsa---",
+    1,
+    false,
+    null
+  ],
+  "coeperunt": [
+    "coepio",
+    "1",
+    "v3pria---",
+    1,
+    false,
+    null
+  ],
+  "cogi": [
+    "cogo",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "cognoscant": [
+    "cognosco",
+    "1",
+    "v3ppsa---",
+    1,
+    false,
+    null
+  ],
+  "cognovit": [
+    "cognosco",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "cohortatus": [
+    "cohortor",
+    "1",
+    "v-srpdmn_",
+    1,
+    true,
+    [
+      [
+        "cohortor",
+        "1",
+        "v-srpdmn_",
+        1
+      ],
+      [
+        "cohortor",
+        "",
+        "v-srpdmn_",
+        1
+      ]
+    ]
+  ],
+  "cohortibus": [
+    "cohors",
+    "1",
+    "n-p---fb-",
+    1,
+    false,
+    null
+  ],
+  "colle": [
+    "collis",
+    "1",
+    "n-s---mb-",
+    1,
+    false,
+    null
+  ],
+  "collis": [
+    "collis",
+    "1",
+    "n-s---mn-",
+    2,
+    false,
+    null
+  ],
+  "commeatu": [
+    "commeatus",
+    "1",
+    "n-s---mb-",
+    1,
+    false,
+    null
+  ],
+  "commeatus": [
+    "commeatus",
+    "",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "commiserunt": [
+    "committo",
+    "1",
+    "v3pria---",
+    1,
+    false,
+    null
+  ],
+  "committendi": [
+    "committo",
+    "",
+    "v-s-g-ng-",
+    1,
+    false,
+    null
+  ],
+  "commotus": [
+    "commoveo",
+    "1",
+    "v-srppmn-",
+    1,
+    false,
+    null
+  ],
+  "communis": [
+    "communis",
+    "1",
+    "a-s---fg-",
+    1,
+    false,
+    null
+  ],
+  "conati": [
+    "conor",
+    "",
+    "v-prpdmn_",
+    1,
+    false,
+    null
+  ],
+  "concursum": [
+    "concurro",
+    "1",
+    "v-srppnn-",
+    1,
+    false,
+    null
+  ],
+  "condicionem": [
+    "condicio",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "conducendos": [
+    "conduco",
+    "",
+    "v-p-g-ma-",
+    1,
+    false,
+    null
+  ],
+  "conduci": [
+    "conduco",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "confirmare": [
+    "confirmo",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "confirmaverant": [
+    "confirmo",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "confligendum": [
+    "confligo",
+    "",
+    "v-s-g-nn-",
+    1,
+    false,
+    null
+  ],
+  "coniecisse": [
+    "conicio",
+    "1",
+    "v--rna---",
+    1,
+    false,
+    null
+  ],
+  "coniunxisse": [
+    "conjungo",
+    "1",
+    "v--rna---",
+    1,
+    false,
+    null
+  ],
+  "coniurandi": [
+    "conjuro",
+    "",
+    "v___d_-g-",
+    1,
+    false,
+    null
+  ],
+  "coniurare": [
+    "conjuro",
+    "",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "coniurasse": [
+    "conjuro",
+    "1",
+    "v--rna---",
+    1,
+    false,
+    null
+  ],
+  "conlatis": [
+    "confero",
+    "1",
+    "v-prppnb-",
+    1,
+    false,
+    null
+  ],
+  "conlocarat": [
+    "conloco",
+    "1",
+    "v3slia---",
+    1,
+    false,
+    null
+  ],
+  "consanguineos": [
+    "consanguineus",
+    "",
+    "a-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "conscripsit": [
+    "conscribo",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "conscriptae": [
+    "conscribo",
+    "1",
+    "v-prppfn-",
+    1,
+    false,
+    null
+  ],
+  "consedisse": [
+    "consido",
+    "1",
+    "v--rna---",
+    1,
+    false,
+    null
+  ],
+  "consensisse": [
+    "consentio",
+    "1",
+    "v--rna---",
+    1,
+    false,
+    null
+  ],
+  "consentirent": [
+    "consentio",
+    "1",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "consequi": [
+    "consequor",
+    "",
+    "v--pnd---",
+    1,
+    false,
+    null
+  ],
+  "conservaturum": [
+    "conservo",
+    "1",
+    "v-sfpama-",
+    1,
+    false,
+    null
+  ],
+  "consilio": [
+    "consilium",
+    "1",
+    "n-s---nb-",
+    2,
+    false,
+    null
+  ],
+  "consisteret": [
+    "consisto",
+    "1",
+    "v3sisa---",
+    1,
+    false,
+    null
+  ],
+  "constanter": [
+    "consto",
+    "",
+    "d-------_",
+    1,
+    false,
+    null
+  ],
+  "constituerant": [
+    "constituo",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "consuetudine": [
+    "consuetudo",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "contendebatur": [
+    "contendo",
+    "1",
+    "v3siip---",
+    1,
+    false,
+    null
+  ],
+  "contenderunt": [
+    "contendo",
+    "1",
+    "v3pria---",
+    3,
+    false,
+    null
+  ],
+  "continebant": [
+    "contineo",
+    "1",
+    "v3piia---",
+    1,
+    false,
+    null
+  ],
+  "contra": [
+    "contra",
+    "1",
+    "r--------",
+    2,
+    true,
+    [
+      [
+        "contra",
+        "1",
+        "r--------",
+        2
+      ],
+      [
+        "contra",
+        "",
+        "r--------",
+        1
+      ]
+    ]
+  ],
+  "contrarius": [
+    "contrarius",
+    "1",
+    "a-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "convenerat": [
+    "convenio",
+    "1",
+    "v3slia---",
+    1,
+    false,
+    null
+  ],
+  "convenire": [
+    "convenio",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "copia": [
+    "copia",
+    "1",
+    "n-s---fn-",
+    1,
+    false,
+    null
+  ],
+  "copiarum": [
+    "copia",
+    "1",
+    "n-p---fg-",
+    1,
+    false,
+    null
+  ],
+  "copias": [
+    "copia",
+    "1",
+    "n-p---fa-",
+    3,
+    false,
+    null
+  ],
+  "copiis": [
+    "copia",
+    "1",
+    "n-p---fb-",
+    4,
+    false,
+    null
+  ],
+  "cortice": [
+    "cortex",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "crebri": [
+    "creber",
+    "",
+    "a-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "crediderant": [
+    "credo",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "cui": [
+    "qui",
+    "1",
+    "p-s---nd-",
+    1,
+    false,
+    null
+  ],
+  "cum": [
+    "cum",
+    "1",
+    "r--------",
+    12,
+    true,
+    [
+      [
+        "cum",
+        "1",
+        "r--------",
+        12
+      ],
+      [
+        "cum",
+        "1",
+        "c--------",
+        5
+      ],
+      [
+        "cum",
+        "",
+        "c--------",
+        1
+      ],
+      [
+        "cum",
+        "1",
+        "c--------",
+        1
+      ],
+      [
+        "cum",
+        "1",
+        "c--------",
+        1
+      ]
+    ]
+  ],
+  "dare": [
+    "do",
+    "",
+    "v--pna---",
+    1,
+    true,
+    [
+      [
+        "do",
+        "",
+        "v--pna---",
+        1
+      ],
+      [
+        "do",
+        "1",
+        "v--pna---",
+        1
+      ]
+    ]
+  ],
+  "dat": [
+    "do",
+    "1",
+    "v3spia---",
+    1,
+    false,
+    null
+  ],
+  "datis": [
+    "do",
+    "1",
+    "v-prppnb-",
+    1,
+    false,
+    null
+  ],
+  "dc": [
+    "sescenti",
+    "",
+    "m-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "de": [
+    "de",
+    "1",
+    "r--------",
+    5,
+    false,
+    null
+  ],
+  "debuit": [
+    "debeo",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "declivis": [
+    "declivis",
+    "1",
+    "a-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "decucurrerunt": [
+    "decurro",
+    "1",
+    "v3pria---",
+    1,
+    false,
+    null
+  ],
+  "dediderunt": [
+    "dedo",
+    "1",
+    "v3pria---",
+    1,
+    false,
+    null
+  ],
+  "dedidissent": [
+    "dedo",
+    "1",
+    "v3plsa---",
+    1,
+    false,
+    null
+  ],
+  "deditione": [
+    "deditio",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "deduceret": [
+    "deduco",
+    "1",
+    "v3sisa---",
+    1,
+    false,
+    null
+  ],
+  "deducturos": [
+    "deduco",
+    "1",
+    "v-pfpama-",
+    1,
+    false,
+    null
+  ],
+  "defenderet": [
+    "defendo",
+    "1",
+    "v3sisa---",
+    1,
+    false,
+    null
+  ],
+  "defensionis": [
+    "defensio",
+    "1",
+    "n-s---fg-",
+    1,
+    false,
+    null
+  ],
+  "deinde": [
+    "deinde",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "delegerant": [
+    "deligo",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "demonstratum": [
+    "demonstro",
+    "1",
+    "v-srppnn-",
+    1,
+    false,
+    null
+  ],
+  "demonstravimus": [
+    "demonstro",
+    "",
+    "v1pria---",
+    1,
+    false,
+    null
+  ],
+  "denique": [
+    "denique",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "depopulati": [
+    "depopulor",
+    "",
+    "v-prpdmn_",
+    1,
+    false,
+    null
+  ],
+  "deterrere": [
+    "deterreo",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "detulerant": [
+    "defero",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "dicerent": [
+    "dico",
+    "2",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "dicionem": [
+    "dicio",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "diebus": [
+    "dies",
+    "",
+    "n-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "diei": [
+    "dies",
+    "",
+    "n-s---mg-",
+    1,
+    false,
+    null
+  ],
+  "diem": [
+    "dies",
+    "",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "diligenter": [
+    "diligens",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "dimenso": [
+    "dimetior",
+    "",
+    "v-srpdnb_",
+    1,
+    false,
+    null
+  ],
+  "dimittit": [
+    "dimitto",
+    "1",
+    "v3spia---",
+    1,
+    false,
+    null
+  ],
+  "discessit": [
+    "discedo",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "distineri": [
+    "distineo",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "diutius": [
+    "diu",
+    "",
+    "d-------c",
+    1,
+    false,
+    null
+  ],
+  "dixeramus": [
+    "dico",
+    "2",
+    "v1plia---",
+    1,
+    false,
+    null
+  ],
+  "dixit": [
+    "dico",
+    "2",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "docet": [
+    "doceo",
+    "1",
+    "v3spia---",
+    1,
+    false,
+    null
+  ],
+  "duae": [
+    "duo",
+    "",
+    "m-p---fn-",
+    1,
+    false,
+    null
+  ],
+  "duas": [
+    "duo",
+    "",
+    "m-p---fa-",
+    2,
+    false,
+    null
+  ],
+  "dubitandum": [
+    "dubito",
+    "1",
+    "v-spgpna-",
+    1,
+    false,
+    null
+  ],
+  "ducebat": [
+    "duco",
+    "1",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "ducibus": [
+    "dux",
+    "1",
+    "n-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "duobus": [
+    "duo",
+    "",
+    "m-p---nb-",
+    1,
+    false,
+    null
+  ],
+  "duodeviginti": [
+    "duodeviginti",
+    "1",
+    "m--------",
+    1,
+    false,
+    null
+  ],
+  "ea": [
+    "is",
+    "1",
+    "p-p---na-",
+    1,
+    false,
+    null
+  ],
+  "eadem": [
+    "idem",
+    "1",
+    "p-s---fb-",
+    1,
+    true,
+    [
+      [
+        "idem",
+        "1",
+        "p-s---fb-",
+        1
+      ],
+      [
+        "idem",
+        "1",
+        "p-s---fb-",
+        1
+      ]
+    ]
+  ],
+  "eam": [
+    "is",
+    "1",
+    "p-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "eandem": [
+    "idem",
+    "1",
+    "p-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "eas": [
+    "is",
+    "1",
+    "p-p---fa-",
+    3,
+    false,
+    null
+  ],
+  "efficiebat": [
+    "efficio",
+    "1",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "eius": [
+    "is",
+    "",
+    "p-s---mg-",
+    1,
+    true,
+    [
+      [
+        "is",
+        "",
+        "p-s---mg-",
+        1
+      ],
+      [
+        "is",
+        "1",
+        "p-s---ng-",
+        1
+      ]
+    ]
+  ],
+  "emerant": [
+    "emo",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "eo": [
+    "is",
+    "1",
+    "p-s---nb-",
+    3,
+    true,
+    [
+      [
+        "is",
+        "1",
+        "p-s---nb-",
+        3
+      ],
+      [
+        "eo",
+        "2",
+        "d--------",
+        2
+      ],
+      [
+        "is",
+        "1",
+        "p-s---mb-",
+        2
+      ],
+      [
+        "eo",
+        "2",
+        "d--------",
+        1
+      ]
+    ]
+  ],
+  "eodem": [
+    "idem",
+    "1",
+    "p-s---nb-",
+    1,
+    true,
+    [
+      [
+        "idem",
+        "1",
+        "p-s---nb-",
+        1
+      ],
+      [
+        "idem",
+        "1",
+        "p-s---nb-",
+        1
+      ]
+    ]
+  ],
+  "eorum": [
+    "is",
+    "1",
+    "p-p---mg-",
+    4,
+    true,
+    [
+      [
+        "is",
+        "1",
+        "p-p---mg-",
+        4
+      ],
+      [
+        "is",
+        "1",
+        "p-p---mg-",
+        1
+      ]
+    ]
+  ],
+  "eos": [
+    "is",
+    "1",
+    "p-p---ma-",
+    8,
+    false,
+    null
+  ],
+  "equestri": [
+    "equester",
+    "1",
+    "a-s---nb-",
+    1,
+    false,
+    null
+  ],
+  "equitatu": [
+    "equitatus",
+    "1",
+    "n-s---mb-",
+    2,
+    false,
+    null
+  ],
+  "equites": [
+    "eques",
+    "1",
+    "n-p---mn-",
+    1,
+    true,
+    [
+      [
+        "eques",
+        "1",
+        "n-p---mn-",
+        1
+      ],
+      [
+        "eques",
+        "1",
+        "n-p---ma-",
+        1
+      ]
+    ]
+  ],
+  "equitum": [
+    "eques",
+    "1",
+    "n-p---mg-",
+    2,
+    false,
+    null
+  ],
+  "erant": [
+    "sum",
+    "1",
+    "v3piia---",
+    7,
+    false,
+    null
+  ],
+  "erat": [
+    "sum",
+    "1",
+    "v3siia---",
+    5,
+    false,
+    null
+  ],
+  "eruptionem": [
+    "eruptio",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "esse": [
+    "sum",
+    "1",
+    "v--pna---",
+    11,
+    false,
+    null
+  ],
+  "esset": [
+    "sum",
+    "1",
+    "v3sisa---",
+    2,
+    false,
+    null
+  ],
+  "est": [
+    "sum",
+    "1",
+    "v3spia---",
+    7,
+    false,
+    null
+  ],
+  "et": [
+    "et",
+    "1",
+    "c--------",
+    28,
+    false,
+    null
+  ],
+  "etiam": [
+    "etiam",
+    "1",
+    "d--------",
+    2,
+    false,
+    null
+  ],
+  "eum": [
+    "is",
+    "1",
+    "p-s---ma-",
+    6,
+    true,
+    [
+      [
+        "is",
+        "1",
+        "p-s---ma-",
+        6
+      ],
+      [
+        "is",
+        "",
+        "p-s---ma-",
+        1
+      ]
+    ]
+  ],
+  "ex": [
+    "ex",
+    "1",
+    "r--------",
+    10,
+    false,
+    null
+  ],
+  "exercitui": [
+    "exercitus",
+    "2",
+    "n-s---md-",
+    1,
+    false,
+    null
+  ],
+  "exercitum": [
+    "exercitus",
+    "2",
+    "n-s---ma-",
+    5,
+    false,
+    null
+  ],
+  "exercitus": [
+    "exercitus",
+    "2",
+    "n-s---mg-",
+    2,
+    true,
+    [
+      [
+        "exercitus",
+        "2",
+        "n-s---mg-",
+        2
+      ],
+      [
+        "exercitus",
+        "2",
+        "n-s---mn-",
+        1
+      ]
+    ]
+  ],
+  "exiguitas": [
+    "exiguitas",
+    "1",
+    "n-s---fn-",
+    1,
+    false,
+    null
+  ],
+  "exire": [
+    "exeo",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "existimarent": [
+    "existimo",
+    "1",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "existimavit": [
+    "existimo",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "expectabant": [
+    "exspecto",
+    "1",
+    "v3piia---",
+    1,
+    false,
+    null
+  ],
+  "expectare": [
+    "expecto",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "expectari": [
+    "expecto",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "expeditas": [
+    "expedio",
+    "1",
+    "v-prppfa-",
+    1,
+    false,
+    null
+  ],
+  "experirentur": [
+    "experior",
+    "",
+    "v3pisd---",
+    1,
+    false,
+    null
+  ],
+  "exploratoribus": [
+    "explorator",
+    "1",
+    "n-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "expugnarent": [
+    "expugno",
+    "1",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "extrema": [
+    "exter",
+    "",
+    "a-s---fbs",
+    1,
+    false,
+    null
+  ],
+  "extremis": [
+    "exter",
+    "",
+    "a-p---mbs",
+    1,
+    false,
+    null
+  ],
+  "facere": [
+    "facio",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "facerent": [
+    "facio",
+    "1",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "faciant": [
+    "facio",
+    "1",
+    "v3ppsa---",
+    1,
+    false,
+    null
+  ],
+  "facile": [
+    "facilis",
+    "1",
+    "d--------",
+    2,
+    true,
+    [
+      [
+        "facilis",
+        "1",
+        "d--------",
+        2
+      ],
+      [
+        "facilis",
+        "",
+        "d-------_",
+        1
+      ]
+    ]
+  ],
+  "faciunt": [
+    "facio",
+    "1",
+    "v3ppia---",
+    1,
+    false,
+    null
+  ],
+  "facta": [
+    "facio",
+    "1",
+    "v-srppfb-",
+    2,
+    true,
+    [
+      [
+        "facio",
+        "1",
+        "v-srppfb-",
+        2
+      ],
+      [
+        "facio",
+        "1",
+        "v-prppnn-",
+        1
+      ]
+    ]
+  ],
+  "factis": [
+    "facio",
+    "1",
+    "v-prppnb-",
+    1,
+    false,
+    null
+  ],
+  "factus": [
+    "facio",
+    "1",
+    "v-srppmn-",
+    1,
+    false,
+    null
+  ],
+  "facultates": [
+    "facultas",
+    "1",
+    "n-p---fa-",
+    1,
+    false,
+    null
+  ],
+  "fecerunt": [
+    "facio",
+    "1",
+    "v3pria---",
+    2,
+    false,
+    null
+  ],
+  "fecisset": [
+    "facio",
+    "1",
+    "v3slsa---",
+    1,
+    false,
+    null
+  ],
+  "ferebant": [
+    "fero",
+    "1",
+    "v3piia---",
+    1,
+    false,
+    null
+  ],
+  "feros": [
+    "ferus",
+    "1",
+    "a-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "fidem": [
+    "fides",
+    "1",
+    "n-s---fa-",
+    2,
+    false,
+    null
+  ],
+  "fiebat": [
+    "fio",
+    "",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "fieret": [
+    "fio",
+    "1",
+    "v3s-sa---",
+    1,
+    false,
+    null
+  ],
+  "fieri": [
+    "fio",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "finem": [
+    "finis",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "fines": [
+    "finis",
+    "1",
+    "n-p---ma-",
+    3,
+    true,
+    [
+      [
+        "finis",
+        "1",
+        "n-p---ma-",
+        3
+      ],
+      [
+        "finis",
+        "1",
+        "n-p---fa-",
+        1
+      ],
+      [
+        "finis",
+        "",
+        "n-p---ma-",
+        1
+      ]
+    ]
+  ],
+  "finibus": [
+    "finis",
+    "",
+    "n-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "finitimi": [
+    "finitimus",
+    "1",
+    "a-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "finitimis": [
+    "finitimus",
+    "1",
+    "a-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "flumen": [
+    "flumen",
+    "1",
+    "n-s---na-",
+    8,
+    false,
+    null
+  ],
+  "flumine": [
+    "flumen",
+    "1",
+    "n-s---nb-",
+    3,
+    false,
+    null
+  ],
+  "fluminis": [
+    "flumen",
+    "1",
+    "n-s---ng-",
+    2,
+    true,
+    [
+      [
+        "flumen",
+        "1",
+        "n-s---ng-",
+        2
+      ],
+      [
+        "flumen",
+        "1",
+        "n-s---ng-",
+        1
+      ]
+    ]
+  ],
+  "fortibus": [
+    "fortis",
+    "1",
+    "a-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "fortunam": [
+    "fortuna",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "fossa": [
+    "fossa",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "fratres": [
+    "frater",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "frumentaria": [
+    "frumentarius",
+    "1",
+    "a-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "frumento": [
+    "frumentum",
+    "1",
+    "n-s---nb-",
+    1,
+    false,
+    null
+  ],
+  "fumo": [
+    "fumus",
+    "1",
+    "n-s---mb-",
+    1,
+    false,
+    null
+  ],
+  "funditores": [
+    "funditor",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "funditoribus": [
+    "funditor",
+    "1",
+    "n-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "furorem": [
+    "furor",
+    "2",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "gerantur": [
+    "gero",
+    "1",
+    "v3ppsp---",
+    1,
+    false,
+    null
+  ],
+  "gerendum": [
+    "gero",
+    "1",
+    "v-s-g-na-",
+    1,
+    false,
+    null
+  ],
+  "habeant": [
+    "habeo",
+    "1",
+    "v3ppsa---",
+    1,
+    false,
+    null
+  ],
+  "habebant": [
+    "habeo",
+    "1",
+    "v3piia---",
+    1,
+    false,
+    null
+  ],
+  "habebat": [
+    "habeo",
+    "1",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "haec": [
+    "hic",
+    "1",
+    "p-s---fn-",
+    1,
+    false,
+    null
+  ],
+  "hanc": [
+    "hic",
+    "1",
+    "p-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "has": [
+    "hic",
+    "1",
+    "p-p---fa-",
+    1,
+    false,
+    null
+  ],
+  "hi": [
+    "hic",
+    "1",
+    "p-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "hibernis": [
+    "hibernus",
+    "",
+    "a-p---nb-",
+    1,
+    false,
+    null
+  ],
+  "hiemare": [
+    "hiemo",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "his": [
+    "hic",
+    "1",
+    "p-p---mb-",
+    2,
+    true,
+    [
+      [
+        "hic",
+        "1",
+        "p-p---mb-",
+        2
+      ],
+      [
+        "hic",
+        "",
+        "p-p---nb-",
+        1
+      ],
+      [
+        "hic",
+        "",
+        "p-p---fb-",
+        1
+      ],
+      [
+        "hic",
+        "1",
+        "p-p---nb-",
+        1
+      ],
+      [
+        "hic",
+        "1",
+        "p-p---mb-",
+        1
+      ],
+      [
+        "hic",
+        "1",
+        "p-p---fb-",
+        1
+      ],
+      [
+        "hic",
+        "1",
+        "p-p---md-",
+        1
+      ],
+      [
+        "hic",
+        "",
+        "p-p---fb-",
+        1
+      ]
+    ]
+  ],
+  "homines": [
+    "homo",
+    "1",
+    "n-p---ma-",
+    2,
+    false,
+    null
+  ],
+  "hominum": [
+    "homo",
+    "1",
+    "n-p---mg-",
+    2,
+    false,
+    null
+  ],
+  "honoris": [
+    "honor",
+    "1",
+    "n-s---mg-",
+    1,
+    false,
+    null
+  ],
+  "hostes": [
+    "hostis",
+    "1",
+    "n-p---mn-",
+    3,
+    true,
+    [
+      [
+        "hostis",
+        "1",
+        "n-p---mn-",
+        3
+      ],
+      [
+        "hostis",
+        "1",
+        "n-p---mn-",
+        1
+      ]
+    ]
+  ],
+  "hostibus": [
+    "hostis",
+    "1",
+    "n-p---mb-",
+    3,
+    true,
+    [
+      [
+        "hostis",
+        "1",
+        "n-p---mb-",
+        3
+      ],
+      [
+        "hostis",
+        "1",
+        "n-p---md-",
+        1
+      ]
+    ]
+  ],
+  "hostium": [
+    "hostis",
+    "1",
+    "n-p---mg-",
+    3,
+    false,
+    null
+  ],
+  "huic": [
+    "hic",
+    "1",
+    "p-s---md-",
+    1,
+    false,
+    null
+  ],
+  "iacerent": [
+    "jacio",
+    "1",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "iam": [
+    "jam",
+    "1",
+    "d--------",
+    3,
+    false,
+    null
+  ],
+  "ibi": [
+    "ibi",
+    "1",
+    "d--------",
+    2,
+    true,
+    [
+      [
+        "ibi",
+        "1",
+        "d--------",
+        2
+      ],
+      [
+        "ibi",
+        "1",
+        "d--------",
+        1
+      ],
+      [
+        "ibi",
+        "1",
+        "d--------",
+        1
+      ]
+    ]
+  ],
+  "id": [
+    "is",
+    "1",
+    "p-s---na-",
+    2,
+    false,
+    null
+  ],
+  "identidem": [
+    "identidem",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "ignibus": [
+    "ignis",
+    "1",
+    "n-p---mb-",
+    2,
+    false,
+    null
+  ],
+  "iiii": [
+    "quattuor",
+    "",
+    "m-_---__-",
+    1,
+    false,
+    null
+  ],
+  "iis": [
+    "is",
+    "1",
+    "p-p---mb-",
+    5,
+    true,
+    [
+      [
+        "is",
+        "1",
+        "p-p---mb-",
+        5
+      ],
+      [
+        "is",
+        "",
+        "p-p---mb-",
+        1
+      ],
+      [
+        "is",
+        "1",
+        "p-p---nb-",
+        1
+      ]
+    ]
+  ],
+  "illi": [
+    "ille",
+    "1",
+    "p-p---mn-",
+    1,
+    true,
+    [
+      [
+        "ille",
+        "1",
+        "p-p---mn-",
+        1
+      ],
+      [
+        "ille",
+        "1",
+        "p-p---mn-",
+        1
+      ]
+    ]
+  ],
+  "illis": [
+    "ille",
+    "1",
+    "p-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "impedimenta": [
+    "impedimentum",
+    "1",
+    "n-p---na-",
+    1,
+    true,
+    [
+      [
+        "impedimentum",
+        "1",
+        "n-p---na-",
+        1
+      ],
+      [
+        "impedimentum",
+        "1",
+        "n-p---nn-",
+        1
+      ]
+    ]
+  ],
+  "impedimentis": [
+    "impedimentum",
+    "1",
+    "n-p---nd-",
+    1,
+    false,
+    null
+  ],
+  "impeditos": [
+    "impedio",
+    "1",
+    "v-prppma-",
+    1,
+    false,
+    null
+  ],
+  "imperata": [
+    "impero",
+    "",
+    "v-prppna-",
+    1,
+    false,
+    null
+  ],
+  "imperaverat": [
+    "impero",
+    "1",
+    "v3slia---",
+    1,
+    false,
+    null
+  ],
+  "imperiis": [
+    "imperium",
+    "1",
+    "n-p---nd-",
+    1,
+    false,
+    null
+  ],
+  "imperio": [
+    "imperium",
+    "1",
+    "n-s---nb-",
+    1,
+    false,
+    null
+  ],
+  "imperium": [
+    "imperium",
+    "1",
+    "n-s---na-",
+    1,
+    false,
+    null
+  ],
+  "impetum": [
+    "impetus",
+    "1",
+    "n-s---ma-",
+    2,
+    false,
+    null
+  ],
+  "improviso": [
+    "improvisus",
+    "",
+    "a-s---nb-",
+    1,
+    false,
+    null
+  ],
+  "in": [
+    "in",
+    "1",
+    "r--------",
+    33,
+    true,
+    [
+      [
+        "in",
+        "1",
+        "r--------",
+        33
+      ],
+      [
+        "in",
+        "",
+        "r--------",
+        1
+      ],
+      [
+        "in",
+        "1",
+        "r--------",
+        1
+      ]
+    ]
+  ],
+  "incensis": [
+    "incendo",
+    "1",
+    "v-prppnb-",
+    1,
+    false,
+    null
+  ],
+  "inciperet": [
+    "incipio",
+    "1",
+    "v3sisa---",
+    1,
+    false,
+    null
+  ],
+  "incolant": [
+    "incolo",
+    "1",
+    "v3ppsa---",
+    1,
+    false,
+    null
+  ],
+  "incredibili": [
+    "incredibilis",
+    "1",
+    "a-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "increpitare": [
+    "increpito",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "incusare": [
+    "incuso",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "inde": [
+    "inde",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "indiligentius": [
+    "indiligens",
+    "",
+    "d-------c",
+    1,
+    false,
+    null
+  ],
+  "induxerant": [
+    "induco",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "inferri": [
+    "infero",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "infimus": [
+    "inferus",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "iniquo": [
+    "iniquus",
+    "1",
+    "a-s---mb-",
+    1,
+    false,
+    null
+  ],
+  "inita": [
+    "ineo",
+    "1",
+    "v-srppfb-",
+    1,
+    false,
+    null
+  ],
+  "initium": [
+    "initium",
+    "1",
+    "n-s---nn-",
+    1,
+    true,
+    [
+      [
+        "initium",
+        "1",
+        "n-s---nn-",
+        1
+      ],
+      [
+        "initium",
+        "1",
+        "n-s---na-",
+        1
+      ]
+    ]
+  ],
+  "inito": [
+    "ineo",
+    "1",
+    "v-srpanb-",
+    1,
+    false,
+    null
+  ],
+  "iniuriam": [
+    "injuria",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "insequi": [
+    "insequor",
+    "",
+    "v--pnd---",
+    1,
+    false,
+    null
+  ],
+  "intellectum": [
+    "intellego",
+    "1",
+    "v-srppnn-",
+    1,
+    false,
+    null
+  ],
+  "inter": [
+    "inter",
+    "1",
+    "r--------",
+    4,
+    true,
+    [
+      [
+        "inter",
+        "1",
+        "r--------",
+        4
+      ],
+      [
+        "inter",
+        "",
+        "r--------",
+        1
+      ]
+    ]
+  ],
+  "interim": [
+    "interim",
+    "1",
+    "d--------",
+    2,
+    false,
+    null
+  ],
+  "interscinderent": [
+    "interscindo",
+    "1",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "intersit": [
+    "intersum",
+    "1",
+    "v3spsa---",
+    1,
+    false,
+    null
+  ],
+  "intextis": [
+    "intexo",
+    "1",
+    "v-prppnb-",
+    1,
+    false,
+    null
+  ],
+  "intra": [
+    "intra",
+    "1",
+    "r--------",
+    2,
+    false,
+    null
+  ],
+  "introduxerint": [
+    "introduco",
+    "",
+    "v3prsa---",
+    1,
+    false,
+    null
+  ],
+  "intromissis": [
+    "intromitto",
+    "1",
+    "v-prppmb-",
+    1,
+    false,
+    null
+  ],
+  "introrsus": [
+    "introrsum",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "inutiles": [
+    "inutilis",
+    "1",
+    "a-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "inveniebat": [
+    "invenio",
+    "1",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "inveterascere": [
+    "inveterasco",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "ipse": [
+    "ipse",
+    "1",
+    "p-s---mn-",
+    1,
+    true,
+    [
+      [
+        "ipse",
+        "1",
+        "p-s---mn-",
+        1
+      ],
+      [
+        "ipse",
+        "1",
+        "p-s---mn-",
+        1
+      ]
+    ]
+  ],
+  "ipsi": [
+    "ipse",
+    "1",
+    "p-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "ipsis": [
+    "ipse",
+    "1",
+    "p-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "isdem": [
+    "idem",
+    "1",
+    "p-p---fb-",
+    1,
+    true,
+    [
+      [
+        "idem",
+        "1",
+        "p-p---fb-",
+        1
+      ],
+      [
+        "idem",
+        "1",
+        "p-p---mb-",
+        1
+      ]
+    ]
+  ],
+  "ita": [
+    "ita",
+    "1",
+    "d--------",
+    2,
+    true,
+    [
+      [
+        "ita",
+        "1",
+        "d--------",
+        2
+      ],
+      [
+        "ita",
+        "",
+        "d--------",
+        1
+      ]
+    ]
+  ],
+  "itaque": [
+    "itaque",
+    "",
+    "c--------",
+    1,
+    false,
+    null
+  ],
+  "item": [
+    "item",
+    "",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "iter": [
+    "iter",
+    "1",
+    "n-s---na-",
+    1,
+    false,
+    null
+  ],
+  "itinere": [
+    "iter",
+    "1",
+    "n-s---nb-",
+    1,
+    false,
+    null
+  ],
+  "iubet": [
+    "jubeo",
+    "1",
+    "v3spia---",
+    1,
+    false,
+    null
+  ],
+  "iure": [
+    "jus",
+    "2",
+    "n-s---nb-",
+    1,
+    false,
+    null
+  ],
+  "iussit": [
+    "jubeo",
+    "1",
+    "v3sria---",
+    2,
+    false,
+    null
+  ],
+  "iuvare": [
+    "juvo",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "latebant": [
+    "lateo",
+    "1",
+    "v3piia---",
+    1,
+    false,
+    null
+  ],
+  "latitudinem": [
+    "latitudo",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "latus": [
+    "latus",
+    "2",
+    "n-s---na-",
+    1,
+    false,
+    null
+  ],
+  "legatos": [
+    "legatus",
+    "1",
+    "n-p---ma-",
+    2,
+    false,
+    null
+  ],
+  "legatum": [
+    "legatus",
+    "1",
+    "n-s---ma-",
+    2,
+    false,
+    null
+  ],
+  "legatus": [
+    "legatus",
+    "1",
+    "n-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "legibus": [
+    "lex",
+    "1",
+    "n-p---fb-",
+    1,
+    false,
+    null
+  ],
+  "legione": [
+    "legio",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "legiones": [
+    "legio",
+    "1",
+    "n-p---fa-",
+    2,
+    true,
+    [
+      [
+        "legio",
+        "1",
+        "n-p---fa-",
+        2
+      ],
+      [
+        "legio",
+        "1",
+        "n-p---fn-",
+        2
+      ]
+    ]
+  ],
+  "levitate": [
+    "levitas",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "liberaliter": [
+    "liberalis",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "liberos": [
+    "liber",
+    "2",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "litteris": [
+    "littera",
+    "",
+    "n-p---fb-",
+    1,
+    true,
+    [
+      [
+        "littera",
+        "",
+        "n-p---fb-",
+        1
+      ],
+      [
+        "littera",
+        "1",
+        "n-p---fb-",
+        1
+      ]
+    ]
+  ],
+  "loca": [
+    "locum",
+    "1",
+    "n-p---nn-",
+    1,
+    false,
+    null
+  ],
+  "loci": [
+    "locus",
+    "1",
+    "n-s---mg-",
+    1,
+    false,
+    null
+  ],
+  "loco": [
+    "locus",
+    "1",
+    "n-s---mb-",
+    4,
+    false,
+    null
+  ],
+  "locum": [
+    "locus",
+    "1",
+    "n-s---ma-",
+    4,
+    false,
+    null
+  ],
+  "longe": [
+    "longus",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "longius": [
+    "longus",
+    "",
+    "d-------c",
+    1,
+    false,
+    null
+  ],
+  "luxuriam": [
+    "luxuria",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "magistratum": [
+    "magistratus",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "magna": [
+    "magnus",
+    "1",
+    "a-s---fn-",
+    1,
+    true,
+    [
+      [
+        "magnus",
+        "1",
+        "a-s---fn-",
+        1
+      ],
+      [
+        "magnus",
+        "1",
+        "a-s---fb-",
+        1
+      ]
+    ]
+  ],
+  "magnae": [
+    "magnus",
+    "1",
+    "a-s---fg-",
+    1,
+    false,
+    null
+  ],
+  "magno": [
+    "magnus",
+    "1",
+    "a-s---md-",
+    1,
+    false,
+    null
+  ],
+  "magnopere": [
+    "magnopere",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "mandatis": [
+    "mando",
+    "1",
+    "v-prppnb-",
+    1,
+    false,
+    null
+  ],
+  "manibus": [
+    "manus",
+    "1",
+    "n-p---fb-",
+    1,
+    false,
+    null
+  ],
+  "manus": [
+    "manus",
+    "1",
+    "n-p---fa-",
+    2,
+    false,
+    null
+  ],
+  "maritimae": [
+    "maritimus",
+    "1",
+    "a-p---fn-",
+    1,
+    false,
+    null
+  ],
+  "maturavit": [
+    "maturo",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "media": [
+    "medius",
+    "1",
+    "a-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "mercatoribus": [
+    "mercator",
+    "1",
+    "n-p---md-",
+    1,
+    false,
+    null
+  ],
+  "milibus": [
+    "mille",
+    "",
+    "m-p---nb-",
+    4,
+    false,
+    null
+  ],
+  "milites": [
+    "miles",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "militibus": [
+    "miles",
+    "1",
+    "n-p---mb-",
+    2,
+    false,
+    null
+  ],
+  "milium": [
+    "mille",
+    "",
+    "m-p---ng-",
+    1,
+    false,
+    null
+  ],
+  "minime": [
+    "parvus",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "minus": [
+    "parvus",
+    "",
+    "d-------c",
+    3,
+    false,
+    null
+  ],
+  "miserat": [
+    "mitto",
+    "1",
+    "v3slia---",
+    2,
+    false,
+    null
+  ],
+  "miserunt": [
+    "mitto",
+    "1",
+    "v3pria---",
+    1,
+    false,
+    null
+  ],
+  "misit": [
+    "mitto",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "missuros": [
+    "mitto",
+    "1",
+    "v-pfpama-",
+    1,
+    false,
+    null
+  ],
+  "mittit": [
+    "mitto",
+    "1",
+    "v3spia---",
+    1,
+    false,
+    null
+  ],
+  "mobilitate": [
+    "mobilitas",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "moleste": [
+    "molestus",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "mora": [
+    "mora",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "morati": [
+    "moror",
+    "1",
+    "v-prpdmn_",
+    1,
+    false,
+    null
+  ],
+  "moribus": [
+    "mos",
+    "1",
+    "n-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "movet": [
+    "moveo",
+    "1",
+    "v3spia---",
+    1,
+    false,
+    null
+  ],
+  "mulieres": [
+    "mulier",
+    "1",
+    "n-p---fa-",
+    1,
+    false,
+    null
+  ],
+  "multitudine": [
+    "multitudo",
+    "1",
+    "n-s---fb-",
+    2,
+    false,
+    null
+  ],
+  "muniebat": [
+    "munio",
+    "1",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "munire": [
+    "munio",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "muniri": [
+    "munio",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "munitiones": [
+    "munitio",
+    "1",
+    "n-p---fa-",
+    1,
+    false,
+    null
+  ],
+  "nam": [
+    "nam",
+    "1",
+    "c--------",
+    1,
+    true,
+    [
+      [
+        "nam",
+        "1",
+        "c--------",
+        1
+      ],
+      [
+        "nam",
+        "1",
+        "c--------",
+        1
+      ]
+    ]
+  ],
+  "nascebatur": [
+    "nascor",
+    "",
+    "v3siid---",
+    1,
+    false,
+    null
+  ],
+  "natura": [
+    "natura",
+    "1",
+    "n-s---fb-",
+    1,
+    true,
+    [
+      [
+        "natura",
+        "1",
+        "n-s---fb-",
+        1
+      ],
+      [
+        "natura",
+        "1",
+        "n-s---fn-",
+        1
+      ]
+    ]
+  ],
+  "ne": [
+    "ne",
+    "1",
+    "c--------",
+    4,
+    false,
+    null
+  ],
+  "negotium": [
+    "negotium",
+    "1",
+    "n-s---na-",
+    1,
+    false,
+    null
+  ],
+  "nemo": [
+    "nemo",
+    "1",
+    "n-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "neque": [
+    "neque",
+    "",
+    "c--------",
+    6,
+    false,
+    null
+  ],
+  "neutri": [
+    "neuter",
+    "1",
+    "a-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "nihil": [
+    "nihil",
+    "1",
+    "n-s---n--",
+    1,
+    false,
+    null
+  ],
+  "nobis": [
+    "nos",
+    "1",
+    "p-p---md-",
+    1,
+    false,
+    null
+  ],
+  "nocte": [
+    "nox",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "noctu": [
+    "nox",
+    "",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "noluerant": [
+    "nolo",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "nominavimus": [
+    "nomino",
+    "1",
+    "v1pria---",
+    1,
+    false,
+    null
+  ],
+  "non": [
+    "non",
+    "1",
+    "d--------",
+    7,
+    false,
+    null
+  ],
+  "noster": [
+    "noster",
+    "",
+    "p-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "nostra": [
+    "noster",
+    "",
+    "p-p---na-",
+    2,
+    false,
+    null
+  ],
+  "nostras": [
+    "noster",
+    "",
+    "p-p---fa-",
+    1,
+    false,
+    null
+  ],
+  "nostri": [
+    "noster",
+    "",
+    "p-p---mn-",
+    5,
+    true,
+    [
+      [
+        "noster",
+        "",
+        "p-p---mn-",
+        5
+      ],
+      [
+        "noster",
+        "",
+        "p-s---mg-",
+        1
+      ]
+    ]
+  ],
+  "nostris": [
+    "noster",
+    "",
+    "p-p---md-",
+    1,
+    true,
+    [
+      [
+        "noster",
+        "",
+        "p-p---md-",
+        1
+      ],
+      [
+        "noster",
+        "",
+        "p-p---fb-",
+        1
+      ],
+      [
+        "noster",
+        "",
+        "p-p---mb-",
+        1
+      ]
+    ]
+  ],
+  "nostro": [
+    "noster",
+    "",
+    "p-s---nb-",
+    1,
+    false,
+    null
+  ],
+  "nostros": [
+    "noster",
+    "",
+    "p-p---ma-",
+    4,
+    false,
+    null
+  ],
+  "nostrum": [
+    "noster",
+    "",
+    "p-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "novas": [
+    "novus",
+    "1",
+    "a-p---fa-",
+    1,
+    false,
+    null
+  ],
+  "novis": [
+    "novus",
+    "1",
+    "a-p---nd-",
+    1,
+    false,
+    null
+  ],
+  "nullis": [
+    "nullus",
+    "1",
+    "a-p---mb-",
+    2,
+    false,
+    null
+  ],
+  "nullum": [
+    "nullus",
+    "1",
+    "a-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "numerus": [
+    "numerus",
+    "1",
+    "n-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "nuntiaverunt": [
+    "nuntio",
+    "1",
+    "v3pria---",
+    1,
+    false,
+    null
+  ],
+  "nuntii": [
+    "nuntius",
+    "1",
+    "n-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "nuntiis": [
+    "nuntius",
+    "",
+    "a-p---nb-",
+    1,
+    false,
+    null
+  ],
+  "obsides": [
+    "obses",
+    "1",
+    "n-p---ma-",
+    3,
+    true,
+    [
+      [
+        "obses",
+        "1",
+        "n-p---ma-",
+        3
+      ],
+      [
+        "obses",
+        "",
+        "n-p---ma-",
+        1
+      ]
+    ]
+  ],
+  "occisis": [
+    "occido",
+    "1",
+    "v-prppnb-",
+    1,
+    false,
+    null
+  ],
+  "occulto": [
+    "occulo",
+    "",
+    "v-srppnb-",
+    1,
+    false,
+    null
+  ],
+  "occupabantur": [
+    "occupo",
+    "1",
+    "v3piip---",
+    1,
+    false,
+    null
+  ],
+  "occupati": [
+    "occupo",
+    "1",
+    "v-prppmn-",
+    1,
+    false,
+    null
+  ],
+  "omnem": [
+    "omnis",
+    "1",
+    "a-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "omnes": [
+    "omnis",
+    "1",
+    "a-p---ma-",
+    2,
+    true,
+    [
+      [
+        "omnis",
+        "1",
+        "a-p---ma-",
+        2
+      ],
+      [
+        "omnis",
+        "1",
+        "a-p---fa-",
+        2
+      ],
+      [
+        "omnis",
+        "",
+        "a-p---ma-",
+        1
+      ],
+      [
+        "omnis",
+        "1",
+        "a-p---mn-",
+        1
+      ]
+    ]
+  ],
+  "omni": [
+    "omnis",
+    "1",
+    "a-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "omnia": [
+    "omnis",
+    "1",
+    "a-p---na-",
+    1,
+    true,
+    [
+      [
+        "omnis",
+        "1",
+        "a-p---na-",
+        1
+      ],
+      [
+        "omnis",
+        "",
+        "a-p---nn-",
+        1
+      ],
+      [
+        "omnis",
+        "",
+        "a-p---na-",
+        1
+      ]
+    ]
+  ],
+  "omnibus": [
+    "omnis",
+    "1",
+    "a-p---fb-",
+    3,
+    true,
+    [
+      [
+        "omnis",
+        "1",
+        "a-p---fb-",
+        3
+      ],
+      [
+        "omnis",
+        "1",
+        "a-p---mb-",
+        1
+      ],
+      [
+        "omnis",
+        "1",
+        "a-p---nb-",
+        1
+      ],
+      [
+        "omnes",
+        "1",
+        "a-p---fb-",
+        1
+      ]
+    ]
+  ],
+  "omnis": [
+    "omnis",
+    "1",
+    "a-s---fn-",
+    1,
+    false,
+    null
+  ],
+  "omnium": [
+    "omnis",
+    "",
+    "a-p---mg-",
+    1,
+    true,
+    [
+      [
+        "omnis",
+        "",
+        "a-p---mg-",
+        1
+      ],
+      [
+        "omnis",
+        "1",
+        "a-p---mg-",
+        1
+      ]
+    ]
+  ],
+  "opere": [
+    "opus",
+    "1",
+    "n-s---nb-",
+    2,
+    false,
+    null
+  ],
+  "opinione": [
+    "opinio",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "oppidani": [
+    "oppidanus",
+    "",
+    "a-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "oppidanis": [
+    "oppidanus",
+    "1",
+    "n-p---md-",
+    1,
+    false,
+    null
+  ],
+  "oppidi": [
+    "oppidum",
+    "1",
+    "n-s---ng-",
+    2,
+    false,
+    null
+  ],
+  "oppidis": [
+    "oppidum",
+    "1",
+    "n-p---nb-",
+    1,
+    false,
+    null
+  ],
+  "oppido": [
+    "oppidum",
+    "1",
+    "n-s---nb-",
+    3,
+    false,
+    null
+  ],
+  "oppidum": [
+    "oppidum",
+    "1",
+    "n-s---na-",
+    2,
+    false,
+    null
+  ],
+  "oratione": [
+    "oratio",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "ordines": [
+    "ordo",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "ordo": [
+    "ordo",
+    "1",
+    "n-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "pabuli": [
+    "pabulum",
+    "1",
+    "n-s---ng-",
+    1,
+    false,
+    null
+  ],
+  "pacata": [
+    "paco",
+    "2",
+    "v-srppfb-",
+    1,
+    false,
+    null
+  ],
+  "pacis": [
+    "pax",
+    "1",
+    "n-s---fg-",
+    1,
+    false,
+    null
+  ],
+  "paene": [
+    "paene",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "paludes": [
+    "palus",
+    "2",
+    "n-p---fa-",
+    1,
+    false,
+    null
+  ],
+  "palus": [
+    "palus",
+    "2",
+    "n-s---fn-",
+    1,
+    false,
+    null
+  ],
+  "parati": [
+    "paro",
+    "1",
+    "v-prppmn-",
+    1,
+    false,
+    null
+  ],
+  "paratos": [
+    "paro",
+    "1",
+    "v-prppma-",
+    1,
+    false,
+    null
+  ],
+  "pari": [
+    "par",
+    "1",
+    "a-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "parte": [
+    "pars",
+    "1",
+    "n-s---fb-",
+    2,
+    false,
+    null
+  ],
+  "partem": [
+    "pars",
+    "",
+    "n-s---fa-",
+    1,
+    true,
+    [
+      [
+        "pars",
+        "",
+        "n-s---fa-",
+        1
+      ],
+      [
+        "pars",
+        "1",
+        "n-s---fa-",
+        1
+      ]
+    ]
+  ],
+  "partim": [
+    "pars",
+    "1",
+    "d--------",
+    3,
+    true,
+    [
+      [
+        "pars",
+        "1",
+        "d--------",
+        3
+      ],
+      [
+        "pars",
+        "",
+        "d--------",
+        1
+      ]
+    ]
+  ],
+  "passus": [
+    "passus",
+    "3",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "passuum": [
+    "passus",
+    "3",
+    "n-p---mg-",
+    3,
+    false,
+    null
+  ],
+  "patebant": [
+    "pateo",
+    "1",
+    "v3piia---",
+    1,
+    false,
+    null
+  ],
+  "pati": [
+    "patior",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "patriam": [
+    "patrius",
+    "2",
+    "a-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "paucae": [
+    "paucus",
+    "1",
+    "a-p---fn-",
+    1,
+    false,
+    null
+  ],
+  "paulisper": [
+    "paulisper",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "pedum": [
+    "pes",
+    "1",
+    "n-p---mg-",
+    3,
+    false,
+    null
+  ],
+  "pellibus": [
+    "pellis",
+    "1",
+    "n-p---fb-",
+    1,
+    false,
+    null
+  ],
+  "per": [
+    "per",
+    "1",
+    "r--------",
+    2,
+    false,
+    null
+  ],
+  "periculo": [
+    "periculum",
+    "1",
+    "n-s---nb-",
+    1,
+    false,
+    null
+  ],
+  "permittere": [
+    "permitto",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "perspici": [
+    "perspicio",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "persuaserant": [
+    "persuadeo",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "pertinebant": [
+    "pertineo",
+    "1",
+    "v3piia---",
+    1,
+    false,
+    null
+  ],
+  "pertinentium": [
+    "pertineo",
+    "1",
+    "v-pppafg-",
+    1,
+    false,
+    null
+  ],
+  "pervenit": [
+    "pervenio",
+    "",
+    "v3spia---",
+    1,
+    true,
+    [
+      [
+        "pervenio",
+        "",
+        "v3spia---",
+        1
+      ],
+      [
+        "pervenio",
+        "1",
+        "v3sria---",
+        1
+      ]
+    ]
+  ],
+  "ponit": [
+    "pono",
+    "1",
+    "v3spia---",
+    1,
+    false,
+    null
+  ],
+  "pons": [
+    "pons",
+    "1",
+    "n-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "pontem": [
+    "pons",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "poposcit": [
+    "posco",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "popularentur": [
+    "populor",
+    "",
+    "v3pisd---",
+    1,
+    false,
+    null
+  ],
+  "populari": [
+    "populor",
+    "",
+    "v--pnd---",
+    1,
+    false,
+    null
+  ],
+  "populi": [
+    "populus",
+    "1",
+    "n-s---mg-",
+    3,
+    false,
+    null
+  ],
+  "populo": [
+    "populus",
+    "1",
+    "n-s---md-",
+    1,
+    false,
+    null
+  ],
+  "populum": [
+    "populus",
+    "1",
+    "n-s---ma-",
+    2,
+    false,
+    null
+  ],
+  "porrecta": [
+    "porrigo",
+    "1",
+    "v-prppnn-",
+    1,
+    false,
+    null
+  ],
+  "portari": [
+    "porto",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "portas": [
+    "porta",
+    "1",
+    "n-p---fa-",
+    1,
+    false,
+    null
+  ],
+  "portis": [
+    "porta",
+    "1",
+    "n-p---fb-",
+    1,
+    false,
+    null
+  ],
+  "posse": [
+    "possum",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "possent": [
+    "possum",
+    "1",
+    "v3pisa---",
+    2,
+    false,
+    null
+  ],
+  "posset": [
+    "possum",
+    "1",
+    "v3sisa---",
+    1,
+    false,
+    null
+  ],
+  "post": [
+    "post",
+    "1",
+    "r--------",
+    3,
+    false,
+    null
+  ],
+  "postquam": [
+    "postquam",
+    "1",
+    "c--------",
+    1,
+    false,
+    null
+  ],
+  "postridie": [
+    "postridie",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "postulabat": [
+    "postulo",
+    "1",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "posuerunt": [
+    "pono",
+    "1",
+    "v3pria---",
+    1,
+    false,
+    null
+  ],
+  "posuit": [
+    "pono",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "potentioribus": [
+    "possum",
+    "",
+    "v-pppambc",
+    1,
+    false,
+    null
+  ],
+  "poterant": [
+    "possum",
+    "1",
+    "v3piia---",
+    1,
+    false,
+    null
+  ],
+  "potestatem": [
+    "potestas",
+    "1",
+    "n-s---fa-",
+    2,
+    false,
+    null
+  ],
+  "potiundi": [
+    "potior",
+    "",
+    "v-s-g-ng-",
+    1,
+    false,
+    null
+  ],
+  "potuerant": [
+    "possum",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "potuerint": [
+    "possum",
+    "1",
+    "v3prsa---",
+    1,
+    false,
+    null
+  ],
+  "potuissent": [
+    "possum",
+    "1",
+    "v3plsa---",
+    1,
+    false,
+    null
+  ],
+  "praeerat": [
+    "praesum",
+    "1",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "praemisso": [
+    "praemitto",
+    "1",
+    "v-srppmb-",
+    1,
+    false,
+    null
+  ],
+  "praesidia": [
+    "praesidium",
+    "1",
+    "n-p---na-",
+    1,
+    false,
+    null
+  ],
+  "praesidio": [
+    "praesidium",
+    "1",
+    "n-s---nd-",
+    1,
+    false,
+    null
+  ],
+  "praesidium": [
+    "praesidium",
+    "1",
+    "n-s---na-",
+    1,
+    false,
+    null
+  ],
+  "praestabat": [
+    "praesto",
+    "2",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "prima": [
+    "primus",
+    "",
+    "m-p---nn-",
+    1,
+    false,
+    null
+  ],
+  "primae": [
+    "primus",
+    "",
+    "m-p---fn-",
+    1,
+    false,
+    null
+  ],
+  "primos": [
+    "primus",
+    "",
+    "m-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "primum": [
+    "primus",
+    "",
+    "d-------_",
+    1,
+    true,
+    [
+      [
+        "primus",
+        "",
+        "d-------_",
+        1
+      ],
+      [
+        "primus",
+        "1",
+        "d--------",
+        1
+      ]
+    ]
+  ],
+  "principum": [
+    "princeps",
+    "1",
+    "a-p---mg_",
+    1,
+    false,
+    null
+  ],
+  "proelii": [
+    "proelium",
+    "1",
+    "n-s---ng-",
+    1,
+    false,
+    null
+  ],
+  "proelio": [
+    "proelium",
+    "1",
+    "n-s---nb-",
+    2,
+    false,
+    null
+  ],
+  "proelium": [
+    "proelium",
+    "1",
+    "n-s---na-",
+    1,
+    false,
+    null
+  ],
+  "proficisceretur": [
+    "proficiscor",
+    "1",
+    "v3sisp---",
+    1,
+    false,
+    null
+  ],
+  "prohiberent": [
+    "prohibeo",
+    "1",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "proiecissent": [
+    "projacio",
+    "1",
+    "v3plsa---",
+    1,
+    false,
+    null
+  ],
+  "propter": [
+    "propter",
+    "1",
+    "r--------",
+    1,
+    false,
+    null
+  ],
+  "propugnandi": [
+    "propugno",
+    "",
+    "v___d_-g-",
+    1,
+    false,
+    null
+  ],
+  "prosecutus": [
+    "prosequor",
+    "",
+    "v-srpdmn_",
+    1,
+    false,
+    null
+  ],
+  "protinus": [
+    "protinus",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "proturbatis": [
+    "proturbo",
+    "1",
+    "v-prppfb-",
+    1,
+    false,
+    null
+  ],
+  "provisa": [
+    "provideo",
+    "1",
+    "v-srppfb-",
+    1,
+    false,
+    null
+  ],
+  "provolaverunt": [
+    "provolo",
+    "1",
+    "v3pria---",
+    1,
+    false,
+    null
+  ],
+  "proxime": [
+    "propior",
+    "",
+    "d-------s",
+    1,
+    false,
+    null
+  ],
+  "proximi": [
+    "propior",
+    "",
+    "a-p---mns",
+    1,
+    false,
+    null
+  ],
+  "proximis": [
+    "propior",
+    "",
+    "a-p---nbs",
+    1,
+    false,
+    null
+  ],
+  "publicae": [
+    "publicus",
+    "1",
+    "a-s---fg-",
+    1,
+    false,
+    null
+  ],
+  "pugnam": [
+    "pugna",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "pugnari": [
+    "pugno",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "pugnatum": [
+    "pugno",
+    "1",
+    "v-srppnn-",
+    1,
+    false,
+    null
+  ],
+  "pulsis": [
+    "pello",
+    "1",
+    "v-prppfb-",
+    1,
+    false,
+    null
+  ],
+  "qua": [
+    "qui",
+    "1",
+    "p-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "quae": [
+    "qui",
+    "1",
+    "p-p---nn-",
+    5,
+    true,
+    [
+      [
+        "qui",
+        "1",
+        "p-p---nn-",
+        5
+      ],
+      [
+        "qui",
+        "1",
+        "p-p---fn-",
+        3
+      ],
+      [
+        "qui",
+        "1",
+        "p-p---nn-",
+        1
+      ],
+      [
+        "qui",
+        "1",
+        "p-s---fn-",
+        1
+      ]
+    ]
+  ],
+  "quaereret": [
+    "quaero",
+    "1",
+    "v3sisa---",
+    1,
+    false,
+    null
+  ],
+  "quam": [
+    "qui",
+    "1",
+    "p-s---fa-",
+    1,
+    true,
+    [
+      [
+        "qui",
+        "1",
+        "p-s---fa-",
+        1
+      ],
+      [
+        "quam",
+        "1",
+        "d--------",
+        1
+      ],
+      [
+        "quis",
+        "2",
+        "p-s---fa-",
+        1
+      ]
+    ]
+  ],
+  "quantopere": [
+    "quantopere",
+    "",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "quem": [
+    "qui",
+    "1",
+    "p-s---ma-",
+    3,
+    false,
+    null
+  ],
+  "qui": [
+    "qui",
+    "1",
+    "p-p---mn-",
+    17,
+    true,
+    [
+      [
+        "qui",
+        "1",
+        "p-p---mn-",
+        17
+      ],
+      [
+        "qui",
+        "1",
+        "p-s---mn-",
+        2
+      ]
+    ]
+  ],
+  "quidem": [
+    "quidem",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "quin": [
+    "quin",
+    "1",
+    "c--------",
+    2,
+    false,
+    null
+  ],
+  "quo": [
+    "quo",
+    "1",
+    "d--------",
+    2,
+    false,
+    null
+  ],
+  "quod": [
+    "quod",
+    "1",
+    "c--------",
+    8,
+    true,
+    [
+      [
+        "quod",
+        "1",
+        "c--------",
+        8
+      ],
+      [
+        "qui",
+        "1",
+        "p-s---nn-",
+        2
+      ],
+      [
+        "qui",
+        "1",
+        "p-s---na-",
+        1
+      ]
+    ]
+  ],
+  "quorum": [
+    "qui",
+    "1",
+    "p-p---mg-",
+    1,
+    true,
+    [
+      [
+        "qui",
+        "1",
+        "p-p---mg-",
+        1
+      ],
+      [
+        "qui",
+        "1",
+        "p-p---mg-",
+        1
+      ]
+    ]
+  ],
+  "quos": [
+    "qui",
+    "1",
+    "p-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "ratio": [
+    "ratio",
+    "1",
+    "n-s---fn-",
+    1,
+    false,
+    null
+  ],
+  "re": [
+    "res",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "rebus": [
+    "res",
+    "1",
+    "n-p---fb-",
+    3,
+    false,
+    null
+  ],
+  "recepturum": [
+    "recipio",
+    "1",
+    "v-sfpama-",
+    1,
+    false,
+    null
+  ],
+  "recipere": [
+    "recipio",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "reciperent": [
+    "recipio",
+    "1",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "redactas": [
+    "redigo",
+    "1",
+    "v-prppfa-",
+    1,
+    false,
+    null
+  ],
+  "reddebat": [
+    "reddo",
+    "1",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "reduxit": [
+    "reduco",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "refractis": [
+    "refringo",
+    "1",
+    "v-prppfb-",
+    1,
+    false,
+    null
+  ],
+  "regna": [
+    "regnum",
+    "1",
+    "n-p---nn-",
+    1,
+    false,
+    null
+  ],
+  "rei": [
+    "res",
+    "1",
+    "n-s---fg-",
+    1,
+    false,
+    null
+  ],
+  "reiecti": [
+    "reicio",
+    "1",
+    "v-prppmn-",
+    1,
+    false,
+    null
+  ],
+  "relanguescere": [
+    "relanguesco",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "relatus": [
+    "refero",
+    "1",
+    "v-srppmn-",
+    1,
+    false,
+    null
+  ],
+  "relinquit": [
+    "relinquo",
+    "1",
+    "v3spia---",
+    1,
+    false,
+    null
+  ],
+  "reliquarum": [
+    "reliquus",
+    "1",
+    "a-p---fg-",
+    1,
+    false,
+    null
+  ],
+  "reliqui": [
+    "reliquus",
+    "1",
+    "a-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "reliquis": [
+    "reliquus",
+    "1",
+    "a-p---md-",
+    1,
+    true,
+    [
+      [
+        "reliquus",
+        "1",
+        "a-p---md-",
+        1
+      ],
+      [
+        "reliquus",
+        "1",
+        "a-p---mb-",
+        1
+      ],
+      [
+        "reliquus",
+        "1",
+        "a-p---fb-",
+        1
+      ]
+    ]
+  ],
+  "reliquos": [
+    "reliquus",
+    "1",
+    "a-p---ma-",
+    2,
+    false,
+    null
+  ],
+  "rem": [
+    "res",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "remitti": [
+    "remitto",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "repente": [
+    "repens",
+    "2",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "reperiebat": [
+    "reperio",
+    "1",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "repertis": [
+    "reperio",
+    "1",
+    "v-prppnb-",
+    1,
+    false,
+    null
+  ],
+  "rerum": [
+    "res",
+    "1",
+    "n-p---fg-",
+    1,
+    false,
+    null
+  ],
+  "res": [
+    "res",
+    "1",
+    "n-s---fn-",
+    1,
+    false,
+    null
+  ],
+  "retinuerant": [
+    "retineo",
+    "1",
+    "v3plia---",
+    1,
+    false,
+    null
+  ],
+  "ripis": [
+    "ripa",
+    "1",
+    "n-p---fb-",
+    1,
+    false,
+    null
+  ],
+  "rumores": [
+    "rumor",
+    "",
+    "n-p---mn-",
+    1,
+    false,
+    null
+  ],
+  "rursus": [
+    "rursus",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "sagittariis": [
+    "sagittarius",
+    "",
+    "a-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "sagittarios": [
+    "sagittarius",
+    "1",
+    "n-p---ma-",
+    1,
+    false,
+    null
+  ],
+  "salutis": [
+    "salus",
+    "1",
+    "n-s---fg-",
+    2,
+    false,
+    null
+  ],
+  "scutis": [
+    "scutum",
+    "1",
+    "n-p---nb-",
+    1,
+    false,
+    null
+  ],
+  "se": [
+    "sui",
+    "1",
+    "p-s---ma-",
+    4,
+    true,
+    [
+      [
+        "sui",
+        "1",
+        "p-s---ma-",
+        4
+      ],
+      [
+        "sui",
+        "1",
+        "p-p---ma-",
+        4
+      ],
+      [
+        "sui",
+        "",
+        "p-p---ma-",
+        2
+      ],
+      [
+        "sui",
+        "1",
+        "p-s---mb-",
+        1
+      ],
+      [
+        "sui",
+        "",
+        "p-s---ma-",
+        1
+      ]
+    ]
+  ],
+  "sectionem": [
+    "sectio",
+    "1",
+    "n-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "secundiore": [
+    "secundus",
+    "1",
+    "a-s---nbc",
+    1,
+    false,
+    null
+  ],
+  "secundum": [
+    "secundum",
+    "1",
+    "r--------",
+    1,
+    false,
+    null
+  ],
+  "sed": [
+    "sed",
+    "1",
+    "c--------",
+    1,
+    false,
+    null
+  ],
+  "senatum": [
+    "senatus",
+    "1",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "servaturos": [
+    "servo",
+    "1",
+    "v-pfpama-",
+    1,
+    false,
+    null
+  ],
+  "sese": [
+    "sui",
+    "1",
+    "p-p---ma-",
+    4,
+    true,
+    [
+      [
+        "sui",
+        "1",
+        "p-p---ma-",
+        4
+      ],
+      [
+        "sui",
+        "",
+        "p-s---ma-",
+        1
+      ]
+    ]
+  ],
+  "sex": [
+    "sex",
+    "1",
+    "m--------",
+    1,
+    false,
+    null
+  ],
+  "si": [
+    "si",
+    "1",
+    "c--------",
+    5,
+    false,
+    null
+  ],
+  "sic": [
+    "sic",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "significabatur": [
+    "significo",
+    "1",
+    "v3siip---",
+    1,
+    false,
+    null
+  ],
+  "significatione": [
+    "significatio",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "silva": [
+    "silva",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "silvas": [
+    "silva",
+    "1",
+    "n-p---fa-",
+    3,
+    false,
+    null
+  ],
+  "silvestris": [
+    "silvestris",
+    "1",
+    "a-s---mn-",
+    1,
+    false,
+    null
+  ],
+  "silvis": [
+    "silva",
+    "1",
+    "n-p---fb-",
+    2,
+    false,
+    null
+  ],
+  "sine": [
+    "sine",
+    "1",
+    "r--------",
+    2,
+    false,
+    null
+  ],
+  "sit": [
+    "sum",
+    "1",
+    "v3spsa---",
+    1,
+    false,
+    null
+  ],
+  "sollicitarentur": [
+    "sollicito",
+    "1",
+    "v3pisp---",
+    1,
+    false,
+    null
+  ],
+  "spe": [
+    "spes",
+    "1",
+    "n-s---fb-",
+    2,
+    false,
+    null
+  ],
+  "spes": [
+    "spes",
+    "1",
+    "n-s---fn-",
+    2,
+    false,
+    null
+  ],
+  "stationes": [
+    "statio",
+    "1",
+    "n-p---fn-",
+    1,
+    false,
+    null
+  ],
+  "studebant": [
+    "studeo",
+    "1",
+    "v3piia---",
+    1,
+    false,
+    null
+  ],
+  "studium": [
+    "studium",
+    "1",
+    "n-s---nn-",
+    1,
+    false,
+    null
+  ],
+  "sua": [
+    "suus",
+    "",
+    "p-p---na-",
+    2,
+    true,
+    [
+      [
+        "suus",
+        "",
+        "p-p---na-",
+        2
+      ],
+      [
+        "suus",
+        "",
+        "p-s---fb-",
+        1
+      ]
+    ]
+  ],
+  "suarum": [
+    "suus",
+    "",
+    "p-p---fg-",
+    1,
+    false,
+    null
+  ],
+  "suas": [
+    "suus",
+    "",
+    "p-p---fa-",
+    1,
+    false,
+    null
+  ],
+  "sub": [
+    "sub",
+    "1",
+    "r--------",
+    1,
+    false,
+    null
+  ],
+  "subito": [
+    "subeo",
+    "",
+    "d-------_",
+    2,
+    false,
+    null
+  ],
+  "subsequebatur": [
+    "subsequor",
+    "",
+    "v3siid---",
+    1,
+    false,
+    null
+  ],
+  "subsidio": [
+    "subsidium",
+    "1",
+    "n-s---nd-",
+    1,
+    false,
+    null
+  ],
+  "suis": [
+    "suus",
+    "",
+    "p-p---nb-",
+    1,
+    true,
+    [
+      [
+        "suus",
+        "",
+        "p-p---nb-",
+        1
+      ],
+      [
+        "suus",
+        "",
+        "p-p---mb-",
+        1
+      ]
+    ]
+  ],
+  "summo": [
+    "superus",
+    "",
+    "a-s---nbs",
+    1,
+    false,
+    null
+  ],
+  "sunt": [
+    "sum",
+    "1",
+    "v3ppia---",
+    6,
+    false,
+    null
+  ],
+  "suos": [
+    "suus",
+    "",
+    "p-p---ma-",
+    3,
+    false,
+    null
+  ],
+  "superiore": [
+    "superus",
+    "1",
+    "a-s---fbc",
+    1,
+    false,
+    null
+  ],
+  "supra": [
+    "supra",
+    "",
+    "d--------",
+    1,
+    true,
+    [
+      [
+        "supra",
+        "",
+        "d--------",
+        1
+      ],
+      [
+        "supra",
+        "1",
+        "d--------",
+        1
+      ]
+    ]
+  ],
+  "tanta": [
+    "tantus",
+    "1",
+    "a-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "tantum": [
+    "tantus",
+    "1",
+    "a-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "tela": [
+    "telum",
+    "1",
+    "n-p---na-",
+    1,
+    false,
+    null
+  ],
+  "tempore": [
+    "tempus",
+    "1",
+    "n-s---nb-",
+    3,
+    false,
+    null
+  ],
+  "temporis": [
+    "tempus",
+    "1",
+    "n-s---ng-",
+    1,
+    false,
+    null
+  ],
+  "tempus": [
+    "tempus",
+    "1",
+    "n-s---nn-",
+    1,
+    false,
+    null
+  ],
+  "tertia": [
+    "tertius",
+    "",
+    "m-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "tertiam": [
+    "tertius",
+    "",
+    "m-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "totius": [
+    "totus",
+    "1",
+    "a-s---mg-",
+    1,
+    false,
+    null
+  ],
+  "totum": [
+    "totus",
+    "1",
+    "a-s---na-",
+    1,
+    false,
+    null
+  ],
+  "traditis": [
+    "trado",
+    "1",
+    "v-prppmb-",
+    1,
+    false,
+    null
+  ],
+  "traducere": [
+    "traduco",
+    "1",
+    "v--pna---",
+    2,
+    false,
+    null
+  ],
+  "trans": [
+    "trans",
+    "1",
+    "r--------",
+    1,
+    false,
+    null
+  ],
+  "transeundi": [
+    "transeo",
+    "",
+    "v___d_-g-",
+    2,
+    false,
+    null
+  ],
+  "transgressi": [
+    "transgredior",
+    "",
+    "v-prpdmn_",
+    1,
+    false,
+    null
+  ],
+  "transirent": [
+    "transeo",
+    "1",
+    "v3pisa---",
+    1,
+    false,
+    null
+  ],
+  "triduum": [
+    "triduum",
+    "1",
+    "n-s---na-",
+    1,
+    false,
+    null
+  ],
+  "trium": [
+    "tres",
+    "",
+    "m-p---mg-",
+    1,
+    false,
+    null
+  ],
+  "tum": [
+    "tum",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "turribus": [
+    "turris",
+    "1",
+    "n-p---fb-",
+    1,
+    false,
+    null
+  ],
+  "tuta": [
+    "tueor",
+    "",
+    "v-prpdna_",
+    1,
+    false,
+    null
+  ],
+  "ubi": [
+    "ubi",
+    "1",
+    "d--------",
+    1,
+    true,
+    [
+      [
+        "ubi",
+        "1",
+        "d--------",
+        1
+      ],
+      [
+        "ubi",
+        "1",
+        "d--------",
+        1
+      ]
+    ]
+  ],
+  "ullam": [
+    "ullus",
+    "1",
+    "a-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "ulteriorem": [
+    "ulter",
+    "",
+    "a-s---fac",
+    1,
+    false,
+    null
+  ],
+  "una": [
+    "unus",
+    "",
+    "m-s---fb-",
+    2,
+    true,
+    [
+      [
+        "unus",
+        "",
+        "m-s---fb-",
+        2
+      ],
+      [
+        "unus",
+        "1",
+        "d--------",
+        1
+      ]
+    ]
+  ],
+  "universam": [
+    "universus",
+    "",
+    "a-s---fa-",
+    1,
+    false,
+    null
+  ],
+  "uno": [
+    "unus",
+    "",
+    "m-s---nb-",
+    2,
+    false,
+    null
+  ],
+  "unum": [
+    "unus",
+    "",
+    "m-s---ma-",
+    3,
+    true,
+    [
+      [
+        "unus",
+        "",
+        "m-s---ma-",
+        3
+      ],
+      [
+        "unus",
+        "",
+        "m-s---na-",
+        2
+      ]
+    ]
+  ],
+  "usui": [
+    "usus",
+    "2",
+    "n-s---md-",
+    1,
+    false,
+    null
+  ],
+  "usus": [
+    "utor",
+    "1",
+    "v-srpdmn_",
+    1,
+    false,
+    null
+  ],
+  "ut": [
+    "ut",
+    "1",
+    "c--------",
+    12,
+    true,
+    [
+      [
+        "ut",
+        "1",
+        "c--------",
+        12
+      ],
+      [
+        "ut",
+        "",
+        "c--------",
+        1
+      ]
+    ]
+  ],
+  "utantur": [
+    "utor",
+    "1",
+    "v3ppsp---",
+    1,
+    false,
+    null
+  ],
+  "uti": [
+    "ut",
+    "",
+    "c--------",
+    3,
+    false,
+    null
+  ],
+  "utrisque": [
+    "uterque",
+    "",
+    "p-p---md-",
+    1,
+    false,
+    null
+  ],
+  "vadis": [
+    "vadum",
+    "1",
+    "n-p---nb-",
+    1,
+    false,
+    null
+  ],
+  "vallo": [
+    "vallum",
+    "1",
+    "n-s---nb-",
+    2,
+    false,
+    null
+  ],
+  "vendidit": [
+    "vendo",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "venerant": [
+    "venio",
+    "1",
+    "v3plia---",
+    2,
+    false,
+    null
+  ],
+  "venire": [
+    "venio",
+    "1",
+    "v--pna---",
+    1,
+    false,
+    null
+  ],
+  "venisset": [
+    "venio",
+    "1",
+    "v3slsa---",
+    1,
+    false,
+    null
+  ],
+  "venit": [
+    "venio",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "vererentur": [
+    "vereor",
+    "",
+    "v3pisd---",
+    1,
+    false,
+    null
+  ],
+  "vergebat": [
+    "vergo",
+    "1",
+    "v3siia---",
+    1,
+    false,
+    null
+  ],
+  "vero": [
+    "verus",
+    "1",
+    "d--------",
+    1,
+    false,
+    null
+  ],
+  "versari": [
+    "verso",
+    "1",
+    "v--pnp---",
+    1,
+    false,
+    null
+  ],
+  "vesperum": [
+    "vesper",
+    "",
+    "n-s---ma-",
+    1,
+    false,
+    null
+  ],
+  "vi": [
+    "sex",
+    "",
+    "m-_---__-",
+    1,
+    true,
+    [
+      [
+        "sex",
+        "",
+        "m-_---__-",
+        1
+      ],
+      [
+        "sex",
+        "",
+        "m-_---__-",
+        1
+      ]
+    ]
+  ],
+  "vicis": [
+    "vicus",
+    "1",
+    "n-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "videbantur": [
+    "video",
+    "1",
+    "v3piip---",
+    1,
+    false,
+    null
+  ],
+  "videbatur": [
+    "video",
+    "1",
+    "v3siip---",
+    1,
+    false,
+    null
+  ],
+  "viderentur": [
+    "video",
+    "1",
+    "v3pisp---",
+    2,
+    false,
+    null
+  ],
+  "vidit": [
+    "video",
+    "1",
+    "v3sria---",
+    1,
+    false,
+    null
+  ],
+  "vigilia": [
+    "vigilia",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "viii": [
+    "octo",
+    "",
+    "m-_---__-",
+    1,
+    false,
+    null
+  ],
+  "viminibus": [
+    "vimen",
+    "1",
+    "n-p---nb-",
+    1,
+    false,
+    null
+  ],
+  "vini": [
+    "vinum",
+    "1",
+    "n-s---ng-",
+    1,
+    false,
+    null
+  ],
+  "viris": [
+    "vir",
+    "1",
+    "n-p---mb-",
+    1,
+    false,
+    null
+  ],
+  "virtute": [
+    "virtus",
+    "1",
+    "n-s---fb-",
+    1,
+    false,
+    null
+  ],
+  "virtutem": [
+    "virtus",
+    "1",
+    "n-s---fa-",
+    2,
+    false,
+    null
+  ],
+  "virtutis": [
+    "virtus",
+    "1",
+    "n-s---fg-",
+    1,
+    false,
+    null
+  ],
+  "visa": [
+    "video",
+    "1",
+    "v-prp-nn-",
+    1,
+    false,
+    null
+  ],
+  "vulgo": [
+    "vulgus",
+    "",
+    "d-------_",
+    1,
+    false,
+    null
+  ],
+  "x": [
+    "decem",
+    "",
+    "m-_---__-",
+    1,
+    false,
+    null
+  ],
+  "xii": [
+    "duodecim",
+    "",
+    "m-_---__-",
+    1,
+    false,
+    null
+  ],
+  "xv": [
+    "quindecim",
+    "",
+    "m-_---__-",
+    1,
+    false,
+    null
+  ]
+}

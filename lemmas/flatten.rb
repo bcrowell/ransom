@@ -73,6 +73,11 @@ $stdin.each_line { |line|
   if line=~/urn:cts:greekLit:tlg0012.tlg001.perseus-grc1.tb/ then $text="iliad" end
   if line=~/urn:cts:greekLit:tlg0012.tlg002.perseus-grc1.tb/ then $text="odyssey" end
   if line=~/urn:cts:latinLit:phi0972.phi001.perseus-lat1.tb/ then $text="satyricon"; book_and_chapter=false end
+  if line=~/urn:cts:latinLit:phi0448.phi001.perseus-lat1.tb.xml/ then $text="caesar"; book_and_chapter=false end
+  if line=~/urn:cts:latinLit:phi0474.phi013.perseus-lat1.tb.xml/ then $text="cicero"; book_and_chapter=false end
+  if line=~/urn:cts:latinLit:phi0690.phi003.perseus-lat1.tb.xml/ then $text="vergil"; book_and_chapter=false end
+  if line=~/urn:cts:latinLit:phi0959.phi006.perseus-lat1.tb.xml/ then $text="ovid"; book_and_chapter=false end
+  if line=~/urn:cts:latinLit:phi1351.phi005.perseus-lat1.tb.xml/ then $text="tacitus"; book_and_chapter=false end
   if line=~/<sentence/ then
     if book_and_chapter && line=~/subdoc="(\d+)\.(\d+)/ then
       #     <sentence subdoc="1.1-1.2" id="2185541" document_id="urn:cts:greekLit:tlg0012.tlg002.perseus-grc1">
