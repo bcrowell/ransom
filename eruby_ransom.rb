@@ -68,17 +68,18 @@ def print_four_page_layout(stuff,genos,db,wikt,bilingual,next_layout,vocab_by_ch
   print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,core,start_chapter,notes)
 end
 
-def print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,core,start_chapter,notes)
+def print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,core,start_chapter,notes,ransom_spacing:0.85)
   # prints
   # Doesn't get called if Options.if_prose_trial_run is set
+  # Ransom_spacing is the tightness inter-line spacing in the glosses given in the ransom notes.
   stuff = VocabPage.make(db,vl,core)
   tex,v = stuff['tex'],stuff['file_lists']
   print tex
   if notes.length>0 then print Notes.to_latex(bilingual.foreign_linerefs,notes) end # FIXME: won't work if foreign text is prose, doesn't have linerefs
   print header_latex(bilingual) # includes pagebreak
-  print foreign(treebank,db,bilingual,bilingual.foreign_first_line_number,start_chapter),"\n\n"
+  print foreign(treebank,db,bilingual,bilingual.foreign_first_line_number,start_chapter,ransom_spacing),"\n\n"
   print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatglosses}%\n"
-  print ransom(treebank,db,bilingual,v,bilingual.foreign_first_line_number,start_chapter),"\n\n"
+  print ransom(treebank,db,bilingual,v,bilingual.foreign_first_line_number,start_chapter,ransom_spacing),"\n\n"
   print bilingual.translation_text
   # https://tex.stackexchange.com/a/308934
   layout_for_illustration = next_layout  # place illustration at bottom of page coming immediately before the *next* four-page layout
@@ -110,26 +111,26 @@ def not_nil_or_zero(x)
   return !(x.nil? || x==0)
 end
 
-def foreign(treebank,db,bilingual,first_line_number,start_chapter)
+def foreign(treebank,db,bilingual,first_line_number,start_chapter,ransom_spacing)
   if bilingual.foreign.is_verse then
-    main_code,garbage,environment = foreign_verse(treebank,db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
+    main_code,garbage,environment = foreign_verse(treebank,db,bilingual,false,first_line_number,start_chapter,ransom_spacing,left_page_verse:true)
   else
-    main_code,garbage,environment = foreign_prose(treebank,db,bilingual,false,first_line_number,start_chapter,left_page_verse:true)
+    main_code,garbage,environment = foreign_prose(treebank,db,bilingual,false,first_line_number,start_chapter,ransom_spacing,left_page_verse:true)
   end
   print postprocess_foreign_or_ransom('foreign',bilingual,main_code,environment,start_chapter)
 end
 
-def ransom(treebank,db,bilingual,v,first_line_number,start_chapter)
+def ransom(treebank,db,bilingual,v,first_line_number,start_chapter,ransom_spacing)
   common,uncommon,rare = v
   if bilingual.foreign.is_verse then
-    main_code,gloss_code,environment = foreign_verse(treebank,db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
+    main_code,gloss_code,environment = foreign_verse(treebank,db,bilingual,true,first_line_number,start_chapter,ransom_spacing,gloss_these:rare)
   else
-    main_code,gloss_code,environment = foreign_prose(treebank,db,bilingual,true,first_line_number,start_chapter,gloss_these:rare)
+    main_code,gloss_code,environment = foreign_prose(treebank,db,bilingual,true,first_line_number,start_chapter,ransom_spacing,gloss_these:rare)
   end
   print postprocess_foreign_or_ransom('ransom',bilingual,main_code,environment,start_chapter,gloss_code:gloss_code)
 end
 
-def foreign_prose(treebank,db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
+def foreign_prose(treebank,db,bilingual,ransom,first_line_number,start_chapter,ransom_spacing,gloss_these:[],left_page_verse:false)
   main_code = ''
   main_code += "\\enlargethispage{\\baselineskip}\n"
   text = clown(bilingual.foreign_text)
@@ -174,10 +175,11 @@ def foreign_prose(treebank,db,bilingual,ransom,first_line_number,start_chapter,g
   # ... Force the final paragraph to be typeset as a paragraph, which is how it was typeset in the trial run.
   #     https://tex.stackexchange.com/a/116573
   main_code += "\n\n"
+  gloss_code = Latex.linespread(ransom_spacing,Latex.footnotesize(gloss_code))
   return [main_code,gloss_code,'foreignprose']
 end
 
-def foreign_verse(treebank,db,bilingual,ransom,first_line_number,start_chapter,gloss_these:[],left_page_verse:false)
+def foreign_verse(treebank,db,bilingual,ransom,first_line_number,start_chapter,ransom_spacing,gloss_these:[],left_page_verse:false)
   # If gloss_these isn't empty, then we assume it contains a list of rare lemmatized forms.
   # Returns a string containing latex code.
   t = bilingual.foreign_text
@@ -209,7 +211,7 @@ def foreign_verse(treebank,db,bilingual,ransom,first_line_number,start_chapter,g
     }
   end
   main_code = main_code + verse_lines_to_latex(lines,first_line_number,left_page_verse) + "\n\n"
-  gloss_code = "\n{\\linespread{1.0}\\footnotesize #{gloss_code} }\n"
+  gloss_code = Latex.linespread(ransom_spacing,Latex.footnotesize(gloss_code))
   return [main_code,gloss_code,'foreignverse']
 end
 

@@ -2,6 +2,13 @@ class Latex
   def Latex.envir(environment,contents)
     return "\\begin{#{environment}}\n" + contents + "\\end{#{environment}}\n"
   end
+  def Latex.footnotesize(contents)
+    return "{\\footnotesize " + contents + "}\n"
+  end
+  def Latex.linespread(x,contents)
+    # x=1.0 for single spacing
+    return "\n{\\linespread{#{x}} " + contents + "}\n"
+  end
 end
 
 class RansomGloss
