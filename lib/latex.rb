@@ -166,6 +166,7 @@ class WhereAt
     #     The extra1 and extra2 strings are JSON hashes designed to make it convenient to add enhancements to this system.
     #     Extra1 is written using \immediate\write, extra2 using \write. Even if they have some of the same latex source code,
     #     what gets written to the .pos file can be different because it depends on whether we use \immediate.
+    # This also has the effect of typesetting the word in a box, which prevents hyphenation.
     # Inputs:
     #   word = the word that is actually going to be typeset on the page
     #   lemma_key = a convenient key, which for verse is normally the lemma for the word, stripped of accents

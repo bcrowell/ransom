@@ -135,42 +135,44 @@ def foreign_prose(treebank,db,bilingual,ransom,first_line_number,start_chapter,r
   main_code += "\\enlargethispage{\\baselineskip}\n"
   text = clown(bilingual.foreign_text)
   gloss_code = ''
-  if gloss_these.length>0 then
-    gg = gloss_these.map { |x| remove_accents(x)}
-    hashes = []
-    split_string_at_whitespace(text).each { |x|
-      word_for_hash,whitespace = x
-      hashes.push([word_for_hash,WhereAt.auto_hash(word_for_hash)]) # use this to pick data out of pos file
+  # In the following, if this is the plain foreign-language page (as opposed to the facing ransom-note page), then
+  # gloss_these with be an empty list, and that's OK. We still need to run this code in order to do other things,
+  # such as preventing hyphenation.
+  gg = gloss_these.map { |x| remove_accents(x)}
+  hashes = []
+  split_string_at_whitespace(text).each { |x|
+    word_for_hash,whitespace = x
+    hashes.push([word_for_hash,WhereAt.auto_hash(word_for_hash)]) # use this to pick data out of pos file
+  }
+  match_up = merge_word_lists(words(text),hashes)
+  # result is list of triples like [word from words(text),word from split at whitespace,hash]
+  k = 0
+  substitutions = {}
+  match_up.each { |x|
+    word_bare,word_with_trailing_punct,hash = x
+    lemma = remove_accents(treebank.lemmatize(word_bare)[0]).downcase  # if the lemmatizer fails, it just returns the original word
+    code_for_word = "\\mbox{#{word_with_trailing_punct}}" # default if not to be glossed; \mbox prevents hyphenation
+    marker = "__SUB#{k}__"
+    k += 1
+    gg.each { |x|
+      if lemma==x then
+        entry = Gloss.get(db,x,prefer_length:0) # it doesn't matter whether inputs have accents
+        if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
+        code = nil
+        new_gloss_code = nil
+        # In both of the following lines, the code that is generated prevents hyphenation, and that's good.
+        if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_pos(word_with_trailing_punct,to_key(x),hash)  end
+        if Options.if_render_glosses then code,new_gloss_code=render_gloss_for_foreign_page(hash,word_with_trailing_punct,to_key(x),gloss,bilingual) end
+        if !(new_gloss_code.nil?) then gloss_code = gloss_code + new_gloss_code end
+        if !(code.nil?) then code_for_word=code end
+      end
     }
-    match_up = merge_word_lists(words(text),hashes)
-    # result is list of triples like [word from words(text),word from split at whitespace,hash]
-    k = 0
-    substitutions = {}
-    match_up.each { |x|
-      word_bare,word_with_trailing_punct,hash = x
-      lemma = remove_accents(treebank.lemmatize(word_bare)[0]).downcase  # if the lemmatizer fails, it just returns the original word
-      gg.each { |x|
-        if lemma==x then
-          entry = Gloss.get(db,x,prefer_length:0) # it doesn't matter whether inputs have accents
-          if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
-          code = nil
-          new_gloss_code = nil
-          if Options.if_write_pos then code=WhereAt.latex_code_to_print_and_write_pos(word_with_trailing_punct,to_key(x),hash)  end
-          if Options.if_render_glosses then code,new_gloss_code=render_gloss_for_foreign_page(hash,word_with_trailing_punct,to_key(x),gloss,bilingual) end
-          if !(new_gloss_code.nil?) then gloss_code = gloss_code + new_gloss_code end
-          if !(code.nil?) then
-            marker = "__GLOSS#{k}__"
-            k += 1
-            text = text.sub(/#{word_with_trailing_punct}/,marker)
-            substitutions[marker] = code
-          end
-        end
-      }
-    }
-    substitutions.keys.each { |marker|
-      text.sub!(/#{marker}/,substitutions[marker])
-    }
-  end
+    text = text.sub(/#{word_with_trailing_punct}/,marker)
+    substitutions[marker] = code_for_word
+  }
+  substitutions.keys.each { |marker|
+    text.sub!(/#{marker}/,substitutions[marker])
+  }
   main_code += text.sub(/\s+$/,'') # strip trailing newlines to make sure that there is no paragraph break before the following:
   main_code += '{\parfillskip=0pt \emergencystretch=.5\textwidth \par}'
   # ... Force the final paragraph to be typeset as a paragraph, which is how it was typeset in the trial run.
@@ -232,12 +234,13 @@ def render_gloss_for_foreign_page(line_hash,word,key,gloss,bilingual)
   # Word is the inflected string. Key is the database key, i.e., the lemma with no accents. Gloss is a string.
   # Returns [code,new_gloss_code], where code writes the original word in white ink, i.e., erases it, and
   # new_gloss_code is the latex code to put the gloss in black, positioned on top of that.
+  # Another (desired) effect of this is to prevent hyphenation, since the word is typeset inside an \mbox.
   pos = WhereAt.get_pos_data(line_hash,key) # returns pos = a hash whose keys are "x","y","width","height","depth"
   if pos.nil? then raise "in foreign_helper, rendering ransom notes, position is nil for line_hash=#{line_hash}, key=#{key}" end
   pos = RansomGloss.tweak_gloss_geom_kludge_fixme(pos)
   a = RansomGloss.text_in_box(gloss,pos['width'],bilingual.translation.genos)
   new_gloss_code = RansomGloss.text_at_position(a,pos)
-  code = %q{\begin{whitetext}WORD\end{whitetext}}
+  code = %q{\begin{whitetext}\mbox{WORD}\end{whitetext}}
   code.gsub!(/WORD/,word)
   return [code,new_gloss_code]
 end
