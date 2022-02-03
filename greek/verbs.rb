@@ -44,6 +44,7 @@ module Verb_difficulty
       ["ῥέξας","ῥέζω","v-sapamn-",false],
       ["χαίρῃς","χαίρω","v2spsa---",false],
       ["ἔρξαι","ἔρδω","v2samm---",true], # hard because δ->ξ in the aorist, which is hard for a human to undo
+      ["ἕρξῃς","ἔρδω","v2sasa---",true], # weird form with rough breathing, Ilias 2.364
       ["φάσθαι","φημί","v--pne---",true],
       ["ἄνασσε","ἀνάσσω","v3siia---",false],
       ["ἐρυσσάμενος","ἐρύω","v-sapmmn-",false],

@@ -39,12 +39,11 @@ def VocabPage.make_helper(db,commonness,vl,lo,hi,core)
       g = Gloss.get(db,lexical)
       next if g.nil?
       difficult_to_recognize = data['difficult_to_recognize']
-      debug = (word=='ἐρυσσάμενος')
-      if debug then File.open("debug.txt","a") { |f| f.print "... 100 #{word} #{lexical} #{difficult_to_recognize}\n" } end
-      difficult_to_recognize ||= (not_nil_or_zero(g['aorist_difficult_to_recognize']) && /^...a/.match?(pos) )
-      if debug then File.open("debug.txt","a") { |f| f.print "... 150 #{word} #{lexical} #{difficult_to_recognize} #{not_nil_or_zero(g['aorist_difficult_to_recognize'])}\n" } end
+      debug = false
+      boglemagwag ||= debug
+      Debug.print(debug) {"... 100 #{word} #{lexical} #{difficult_to_recognize}\n"}
       difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lexical,pos)[0])
-      if debug then File.open("debug.txt","a") { |f| f.print "... 200 #{word} #{lexical} #{difficult_to_recognize} #{Verb_difficulty.guess(word,lexical,pos)[0]}\n" } end
+      Debug.print(debug) {"... 200 #{word} #{lexical} #{difficult_to_recognize} #{Verb_difficulty.guess(word,lexical,pos)[0]}"}
       data['difficult_to_recognize'] = difficult_to_recognize
       data['core'] = core.include?(remove_accents(lexical).downcase)
       entry_type = nil
@@ -92,7 +91,9 @@ def VocabPage.entry(db,stuff)
   #    preferred_lex will be different from the form inside stuff.
   word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
   if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
-  explain_inflection = entry.has_key?('lexical') || (data.has_key?('is_3rd_decl') && data['is_3rd_decl'] && !alpha_equal(word,lexical))
+  explain_inflection = false
+  explain_inflection ||= (data.has_key?('is_3rd_decl') && data['is_3rd_decl'] && !alpha_equal(word,lexical))
+  explain_inflection ||= data['difficult_to_recognize']
   # Count chars, and if it looks too long to fit on a line, switch to the short gloss:
   if explain_inflection then
     text = [word.downcase,preferred_lex,gloss]
