@@ -196,6 +196,14 @@ class IliadNotes
     'about_what'    => %q{ἀγοράων},
     'explain'       => %q{here, things said in assembly, harangues}
   }],
+  ["2.355" , {
+    'about_what'    => %q{Τρώων ἀλόχῳ},
+    'explain'       => %q{This can mean either a Trojan bed-mate or the wife of some Trojan.}
+  }],
+  ["2.356" , {
+    'about_what'    => %q{τίσασθαι δ᾽ Ἑλένης ὁρμήματά τε στοναχάς τε},
+    'explain'       => %q{It's possible to interpret this as implying either suffering on Helen's part, or on that of the soldiers. If the former, then Helen is portrayed as an unwilling victim, rather than as having been seduced.}
+  }],
 ]
 
 def IliadNotes.notes

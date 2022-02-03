@@ -1,7 +1,10 @@
 // https://en.wiktionary.org/wiki/κατακοιμάω https://logeion.uchicago.edu/κατακοιμάω
 // 
 {
-  "word":"κατακοιμάω",
-  "medium":"go to sleep"
+  "word":"κατακοιμάομαι",
+  "perseus":"κατακοιμάω",
+  "short":"sleep; have sex",
+  "medium":"pass: go to sleep; have sex with",
+  "syn":"εὐνάω, παραλέχομαι"
 }
       
