@@ -188,6 +188,10 @@ class IliadNotes
     'about_what'    => %q{ψεῦδός κεν φαῖμεν καὶ νοσφιζοίμεθα},
     'explain'       => %q{Homer uses the present optative for contrary-to-fact suppositions in the present.}
   }],
+  ["2.157" , {
+    'about_what'    => %q{Ἀτρυτώνη},
+    'explain'       => %q{epithet of Athena, traditionally explained as coming from τρύχω, to wear out, hence indefatigable}
+  }],
   ["2.275" , {
     'about_what'    => %q{ἔσχ(εν)},
     'explain'       => %q{Ἔχω, usually meaning 'hold,' has a reduplicated form ἴσχω that always means 'hold back,' but sometimes, as here, ἔχω itself means 'hold back.'}
@@ -203,6 +207,11 @@ class IliadNotes
   ["2.356" , {
     'about_what'    => %q{τίσασθαι δ᾽ Ἑλένης ὁρμήματά τε στοναχάς τε},
     'explain'       => %q{It's possible to interpret this as implying either suffering on Helen's part, or on that of the soldiers. If the former, then Helen is portrayed as an unwilling victim, rather than as having been seduced.}
+  }],
+  ["2.364" , {
+    'about_what'    => %q{ἕρξῃς},
+    'explain'       => %q{The rough breathing found in some manuscripts is mysterious. Chantraine speculates that Alexandrian grammarians introduced it to distinguish aorist forms of ἕρδω from those of ἔργω, to enclose.}
+    # https://latin.stackexchange.com/questions/17682/rough-breathing-on-%e1%bc%95%cf%81%ce%be%e1%bf%83%cf%82
   }],
 ]
 
