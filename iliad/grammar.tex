@@ -10,7 +10,7 @@
 
 Homer has about 221 pronouns and articles (which are not distinct categories):
 
-% Output of Pronouns.all_no_grave
+% Output of find_all_pronouns.rb and find_all_articles ; hoarded in Pronouns.all_no_grave
 
 {\footnotesize 
 ἅ αἱ αἵ αἵδε ἄμμε ἄμμες ἄμμι ἄμμιν ἅς ἄσσα ἅσσά ἅσσα ἑ ἕ ἐγώ ἔγωγέ ἔγωγε ἐγών ἑέ ἕης ἑθέν ἑθεν ἕθεν εἷο ἐμέ ἐμέθεν ἐμεῖο ἐμέο ἐμεῦ ἐμοί ἔμοιγε ἑο ἕο ἑοῖ εὑ ἥ ἡ ἥδέ ἥδε ἧμας ἡμέας ἡμεῖς ἡμείων ἡμέων ἡμῖν ἥμιν ἧμιν ἥν ἧς ᾗς κεῖνος μέ με μευ μίν μιν μοί μοι νώ νῶΐ νῶι νῶϊ νῶιν νῶϊν ὅ ὁ ὅδε οἱ οἵ οἷ οἵδε οἷσί οἷσι οἷσίν οἷσιν ὅν ὅου ὅς ὅστις ὁτέοισιν ὅτευ ὅτεῳ ὅτεῴ ὅτεών ὅτινα ὅτινας ὅτίς ὅτις ὅττεό ὅττευ οὗ οὕς σέ σε σέθεν σεῖο σέο σεο σευ σεῦ σοί σοι σοῦ σύ σφας σφε σφέας σφεας σφείων σφέων σφεων σφι σφιν σφίσι σφισι σφίσιν σφισιν σφώ σφωε σφῶΐ σφῶϊ σφωιν σφωϊν σφῶϊν σφῶν σφῷν τά τάδε ταί τάς τάσδε τάων τεΐν τέο τεο τεοῖο τευ τεῦ τεῳ τέων τῇ τῇδέ τήν τήνδε τῆς τῇς τῆσδέ τῆσδε τῇσι τῇσίν τῇσιν τί τι τίνα τινά τινα τινάς τινας τινε τίνες τινές τινες τινι τίς τις τό τόδε τοί τοι τοιάδε τοιαίδε τοιήδε τοῖιν τοῖϊν τοῖο τοιοίδε τοιόνδε τοιόσδε τοιούσδε τοῖς τοῖσδε τοίσδεσι τοίσδεσσι τοῖσδεσσι τοίσδεσσιν τοῖσί τοῖσι τοῖσίν τοῖσιν τόν τόνδε τοσόνδέ τοσόνδε τοσσάδε τοσσόνδε τοῦ τοῦδέ τοῦδε τούς τούσδε τύνη τώ τῳ τῷ τώδε τῷδε τῶν τῶνδε ὑμέας ὑμεῖς ὑμείων ὑμῖν ὕμιν ὔμμε ὔμμες ὔμμι ὔμμιν χἠμεῖς ὥ ᾧ ὧν
@@ -168,12 +168,46 @@ words in the Homeric dialect. Many are verbal particles, clitics, or postpositiv
 
 A \emph{particle} is a word that has no meaning of its own and changes the meaning of other words.
 A \emph{clitic} is a word that gets controlled phonologically by other words, leaning (κλίνω) on them. In Greek,
-clitics lack an accent, although they are listed with one in dictionary entries. 
-They consist of \emph{proclitics} that lean on the following word, and
+clitics usually lack an accent (see Smyth 182 for details), although they may be listed with one in dictionary entries.
+Clitics consist of \emph{proclitics} that lean on the following word, and
 \emph{enclitics} that lean on the preceding word. Articles and prepositions are enclitics.
 A \emph{postpositive} is a word that comes after the word that it modifies, as in ``someone nice.''
 
+\formatlikesubsection{Particles}
 
+Homer uses the following 38 particles:
+
+% Output of find_all_particles.rb
+% Omitted the following, which are not listed in Cunliffe, are probably just weird respellings:
+% πεῤ πη πῆ 
+% Added οὔτε, which seems analogous to μήτε, but which perseus doesn't analyze as a separate particle?
+
+ἄν ἄρ ἄρα ἀτάρ αὐτάρ ἄῤ γάρ γε δαί δέ δή ἤ ἤτοι ἠΰτε θην κε κεν μά μάν μέν μη μήν μήτε οὐ οὖν οὔτε περ πῃ πῇ ποθεν ποτε πω πως ῥα τάρ τε τοι τοιγάρ
+
+There is usually no difference in meaning between accented and unaccented forms except that an accent can indicate emphasis.
+
+Particles sorted according to their function:
+
+\begin{tabular}{p{1.6in}p{2.7in}}
+affirmative, emphasis, \mbox{interrogative}, oaths &
+  γε δαί ἤ/ἤτοι θην μά μάν μήν πω τάρ τοι \tabularnewline \hline
+negation, prohibition &
+  μη οὐ \tabularnewline \hline
+coordination, correlatives &
+  μήτε οὔτε τε \tabularnewline \hline
+and/but, adversative, \mbox{continuation} &
+  ἀτάρ αὐτάρ \tabularnewline \hline
+temporal order, causation, conjunction &
+  ἄρ/ἄρα/ῥα/ἄῤ γάρ δέ δή τοιγάρ \tabularnewline \hline
+when, where, how &
+  πῃ πῇ ποθεν ποτε πως \tabularnewline \hline
+potential, conditional, \mbox{counterfactual}, iteration &
+  ἄν κε/κεν \tabularnewline \hline
+similes &
+  ἠΰτε \tabularnewline \hline
+multiple uses &
+  μέν οὖν περ
+\end{tabular}
 
 \formatlikesubsection{Conjunctions}
 
