@@ -308,6 +308,12 @@ end
 
 def contains_greek_elision(s)
   if s=~/[᾽’]/ then return true else return false end
+  # the above are koronis (8125=14bd hex) and apostrophe (8217=2019 hex)
+  # see http://www.opoudjis.net/unicode/gkdiacritics.html
+  # Perseus sometimes has 787=313 hex, which is combining comma above, the non-spacing version of koronis. This seems
+  # to me to be a mistake on their part.
+  # https://github.com/PerseusDL/treebank_data/issues/31
+  # One could also have 700=2bc hex, spacing smooth breathing, which seems like an error, or 39=27 hex, the ascii apostrophe.
 end
 
 def escape_double_quotes(s)

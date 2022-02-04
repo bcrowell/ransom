@@ -29,6 +29,7 @@ def VocabPage.make(db,vl,core)
 end
 
 def VocabPage.make_helper(db,commonness,vl,lo,hi,core)
+  debug_this_page = false
   l = []
   lo.upto(hi) { |i|
     vl.list[i].each { |entry|
@@ -40,10 +41,10 @@ def VocabPage.make_helper(db,commonness,vl,lo,hi,core)
       next if g.nil?
       difficult_to_recognize = data['difficult_to_recognize']
       debug = false
-      boglemagwag ||= debug
+      debug_this_page ||= debug
       Debug.print(debug) {"... 100 #{word} #{lexical} #{difficult_to_recognize}\n"}
       difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lexical,pos)[0])
-      Debug.print(debug) {"... 200 #{word} #{lexical} #{difficult_to_recognize} #{Verb_difficulty.guess(word,lexical,pos)[0]}"}
+      Debug.print(debug && is_verb) {"... 200 #{word} #{lexical} #{difficult_to_recognize} #{Verb_difficulty.guess(word,lexical,pos)[0]}"}
       data['difficult_to_recognize'] = difficult_to_recognize
       data['core'] = core.include?(remove_accents(lexical).downcase)
       entry_type = nil
@@ -54,6 +55,7 @@ def VocabPage.make_helper(db,commonness,vl,lo,hi,core)
       if !entry_type.nil? then l.push([entry_type,[lexical,word,lexical,data]]) end
     }
   }
+  Debug.print(debug_this_page) {"... 300 #{l}"}
   secs = []
   ['gloss','conjugation','declension'].each { |type|
     envir = {'gloss'=>'vocaball','conjugation'=>'conjugations','declension'=>'declensions'}[type]
