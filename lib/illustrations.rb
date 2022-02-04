@@ -62,22 +62,24 @@ def Illustrations.do_one(layout)
   Illustrations.list_of.each { |ill|
     book,line,filename,width,height,label = ill
     lineref = [book,line]
-    if (from<=>lineref)<=0 && (lineref<=>to)<=0 then
+    debug = false
+    if (from<=>lineref)<=0 && (lineref<=>to)<0 then # "to" is non-inclusive
+      Debug.print(debug) {"==== #{from} #{to} #{lineref} #{(from<=>lineref)<=0 && (lineref<=>to)<=0}\n"}
       if count>=1 then
         $stderr.print "WARNING: layout for #{layout.foreign_linerefs} contained more than one illustration, only one was used\n"
         next
       end
       landscape = Illustrations.is_landscape(label)
+      pts_per_in = 72.0
       if landscape then
         w_in = 4.66 # FIXME -- hardcoded
         if !Illustrations.reduced_width(label).nil? then w_in=Illustrations.reduced_width(label) end
-        pts_per_in = 72.0
         margin = 0.5 # need this much space in inches between translation and image
         height_needed = (w_in*(height.to_f/width.to_f)+margin)*pts_per_in
         width_latex_code = "#{w_in}in"
       else
-        height_needed = 3.5 # inches
-        width_latex_code = (height_needed*(width.to_f/height.to_f)).to_s+"in"
+        height_needed = 3.5*pts_per_in
+        width_latex_code = (height_needed*(width.to_f/height.to_f)).to_s+"pt"
       end
       foreign = layout.foreign
       if Illustrations.hand_written_caption(label).nil? then
@@ -87,15 +89,18 @@ def Illustrations.do_one(layout)
         caption = Illustrations.hand_written_caption(label)
       end
       caption = "\n\n\\hfill{}\\linenumber{#{book}.#{line}}\\hspace{3mm} "+caption+"\n"
-      info = "#{filename}, height_needed=#{height_needed} in"
+      info = "#{filename}, height_needed=#{height_needed} pts"
+      Debug.print(debug) {"==== 200 generated code\n"}
       x = %q{
         \vfill
         % illustration and caption, __INFO__
         \edef\measurepage{\the\dimexpr\pagegoal-\pagetotal-\baselineskip\relax}
-        \ifdim\measurepage > __MIN_HT__pt \hfill\includegraphics[width=__WIDTH__]{__FILE__}__CAPTION__ \else \fi \relax
+        \ifdim\measurepage > __MIN_HT__pt \hfill\includegraphics[width=__WIDTH__]{__FILE__}__CAPTION__ \else __NO_FIT__ \fi \relax
       }
       result += x.gsub(/__FILE__/,filename).gsub(/__MIN_HT__/,height_needed.to_s).gsub(/__CAPTION__/,caption).gsub(/__INFO__/,info). \
-            gsub(/__WIDTH__/,width_latex_code)
+            gsub(/__WIDTH__/,width_latex_code). \
+            gsub(/__NO_FIT__/,"Not enough space for figure #{filename}.")
+      Debug.print(debug) {"==== 300 generated code, result=#{result}\n"}
       count +=1
     end
   }

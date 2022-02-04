@@ -1,4 +1,7 @@
 {
+  "pyres-burning":{
+    "width":3.5
+  },
   "the-heralds-have-just-now-gone-from-my-tent":{
     "portrait":true,
     "caption":"Achilles wraps his cloak around his face in shame."
@@ -8,5 +11,14 @@
   },
   "o-deceitful-one":{
     "width":3.0
+  },
+  "odysseus-smites-thersites":{
+    "width":3.0
+  },
+  "devoured-them":{
+    "width":3.0
+  },
+  "indefatigable-child-of-zeus":{
+    "portrait":true
   }
 }

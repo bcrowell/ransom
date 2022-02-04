@@ -47,7 +47,6 @@ def Vlist.from_text(t,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_
   # glossary would be too long, we delete the most common words to cut it down to an appropriate length. If no frequency
   # list is given, then the choice of which words to cut is random/undefined.
   # The wikt argument is a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated.
-  # FIXME: rereads the frequency file and processes it every time it's called
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],

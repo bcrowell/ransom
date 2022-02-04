@@ -21,6 +21,8 @@ def clean_up_combining_characters(s)
   combining_comma_above = [787].pack('U')
   greek_koronis = [8125].pack('U')
   s = s.sub(/#{combining_comma_above}/,greek_koronis)
+  # ... mistaken use of combining comma above rather than the spacing version
+  #     https://github.com/PerseusDL/treebank_data/issues/31
   # seeming one-off errors in perseus:
   s2 = s
   s2 = s2.sub(/#{[8158, 7973].pack('U')}/,"ἥ") # dasia and oxia combining char with eta
@@ -33,11 +35,9 @@ def clean_up_combining_characters(s)
   s2 = s2.sub(/#{[180].pack('U')}([κ])/) {$1} # accent on a kappa, obvious error
   s2 = s2.sub(/#{[834].pack('U')}/,'') # what the heck is this?  
   s2 = s2.sub(/ʽ([ἁἑἱὁὑἡὡ])/) {$1} # redundant rough breathing mark
+  # another repeating error:
   s2 = s2.sub(/(?<=[[:alpha:]][[:alpha:]])([ἀἐἰὀὐἠὠ])(?![[:alpha:]])/) { $1.tr("ἀἐἰὀὐἠὠ","αειουηω")+"᾽" }
   # ... smooth breathing on the last character of a long word; this is a mistake in representation of elision
-  #     https://github.com/PerseusDL/treebank_data/issues/31
-  s2 = s2.sub(/#{[787].pack('U')}/,"᾽")
-  # ... mistaken use of combining comma above rather than the spacing version
   #     https://github.com/PerseusDL/treebank_data/issues/31
   if s2!=s then
     $stderr.print "cleaning up what appears to be an error in a combining character, #{s} -> #{s2}, unicode #{s.chars.map { |x| x.ord}} -> #{s2.chars.map { |x| x.ord}}\n"
