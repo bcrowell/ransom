@@ -82,7 +82,7 @@ def do_one_lemma(lemma,selector_strings,homer,sel,verbose:true,extra_indentation
   homer_filtered = {}
   lemma_matches = [] # can match more than one lemma, so count them
   homer.each_pair { |inflected,data|
-    match,list = lemma_match(lemma,data)
+    match,list = lemma_match(lemma,data) # ignores accents
     next unless match
     homer_filtered[inflected] = list
     list.each { |d|
@@ -90,6 +90,13 @@ def do_one_lemma(lemma,selector_strings,homer,sel,verbose:true,extra_indentation
     }
   }
   lemma_matches = lemma_matches.uniq
+  if lemma_matches.length>1 && lemma_matches.include?(lemma) then 
+    lemma_matches=[lemma] # ... pick the one that's an exact match, including accentuation
+    homer_filtered.keys.each { |inflected|
+      homer_filtered[inflected] = homer_filtered[inflected].filter { |d| d[0]==lemma}
+      if homer_filtered[inflected].length==0 then homer_filtered.delete(inflected) end
+    }
+  end
   last_odo = Array.new(n, -1)
   result_string = []
   0.upto(total_odometer_values-1) { |o|
@@ -181,6 +188,8 @@ def parse_selector_strings(selector_strings)
 end
 
 def lemma_match(lemma,data)
+  # return value is [success,list], where each element of list is a block of data whose 0th element is the lemma
+  # ignores accentuation
   x = remove_accents(lemma)
   ambiguous = data[4]
   if !ambiguous then
