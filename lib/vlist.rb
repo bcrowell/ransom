@@ -305,6 +305,8 @@ class Ignore_words
   # If an inflected form is given here, then it will only match that inflected form.
   # The words οτηερ and υνκνοων are English "other" and "unknown," processed incorrectly as if they were beta code.
   # Note that τῷ is a lemma in perseus (adverb), and is glossed and not ignored.
+  # If it's desired to ignore a word in an accent-sensitive way, then put the word in @@index_accent_sensitive.
+  # We do this with ποῦ (an itty-bitty question word), while not ignoring πού, which is mainly a discourse adverb.
   @@index = %q{
     οτηερ υνκνοων
     η τα τον ο τους αυτους εμος αυτου σος ω ουτος τοιος εγω
@@ -312,13 +314,16 @@ class Ignore_words
     επι ανα μετα απο δια προ προς συν εις αμα ηδη ινα ευς μην ος οδε
     δυω πολλας δη πατηρ πολυ τρις
     κακος ευ παρα περ χειρ
-    οτι πως εαν οτε ουδε τοτε οπως ουτε που ωδε δυο
+    οτι πως εαν οτε ουδε τοτε οπως ουτε ωδε δυο
     ειπον μα αλλη αμφω εκεινος κεινος μητε περι
     μη αμφι υπερ σφος ποιος οστις οσος αρα εισω τως ὑπό
   }.split(/\s+/).map { |x| remove_accents(x.downcase)}.to_set
+  @@index_accent_sensitive = %q{
+    ποῦ
+  }.split(/\s+/).to_set
   def Ignore_words.patch(word)
     w = remove_accents(word).downcase
-    return @@index.include?(w)
+    return @@index.include?(w) || @@index_accent_sensitive.include?(word)
   end
 
 end
