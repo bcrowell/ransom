@@ -1,10 +1,11 @@
 // https://en.wiktionary.org/wiki/οἴομαι https://logeion.uchicago.edu/οἴομαι
 // suppose, look for a contingency; to hope, fear, expect, suppose, when the event rests with oneself, to purpose or will, suppose, express full persuasion, either modestly or ironically, suppose, of an opinion or judgment, to deem, conceive, imagine, wait for, look for
 {
-  "word":"οἴομαι",
+  "word":"οΐω",
+  "perseus":"οἴομαι",
   "short":"suppose",
   "medium":"suppose, hope",
-  "notes":"In Homer, also ὀΐομαι.",
+  "notes":"Also οἴομαι. In Homer, also ὀΐομαι. In Homer, the active οΐω is extremely common in speech to mean 'I think,' or 'I suppose.' No other active forms exist. Cf. πού.",
   "cog":"avid, audio, aesthetic; ἀΐω, αἰσθάνομαι, to perceive",
   "mnem":"Kneeling in prayer in front of my stereo, hoping that audio will come out."
 }

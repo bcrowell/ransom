@@ -2,7 +2,8 @@
 // 
 {
   "word":"ἐρῶ",
-  "medium":"ask; will say",
-  "notes":"Two different verbs: (1) ἐρῶ, ask, epic form of ἔρομαι; (2) future of λέγω, say."
+  "medium":"[will] declare",
+  "notes":"The extremely common form in Homer is ἐρέω, used in speech to mean I [will] declare. The present tenses ἐρῶ and εἴρω are fictional dictionary forms. (Project Perseus lemmatizes it as ἐρῶ, Cunliffe and Cambridge as εἴρω.) Although the verb is used in the future tense, there is no real future meaning in usages such as ἀλλ ̓ ἔκ τοι ἐρέω (Iliad 2.257), 'But I declare to you.' In Attic, λέγω is the verb for 'to say,' and it lacks a future tense, which ἐρέω supplies.",
+  "cog":"word"
 }
       
