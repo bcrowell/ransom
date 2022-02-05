@@ -1,6 +1,11 @@
 {
-  "word":"ἄω",
-  "medium":"sate",
+  "word":"ἆσαι",
+  "perseus":"ἄω",
+  "medium":"aor: to sate",
+  "mnemonic_cog":"sate",
+  "cog":"French assez",
+  "etym":"PIE seh, satiate",
+  "notes":"Used mainly in the aorist and mainly in the infinitive in all tenses. About half of all usages are the aorist infinitive ἆσαι. Present finite ἄω is a dictionary form not used in Homer. Used by Homer in two set phrases, αἵματος ἆσαι Ἄρηα, to sate Ares with blood, and λιλαιόμενα χροὸς ἆσαι, anxious to sate themselves with flesh (said of spears). The accusative is used for the one being sated, and the genitive for the thing they are sated with.",
   "syn":"κορέννυμι (be sated); for adjectives and adverbs, see ἅλις and its synonyms"
 }
       

@@ -1,6 +1,11 @@
 {
-  "word":"κορέννυμι",
-  "vowel_length":"κορέννυ_μι",
-  "medium":"be sated, have enough",
-  "syn":"ἄω (to sate); for adjectives and adverbs, see ἅλις and its synonyms"
+  "word":"κορεσσάμην",
+  "perseus":"κορέννυμι",
+  "medium":"mid: have enough",
+  "mnemonic_cog":"cereal",
+  "cog":"cereal, crescendo, create, accrue, increase, κόρος, κοῦρος, κούρη",
+  "syn":"ἄω (to sate); for adjectives and adverbs, see ἅλις and its synonyms",
+  "etym":"PIE ker, feed, grow",
+  "notes":"The present κορέννυμι does not exist in Homer. The middle is most common, but the passive and medio-passive also occur. The active, to satiate, is uncommon and occurs mainly in the future."
+
 }
