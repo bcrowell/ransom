@@ -32,6 +32,8 @@ very common words, 'scum words':
   Freq of about 500 is roughly where half the words are in this category.
   After that, they die out from freq of about 300 to about 100.
   I have a hand-constructed list of these below.
+  I don't call a word scum if it would otherwise be in the right frequency range, and is also possible to define in a brief gloss
+  (but many words like μέν and ἄν are not).
 good core words:
   most common of these: "ἀνήρ" : 1039,
   least common of these: "πατήρ" : 54, ... the 526th lemma on the list
@@ -74,10 +76,10 @@ scum = (<<-'SCUM'
 δή ἕ ἐκ ἀτάρ κατά ἤ μιν μή πέρ ἠδέ
 παρά ἀπό ὑπό ὅδε ὅτε ἦ μετά περί
 πρός αὖτε ἀμφί ἐμός οὗτος ἔτι ἑός
-τότε ὦ ἅμα ἀνά τοι σύν σός διά ἵνα
-ἤδη ὅτι ὧδε τῷ πω τόσος
+τότε ὦ ἅμα ἀνά σύν σός διά ἵνα
+ἤδη ὅτι ὧδε τῷ τόσος
 ὅθι τοῖος αὐτοῦ ὁπότε οὖν
-ὑπέρ πως εἷς ἆρα οὔτε πρό ὅπως τίς ἠέ
+ὑπέρ πως εἷς ἆρα οὔτε πρό ὅπως τίς
 εἰς εἰ ὅσος ἐκεῖνος κεῖνος ἄμφω αὔτως ἠμέν ἐπεί ὅστις
 SCUM
 ).split(/\s/)
@@ -122,6 +124,8 @@ glosses = {}
 words.each { |w|
   if w=='πάτηρ' then w='πατήρ' end # Perseus has vocative πάτηρ as its own lemma???
   data = Gloss.get(db,w) # change optional arg prefer_length if I want the long def
+  # This should never result in a warning to stderr about ambiguity, because if the same lemma string has two senses, I define them as not
+  # an ambiguity. If a warning occurs, it means I've erroneously constructed a gloss file with two glosses having the same lemma string.
   # Return value looks like the following. The item lexical exists only if this is supposed to be an entry for the inflected form.
   # {  "word"=> "ἔθηκε",  "gloss"=> "put, put in a state",  "lexical"=> "τίθημι", "file_under"=>"ἔθηκε" }
   if data.nil? then $stderr.print "gloss not found for #{w}\n"; exit(-1) end

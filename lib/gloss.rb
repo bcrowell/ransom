@@ -86,8 +86,11 @@ def Gloss.all_lemmas(db,file_glob:'glosses/*',prefer_perseus:false)
   return alpha_sort(lemmas)
 end
 
-def Gloss.get(db,word,prefer_length:1,if_texify_quotes:true)
+def Gloss.get(db,word,prefer_length:1,if_texify_quotes:true,use_index:nil)
   # The input db is a GlossDB object.
+  # Input word is normally not lemmatized, which in fact makes for less ambiguity.
+  # When the same lemma string has more than one meaning, e.g., μήν=month, indeed, I don't call that an ambiguity at all.
+  # When there is going to be an ambiguity and the caller knows it, they can set use_index; but don't use this for different senses of same lemma string.
   # The input word can be accented or unaccented. Accentuation will be used only for disambiguation, which is seldom necessary.
   # Giving the inflected form could in theory disambiguate certain cases where there are two lemmas spelled the same, but
   # I haven't implemented anything like that yet. If the word has a Homeric form that differs from the standard Perseus
@@ -108,6 +111,10 @@ def Gloss.get(db,word,prefer_length:1,if_texify_quotes:true)
       next if entries_found[i][1]==entries_found[j][1] # This is a comparison of hashes for equality, not just a check if they're the same ref.
       ambiguous =true
     }}
+  end
+  if ambiguous && !use_index.nil? then
+    ambiguous = false
+    e=entries_found[use_index][1]
   end
   if ambiguous && entries_found.length==2 then
     # Resolve simple 2-way ambiguities like this one for κῆρ:
