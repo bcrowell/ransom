@@ -1,7 +1,11 @@
 // https://en.wiktionary.org/wiki/πῶυ https://logeion.uchicago.edu/πῶυ
 // flock of sheep
 {
-  "word":"πῶυ",
-  "medium":"flock of sheep"
+  "word":"πῶϋ",
+  "perseus":"πῶυ",
+  "gender":"n",
+  "medium":"flock of sheep",
+  "mnemonic_cog":"pastor",
+  "etym":"see ποιμήν"
 }
       

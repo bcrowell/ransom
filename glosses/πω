@@ -1,7 +1,7 @@
-// https://en.wiktionary.org/wiki/πω https://logeion.uchicago.edu/πω
-// up to this time, yet (as a negative polarity item), at all, ever (as a negative polarity item)
 {
   "word":"πω",
-  "medium":"until now, (not) yet"
+  "pos":"g",
+  "short":"at all; not yet",
+  "medium":"not at all; until now, (not) yet"
 }
       

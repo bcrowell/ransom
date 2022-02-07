@@ -41,7 +41,8 @@ vowel_length
   phonemically long, we put an underbar after it. To convert from standard macronized
   style to this style, use Gloss.macronized_to_underbar_style().
 
-pos ["verb","noun","adj","adv",...]
+pos - a one-character part-of-speech label defined as in project perseus: v=verb, g=particle, ...
+
 short
 long
 

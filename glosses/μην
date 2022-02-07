@@ -1,7 +1,17 @@
+[
 {
   "word":"μήν",
   "medium":"month",
   "notes":"in Homer, also sometimes μείς",
   "syn":"μείς"
+},
+{
+  "word":"μήν",
+  "pos":"g",
+  "medium":"indeed",
+  "long":"indeed; emphatic particle used in statements and commands",
+  "syn":"μάν"
 }
+]
+
       
