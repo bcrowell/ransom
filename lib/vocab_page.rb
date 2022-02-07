@@ -111,15 +111,28 @@ def VocabPage.entry(db,stuff)
   end
   total_chars = text.map { |t| t.length}.sum+text.length-1 # final terms count blanks
   if total_chars>35 && entry.has_key?('short') then gloss=entry['short'] end
+  has_mnemonic_cog = entry.has_key?('mnemonic_cog')
   # Generate latex:
-  if explain_inflection then
-    if !is_dual then
-      s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}}"
+  if !has_mnemonic_cog then
+    if explain_inflection then
+      if !is_dual then
+        s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}}"
+      else
+        s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}, dual}"
+      end
     else
-      s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}, dual}"
+      s = "\\vocab{#{preferred_lex}}{#{gloss}}"
     end
   else
-    s = "\\vocab{#{preferred_lex}}{#{gloss}}"
+    if explain_inflection then
+      if !is_dual then
+        s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}}"
+      else
+        s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}, dual}"
+      end
+    else
+      s = "\\vocabwithcog{#{preferred_lex}}{#{gloss}}{#{entry['mnemonic_cog']}}"
+    end
   end
   return s
 end
