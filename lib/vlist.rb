@@ -4,7 +4,7 @@ class Vlist
 def initialize(list)
   # List is a list whose elements are lists of common, uncommon, and rare words.
   # Each element of a is a list of items of the form [word,lexical] or [word,lexical,data].
-  # The data field is a hash with keys that may include 'is_3rd_decl', 'is_epic', 'pos',
+  # The data field is a hash with keys that may include 'is_3rd_decl', 'is_epic', 'is_dual', 'pos',
   # and 'difficult_to_recognize'. 
   # The pos field is a 9-character string in the format used by Project Perseus:
   #   https://github.com/cltk/greek_treebank_perseus (scroll down)
@@ -106,13 +106,16 @@ def Vlist.from_text(t,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_
     if genos.greek then
       is_3rd_decl = guess_whether_third_declension(word,lemma,pos)
       is_epic = Epic_form.is(word)
+      is_dual = (pos[2]=='d')
       if !alpha_equal(word,lemma) then
         difficult_to_recognize ||= (is_3rd_decl && guess_difficulty_of_recognizing_declension(word,lemma,pos)[0])
         difficult_to_recognize ||= is_epic
         difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lemma,pos)[0])
+        difficult_to_recognize ||= is_dual
       end
       if is_3rd_decl then misc['is_3rd_decl']=true end
       if is_epic then misc['is_epic']=true end
+      if is_dual then misc['is_dual']=true end
     end
     if using_thresholds then
       gloss_this = ( rank.nil? || rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize) )

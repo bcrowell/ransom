@@ -94,7 +94,14 @@ def VocabPage.entry(db,stuff)
   word2,gloss,lexical2 = entry['word'],entry['gloss'],entry['lexical']
   if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
   explain_inflection = false
-  explain_inflection ||= (data.has_key?('is_3rd_decl') && data['is_3rd_decl'] && !alpha_equal(word,lexical))
+  flags = {}
+  ['is_3rd_decl','is_dual'].each { |flag|
+    if (data.has_key?(flag) && data[flag] && !alpha_equal(word,lexical)) then
+      explain_inflection = true
+      flags[flag] = true
+    end
+  }
+  is_3rd_decl,is_dual = [flags['is_3rd_decl']==true,flags['is_dual']==true]
   explain_inflection ||= data['difficult_to_recognize']
   # Count chars, and if it looks too long to fit on a line, switch to the short gloss:
   if explain_inflection then
@@ -106,7 +113,11 @@ def VocabPage.entry(db,stuff)
   if total_chars>35 && entry.has_key?('short') then gloss=entry['short'] end
   # Generate latex:
   if explain_inflection then
-    s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}}"
+    if !is_dual then
+      s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}}"
+    else
+      s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}, dual}"
+    end
   else
     s = "\\vocab{#{preferred_lex}}{#{gloss}}"
   end
