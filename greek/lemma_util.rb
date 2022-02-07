@@ -4,6 +4,17 @@ class LemmaUtil
 #   - Uses Perseus pos tags.
 #   - Uses linguistic facts about Greek.
 
+def LemmaUtil.make_inflected_form_flavored_like_lemma(word,is_proper_noun:false)
+  # Sometimes we give a gloss in which we explain an inflection. In these cases, we're sort of giving a dictionary entry for
+  # a form that isn't the dictionary form. Try to make this look normal. It may be capitalized because it was the first word
+  # in a sentence, and it may have a grave accent or multiple accents because of enclitics.
+  # The Greek-specific code shouldn't do any harm on Latin words.
+  word = word.downcase
+  word = to_single_accent(word)
+  # ... If the word has both an acute and a grave, remove the grave. If it has only a grave, change it to an acute.
+  return word
+end
+
 def LemmaUtil.disambiguate_lemmatization(word,ambig)
   # On input, ambig is a list of structures like ["αἴξ", "", "n-p---mg-", 14], sorted from most to least frequent.
   # The idea here is that often a single word like αἰγῶν has more than one lemma/pos analysis in Perseus, but often

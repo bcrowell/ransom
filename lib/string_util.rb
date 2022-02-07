@@ -175,6 +175,8 @@ end
 
 def to_single_accent(w)
   # If the word has both an acute and a grave, remove the grave. If it has only a grave, change it to an acute.
+  # This is used in LemmaUtil.make_inflected_form_flavored_like_lemma.
+  if grave_to_acute(w)==w then return w end # for efficiency
   acc = []
   0.upto(w.chars.length-1) { |i|
     c = w[i]

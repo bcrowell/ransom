@@ -113,12 +113,13 @@ def VocabPage.entry(db,stuff)
   if total_chars>35 && entry.has_key?('short') then gloss=entry['short'] end
   has_mnemonic_cog = entry.has_key?('mnemonic_cog')
   # Generate latex:
+  inflected = LemmaUtil.make_inflected_form_flavored_like_lemma(word)
   if !has_mnemonic_cog then
     if explain_inflection then
       if !is_dual then
-        s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}}"
+        s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{gloss}}"
       else
-        s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}, dual}"
+        s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{gloss}, dual}"
       end
     else
       s = "\\vocab{#{preferred_lex}}{#{gloss}}"
@@ -126,9 +127,9 @@ def VocabPage.entry(db,stuff)
   else
     if explain_inflection then
       if !is_dual then
-        s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}}"
+        s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{gloss}}"
       else
-        s = "\\vocabinflection{#{word.downcase}}{#{preferred_lex}}{#{gloss}, dual}"
+        s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{gloss}, dual}"
       end
     else
       s = "\\vocabwithcog{#{preferred_lex}}{#{gloss}}{#{entry['mnemonic_cog']}}"
@@ -139,9 +140,10 @@ end
 
 def VocabPage.inflection(stuff)
   file_under,word,lexical,data = stuff
+  lemma_flavored = LemmaUtil.make_inflected_form_flavored_like_lemma(word)
   pos = data['pos']
   if pos[0]=='n' then
-    return "\\vocabnouninflection{#{word.downcase}}{#{lexical}}{#{describe_declension(pos,true)[0]}}"
+    return "\\vocabnouninflection{#{lemma_flavored}}{#{lexical}}{#{describe_declension(pos,true)[0]}}"
   end
   if pos[0]=~/[vt]/ then
     # File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} \n" }
