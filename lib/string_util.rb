@@ -35,6 +35,28 @@ def substr(x,i,len)
   return result
 end
 
+def texify_quotes(s)
+  # testing: ruby -e "require './lib/string_util'; print texify_quotes('\"outer \'blah don\'t\'\"')"
+  s = s.gsub(/((?<=[a-zA-Z]))'(?=[a-zA-Z])/,'__ENGLISH_INTERNAL_APOSTROPHE__')
+  # We don't want [[:alpha:]], because Greek doesn't use mid-word apostrophes, and we don't want to get confused by cases where elision
+  # was marked by an ASCII apostrophe.
+  # Handle nested quotes, working from the inside out.
+  1.upto(3) { |i| # handle up to three levels
+    [[%q('),'SINGLE'],[%q("),'DOUBLE']].each { |x|
+      char,kind = x
+      s = s.gsub(/(?<![[:alpha:]])#{char}([^'"]+)#{char}(?![[:alpha:]])/) {"__OPEN_#{kind}_QUOTES__#{$1}__CLOSE_#{kind}_QUOTES__"}
+      # ... negative lookbehind and negative lookahead help to ensure we don't get confused
+    }
+  }
+  [['__OPEN_SINGLE_QUOTES__',%q(`)],    ['__CLOSE_SINGLE_QUOTES__',%q(')], 
+   ['__OPEN_DOUBLE_QUOTES__',%q(``)],   ['__CLOSE_DOUBLE_QUOTES__',%q('')], 
+   ['__ENGLISH_INTERNAL_APOSTROPHE__',%q(')]    ].each { |x|
+    marker,replace_with = x
+    s = s.gsub(/#{marker}/,replace_with)
+  }
+  return s
+end
+
 def char_to_code_block(c)
   # returns greek, latin, hebrew
   # for	punctuation or whitespace, returns latin

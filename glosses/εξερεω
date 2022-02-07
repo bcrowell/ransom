@@ -2,7 +2,9 @@
 // first-person singular future active indicative uncontracted of ἐξεῖπον (exeîpon)
 {
   "word":"ἐξερέω",
-  "medium":"say, declare",
-  "long":"say, declare; a synonym of ἐρέω probably used for metrical reasons; cf. phrases like ἔκ τοι ἐρέω"
+  "medium":"fut: declare",
+  "long":"fut: declare. A near synonym of ἐρέω used in a certain set phrase or variations of it: ὧδε γὰρ ἐξερέω, τὸ δὲ καὶ τετελεσμένον ἔσται·, 'For this I declare, and it shall be accomplished.' The literal English translation 'speak out' (or 'speak out openly,' LfgrE) is inaccurate because the speaker is often speaking from a position of power (Iliad 2.257), and sometimes secretly (Iliad 1.212). The sense of ἐξ- here seems to be that the act of speech is irrevocable: once the words are 'out there,' they can never be taken back, so the speaker is making a commitment.",
+  // Similar text on wiktionary is mine: https://en.wiktionary.org/wiki/%E1%BC%90%CE%BE%CE%B5%E1%BF%96%CF%80%CE%BF%CE%BD#Usage_notes
+  "syn":"φημί, εἶπον, ἐρέω"
 }
       

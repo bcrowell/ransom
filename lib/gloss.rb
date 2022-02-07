@@ -85,7 +85,7 @@ def Gloss.all_lemmas(db,file_glob:'glosses/*',prefer_perseus:false)
   return alpha_sort(lemmas)
 end
 
-def Gloss.get(db,word,prefer_length:1)
+def Gloss.get(db,word,prefer_length:1,if_texify_quotes:true)
   # The input db is a GlossDB object.
   # The input word can be accented or unaccented. Accentuation will be used only for disambiguation, which is seldom necessary.
   # Giving the inflected form could in theory disambiguate certain cases where there are two lemmas spelled the same, but
@@ -137,6 +137,17 @@ def Gloss.get(db,word,prefer_length:1)
   if prefer_length==2 && e.has_key?('long') then e['gloss']=e['long'] end
   #debug = (word=='συνίημι' || word=='ξυνίημι')
   #if debug then $stderr.print "................ word=#{word}, e=#{e}\n" end
+  e = Gloss.texify_quotes_in_entry(e,if_texify_quotes)
+  return e
+end
+
+def Gloss.texify_quotes_in_entry(e,if_texify_quotes)
+  # modifies it in place but also returns a reference to it
+  if if_texify_quotes then
+    ['gloss','short','medium','long','notes'].each { |key|
+      e[key] = texify_quotes(e[key]) if e.has_key?(key)
+    }
+  end
   return e
 end
 

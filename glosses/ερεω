@@ -3,8 +3,8 @@
 {
   "word":"ἐρέω",
   "perseus":"ἐρῶ",
-  "medium":"will say",
-  "syn":"φημί, λέγω, εἶπον",
-  "notes":"Used as a future form of words like φημί, λέγω, εἶπον. Can be contracted to ἐρῶ, and is lemmatized in Project Perseus as that form."
+  "medium":"fut: say, declare",
+  "syn":"φημί, εἶπον, ἐξερέω",
+  "notes":"Used as the future corresponding to φημί and εἶπον.  Used mostly in speech to emphasize and introduce what one is about to say. Can be contracted to ἐρῶ, and is lemmatized in Project Perseus as that form. Lemmatized by Cunliffe and Cambridge as the fictitious dictionary form εἴρω. The near-synonym ἐξερέω fills the meter in certain set phrases and emphasizes irrevocability."
 }
       
