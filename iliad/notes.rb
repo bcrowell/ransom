@@ -213,6 +213,10 @@ class IliadNotes
     'explain'       => %q{The rough breathing found in some manuscripts is mysterious. Chantraine speculates that Alexandrian grammarians introduced it to distinguish aorist forms of ἕρδω from those of ἔργω, to enclose.}
     # https://latin.stackexchange.com/questions/17682/rough-breathing-on-%e1%bc%95%cf%81%ce%be%e1%bf%83%cf%82
   }],
+  ["3.16" , {
+    'about_what'    => %q{Ἀλέξανδρος},
+    'explain'       => %q{another name for Paris, who appears here for the first time}
+  }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}
