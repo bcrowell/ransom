@@ -217,6 +217,10 @@ class IliadNotes
     'about_what'    => %q{Ἀλέξανδρος},
     'explain'       => %q{another name for Paris, who appears here for the first time}
   }],
+  ["3.28" , {
+    'about_what'    => %q{φάτο γὰρ τίσεσθαι ἀλείτην},
+    'explain'       => %q{φάτο+inf.=to think}
+  }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}
