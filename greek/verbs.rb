@@ -3,34 +3,39 @@ module Verb_util
     verbs = treebank.every_lemma_by_pos('v')
 
     # Goes through the treebank, finds all verbs, and sorts them into categories that are the same except for a preposition on the front.
-    # To do: ὑπερκαταβαίνω 
+    # To do: ὑπερκαταβαίνω ὑπεξαλεύω
     accent_lemma = {} # maps unaccented lemma to accented; needed because Preposition.prefix_to_verb doesn't know how to get accents right
     verbs.each { |verb|
-      accent_lemma[remove_accents(verb)] = verb
+      accent_lemma[Verb_util.make_ομαι_to_ω(remove_accents(verb))] = verb
     }
 
     # Look for verbs that are a preposition plus some more basic parent verb.
     parents = {}
-    Preposition.all_homeric.each { |prep|
+    Preposition.all_the_ones_used_in_verbs.each { |prep|
       verbs.each { |parent|
         prefixed = Preposition.prefix_to_stem(prep,parent) # multistring
-        #print "prep=#{prep}, parent=#{parent}, prefixed=#{prefixed}, prefixed.all_strings=#{prefixed.all_strings}\n" # qwe
         prefixed.all_strings.each { |s|
-          s = remove_accents(s)
-          if accent_lemma.has_key?(s) then parents[accent_lemma[s]] = parent end
+          s = remove_accents(s) # possible prefixed form of parent
+          if accent_lemma.has_key?(Verb_util.make_ομαι_to_ω(s)) then parents[accent_lemma[Verb_util.make_ομαι_to_ω(s)]] = parent end
         }
       }
     }
 
     families = {}
     verbs.each { |verb|
-      parent = parents[accent_lemma[remove_accents(verb)]] # may be nil
+      parent = parents[accent_lemma[Verb_util.make_ομαι_to_ω(remove_accents(verb))]] # may be nil
       if parent.nil? then parent=verb end
       if !families.has_key?(parent) then families[parent] = [] end
       families[parent].push(verb)
     }
+
     return families
   end
+
+  def Verb_util.make_ομαι_to_ω(s)
+    return s.sub(/ομαι$/,'ω')
+  end
+
 end
 
 module Verb_difficulty
@@ -237,7 +242,6 @@ end
     # Input s should be phoneticized, not raw accented Greek.
     if remove_accents(s)!=s then $stderr.print "input to Verb_difficulty.strip_ending not phoneticized: #{s}\n"; exit(-1) end
     pat = nil
-    #$stderr.print "                                        #{s} #{pat} #{f}\n" # qwe
     if f.active then
       if f.indicative then
         if !μι_verb then

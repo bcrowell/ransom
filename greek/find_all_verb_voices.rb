@@ -35,7 +35,9 @@ alpha_sort(families.keys).each { |parent|
       voices[voice] += 1
     }
   }
-  next if voices['a']>0 # only print out deponent ones
+  total = voices.values.sum
+  next if voices['a']>0 || total<10
+  # ... only print out deponent ones, and only judge them to be deponent if we have decent statistics
   print parent,"  ",families[parent].join(','),"  #{voices}\n"
 }
 
