@@ -162,7 +162,7 @@ def short_name_to_char(n)
 end
 
 def alpha_sort(l)
-  return l.sort { |a,b| alpha_compare(a,b) }
+  return l.sort.sort { |a,b| alpha_compare(a,b) } # first, crude sort should make it more efficient because the comparisons in the second will be so slow
 end
 
 def alpha_equal(a,b)

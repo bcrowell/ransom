@@ -26,6 +26,25 @@ class TreeBank
     return alpha_sort(result_hash.keys)
   end
 
+  def every_form_of_lemma(lemma,pos,discard_elided_greek_forms:true)
+    # pos is a perseus part of speech tag such as 'v' for verbs; used for disambiguation
+    # returns a list whose elements are of the form [word,whole_pos]
+    result_hash = {}
+    self.lemmas.keys.each { |inflected|
+      this_lemma,garbage,whole_pos,garbage,if_ambig,ambig = self.lemmas[inflected]
+      if if_ambig then data=ambig else data = [[this_lemma,garbage,whole_pos,garbage]] end
+      data.each { |x|
+        this_lemma,garbage,whole_pos,garbage = x
+        next unless this_lemma==lemma && whole_pos[0]==pos
+        result_hash[inflected+' '+whole_pos] = 1
+      }
+    }
+    result = alpha_sort(result_hash.keys) # initial quick and dirty sort because later sorting will involve slow comparisons
+    result = result.map { |x| x.split(/\s+/) }.sort { |a,b| alpha_compare(a[0],b[0]) }
+    result = result.filter { |x| !contains_greek_elision(x[0]) } if discard_elided_greek_forms
+    return result
+  end
+
   # Why do I have both this and word_to_lemma_entry?
   def lemmatize(word)
     # returns [lemma,success]
