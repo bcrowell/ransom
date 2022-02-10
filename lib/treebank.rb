@@ -11,6 +11,21 @@ class TreeBank
   end
   attr_reader :lemmas,:lemmas_file
 
+  def every_lemma_by_pos(pos)
+    # input is a perseus part of speech tag such as 'v' for verbs
+    result_hash = {}
+    self.lemmas.keys.each { |inflected|
+      lemma,garbage,whole_pos,garbage,if_ambig,ambig = self.lemmas[inflected]
+      if if_ambig then data=ambig else data = [[lemma,garbage,whole_pos,garbage]] end
+      data.each { |x|
+        lemma,garbage,whole_pos,garbage = x
+        next unless whole_pos[0]==pos
+        result_hash[lemma] = 1
+      }
+    }
+    return alpha_sort(result_hash.keys)
+  end
+
   # Why do I have both this and word_to_lemma_entry?
   def lemmatize(word)
     # returns [lemma,success]
