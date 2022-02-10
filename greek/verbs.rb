@@ -1,3 +1,38 @@
+module Verb_util
+  def Verb_util.find_all_families(treebank)
+    verbs = treebank.every_lemma_by_pos('v')
+
+    # Goes through the treebank, finds all verbs, and sorts them into categories that are the same except for a preposition on the front.
+    # To do: ὑπερκαταβαίνω 
+    accent_lemma = {} # maps unaccented lemma to accented; needed because Preposition.prefix_to_verb doesn't know how to get accents right
+    verbs.each { |verb|
+      accent_lemma[remove_accents(verb)] = verb
+    }
+
+    # Look for verbs that are a preposition plus some more basic parent verb.
+    parents = {}
+    Preposition.all_homeric.each { |prep|
+      verbs.each { |parent|
+        prefixed = Preposition.prefix_to_stem(prep,parent) # multistring
+        #print "prep=#{prep}, parent=#{parent}, prefixed=#{prefixed}, prefixed.all_strings=#{prefixed.all_strings}\n" # qwe
+        prefixed.all_strings.each { |s|
+          s = remove_accents(s)
+          if accent_lemma.has_key?(s) then parents[accent_lemma[s]] = parent end
+        }
+      }
+    }
+
+    families = {}
+    verbs.each { |verb|
+      parent = parents[accent_lemma[remove_accents(verb)]] # may be nil
+      if parent.nil? then parent=verb end
+      if !families.has_key?(parent) then families[parent] = [] end
+      families[parent].push(verb)
+    }
+    return families
+  end
+end
+
 module Verb_difficulty
   # This is a utility module whose main function, Verb_difficulty.guess(), tries to guess whether a particular
   # form of a verb is likely to be difficult for a human to *recognize* (not produce). Throughout the code,

@@ -14,6 +14,9 @@ class MultiString
   def to_s
     return @data.to_s
   end
+  def +(m) # operator overloading for concatenation
+    return MultiString.new(@data+m.data) # depends on the way the internal representation is set up
+  end
   def or(t)
     result = clown(self)
     result.data = [self.all_strings+t.all_strings]
