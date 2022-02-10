@@ -292,6 +292,10 @@ def describe_tag(tag,value)
     if value=='p' then return 'present' end
     if value=='i' then return 'imperfect' end
     if value=='a' then return 'aorist' end
+    if value=='r' then return 'perfect' end
+    if value=='l' then return 'pluperfect' end
+    if value=='t' then return 'future perfect' end
+    if value=='f' then return 'future' end
   end
   if tag=='number' then
     if value=='s' then return 'singular' end

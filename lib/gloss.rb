@@ -65,7 +65,8 @@ logdiff [+1 means consider it as difficult as a word whose freq
 mnem -- a mnemonic; may be idiosyncratic and only of interest to me; I use these only when there is no cognate that helps
 =end
 
-def Gloss.all_lemmas(db,file_glob:'glosses/*',prefer_perseus:false)
+def Gloss.all_lemmas(db,file_glob:nil,prefer_perseus:false)
+  if file_glob.nil? then file_glob=db.path+"/*" end
   lemmas = []
   Dir.glob(file_glob).sort.each { |filename|
     next if (filename=~/~/ || filename=~/README/ )

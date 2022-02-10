@@ -221,6 +221,10 @@ class IliadNotes
     'about_what'    => %q{φάτο γὰρ τίσεσθαι ἀλείτην},
     'explain'       => %q{φάτο+inf.=to think}
   }],
+  ["3.39" , {
+    'about_what'    => %q{Δύσπαρις},
+    'explain'       => %q{a mocking form of Paris's name}
+  }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}
