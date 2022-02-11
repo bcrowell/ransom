@@ -22,6 +22,10 @@ db = GlossDB.from_genos(foreign_genos)
 
 families = Verb_util.find_all_families(treebank)
 
+categories = ['unclear','both','p','m']
+results = {}
+categories.each { |cat| results[cat]=[] }
+
 alpha_sort(families.keys).each { |parent|
   voices = { 'a'=>0, 'p'=>0, 'm'=>0, 'e'=>0 }
   families[parent].each { |daughter|
@@ -36,9 +40,27 @@ alpha_sort(families.keys).each { |parent|
     }
   }
   total = voices.values.sum
-  next if voices['a']>0 || total<10
+  next if voices['a']>0 || total<7
   # ... only print out deponent ones, and only judge them to be deponent if we have decent statistics
-  print parent,"  ",families[parent].join(','),"  #{voices}\n"
+  deponent_type='unclear'
+  if voices['p']==0 && voices['m']>0 then deponent_type='m' end
+  if voices['m']==0 && voices['p']>0 then deponent_type='p' end
+  if voices['m']>0 && voices['p']>0 then deponent_type='both' end
+  results[deponent_type].push([parent,voices])
 }
+
+categories.each { |deponent_type|
+  print "deponent_type=#{deponent_type}\n"
+  results[deponent_type].each { |x|
+    parent,voices = x
+    gloss = Gloss.get(db,parent,prefer_length:1)
+    if !gloss.nil? then gloss=gloss['gloss'] else gloss='' end
+    daughters = families[parent].filter { |x| x!=parent }.join(',')
+    if daughters!='' then daughters=" (#{daughters})" end
+    #print "  ",parent,"  ",daughters,"                     #{voices.filter { |k,v| k!='a'} }\n"
+    print "    ",parent,daughters," - #{gloss}\n"
+  }
+}
+
 
 

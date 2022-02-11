@@ -3,7 +3,8 @@
   "princ": "ἐλάσω,ἔλασα",
   "short": "to drive",
   "medium": "to drive, march",
-  "long": "to drive, march, push, beat out",
+  "long": "to drive, march, push, beat out, exile",
   "mnemonic_cog":"elastic",
-  "cog": "elastic, from ἐλατός, ductile;  modern έλα, used as the imperative of έρχομαι"
+  "cog": "elastic, from ἐλατός, ductile;  modern έλα, used as the imperative of έρχομαι",
+  "notes":"The sense 'to exile' can also be expressed using the more specialized synonym ἐξελαύνω. The passive exists but is rare in Homer, and the meaning can be expressed with other verbs such as φεύγω."
 }

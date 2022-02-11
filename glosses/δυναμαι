@@ -3,5 +3,7 @@
   "princ": "δυνήσομαι,ἐδυνησάμην",
   "medium": "be able",
   "long": "be powerful, able",
+  "notes":"Both the middle and the passive exist. I think the meanings of the middle and passive are identical.",
+  // implied, for koine, by: http://www.drshirley.org/greek/textbook02/chapter67-dunamai.pdf
   "mnemonic_cog":"dynamic"
 }
