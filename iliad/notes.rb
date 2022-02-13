@@ -192,6 +192,26 @@ class IliadNotes
     'about_what'    => %q{Ἀτρυτώνη},
     'explain'       => %q{epithet of Athena, traditionally explained as coming from τρύχω, to wear out, hence indefatigable}
   }],
+  ["2.228" , {
+    'about_what'    => %q{ἂν},
+    'explain'       => %q{whenever}
+  }],
+  ["2.232" , {
+    'about_what'    => %q{μίσγεαι ἐν φιλότητι},
+    'explain'       => %q{a euphemism for sex}
+  }],
+  ["2.234" , {
+    'about_what'    => %q{κακῶν ἐπιβασκέμεν},
+    'explain'       => %q{Ἐπιβασκέμεν, to involve in, takes the genitive, so κακῶν means into evil, not out of evil.}
+  }],
+  ["2.238" , {
+    'about_what'    => %q{ἦε καὶ οὐκί},
+    'explain'       => %q{or not}
+  }],
+  ["2.240" , {
+    'about_what'    => %q{ἠτίμησεν},
+    'explain'       => %q{The subject is Agamemnon.}
+  }],
   ["2.275" , {
     'about_what'    => %q{ἔσχ(εν)},
     'explain'       => %q{Ἔχω, usually meaning 'hold,' has a reduplicated form ἴσχω that always means 'hold back,' but sometimes, as here, ἔχω itself means 'hold back.'}

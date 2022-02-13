@@ -2,7 +2,8 @@
 // 
 {
   "word":"ἐπιβάσκω",
-  "medium":"involve in",
+  "short":"involve in",
+  "medium":"involve in (+gen)",
   "etym":"from βαίνω"
 }
       
