@@ -40,6 +40,7 @@ require_relative "lib/gloss"
 require_relative "lib/clown"
 require_relative "greek/nouns"
 require_relative "greek/verbs"
+require_relative "greek/adjectives"
 require_relative "greek/lemma_util"
 require_relative "greek/writing"
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary

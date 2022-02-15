@@ -32,6 +32,7 @@ module Adjective
     # This is very conservative about what it labels as irregular. It's only labeled irregular if it appears to match pretty
     # closely with one of the words on our list of irregular comparatives.
     # degree is 'c' for comparative or 's' for superlative, as in perseus POS tags
+    if lemma=='θάσσων' then lemma='ταχύς' end # https://github.com/PerseusDL/treebank_data/issues/32
     return false unless @@irregular_comparatives.has_key?(lemma)
     if degree=='c' then index=0 else index=1 end
     candidates = @@irregular_comparatives[lemma][index] # possible irregular lemmas of which comparative_inflected may be a form

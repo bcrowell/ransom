@@ -37,6 +37,7 @@ def VocabPage.make_helper(db,commonness,vl,lo,hi,core)
       if data.nil? then data={} end
       pos = data['pos']
       is_verb = (pos=~/^[vt]/)
+      is_comparative = (pos=~/[cs]$/)
       g = Gloss.get(db,lexical)
       next if g.nil?
       difficult_to_recognize = data['difficult_to_recognize']
@@ -48,11 +49,16 @@ def VocabPage.make_helper(db,commonness,vl,lo,hi,core)
       data['difficult_to_recognize'] = difficult_to_recognize
       data['core'] = core.include?(remove_accents(lexical).downcase)
       entry_type = nil
+      file_under_lexical = true
       if !data['core'] then entry_type='gloss' end
       if data['core'] && difficult_to_recognize then
-        if is_verb then entry_type='conjugation' else entry_type='declension' end
+        file_under_lexical = false
+        entry_type = 'gloss' # applies to irregular comparatives
+        if is_verb then entry_type='conjugation' end
+        if !is_verb && !is_comparative then entry_type='declension' end
       end
-      if !entry_type.nil? then l.push([entry_type,[lexical,word,lexical,data]]) end
+      if file_under_lexical then file_under=lexical else file_under=word end
+      if !entry_type.nil? then l.push([entry_type,[lexical,word,lexical,data,file_under]]) end
     }
   }
   Debug.print(debug_this_page) {"... 300 #{l}"}
@@ -63,7 +69,7 @@ def VocabPage.make_helper(db,commonness,vl,lo,hi,core)
     if ll.length>0 then
       this_sec = ''
       this_sec += "\\begin{#{envir}}\n"
-      ll.sort { |a,b| alpha_compare(a[0],b[0])}.each { |entry|
+      ll.sort { |a,b| alpha_compare(a[4],b[4])}.each { |entry|
         s = nil
         if type=='gloss' then s=VocabPage.entry(db,entry) end
         if type=='conjugation' || type=='declension' then s=VocabPage.inflection(entry) end
@@ -95,13 +101,13 @@ def VocabPage.entry(db,stuff)
   if is_feminine_ending_in_os(remove_accents(lexical)) then gloss = "(f.) #{gloss}" end
   explain_inflection = false
   flags = {}
-  ['is_3rd_decl','is_dual'].each { |flag|
+  ['is_3rd_decl','is_dual','is_irregular_comparative'].each { |flag|
     if (data.has_key?(flag) && data[flag] && !alpha_equal(word,lexical)) then
       explain_inflection = true
       flags[flag] = true
     end
   }
-  is_3rd_decl,is_dual = [flags['is_3rd_decl']==true,flags['is_dual']==true]
+  is_3rd_decl,is_dual,is_irregular_comparative = [flags['is_3rd_decl']==true,flags['is_dual']==true,flags['is_irregular_comparative']==true]
   explain_inflection ||= data['difficult_to_recognize']
   # Count chars, and if it looks too long to fit on a line, switch to the short gloss:
   if explain_inflection then
@@ -114,28 +120,30 @@ def VocabPage.entry(db,stuff)
   has_mnemonic_cog = entry.has_key?('mnemonic_cog')
   # Generate latex:
   inflected = LemmaUtil.make_inflected_form_flavored_like_lemma(word)
+  # FIXME: The explainer doesn't actually get printed for θᾶσσον ≺ ταχύς in Ilid 2.440.
+  explained = gloss+VocabPage.explainer_in_gloss(flags)
   if !has_mnemonic_cog then
     if explain_inflection then
-      if !is_dual then
-        s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{gloss}}"
-      else
-        s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{gloss}, dual}"
-      end
+      s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{explained}}"
     else
-      s = "\\vocab{#{preferred_lex}}{#{gloss}}"
+      s = "\\vocab{#{preferred_lex}}{#{explained}}"
     end
   else
     if explain_inflection then
-      if !is_dual then
-        s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{gloss}}"
-      else
-        s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{gloss}, dual}"
-      end
+      s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{explained}}"
     else
-      s = "\\vocabwithcog{#{preferred_lex}}{#{gloss}}{#{entry['mnemonic_cog']}}"
+      s = "\\vocabwithcog{#{preferred_lex}}{#{explained}}{#{entry['mnemonic_cog']}}"
     end
   end
   return s
+end
+
+def VocabPage.explainer_in_gloss(flags)
+  is_3rd_decl,is_dual,is_irregular_comparative = [flags['is_3rd_decl']==true,flags['is_dual']==true,flags['is_irregular_comparative']==true]
+  explainer = ''
+  explainer = ', dual' if is_dual
+  explainer = ', comparative' if is_irregular_comparative
+  return explainer  
 end
 
 def VocabPage.inflection(stuff)
