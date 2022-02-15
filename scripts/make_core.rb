@@ -49,9 +49,11 @@ words_added_by_hand:
   A good candidate for this list could be:
   -A word that occurs more frequently in compounds, derived terms, or multiple forms than
    would be indicated by its low frequency as an independent word (e.g., μῆτις, λέχος, ἥμισυς, χῶρος, ἐλεέω).
-  -A word that is easy to learn because it has obvious cognates (e.g., κλέπτω, γλῶσσα).
   -A word for a basic human concept that one should know in any
    language one is learning (e.g., ἀδελφός, γελάω).
+super_easy:
+  Like words_added_by_hand, but is for words that, although not particularly frequent or important, are
+  very easy to learn, usually because it has obvious cognates.
 Words in these lists, below, have to be given as the Perseus lemma (e.g., κλισία, not
 κλισίη), or there will be an error.
 =end
@@ -62,13 +64,18 @@ min_freq = 54
 # see above for criteria
 words_added_by_hand = (<<-'BY_HAND'
 ἀείδω ἀμείνων ἁνδάνω ἄποινα ἅπτω ἀράομαι ἀρητήρ ἀρχός βούλομαι γεραιός γέρας ἔρομαι ἤτοι
-ἱερεύς ἱερόν ἱστός κήδω κῆδος κλέπτω λέχος μάντις ναός τιμάω ἀτιμάω τιμή τίνω χερείων
-γλῶσσα κρατέω κρίνω γηθέω σῶς βαρύς ὀνομάζω αἰδέομαι χώομαι χραισμέω μῆτις γελάω
-ἀδελφός δάω ἀίω πέρθω εἴδω εὐνάω ἥμισυς καρδία μήν μόνος νεφέλη ὅρκος ὅρκιον ὄμνυμι
+ἱερεύς ἱερόν ἱστός κήδω κῆδος λέχος μάντις ναός τιμάω ἀτιμάω τιμή τίνω χερείων
+κρατέω κρίνω γηθέω σῶς βαρύς ὀνομάζω αἰδέομαι χώομαι χραισμέω μῆτις γελάω
+ἀδελφός δάω ἀίω πέρθω εἴδω εὐνάω ἥμισυς μήν μόνος νεφέλη ὅρκος ὅρκιον ὄμνυμι
 ἄγχι σχεδόν πονέω κάμνω τέλος
-τρεῖς τέσσαρες δέκα ἑκατόν νεῖκος ὑσμίνη χῶρος ἐλεέω ἑκών
-κλισία κράτος βουλεύω τέμνω βαθύς οὕτως φώς ἐρίζω ἔρδω
+τρεῖς τέσσαρες δέκα ἑκατόν νεῖκος χῶρος ἐλεέω ἑκών
+κλισία κράτος βουλεύω τέμνω βαθύς οὕτως φώς ἐρίζω ἔρδω μάν
 BY_HAND
+).split(/\s/)
+
+super_easy = (<<-'SUPER_EASY'
+κλέπτω γλῶσσα σκῆπτρον ἑκατόμβη καρδία
+SUPER_EASY
 ).split(/\s/)
 
 # see def above
@@ -76,9 +83,9 @@ scum = (<<-'SCUM'
 δή ἕ ἐκ ἀτάρ κατά ἤ μιν μή πέρ ἠδέ
 παρά ἀπό ὑπό ὅδε ὅτε ἦ μετά περί
 πρός αὖτε ἀμφί ἐμός οὗτος ἔτι ἑός
-τότε ὦ ἅμα ἀνά σύν σός διά ἵνα
+τότε ὦ ἀνά σύν σός διά ἵνα
 ἤδη ὅτι ὧδε τῷ τόσος
-ὅθι τοῖος αὐτοῦ ὁπότε οὖν
+ὅθι τοῖος αὐτοῦ ὁπότε
 ὑπέρ πως εἷς ἆρα οὔτε πρό ὅπως τίς
 εἰς εἰ ὅσος ἐκεῖνος κεῖνος ἄμφω αὔτως ἠμέν ἐπεί ὅστις
 SCUM
@@ -102,14 +109,14 @@ goofy = (<<-'GOOFY'
 GOOFY
 ).split(/\s/)
 
-contradiction = (scum | goofy) & words_added_by_hand
+contradiction = (scum | goofy) & (words_added_by_hand | super_easy)
 if contradiction.length>0 then
-  $stderr.print "words in words_added_by_hand are also present in scum or goofy: #{contradiction}\n"
+  $stderr.print "words in words_added_by_hand or super_easy are also present in scum or goofy: #{contradiction}\n"
   exit(-1)
 end
 
 words = freq.keys.sort { |a,b| freq[b] <=> freq[a] }.select { |w| freq[w]<=max_freq && freq[w]>=min_freq }
-words = words.to_set.merge(words_added_by_hand.to_set).to_a
+words = words.to_set.merge((words_added_by_hand | super_easy).to_set).to_a
 words = words.select { |w| w==w.downcase }.select { |w| w!='υνκνοων'}
 
 

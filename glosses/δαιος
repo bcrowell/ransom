@@ -1,7 +1,9 @@
 // https://en.wiktionary.org/wiki/δάιος https://logeion.uchicago.edu/δάιος
 // 
 {
-  "word":"δάιος",
-  "medium":"hostile, destructive"
+  "word":"δήϊος",
+  "perseus":"δάιος",
+  "medium":"hostile, destructive",
+  "etym":"epic and Ionic form of δάιος, from δάϊς, battle"
 }
       

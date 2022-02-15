@@ -1,8 +1,10 @@
 {
   "word": "τίθημι",
   "princ": "θήσω,ἔθηκα",
-  "medium": "put, place",
+  "medium": "put, place; cause",
   "cog": "do, thesis, prosthesis, Theseus",
+  "mnemonic_cog":"thesis",
   "etym": "reduplication of de, put/place",
-  "notes": "The -κα is something called a kappa aorist or k-extension. It occurs in δίδωμι, τίθημι, and ἵημι. The imperfect is irregular in the singular 2 and 3, showing endings in ει, as with ἵημι."
+  "notes": "This verb, rather than ἵστημι, is the main one used for the general idea of putting or placing something. The -κα is something called a kappa aorist or k-extension. It occurs in δίδωμι, τίθημι, and ἵημι. The imperfect is irregular in the singular 2 and 3, showing endings in ει, as with ἵημι.",
+  "syn":"ἵστημι"
 }

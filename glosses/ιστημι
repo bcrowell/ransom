@@ -1,9 +1,10 @@
 {
   "word": "ἵστημι",
   "princ": "στήσω,ἔστησα/ἔστην",
-  "medium": "stand, set",
+  "medium": "stand, set; cause",
   "long": "transitive: stand, set, assemble, station, moor, weigh; intransitive: stand, be at a location, be initiated, halt, stand firm, stand idle, be appointed",
-  "notes": "The transitive senses are expressed with the active voice, the intransitive with mp and with the active 2nd aorist. As usual when a verb has both 1st and a 2nd aorist, the 1st aorist means to cause the action (set something in place, cause it to stand), while the 2nd is to do the action. Re the notion of 'to weigh,' compare στατήρ. For 'assemble,' there is also συνίημι.",
-  "mnemonic_cog":"stand",
-  "cog": "histamine, stasis, stand, ecstasy, apostasy, στατήρ (a standard weight)"
+  "notes": "The fairly uncommon transitive senses are expressed with the active voice, the intransitive with mp and with the active 2nd aorist. As usual when a verb has both 1st and a 2nd aorist, the 1st aorist means to cause the action (stand something in place, cause it to stand), while the 2nd is to do the action. Re the notion of 'to weigh,' compare στατήρ. For 'assemble,' there is also συνίημι. The main transitive verb meaning to put or set something in place is τίθημι.",
+  "mnemonic_cog":"station",
+  "cog": "histamine, stasis, stand, ecstasy, apostasy, στατήρ (a standard weight)",
+  "syn":"τίθημι"
 }

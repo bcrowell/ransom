@@ -220,6 +220,14 @@ class IliadNotes
     'about_what'    => %q{ἀγοράων},
     'explain'       => %q{here, things said in assembly, harangues}
   }],
+  ["2.303" , {
+    'about_what'    => %q{Αὐλίδα},
+    'explain'       => %q{Aulis was where the Achaians assembled before going to Troy. Lines 304-307 are an incomplete thought, setting the scene for the omen they saw there.}
+  }],
+  ["2.321" , {
+    'about_what'    => %q{πέλωρα},
+    'explain'       => %q{The plural here referring to the omens in general, not the serpent.}
+  }],
   ["2.355" , {
     'about_what'    => %q{Τρώων ἀλόχῳ},
     'explain'       => %q{This can mean either a Trojan bed-mate or the wife of some Trojan.}
@@ -232,6 +240,30 @@ class IliadNotes
     'about_what'    => %q{ἕρξῃς},
     'explain'       => %q{The rough breathing found in some manuscripts is mysterious. Chantraine speculates that Alexandrian grammarians introduced it to distinguish aorist forms of ἕρδω from those of ἔργω, to enclose.}
     # https://latin.stackexchange.com/questions/17682/rough-breathing-on-%e1%bc%95%cf%81%ce%be%e1%bf%83%cf%82
+  }],
+  ["2.370" , {
+    'about_what'    => %q{ἦ μὰν},
+    'explain'       => %q{two affirmative particles}
+  }],
+  ["2.371" , {
+    'about_what'    => %q{αἲ γὰρ ... μοι ... εἶεν},
+    'explain'       => %q{lit. if only there were for me}
+  }],
+  ["2.382" , {
+    'about_what'    => %q{θηξάσθω ... θέσθω ... δότω},
+    'explain'       => %q{a series of 3rd-person imperatives: let them sharpen ... prepare ... give}
+  }],
+  ["2.390" , {
+    'about_what'    => %q{τιταίνων},
+    'explain'       => %q{The active form here means to pull with great tension through the harness.}
+  }],
+  ["2.420" , {
+    'about_what'    => %q{ἱρά},
+    'explain'       => %q{Ionic form of ἱερά}
+  }],
+  ["2.435" , {
+    'about_what'    => %q{λεγώμεθα},
+    'explain'       => %q{lit. count, recount, here meaning to talk idly}
   }],
   ["3.16" , {
     'about_what'    => %q{Ἀλέξανδρος},
