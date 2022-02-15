@@ -71,12 +71,12 @@ words_added_by_hand = (<<-'BY_HAND'
 τρεῖς τέσσαρες δέκα ἑκατόν νεῖκος χῶρος ἐλεέω ἑκών
 κλισία κράτος βουλεύω τέμνω βαθύς οὕτως φώς ἐρίζω ἔρδω μάν
 BY_HAND
-).split(/\s/)
+).split(/\s+/)
 
 super_easy = (<<-'SUPER_EASY'
 κλέπτω γλῶσσα σκῆπτρον ἑκατόμβη καρδία
 SUPER_EASY
-).split(/\s/)
+).split(/\s+/)
 
 # see def above
 scum = (<<-'SCUM'
@@ -89,7 +89,7 @@ scum = (<<-'SCUM'
 ὑπέρ πως εἷς ἆρα οὔτε πρό ὅπως τίς
 εἰς εἰ ὅσος ἐκεῖνος κεῖνος ἄμφω αὔτως ἠμέν ἐπεί ὅστις
 SCUM
-).split(/\s/)
+).split(/\s+/)
 
 # words that are more common than πατήρ but seem too weird to be on the core list; often these are compound verbs,
 # military terms, or words that occur in Homer's favorite set phrase
@@ -107,7 +107,7 @@ goofy = (<<-'GOOFY'
 ἐπιτέλλω αἰγίοχος περικαλλής
 χαλεπός ὀιστός ὀπίσω ἐπιβαίνω
 GOOFY
-).split(/\s/)
+).split(/\s+/)
 
 contradiction = (scum | goofy) & (words_added_by_hand | super_easy)
 if contradiction.length>0 then
