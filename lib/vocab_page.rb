@@ -141,8 +141,9 @@ end
 def VocabPage.explainer_in_gloss(word,flags,pos)
   is_3rd_decl,is_dual,is_irregular_comparative = [flags['is_3rd_decl']==true,flags['is_dual']==true,flags['is_irregular_comparative']==true]
   explainer = nil
-  explainer = describe_declension(pos,true)[1] if is_3rd_decl && word=~/φιν?$/ # here the is_3rd_decl flag just means it's a hard declension
   explainer = 'dual' if is_dual
+  explainer = describe_declension(pos,true)[1] if is_3rd_decl
+  # ... here the is_3rd_decl flag just means it's a hard declension, could be stuff like -φιν
   explainer = 'comparative' if is_irregular_comparative
   if explainer.nil? then return '' else return ", #{explainer}" end
 end
