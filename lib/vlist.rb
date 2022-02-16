@@ -106,7 +106,7 @@ def Vlist.from_text(t,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_
     is_comparative = is_adj && (pos=~/[cs]$/)
     difficult_to_recognize = false
     if genos.greek then
-      is_3rd_decl = guess_whether_third_declension(word,lemma,pos)
+      is_3rd_decl = guess_whether_hard_declension(word,lemma,pos)
       is_epic = Epic_form.is(word)
       is_dual = (pos[2]=='d')
       is_irregular_comparative = (is_comparative && Adjective.is_irregular_comparative(word,lemma,pos[8]))

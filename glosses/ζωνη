@@ -1,6 +1,8 @@
 {
   "word":"ζώνη",
-  "medium":"belt",
+  "short":"girdle; waist",
+  "medium":"girdle; waist, loins",
+  "long":"woman's girdle; man's waist or loins",
   "mnemonic_cog":"zone",
   "cog":"zone"
 }

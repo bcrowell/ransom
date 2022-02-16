@@ -121,7 +121,7 @@ def VocabPage.entry(db,stuff)
   # Generate latex:
   inflected = LemmaUtil.make_inflected_form_flavored_like_lemma(word)
   # FIXME: The explainer doesn't actually get printed for θᾶσσον ≺ ταχύς in Ilid 2.440.
-  explained = gloss+VocabPage.explainer_in_gloss(flags)
+  explained = gloss+VocabPage.explainer_in_gloss(inflected,flags,data['pos'])
   if !has_mnemonic_cog then
     if explain_inflection then
       s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{explained}}"
@@ -130,7 +130,7 @@ def VocabPage.entry(db,stuff)
     end
   else
     if explain_inflection then
-      s = "\\vocabinflection{#{inflected}}{#{preferred_lex}}{#{explained}}"
+      s = "\\vocabinflectionwithcog{#{inflected}}{#{preferred_lex}}{#{explained}}{#{entry['mnemonic_cog']}}"
     else
       s = "\\vocabwithcog{#{preferred_lex}}{#{explained}}{#{entry['mnemonic_cog']}}"
     end
@@ -138,12 +138,13 @@ def VocabPage.entry(db,stuff)
   return s
 end
 
-def VocabPage.explainer_in_gloss(flags)
+def VocabPage.explainer_in_gloss(word,flags,pos)
   is_3rd_decl,is_dual,is_irregular_comparative = [flags['is_3rd_decl']==true,flags['is_dual']==true,flags['is_irregular_comparative']==true]
-  explainer = ''
-  explainer = ', dual' if is_dual
-  explainer = ', comparative' if is_irregular_comparative
-  return explainer  
+  explainer = nil
+  explainer = describe_declension(pos,true)[1] if is_3rd_decl && word=~/φιν?$/ # here the is_3rd_decl flag just means it's a hard declension
+  explainer = 'dual' if is_dual
+  explainer = 'comparative' if is_irregular_comparative
+  if explainer.nil? then return '' else return ", #{explainer}" end
 end
 
 def VocabPage.inflection(stuff)

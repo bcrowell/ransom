@@ -265,6 +265,17 @@ class IliadNotes
     'about_what'    => %q{λεγώμεθα},
     'explain'       => %q{lit. count, recount, here meaning to talk idly}
   }],
+  ["2.465" , {
+    'about_what'    => %q{Σκαμάνδριον},
+    'explain'       => %q{Scamander, a river near Troy at whose mouth the invasion force landed. Named after a river god, who appears at Iliad 22.149.}
+  }],
+  ["2.466" , {
+    'explain'       => %q{Buckley's text omits this line.}
+  }],
+  ["2.471" , {
+    'about_what'    => %q{δεύει},
+    'explain'       => %q{Buckley translates this as ``overflows,'' but a more literal translation would be ``moistens'' or ``dews.''}
+  }],
   ["3.16" , {
     'about_what'    => %q{Ἀλέξανδρος},
     'explain'       => %q{another name for Paris, who appears here for the first time}

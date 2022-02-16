@@ -80,6 +80,7 @@
 \newcommand{\vocabwithcog}[3]{\glosstrailingrightpara{\vocabwithcogbasic{#1}{#2}{#3}}}
 \newcommand{\vocabnospace}[2]{\boldforeign{#1} #2}
 \newcommand{\vocabinflection}[3]{\glosstrailingrightpara{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3}}
+\newcommand{\vocabinflectionwithcog}[4]{\glosstrailingrightpara{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3 $\sim$\emph{#4}}}
 \newcommand{\vocabnouninflection}[3]{\vocabinflection{#1}{#2}{#3}}
 \newcommand{\vocabverbinflection}[3]{\vocabinflection{#1}{#2}{#3}}
 \newcommand{\vocabinflectiononly}[2]{\vocab{#1}{\from{}{\greekfont #2}}}

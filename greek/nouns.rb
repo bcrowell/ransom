@@ -40,7 +40,7 @@ end
 def guess_difficulty_of_recognizing_declension(word,lemma,pos)
   # Returns [if_hard,score,threshold].
   # For testing and calibration, see test_decl_diff() above.
-  is_3rd_decl = guess_whether_third_declension(word,lemma,pos)
+  is_3rd_decl = guess_whether_hard_declension(word,lemma,pos)
   w = Writing.phoneticize(word)
   l = Writing.phoneticize(lemma)
   # Figure out what declension it *looks like*, not necessarily what declension it is.
@@ -66,6 +66,17 @@ def guess_difficulty_of_recognizing_declension(word,lemma,pos)
   if is_feminine_ending_in_os(l) then x=x+0.2 end
   threshold = 0.4
   return [x>threshold,x,threshold]
+end
+
+def guess_whether_hard_declension(word,lemma,pos)
+  return true if guess_whether_third_declension(word,lemma,pos)
+  # archaic -φι(ν) ending:
+  if remove_accents(word)=~/φιν?$/ then
+    # smyth p 71, sec 280; an archaic ending usually used for instrumental, locative, ablative, genitive, or dative
+    # example: Iliad 2.480, ἀγέληφι
+    return true if !(pos[7]=~/[nav]/) # I don't see any other way for -φι/-φιν to occur, e.g., can't just occur for a noun that has φ in it.
+  end
+  return false
 end
 
 def guess_whether_third_declension(word,lemma,pos)
