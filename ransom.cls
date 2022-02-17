@@ -30,6 +30,8 @@
 \newcommand{\rightheaderwhatvocab}{Minivocab} % gets redefined by, e.g., greekransom.sty
 \newcommand{\rightheaderwhatglosses}{Ransom notes}
 \RequirePackage{greekransom}
+
+% FIXME -- I think this is not needed at all anymore. Remove and test.
 \newcommand{\foreignisgreekscript}{%
   \renewcommand{\boldforeign}[1]{\begin{boldgreek}##1\end{boldgreek}}
 }

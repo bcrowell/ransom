@@ -101,12 +101,15 @@ def FormatGloss.assemble_helper(bilingual,format,items)
 end
 
 def FormatGloss.mark_up_element(bilingual,type,s)
-  if type=='b' then return Latex.macro('boldforeign',s) end
+  greek = bilingual.foreign.genos.greek
+  if type=='b' then
+    if greek then return Latex.envir('boldgreek',s) else return Latex.macro('textbf',s) end
+  end
   if type=='h' then return Latex.macro('hardspace','1em') end
   if type=='g' then return s end # gloss
   if type=='f' then return Latex.macro('from','') end
   if type=='l' then
-    if bilingual.foreign.genos.greek then return "{\\greekfont{}#{s}}" else return s end
+    if greek then return "{\\greekfont{}#{s}}" else return s end
   end
   if type=='c' then return Latex.macro('cog',s) end # cognate
   if type=='p' then return Latex.macro('textsc',s.gsub(/\./,'')) end # part of speech
