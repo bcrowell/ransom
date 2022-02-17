@@ -63,11 +63,11 @@ def FormatGloss.inflection(stuff)
   lemma_flavored = LemmaUtil.make_inflected_form_flavored_like_lemma(word)
   pos = data['pos']
   if pos[0]=='n' then
-    return "\\vocabnouninflection{#{lemma_flavored}}{#{lexical}}{#{describe_declension(pos,true)[0]}}"
+    return "\\vocabinflection{#{lemma_flavored}}{#{lexical}}{#{describe_declension(pos,true)[0]}}"
   end
   if pos[0]=~/[vt]/ then
     # File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} \n" }
-    return "\\vocabverbinflection{#{word.downcase}}{#{lexical}}{#{Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical,
+    return "\\vocabinflection{#{word.downcase}}{#{lexical}}{#{Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical,
                    omit_easy_number_and_person:true,omit_voice:true)}}"
   end
   return "\\vocabinflectiononly{#{word.downcase}}{#{lexical}}"
