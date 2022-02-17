@@ -76,42 +76,16 @@
 \newcommand{\hardspace}[1]{\unskip\hspace{#1}\ignorespaces} % https://tex.stackexchange.com/a/89096/6853
 \newcommand{\vocabbasic}[2]{\boldforeign{#1} \hardspace{1em} #2}
 \newcommand{\vocabwithcogbasic}[3]{\boldforeign{#1} \hardspace{1em} #2 $\sim$\emph{#3}}
-\newcommand{\vocab}[2]{\glosstrailingrightpara{\vocabbasic{#1}{#2}}}
-\newcommand{\vocabwithcog}[3]{\glosstrailingrightpara{\vocabwithcogbasic{#1}{#2}{#3}}}
+\newcommand{\vocab}[2]{\vocabbasic{#1}{#2}}
+\newcommand{\vocabwithcog}[3]{\vocabwithcogbasic{#1}{#2}{#3}}
 \newcommand{\vocabnospace}[2]{\boldforeign{#1} #2}
-\newcommand{\vocabinflection}[3]{\glosstrailingrightpara{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3}}
-\newcommand{\vocabinflectionwithcog}[4]{\glosstrailingrightpara{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3 $\sim$\emph{#4}}}
+\newcommand{\vocabinflection}[3]{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3}
+\newcommand{\vocabinflectionwithcog}[4]{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3 $\sim$\emph{#4}}
 \newcommand{\vocabnouninflection}[3]{\vocabinflection{#1}{#2}{#3}}
 \newcommand{\vocabverbinflection}[3]{\vocabinflection{#1}{#2}{#3}}
 \newcommand{\vocabinflectiononly}[2]{\vocab{#1}{\from{}{\greekfont #2}}}
 \newcommand{\vocaballheader}{\textit{vocabulary}}
 \newcommand{\formsheader}[1]{\textit{#1}}
-
-%------------------------------------------------------------------
-% Code for typesetting glossary entries. When an entry is one line, left-justify it. When it's more than
-% one line, justify it, but right-justify the final line -- currently disabled, see below.
-% https://tex.stackexchange.com/a/630789/261851
-% Macro to typeset a paragraph so that if it's a single line, it's left-justified, but if it's multiple lines,
-% it's justified except for the last line, which is right-justified.
-\newcommand{\xglosstrailingrightpara}[1]{\CalcNumber{#1}{\columnwidth}{\NLines}\ifthenelse{\NLines>1}{\glossmultiline{#1\par}}{#1\par}}
-% ... x in front is so it's disabled
-\newcommand{\glosstrailingrightpara}[1]{#1\par}
-% ... go back to doing it the normal-looking way instead
-
-% https://tex.stackexchange.com/a/406722
-% For a single paragraph of text, determines how many lines it will take to typeset.
-% #1=text, #2=width, #3=variable to store result in
-\def\CalcNumber#1#2#3{%
-  \setbox0\vbox{\hsize=#2 \noindent#1\par\xdef#3{\the\prevgraf}}}
-
-% https://tex.stackexchange.com/a/43239/261851
-% Typeset a paragraph so that the text is justified, and the final line is right-aligned:
-\newcommand{\lastlinerightaligned}[1]{\begingroup \leftskip=0pt plus .5fil\rightskip=0pt plus -.5fil\parfillskip=0pt plus .5fil{}#1\par \endgroup}
-
-\newcommand{\glossmultiline}[1]{\lastlinerightaligned{\nohyphens{#1}}}
-
-
-%------------------------------------------------------------------
 
 \newenvironment{vocabpage}{\cleardoublepage\begin{raggedright}\setlength{\parskip}{0pt}\begin{multicols}{2}}{\end{multicols}\end{raggedright}}
 \newenvironment{conjugations}{\formsheader{conjugations}\\}{}
