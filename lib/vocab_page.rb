@@ -15,20 +15,20 @@ def VocabPage.helper(bilingual,genos,db,wikt,core,treebank,freq,notes,vocab_by_c
   return core,vl,vocab_by_chapter
 end
 
-def VocabPage.make(db,vl,core)
+def VocabPage.make(bilingual,db,vl,core)
   # Input is a Vlist object.
   # The three sections are interpreted as common, uncommon, and rare.
   # Returns {'tex'=>...,'file_lists'=>...}, containing latex code for vocab page and the three file lists for later reuse.
   if Options.if_render_glosses then $stderr.print vl.console_messages end
   tex = ''
   tex +=  "\\begin{vocabpage}\n"
-  tex +=  VocabPage.make_helper(db,'uncommon',vl,0,2,core) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
+  tex +=  VocabPage.make_helper(bilingual,db,'uncommon',vl,0,2,core) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
   tex +=  "\\end{vocabpage}\n"
   v = vl.list.map { |l| l.map{ |entry| entry[1] } }
   result = {'tex'=>tex,'file_lists'=>v}
 end
 
-def VocabPage.make_helper(db,commonness,vl,lo,hi,core)
+def VocabPage.make_helper(bilingual,db,commonness,vl,lo,hi,core)
   debug_this_page = false
   l = []
   lo.upto(hi) { |i|
@@ -71,8 +71,8 @@ def VocabPage.make_helper(db,commonness,vl,lo,hi,core)
       this_sec += "\\begin{#{envir}}\n"
       ll.sort { |a,b| alpha_compare(a[4],b[4])}.each { |entry|
         s = nil
-        if type=='gloss' then s=FormatGloss.with_english(db,entry) end
-        if type=='conjugation' || type=='declension' then s=FormatGloss.inflection(entry) end
+        if type=='gloss' then s=FormatGloss.with_english(bilingual,db,entry) end
+        if type=='conjugation' || type=='declension' then s=FormatGloss.inflection(bilingual,entry) end
         if !(s.nil?) then
           this_sec += clean_up_unicode("#{s}\n")
         else

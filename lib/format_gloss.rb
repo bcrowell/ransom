@@ -1,6 +1,6 @@
 class FormatGloss
 
-def FormatGloss.with_english(db,stuff)
+def FormatGloss.with_english(bilingual,db,stuff)
   file_under,word,lexical,data = stuff
   entry = Gloss.get(db,lexical)
   return if entry.nil?
@@ -36,7 +36,22 @@ def FormatGloss.with_english(db,stuff)
   if explain_inflection then items['b']=inflected; items['l']=preferred_lex else items['b']=preferred_lex end
   items['g'] = explained
   if has_mnemonic_cog then items['c']=entry['mnemonic_cog'] end
-  return FormatGloss.assemble(items)+"\\\\\n"
+  return FormatGloss.assemble(bilingual,items)+"\\\\\n"
+end
+
+def FormatGloss.inflection(bilingual,stuff)
+  file_under,word,lexical,data = stuff
+  lemma_flavored = LemmaUtil.make_inflected_form_flavored_like_lemma(word)
+  pos = data['pos']
+  items = nil
+  if pos[0]=='n' then items={'b'=>lemma_flavored,'l'=>lexical,'p'=>describe_declension(pos,true)[0]} end
+  if pos[0]=~/[vt]/ then
+    # File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} \n" }
+    items = {'b'=>word.downcase,'l'=>lexical,
+                 'p'=>Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical,omit_easy_number_and_person:true,omit_voice:true)}
+  end
+  if items.nil? then items={'b'=>word.downcase,'l'=>lexical} end
+  return FormatGloss.assemble(bilingual,items)+"\\\\\n"
 end
 
 def FormatGloss.explainer_in_gloss(word,flags,pos)
@@ -49,22 +64,7 @@ def FormatGloss.explainer_in_gloss(word,flags,pos)
   if explainer.nil? then return '' else return ", #{explainer}" end
 end
 
-def FormatGloss.inflection(stuff)
-  file_under,word,lexical,data = stuff
-  lemma_flavored = LemmaUtil.make_inflected_form_flavored_like_lemma(word)
-  pos = data['pos']
-  items = nil
-  if pos[0]=='n' then items={'b'=>lemma_flavored,'l'=>lexical,'p'=>describe_declension(pos,true)[0]} end
-  if pos[0]=~/[vt]/ then
-    # File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} \n" }
-    items = {'b'=>word.downcase,'l'=>lexical,
-                 'p'=>Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical,omit_easy_number_and_person:true,omit_voice:true)}
-  end
-  if items.nil? then items={'b'=>word.downcase,'l'=>lexical} end
-  return FormatGloss.assemble(items)+"\\\\\n"
-end
-
-def FormatGloss.assemble(items,force_no_space:false)
+def FormatGloss.assemble(bilingual,items,force_no_space:false)
   # items is a hash whose keys are one-letter codes
   # b=head word, h=hard space, g=gloss, f=from symbol, l=lemma, c=cognate, p=POS tag
   format = 'b '
@@ -78,10 +78,10 @@ def FormatGloss.assemble(items,force_no_space:false)
   }
   format = format.sub(/ $/,'') # trim trailing space
   format = format.sub(/,$/,'') # trim trailing comma
-  return FormatGloss.assemble_helper(format,items)
+  return FormatGloss.assemble_helper(bilingual,format,items)
 end
 
-def FormatGloss.assemble_helper(format,items)
+def FormatGloss.assemble_helper(bilingual,format,items)
   # format is, e.g., 'b h g' for boldfaced lemma, hard space, and gloss
   # items is a hash whose keys are the one-letter codes
   codes_0 = ['h','f'] # codes that take no arguments
@@ -95,17 +95,19 @@ def FormatGloss.assemble_helper(format,items)
     x =~ /__(.)__/
     code = $1
     if codes_1.include?(code) then s=items[code] else s='' end
-    result = result.sub(/#{x}/,FormatGloss.mark_up_element(code,s))
+    result = result.sub(/#{x}/,FormatGloss.mark_up_element(bilingual,code,s))
   end
   return result
 end
 
-def FormatGloss.mark_up_element(type,s)
+def FormatGloss.mark_up_element(bilingual,type,s)
   if type=='b' then return Latex.macro('boldforeign',s) end
   if type=='h' then return Latex.macro('hardspace','1em') end
   if type=='g' then return s end # gloss
   if type=='f' then return Latex.macro('from','') end
-  if type=='l' then return "{\\greekfont #{s}}" end # FIXME: shouldn't assume Greek
+  if type=='l' then
+    if bilingual.foreign.genos.greek then return "{\\greekfont{}#{s}}" else return s end
+  end
   if type=='c' then return Latex.macro('cog',s) end # cognate
   if type=='p' then return Latex.macro('textsc',s.gsub(/\./,'')) end # part of speech
   raise "unknown type=#{type}, string=#{s}"

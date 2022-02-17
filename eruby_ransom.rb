@@ -75,7 +75,7 @@ def print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,cor
   # prints
   # Doesn't get called if Options.if_prose_trial_run is set
   # Ransom_spacing is the tightness inter-line spacing in the glosses given in the ransom notes.
-  stuff = VocabPage.make(db,vl,core)
+  stuff = VocabPage.make(bilingual,db,vl,core)
   tex,v = stuff['tex'],stuff['file_lists']
   print tex
   if notes.length>0 then print Notes.to_latex(bilingual.foreign_linerefs,notes) end # FIXME: won't work if foreign text is prose, doesn't have linerefs
