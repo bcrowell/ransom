@@ -1,4 +1,9 @@
 class Latex
+  def Latex.macro(macro,contents)
+    if !contents.kind_of?(Array) then contents=[contents] end
+    c = contents.map { |x| '{'+x+'}' }.join('')
+    return "\\"+macro+c
+  end
   def Latex.envir(environment,contents)
     return "\\begin{#{environment}}\n" + contents + "\\end{#{environment}}\n"
   end

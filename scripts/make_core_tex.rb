@@ -8,6 +8,8 @@ require "json"
 require "set"
 require "./lib/string_util.rb"
 require "./lib/file_util.rb"
+require "./lib/format_gloss.rb"
+require "./lib/latex.rb"
 
 format = ENV['FORMAT']
 if format.nil? then $stderr.print "FORMAT environment variable not set\n"; exit(-1) end
@@ -23,11 +25,9 @@ alpha_sort(glosses.keys).each { |lemma|
   g = glosses[lemma][0]
   mnemonic_cog = glosses[lemma][1] # is usually nil
   if format=='tex' then
-    if mnemonic_cog.nil? then
-      print "\\vocab{#{lemma}}{#{g}}\\par\n"
-    else
-      print "\\vocabwithcog{#{lemma}}{#{g}}{#{mnemonic_cog}}\\par\n"
-    end
+    items = {'b'=>lemma,'g'=>g}
+    if !mnemonic_cog.nil? then items['c']=mnemonic_cog end
+    print FormatGloss.assemble(items)+"\\par\n"
   else
     print "#{lemma} #{g} #{mnemonic_cog}\n"
   end

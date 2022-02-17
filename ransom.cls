@@ -74,13 +74,7 @@
 \newcommand{\from}{\raisebox{.25ex}{{\tiny{$\prec$}}}\hardspace{0.2em}}
 
 \newcommand{\hardspace}[1]{\unskip\hspace{#1}\ignorespaces} % https://tex.stackexchange.com/a/89096/6853
-
-\newcommand{\vocab}[2]{\boldforeign{#1} \hardspace{1em} #2}
-\newcommand{\vocabwithcog}[3]{\boldforeign{#1} \hardspace{1em} #2 $\sim$\emph{#3}}
-\newcommand{\vocabnospace}[2]{\boldforeign{#1} #2}
-\newcommand{\vocabinflection}[3]{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3}
-\newcommand{\vocabinflectionwithcog}[4]{\vocabnospace{#1}{\from{}{\greekfont #2}}, #3 $\sim$\emph{#4}}
-\newcommand{\vocabinflectiononly}[2]{\vocab{#1}{\from{}{\greekfont #2}}}
+\newcommand{\cog}[1]{$\sim$\emph{#1}}
 
 \newcommand{\vocaballheader}{\textit{vocabulary}}
 \newcommand{\formsheader}[1]{\textit{#1}}
