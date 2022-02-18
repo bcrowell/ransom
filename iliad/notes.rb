@@ -276,6 +276,18 @@ class IliadNotes
     'about_what'    => %q{δεύει},
     'explain'       => %q{Buckley translates this as ``overflows,'' but a more literal translation would be ``moistens'' or ``dews.''}
   }],
+  ["2.480" , {
+    'about_what'    => %q{ἔπλετο},
+    'explain'       => %q{Usually translatable as ``turned out to be,'' but here possibly just a metric-filling ``is.''}
+  }],
+  ["2.484" , {
+    'about_what'    => %q{Ἔσπετε},
+    'explain'       => %q{Plural aor. imperative of ἔννεπω, to tell.}
+  }],
+  ["2.494" , {
+    'about_what'    => %q{},
+    'explain'       => %q{The catalog of the Achaean ships begins here and is followed at line 785 by some framing material and then a similar description of the Trojan forces.}
+  }],
   ["3.16" , {
     'about_what'    => %q{Ἀλέξανδρος},
     'explain'       => %q{another name for Paris, who appears here for the first time}

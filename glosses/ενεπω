@@ -1,5 +1,9 @@
 {
-  "word":"ἐνέπω",
-  "medium":"tell, tell of"
+  "word":"ἐννέπω",
+  "perseus":"ἐνέπω",
+  "medium":"tell, tell of",
+  "notes":"The aorist imperative ἐνίσπες is common in Homer. Project Perseus calls plural imperative ἔσπετε an aorist and assigns it to a separate lemma ἔσπον.",
+  "etym":"From ἐν(ι)+PIE sekw, to say, one of several homophones.",
+  "cog":"ἄσπετος, θεσπέσιος, θέσπις"
 }
       

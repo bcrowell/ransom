@@ -2,15 +2,15 @@
 {
   "word":"εἶμι",
   "medium":"go, come",
-  "notes":"Infinitive ἴμεν. Not the same verb as εἰμι, to be. The meaning of to go in the present is often supplied by ἔρχομαι. The present of εἶμι is often construed as future, although in the Homeric dialect an alternative is ἐλεύσομαι. An aorist for to go is ἤλυθον.",
+  "notes":"Infinitive ἴμεν. Not the same verb as εἰμί, to be. The meaning of to go in the present is often supplied by ἔρχομαι. The present of εἶμι is often construed as future, although in the Homeric dialect an alternative is ἐλεύσομαι. An aorist for to go is ἤλυθον.",
   "syn":"κίω, βαίνω, βάσκω",
   "mnemonic_cog":"ion",
   "cog":"ion"
 },
 {
-  "word":"εἰμι",
-  "medium":"to be",
-  "notes":"not the same verb as εἶμι, to go, come"
+  "word":"εἰμί",
+  "medium":"be, exist, have",
+  "notes":"Not the same verb as εἶμι, to go, come. When a person possesses a thing, it is very frequent to express this using εἰμί+dat. rather than ἔχω. "
 }
 ]
 
