@@ -278,7 +278,7 @@ class IliadNotes
   }],
   ["2.480" , {
     'about_what'    => %q{ἔπλετο},
-    'explain'       => %q{Usually translatable as ``turned out to be,'' but here possibly just a metric-filling ``is.''}
+    'explain'       => %q{The verb πέλω, when used in the imperfect, may be better interpreted as having the meaning of the aorist. Here the verb simply means ``is'' or ``has turned out to be,'' and is used to state a universal truth rather than a past event.}
   }],
   ["2.484" , {
     'about_what'    => %q{Ἔσπετε},

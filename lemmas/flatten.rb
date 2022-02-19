@@ -75,6 +75,8 @@ old_book = nil
 
 $text,$book,$line = nil,nil,nil
 
+results = []
+
 $stdin.each_line { |line|
   if line=~/urn:cts:greekLit:tlg0012.tlg001.perseus-grc1.tb/ then $text="iliad" end
   if line=~/urn:cts:greekLit:tlg0012.tlg002.perseus-grc1.tb/ then $text="odyssey" end
@@ -118,7 +120,13 @@ $stdin.each_line { |line|
     if lemma=~/(\d+)$/ then which_lemma=$1 end
     lemma.gsub!(/(\d+)$/,'')
     next if lemma=~/\?/
-    a = [$text,$book,$line,form,lemma,which_lemma,pos]
-    print a.join(","),"\n"
+    a = [$text,$book.to_i,$line.to_i,form,lemma,which_lemma,pos]
+    results.push(a)
   end
+}
+
+results = results.sort
+
+results.each { |a|
+  print a.join(","),"\n"
 }
