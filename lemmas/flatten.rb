@@ -125,7 +125,7 @@ $stdin.each_line { |line|
   end
 }
 
-results = results.sort
+results = results.sort { |a,b| [a[0],a[1]] <=> [b[0],b[1]]}
 
 results.each { |a|
   print a.join(","),"\n"
