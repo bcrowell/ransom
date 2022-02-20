@@ -19,7 +19,7 @@ def initialize(pos,data)
   @voice  = data['voice']  if data['voice'] && data['voice']!='a'
   @person = data['person'] if data['person'] && data['person']!='3'
   # info shared by nouns and verbs; singular is considered to be unmarked
-  @number = data['number'].to_i if data['number'] && data['number']!='3'
+  @number = data['number'] if data['number'] && data['number']!='s'
   # info for nouns and adjectives
   @gender = data['gender']
   @case = data['case']
@@ -46,7 +46,7 @@ def to_s
   list.push(Tagzig.tense_to_s(self.tense)) if self.tense
   list.push(Tagzig.mood_to_s(self.mood)) if self.mood
   list.push(Tagzig.voice_to_s(self.voice)) if self.voice
-  list.push(self.gender) if self.gender
+  list.push(self.gender) if self.gender && self.pos!='n'
   list.push(Tagzig.case_to_s(self.case)) if self.case
   # doesn't stringify comparative or superlative
   list = list.filter { |x| !x.nil? }
