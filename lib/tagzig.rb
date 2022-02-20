@@ -1,7 +1,7 @@
 class Tagzig
 
 =begin
-A class that encapsulates the kind of part-of-speech tagging that is described in the
+An object of this class encapsulates the kind of part-of-speech tagging that is described in the
 Leipzig Glossing Rules for morpheme-by-morpheme interlinear text,
 https://www.eva.mpg.de/lingua/resources/glossing-rules.php .
 =end
@@ -37,6 +37,36 @@ def from_perseus(pos)
     data[key] = c if c!='-'
   }
   return Tagzig.new(pos[0],data)
+end
+
+def to_s
+  list = []
+  list.push(self.person) if self.person
+  list.push(self.number) if self.number
+  list.push(Tagzig.tense_to_s(self.tense)) if self.tense
+  list.push(Tagzig.mood_to_s(self.mood)) if self.mood
+  list.push(Tagzig.voice_to_s(self.voice)) if self.voice
+  list.push(self.gender) if self.gender
+  list.push(Tagzig.case_to_s(self.case)) if self.case
+  # doesn't stringify comparative or superlative
+  list = list.filter { |x| !x.nil? }
+  return list.join('.')
+end
+
+def Tagzig.tense_to_s(tense)
+  return {'p'=>'PRS','i'=>'IMPF','r'=>'PF','l'=>'PLPF',t=>'FUT PF','f'=>'FUT','a'=>'AOR'}[tense]
+end
+
+def Tagzig.mood_to_s(mood)
+  return {'i'=>'IND','s'=>'SBJV','o'=>'OPT','n'=>'INF','m'=>'IMP','p'=>'PTCP'}[mood]
+end
+
+def Tagzig.voice_to_s(voice)
+  return {'a'=>'ACT','p'=>'PASS','m'=>'MID','e'=>'MP'}[voice]
+end
+
+def Tagzig.case_to_s(the_case)
+  return {'n'=>'NOM','g'=>'GEN','d'=>'DAT','a'=>'ACC','v'=>'VOC','l'=>'LOC'}[the_case]
 end
 
 end

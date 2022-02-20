@@ -1,6 +1,23 @@
 class Writing
   # ruby -e "require './greek/writing.rb'; require './lib/string_util.rb'; print Writing.phoneticize('ῥέω')"
   # ruby -e "require './greek/writing.rb'; require './lib/string_util.rb'; Writing.test_phoneticize"
+  def Writing.romanize(s)
+    s = Writing.phoneticize(s,remove_accents:false,respell_final_sigma:true)
+    s = s.tr("αβγδεζηικλμνοπρστυφω","abgdezēiklmnoprstyfō")
+    s = s.gsub(/θ/,'th')
+    s = s.gsub(/ξ/,'ks')
+    s = s.gsub(/χ/,'ch')
+    s = s.gsub(/ψ/,'ps')
+    s = s.gsub(/ē\!/,'ḗ')
+    s = s.gsub(/ō\!/,'ṓ')
+    s = s.gsub(/ē\~/,'e~')
+    s = s.gsub(/ō\~/,'o~')
+    "aeiou".chars.each { |c|
+      s = s.gsub(/#{c}\!/) {add_acute(c)}
+      s = s.gsub(/#{c}\~/) {add_circumflex(c)}
+    }
+    return s
+  end
   def Writing.test_phoneticize()
     tests = [
       ["ῥέω","hρε!ω"],
