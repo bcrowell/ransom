@@ -30,7 +30,7 @@ end
 # So "if tag.mood then ..." executes something if the mood is not indicative.
 attr_reader :pos,:tense,:mood,:voice,:person,:number,:gender,:case,:degree
 
-def from_perseus(pos)
+def Tagzig.from_perseus(pos)
   data = {}
   {'person'=>1,'number'=>2,'tense'=>3,'mood'=>4,'voice'=>5,'gender'=>6,'case'=>7,'degree'=>8}.each_pair { |key,val|
     c = pos[val]
