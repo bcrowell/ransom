@@ -88,6 +88,10 @@ class IliadNotes
     'explain'       => %q{ἀπὸ is an adverb modifying ἡμῖν, not a preposition modifying λοιγὸν},
     'cite'          => "Anthon, p. 141"
   }],
+  ["1.80" , {
+    'about_what'    => %q{κρείσσων ... βασιλεὺς ... ὅτε χώσεται},
+    'explain'       => %q{As often in statements of general truths, the sentence has no verb, but merely equates one nominal phrase to another, without the need for ἐστί.}
+  }],
   ["1.82" , {
     'about_what'    => %q{καταπέψῃ},
     'explain'       => %q{Literally, digest. Metaphorically, to keep down one's resentment.},
@@ -299,6 +303,10 @@ class IliadNotes
   ["3.39" , {
     'about_what'    => %q{Δύσπαρις},
     'explain'       => %q{a mocking form of Paris's name}
+  }],
+  ["3.49" , {
+    'about_what'    => %q{νυὸν ἀνδρῶν αἰχμητάων},
+    'explain'       => %q{Helen has kin by marriage (not literally a plural set of fathers in law) who are powerful military men expected to avenge Paris's insult.}
   }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},

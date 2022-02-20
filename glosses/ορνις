@@ -1,1 +1,8 @@
-{"word":"ὄρνις","genitive":"ὄρνιθος","gender":"m","medium":"bird","notes":"3rd declension"}
+{
+  "word":"ὄρνις",
+  "genitive":"ὄρνιθος",
+  "gender":"m",
+  "medium":"bird",
+  "mnemonic_cog":"ornithology",
+  "notes":"3rd declension"
+}
