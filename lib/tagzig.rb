@@ -42,7 +42,7 @@ end
 def to_s
   list = []
   list.push(self.person) if self.person
-  list.push(self.number) if self.number
+  list.push(Tagzig.number_to_s(self.number)) if self.number
   list.push(Tagzig.tense_to_s(self.tense)) if self.tense
   list.push(Tagzig.mood_to_s(self.mood)) if self.mood
   list.push(Tagzig.voice_to_s(self.voice)) if self.voice
@@ -53,8 +53,12 @@ def to_s
   return list.join('.')
 end
 
+def Tagzig.number_to_s(number)
+  return {'s'=>'sing','p'=>'pl','d'=>'dual'}[number]
+end
+
 def Tagzig.tense_to_s(tense)
-  return {'p'=>'PRS','i'=>'IMPF','r'=>'PF','l'=>'PLPF',t=>'FUT PF','f'=>'FUT','a'=>'AOR'}[tense]
+  return {'p'=>'PRS','i'=>'IMPF','r'=>'PF','l'=>'PLPF','t'=>'FUT PF','f'=>'FUT','a'=>'AOR'}[tense]
 end
 
 def Tagzig.mood_to_s(mood)
