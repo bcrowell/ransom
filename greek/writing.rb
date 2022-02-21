@@ -2,6 +2,7 @@ class Writing
   # ruby -e "require './greek/writing.rb'; require './lib/string_util.rb'; print Writing.phoneticize('ῥέω')"
   # ruby -e "require './greek/writing.rb'; require './lib/string_util.rb'; Writing.test_phoneticize"
   def Writing.romanize(s)
+    orig = s
     s = Writing.phoneticize(s,remove_accents:false,respell_final_sigma:true,preserve_graves:true)
     s = s.tr("αβγδεζηικλμνοπρστυφω","abgdezēiklmnoprstyfō")
     s = s.gsub(/θ/,'th')
@@ -17,6 +18,7 @@ class Writing
       s = s.gsub(/#{c}\@/) {add_grave(c)}
       s = s.gsub(/#{c}\~/) {add_circumflex(c)}
     }
+    if orig[0].downcase!=orig[0] then s = s.sub(/^(.)/) {$1.upcase} end # if it's in titlecase, put it back that way
     return s
   end
   def Writing.test_phoneticize()
