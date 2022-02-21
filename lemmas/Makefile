@@ -18,8 +18,9 @@ default:
 	[ -f $(ILIAD) ]
 	[ -f $(ODYSSEY) ]
 	cat $(ILIAD) $(ODYSSEY) | ruby flatten.rb greek >homer_lemmas.csv
-	ruby to_db.rb homer <homer_lemmas.csv
+	ruby to_db.rb homer
 	# ...writes homer_lemmas.json ; doesn't write sdbm file because I have that commented out; removes macrons and breves
+	#    writes homer_lemmas.line_index.json
 	ruby make_freq.rb homer >homer_freq.json
 
 classical_latin_freq.json:
@@ -28,37 +29,37 @@ classical_latin_freq.json:
 petronius:
 	[ -f $(PETRONIUS) ]
 	ruby flatten.rb latin <$(PETRONIUS) >petronius_lemmas.csv
-	ruby to_db.rb petronius <petronius_lemmas.csv
+	ruby to_db.rb petronius
 	ruby make_freq.rb petronius >petronius_freq.json
 
 caesar:
 	[ -f $(CAESAR) ]
 	ruby flatten.rb latin <$(CAESAR) >caesar_lemmas.csv
-	ruby to_db.rb caesar <caesar_lemmas.csv
+	ruby to_db.rb caesar
 	ruby make_freq.rb caesar >caesar_freq.json
 
 cicero:
 	[ -f $(CICERO) ]
 	ruby flatten.rb latin <$(CICERO) >cicero_lemmas.csv
-	ruby to_db.rb cicero <cicero_lemmas.csv
+	ruby to_db.rb cicero
 	ruby make_freq.rb cicero >cicero_freq.json
 
 vergil:
 	[ -f $(VERGIL) ]
 	ruby flatten.rb latin <$(VERGIL) >vergil_lemmas.csv
-	ruby to_db.rb vergil <vergil_lemmas.csv
+	ruby to_db.rb vergil
 	ruby make_freq.rb vergil >vergil_freq.json
 
 ovid:
 	[ -f $(OVID) ]
 	ruby flatten.rb latin <$(OVID) >ovid_lemmas.csv
-	ruby to_db.rb vergil <ovid_lemmas.csv
-	ruby make_freq.rb vergil >ovid_freq.json
+	ruby to_db.rb ovid
+	ruby make_freq.rb ovid >ovid_freq.json
 
 tacitus:
 	[ -f $(TACITUS) ]
 	ruby flatten.rb latin <$(TACITUS) >tacitus_lemmas.csv
-	ruby to_db.rb tacitus <tacitus_lemmas.csv
+	ruby to_db.rb tacitus
 	ruby make_freq.rb tacitus >tacitus_freq.json
 
 

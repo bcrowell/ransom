@@ -10,6 +10,9 @@ $stderr.print "author=#{author}\n"
 log_file = "#{author}_lemmas.log"
 json_file = "#{author}_lemmas.json"
 sdbm_file = "#{author}_lemmas" # gets expanded to two files, .dir and .pag
+csv_file = "#{author}_lemmas.csv"
+line_index_file = "#{author}_lemmas.line_index.json"
+
 
 def die(message)
   #  $stderr.print message,"\n"
@@ -20,9 +23,12 @@ end
 
 # input is csv:
 # iliad,1,1,ἄειδε,ἀείδω,1,v2spma---
+# Input must be sorted appropriately on the first three columns in dictionary (string,integer,integer) order,
+# or else line_index_file will be useless.
 # output is a hash where key is a word and value is [lemma,lemma_number,pos,count,if_ambiguous,ambig].
 # If if_ambiguous is true, then ambig is a list of possible lemmas, each in the format [lemma,lemma_number,pos,count],
 # but the most common lemma is the one listed in front.
+# Also outputs an index to line_index_file
 
 def nearly_identical_pos(a,b)
   # Sometimes the same lemmatization is recorded with slightly different POS tags, e.g.:
@@ -34,9 +40,12 @@ def nearly_identical_pos(a,b)
   return (a[7]==b[7] || a[7]=='-' || b[7]=='-') && (a[8]==b[8] || a[8]=='-' || b[8]=='-')
 end
 
+line_index = {}
 table = {}
 # intermediate format, hash of lists of entries of the format [lemma,lemma_number,pos,count]
-$stdin.each_line { |line|
+File.open(csv_file,"r") { |f|
+old_pos = 0
+f.each_line { |line|
   line = remove_macrons_and_breves(line)
   next unless line=~/[[:alpha:]]/
   line.sub!(/\n/,'')
@@ -44,6 +53,9 @@ $stdin.each_line { |line|
   if a.length!=7 then die("csv has wrong length, line=#{line}") end
   text,book,near_line,word,lemma,lemma_number,pos = a
   next unless word=~/[[:alpha:]]/
+  line_index_key = "#{text},#{book},#{near_line}"
+  if !line_index.has_key?(line_index_key) then line_index[line_index_key]=old_pos end
+  old_pos = f.tell
   seen_before = nil
   if table.has_key?(word) then
     j = 0
@@ -70,6 +82,11 @@ $stdin.each_line { |line|
     end
     table[word][j][3] += 1 # bump count
   end
+}
+}
+
+File.open(line_index_file,"w") { |f|
+  f.print JSON.generate(line_index)
 }
 
 if false then

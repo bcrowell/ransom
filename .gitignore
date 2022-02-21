@@ -9,6 +9,8 @@
 # sdb files used for caching:
 *.dir
 *.pag
+# another index file:
+*.line_index.json
 
 /*.pdf
 *.pos

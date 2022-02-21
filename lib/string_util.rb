@@ -240,7 +240,16 @@ end
 def remove_macrons_and_breves(s)
   if !(s.kind_of?(String)) then return s end
   # ...convenience feature for stuff like parsing json data, which may include integers. Won't work for arrays containing strings.
-  return s.unicode_normalize(:nfc).tr("ᾰᾱᾸᾹῐῑῘῙῠῡῨῩ","ααΑΑιιΙΙυυΥΥ").tr("āēīōūӯ","aeiouy")
+  return safe_normalize(s).tr("ᾰᾱᾸᾹῐῑῘῙῠῡῨῩ","ααΑΑιιΙΙυυΥΥ").tr("āēīōūӯ","aeiouy")
+end
+
+def safe_normalize(s)
+  begin
+    return s.encode("UTF-8").unicode_normalize(:nfc)
+  rescue
+    # is probably 8-bit ascii/ISO-8859-1?
+    return s
+  end  
 end
 
 def char_to_short_name_hash()
