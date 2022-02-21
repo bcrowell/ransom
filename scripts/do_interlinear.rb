@@ -59,7 +59,8 @@ db = GlossDB.from_genos(genos)
 
 line1.upto(line2) { |line|
   words = treebank.get_line(genos,db,text,book,line)
-  print sprintf("%d.%3d",book,line)," ",Interlinear.assemble(words),"\n"
+  print Interlinear.assemble(words,left_margin:[4,line.to_s])
+  if line<line2 then print "\n" end
 }
 
 
