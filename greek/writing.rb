@@ -11,14 +11,12 @@ class Writing
     s = s.gsub(/ψ/,'ps')
     s = s.gsub(/ē\!/,'ḗ')
     s = s.gsub(/ō\!/,'ṓ')
+    s = s.gsub(/ē\@/,'ḕ')
+    s = s.gsub(/ō\@/,'ṑ')
     s = s.gsub(/ē\~/,'e~')
     s = s.gsub(/ō\~/,'o~')
-    "aeiou".chars.each { |c|
-      s = s.gsub(/#{c}\!/) {add_acute(c)}
-      s = s.gsub(/#{c}\@/) {add_grave(c)}
-      s = s.gsub(/#{c}\~/) {add_circumflex(c)}
-    }
-    if orig[0].downcase!=orig[0] then s = s.sub(/^(.)/) {$1.upcase} end # if it's in titlecase, put it back that way
+    s = Writing.digraphs_to_accents(s)
+    if orig[0].downcase!=orig[0] then s = s.sub(/^(.)/) {$1.upcase} end # if input was in titlecase, put it back that way
     return s
   end
   def Writing.test_phoneticize()
@@ -62,6 +60,15 @@ class Writing
     s = Writing.accents_to_digraphs(s)
     if respell_final_sigma then s = s.sub(/ς/,'σ') else s = s.sub(/σ$/,'ς') end
     if remove_accents then s=s.gsub(/[\!\~]/,'') end
+    return s
+  end
+  def Writing.digraphs_to_accents(s)
+    # same limitations as Writing.accents_to_digraphs
+    "aeiouαειουηω".chars.each { |c|
+      s = s.gsub(/#{c}\!/) {add_acute(c)}
+      s = s.gsub(/#{c}\@/) {add_grave(c)}
+      s = s.gsub(/#{c}\~/) {add_circumflex(c)}
+    }
     return s
   end
   def Writing.accents_to_digraphs(s)
