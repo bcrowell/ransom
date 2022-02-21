@@ -22,11 +22,8 @@ class TreeBank
     words = []
     File.open(@pos_file,'r') { |f|
       f.each_line { |line|
-        line = remove_macrons_and_breves(line)
-        next unless line=~/[[:alpha:]]/
-        line.sub!(/\n/,'')
-        a = line.split(/,/)
-        if a.length!=7 then die("csv has wrong length, line=#{line}") end
+        a = TreeBank.parse_csv_helper(line)
+        next if a.nil?
         this_text,this_book,this_line,word,lemma,lemma_number,pos = a
         next unless word=~/[[:alpha:]]/
         next unless this_text==text && this_book.to_i==book && this_line.to_i==line_number
@@ -36,6 +33,67 @@ class TreeBank
       }
     }
     return words
+  end
+
+  def TreeBank.parse_csv_helper(line)
+    # returns nil or array
+    line = remove_macrons_and_breves(line)
+    return nil unless line=~/[[:alpha:]]/
+    line.sub!(/\n/,'')
+    a = line.split(/,/)
+    if a.length!=7 then die("csv has wrong length, line=#{line}") end
+    return a
+  end
+  def TreeBank.find_line(filename,text,book,line_number)
+    # binary search to find the offset of the appropriate line in the CSV file containing the lemmas
+    max_line_len = 100
+    File.open(filename,'r') { |f|
+      file_size = File.size(f)
+      return TreeBank.find_line_helper_search(f,text,book,line_number,0,file_size,max_line_len)
+      # assumes format of csv file is strict, can predict initial string
+    }
+  end
+  def TreeBank.find_line_helper_search(f,text,book,line_number,lo,hi,max_line_len,max_depth:20)
+    # returns [if_possible,code,result], where if_possible is true if the line sought could begin in this range
+    i = TreeBank.find_line_helper_find_beginning(f,lo,max_line_len)
+    return [false,1,nil] if i.nil?
+    line_lo = TreeBank.find_line_helper_read_line_at(f,i,max_line_len)
+    text_lo,book_lo,line_lo = TreeBank.parse_csv_helper(line_lo)
+    a = [text_lo,book_lo,line_lo]
+    b = [text,book,line_number]
+    return [false,3,nil] unless (a<=>b)<=0
+    j = TreeBank.find_line_helper_find_beginning(f,hi,max_line_len)
+    return [true,2,nil] if j.nil?
+    return [true,0,i] if i==j
+    line_hi = TreeBank.find_line_helper_read_line_at(f,j,max_line_len)
+    text_hi,book_hi,line_hi = TreeBank.parse_csv_helper(line_hi)
+    c = [text_hi,book_hi,line_hi]
+    return [false,4,nil] unless (b<=>c)<=0
+    return [false,6,nil] if max_depth==0
+    # split in half and recurse:
+    mid = (lo+hi)/2
+    p = TreeBank.find_line_helper_search(f,text,book,line_number,lo,mid,max_line_len,max_depth:max_depth-1)
+    q = TreeBank.find_line_helper_search(f,text,book,line_number,mid,hi,max_line_len,max_depth:max_depth-1)
+    return p if p[0] && p[1]==0
+    return q if q[0] && q[1]==0
+    return [false,5,nil] # error, not found
+  end
+  def TreeBank.find_line_helper_read_line_at(f,position,max_line_len)
+    # assumes position is the beginning of a line
+    f.seek(position,IO::SEEK_SET)
+    hunk = File.read(f,max_line_len)
+    return nil if hunk.nil? # position is past EOF
+    hunk =~ /^([^\r\n]*)/
+    return $1
+  end
+  def TreeBank.find_line_helper_find_beginning(f,position,max_line_len)
+    # find the beginning of the next line starting at position
+    f.seek(position,IO::SEEK_SET)
+    hunk = File.read(f,max_line_len)
+    return nil if hunk.nil? # position is past EOF
+    i = hunk.index(/[\r\n]+/)
+    return nil if i.nil? # position is inside last line of file
+    return hunk.index(/[^\r\n]/,i)
   end
 
   def every_lemma_by_pos(pos)
