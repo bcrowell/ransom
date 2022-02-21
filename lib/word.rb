@@ -33,7 +33,7 @@ def to_a(format:'wrgpl',nil_to_null_string:false,remove_nils:false)
   format.chars.each { |field|
     result.push(h[field])
   }
-  if nil_to_null_string then result = result.map { |x| if x.nil? then '' else nil end } end
+  if nil_to_null_string then result = result.map { |x| if x.nil? then '' else x end } end
   if remove_nils then result = result.filter { |x| !x.nil? } end
   return result
 end
