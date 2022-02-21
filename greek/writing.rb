@@ -2,9 +2,12 @@ class Writing
   # ruby -e "require './greek/writing.rb'; require './lib/string_util.rb'; print Writing.phoneticize('ῥέω')"
   # ruby -e "require './greek/writing.rb'; require './lib/string_util.rb'; Writing.test_phoneticize"
   def Writing.romanize(s)
+    # https://en.wikipedia.org/wiki/Romanization_of_Greek
     orig = s
     s = Writing.phoneticize(s,remove_accents:false,respell_final_sigma:true,preserve_graves:true)
     s = s.tr("αβγδεζηικλμνοπρστυφω","abgdezēiklmnoprstyfō")
+    s = s.gsub(/([aeēoō])y/) {$1+'u'}
+    s = s.gsub(/yi/) {'ui'}
     s = s.gsub(/θ/,'th')
     s = s.gsub(/ξ/,'ks')
     s = s.gsub(/χ/,'ch')
@@ -64,7 +67,7 @@ class Writing
   end
   def Writing.digraphs_to_accents(s)
     # same limitations as Writing.accents_to_digraphs
-    "aeiouαειουηω".chars.each { |c|
+    "aeiouyαειουηω".chars.each { |c|
       s = s.gsub(/#{c}\!/) {add_acute(c)}
       s = s.gsub(/#{c}\@/) {add_grave(c)}
       s = s.gsub(/#{c}\~/) {add_circumflex(c)}

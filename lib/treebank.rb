@@ -31,7 +31,7 @@ class TreeBank
         next unless word=~/[[:alpha:]]/
         next unless this_text==text && this_book.to_i==book && this_line.to_i==line_number
         gloss_data = Gloss.get(db,lemma,prefer_length:0,if_texify_quotes:false)
-        if gloss_data.nil? then gloss=nil else gloss=gloss_data['gloss'] end
+        if gloss_data.nil? then gloss=Writing.romanize(lemma) else gloss=gloss_data['gloss'] end
         words.push(Word.new(genos,word,Tagzig.from_perseus(pos),gloss,lemma:lemma))
       }
     }
