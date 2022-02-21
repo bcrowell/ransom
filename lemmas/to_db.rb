@@ -37,7 +37,7 @@ end
 table = {}
 # intermediate format, hash of lists of entries of the format [lemma,lemma_number,pos,count]
 $stdin.each_line { |line|
-  line = x=remove_macrons_and_breves(line)
+  line = remove_macrons_and_breves(line)
   next unless line=~/[[:alpha:]]/
   line.sub!(/\n/,'')
   a = line.split(/,/)

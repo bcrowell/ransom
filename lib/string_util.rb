@@ -232,6 +232,11 @@ def add_circumflex(s)
   return s.unicode_normalize(:nfc).tr("αιυηωaeiou","ᾶῖῦῆῶâêîôû")
 end
 
+def add_grave(s)
+  # FIXME: very restricted compared to add_acute
+  return s.unicode_normalize(:nfc).tr("αειουηωaeiou","ὰὲὶὸὺὴὼàèìòù")
+end
+
 def remove_macrons_and_breves(s)
   if !(s.kind_of?(String)) then return s end
   # ...convenience feature for stuff like parsing json data, which may include integers. Won't work for arrays containing strings.

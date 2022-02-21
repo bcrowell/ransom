@@ -2,7 +2,7 @@ class Writing
   # ruby -e "require './greek/writing.rb'; require './lib/string_util.rb'; print Writing.phoneticize('ῥέω')"
   # ruby -e "require './greek/writing.rb'; require './lib/string_util.rb'; Writing.test_phoneticize"
   def Writing.romanize(s)
-    s = Writing.phoneticize(s,remove_accents:false,respell_final_sigma:true)
+    s = Writing.phoneticize(s,remove_accents:false,respell_final_sigma:true,preserve_graves:true)
     s = s.tr("αβγδεζηικλμνοπρστυφω","abgdezēiklmnoprstyfō")
     s = s.gsub(/θ/,'th')
     s = s.gsub(/ξ/,'ks')
@@ -14,6 +14,7 @@ class Writing
     s = s.gsub(/ō\~/,'o~')
     "aeiou".chars.each { |c|
       s = s.gsub(/#{c}\!/) {add_acute(c)}
+      s = s.gsub(/#{c}\@/) {add_grave(c)}
       s = s.gsub(/#{c}\~/) {add_circumflex(c)}
     }
     return s
@@ -39,14 +40,14 @@ class Writing
       end
     }
   end
-  def Writing.phoneticize(s,remove_accents:true,respell_final_sigma:false,reduce_double_sigma:false)
+  def Writing.phoneticize(s,remove_accents:true,respell_final_sigma:false,reduce_double_sigma:false,preserve_graves:false)
     # Turn a Greek string into a phoneticized version that works better with
     # algorithms like longest common subsequence.
     # My main application is judging whether noun and verb inflections look irregular. For this purpose, it seems
     # best to use remove_accents:false, because the accents are basically never what's irregular.
     # For these applications, it's also not helpful to respell the final ς as σ, just creates confusion in things like stripping inflectional endings.
     s = s.downcase
-    s = grave_to_acute(s) # we don't care about phonetic differences that only occur due to neighboring words
+    s = grave_to_acute(s) unless preserve_graves # we don't care about phonetic differences that only occur due to neighboring words
     s = s.sub(/ψ/,'πσ')
     s = s.sub(/ξ/,'κσ')
     s = s.sub(/γκ/,'νκ')
@@ -68,6 +69,7 @@ class Writing
       noa = remove_accents(c)
       if noa!=c then
         c.sub!(/([άέίόύήώ])/) { noa+"!" }
+        c.sub!(/([ὰὲὶὸὺὴὼ])/) { noa+"@" }
         c.sub!(/([ᾶῖῦῆῶ])/) { noa+"~" }
       end
       result += c

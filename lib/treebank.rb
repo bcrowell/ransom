@@ -3,13 +3,40 @@
 
 class TreeBank
   def initialize(corpus)
-    # fails by raising an exception if the appropriate file doesn't exist
+    # Fails by raising an exception if the appropriate lemmas file doesn't exist.
+    # It's not a problem if the POS file doesn't exist.
     data_dir = "lemmas"
     @lemmas_file = "#{data_dir}/#{corpus}_lemmas.json"
     @lemmas = json_from_file_or_die(@lemmas_file)
     @inverse_index = nil
+    @pos_file = "#{data_dir}/#{corpus}_lemmas.csv" # needn't exist, gets changed to nil below if it doesn't
+    if !File.exist?(@pos_file) then @pos_file=nil end
   end
-  attr_reader :lemmas,:lemmas_file
+  attr_reader :lemmas,:lemmas_file,:pos_file
+
+  def get_line(genos,db,text,book,line_number)
+    # returns an array of Word objects
+    # FIXME: inefficiently reads the whole file every time
+    # The following code is mostly duplicated from lemmas/to_db.rb.
+    raise "illegal types for inputs" unless book.class==1.class && line_number.class==1.class
+    words = []
+    File.open(@pos_file,'r') { |f|
+      f.each_line { |line|
+        line = remove_macrons_and_breves(line)
+        next unless line=~/[[:alpha:]]/
+        line.sub!(/\n/,'')
+        a = line.split(/,/)
+        if a.length!=7 then die("csv has wrong length, line=#{line}") end
+        this_text,this_book,this_line,word,lemma,lemma_number,pos = a
+        next unless word=~/[[:alpha:]]/
+        next unless this_text==text && this_book.to_i==book && this_line.to_i==line_number
+        gloss_data = Gloss.get(db,lemma,prefer_length:0,if_texify_quotes:false)
+        if gloss_data.nil? then gloss=nil else gloss=gloss_data['gloss'] end
+        words.push(Word.new(genos,word,Tagzig.from_perseus(pos),gloss,lemma:lemma))
+      }
+    }
+    return words
+  end
 
   def every_lemma_by_pos(pos)
     # input is a perseus part of speech tag such as 'v' for verbs
