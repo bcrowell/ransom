@@ -10,18 +10,6 @@ raise "usage: do_interlinear.rb txt iliad 1.37-39" unless ARGV.length==3
 format = ARGV[0]
 text = ARGV[1]
 lines = ARGV[2]
-lines=~/(\d+)\.(.*)/
-book = $1.to_i
-raise "illegal book number: #{book}" unless book>=1 && book<=24
-line_range = $2
-if line_range=~/(\d+)\-(\d+)/ then
-  line1,line2 = [$1.to_i,$2.to_i]
-else
-  line1 = line_range.to_i
-  line2 = line1
-end
-$stderr.print "#{text} #{book}.#{line1}-#{line2}\n"
-raise "illegal line numbers" unless line1>=1 && line2>=line1
 
 require 'json'
 
@@ -52,13 +40,17 @@ require_relative "../greek/adjectives"
 require_relative "../greek/lemma_util"
 require_relative "../greek/writing"
 
+linerange = LineRange.new("#{text} #{lines}")
+text,book,line1,line2 = linerange.to_a
+$stderr.print "#{linerange}\n"
+
 author = "homer"
 treebank = TreeBank.new(author)
 genos = GreekGenos.new('epic',is_verse:true)
 db = GlossDB.from_genos(genos)
 
 style = InterlinearStyle.new(format:format,left_margin:[4,'__LINE__'])
-result =  Interlinear.assemble_lines_from_treebank(genos,db,treebank,text,book,line1,line2,style:style)
+result =  Interlinear.assemble_lines_from_treebank(genos,db,treebank,linerange,style:style)
 
 if format=='tex' then
   top = %q{

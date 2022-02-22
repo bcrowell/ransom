@@ -1,24 +1,54 @@
-class InterlinearStyle
-
 # examples of how people do this:
 #   https://biblehub.com/interlinear/genesis/1.htm
 #   https://www.eva.mpg.de/lingua/resources/glossing-rules.php
 
-def initialize(layout:'wgp',format:'txt',left_margin:[0,''])
-  # Layout gives the order of the items, as defined in Word.to_h:
-  #   'w'=>self.word,'r'=>self.romanization,'g'=>self.gloss,'p'=>self.pos.to_s,'l'=>self.lemma
-  @layout = layout
-  @format = format
-  @left_margin = left_margin
+class LineRange
+  def initialize(s,max_book_sanity:24)
+    # s is a string such as "iliad 1.37-39"
+    text,num = s.downcase.split(/\s+/)
+    num=~/(\d+)\.(.*)/
+    book = $1.to_i
+    line_range = $2
+    if line_range=~/(\d+)\-(\d+)/ then
+      line1,line2 = [$1.to_i,$2.to_i]
+    else
+      line1 = line_range.to_i
+      line2 = line1
+    end
+    raise "illegal book number: #{book}" unless book>=1 && book<=max_book_sanity
+    raise "line numbers fail sanity check: #{line1} #{line2}" unless line1>=1 && line2>=line1
+    @text,@book,@line1,@line2 = text,book,line1,line2
+  end
+
+  attr_accessor :text,:book,:line1,:line2
+
+  def to_a
+    return [@text,@book,@line1,@line2]
+  end
+
+  def to_s
+    return "#{@text.sub(/^(.)/) {$1.upcase}} #{@book}.#{@line1}-#{@line2}"
+  end
 end
 
-attr_accessor :layout,:format,:left_margin
+class InterlinearStyle
+
+  def initialize(layout:'wgp',format:'txt',left_margin:[0,''])
+    # Layout gives the order of the items, as defined in Word.to_h:
+    #   'w'=>self.word,'r'=>self.romanization,'g'=>self.gloss,'p'=>self.pos.to_s,'l'=>self.lemma
+    @layout = layout
+    @format = format
+    @left_margin = left_margin
+  end
+
+  attr_accessor :layout,:format,:left_margin
 
 end
 
 class Interlinear
 
-def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,text,book,line1,line2,style:InterlinearStyle.new())
+def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange,style:InterlinearStyle.new())
+  text,book,line1,line2 = linerange.to_a
   all_lines = []
   line1.upto(line2) { |line|
     style_this_line = clown(style)
