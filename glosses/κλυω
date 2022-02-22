@@ -1,9 +1,9 @@
 {
   "word": "κλύω",
   "princ": ",ἔκλυον",
+  "short": "hear",
   "medium": "hear, listen to",
   "notes": "Homer uses only the imperfect and aorist. Imperatives are sometimes reduplicated, sometimes not. The imperative κέκλυτε, 'hear me!,' is common. The plural indicative aorist forms are sometimes unaugmented or reduplicated: κέκλυτε, κλύον.",
   "mnemonic_cog":"Euclid",
-  "cog": "Euclid, Sophocles, κλέος, κλειτός",
-  "aorist_difficult_to_recognize": 0
+  "cog": "Euclid, Sophocles, κλέος, κλειτός"
 }

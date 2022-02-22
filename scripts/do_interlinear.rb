@@ -6,7 +6,7 @@
 #   do_interlinear.rb tex iliad 1.37-39
 #     ... multiple lines, latex output
 
-raise "three args required" unless ARGV.length==3
+raise "usage: do_interlinear.rb txt iliad 1.37-39" unless ARGV.length==3
 format = ARGV[0]
 text = ARGV[1]
 lines = ARGV[2]

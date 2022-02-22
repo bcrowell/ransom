@@ -15,7 +15,9 @@ class TreeBank
     if !File.exist?(@pos_file) then
       @pos_file=nil
     else
-      @pos_index = json_from_file_or_die("#{data_dir}/#{corpus}_lemmas.line_index.json")
+      pos_index_file = "#{data_dir}/#{corpus}_lemmas.line_index.json"
+      if !File.exist?(pos_index_file) then raise "file #{@pos_index_file} does not exist; generate it using the makefile in the lemmas subdirectory" end
+      @pos_index = json_from_file_or_die(pos_index_file)
     end
   end
   attr_reader :lemmas,:lemmas_file,:pos_file
@@ -25,6 +27,7 @@ class TreeBank
     # FIXME: inefficiently reads the whole file every time
     # The following code is mostly duplicated from lemmas/to_db.rb.
     raise "illegal types for inputs" unless book.class==1.class && line_number.class==1.class
+    if !File.exist?(@pos_file) then raise "file #{@pos_file} does not exist; generate it using the makefile in the lemmas subdirectory" end
     words = []
     line_index_key = "#{text},#{book},#{line_number}"
     File.open(@pos_file,'r') { |f|
