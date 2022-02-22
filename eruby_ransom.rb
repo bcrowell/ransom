@@ -21,6 +21,12 @@ class Options
   end
 end
 
+=begin
+['lib','greek'].each { |subdir|
+  Dir[File.join(File.dirname(__FILE__), 'lib', '*.rb')].each {|file| require file }
+}
+=end
+
 require_relative "lib/file_util"
 require_relative "lib/string_util"
 require_relative "lib/debug"
@@ -44,6 +50,7 @@ require_relative "greek/verbs"
 require_relative "greek/adjectives"
 require_relative "greek/lemma_util"
 require_relative "greek/writing"
+
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
 
 

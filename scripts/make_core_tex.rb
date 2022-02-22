@@ -10,6 +10,9 @@ require "./lib/string_util.rb"
 require "./lib/file_util.rb"
 require "./lib/format_gloss.rb"
 require "./lib/latex.rb"
+require "./lib/bilingual.rb"
+require "./lib/genos.rb"
+require "./lib/epos.rb"
 
 format = ENV['FORMAT']
 if format.nil? then $stderr.print "FORMAT environment variable not set\n"; exit(-1) end
@@ -17,6 +20,8 @@ if !(['tex','txt'].include?(format)) then $stderr.print "FORMAT environment vari
 
 in_file = "core/homer.json"
 glosses = json_from_file_or_die(in_file)
+
+bilingual = BareBilingual.new(Genos.new('grc'),Genos.new('en'))
 
 if format=='tex' then
   print "% This file is generated automatically by doing a make core_tex. Don't edit it by hand.\n"
@@ -27,7 +32,7 @@ alpha_sort(glosses.keys).each { |lemma|
   if format=='tex' then
     items = {'b'=>lemma,'g'=>g}
     if !mnemonic_cog.nil? then items['c']=mnemonic_cog end
-    print FormatGloss.assemble(items)+"\\par\n"
+    print FormatGloss.assemble(bilingual,items)+"\\par\n"
   else
     print "#{lemma} #{g} #{mnemonic_cog}\n"
   end

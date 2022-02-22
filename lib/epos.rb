@@ -105,6 +105,7 @@ class Epos
     # Script can be 'latin', 'greek', or 'hebrew'.
     # Is_verse is boolean
     # The use_cache flag is for testing and development. See more notes about this in documentation at top of code.
+    # Note that this initializer needs to accept nil,nil,nil for the arguments, when called by BareBilingual's constructor.
     @text = text
     @script = script
     @is_verse = is_verse

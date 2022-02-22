@@ -3,6 +3,17 @@ This class holds information about a passage from a bilingual text, including th
 like what languages and dialects they are.
 =end
 
+class BareBilingual
+  # Sometimes functions like FormatGloss.assemble require a Bilingual object so they know what languages they're dealing with,
+  # but they don't need any actual bilingual text. This class supplies an object that fulfills that purpose.
+  def initialize(foreign_genos,translation_genos)
+    @foreign =     Epos.new(nil,nil,nil,genos:foreign_genos)
+    @translation = Epos.new(nil,nil,nil,genos:translation_genos)
+  end
+
+  attr_reader :foreign,:translation
+end
+
 class Bilingual
   def initialize(g1,g2,t1,t2,foreign,translation,max_chars:5000,length_ratio_tol_factor:1.38)
     # Foreign and translation are Epos objects, which should have non-nil genos with is_verse set correctly.
