@@ -1,14 +1,15 @@
 #!/bin/ruby
 
 # usage:
-#   interlinear.rb iliad 1.37
+#   do_interlinear.rb txt iliad 1.37
 #     ...does book 1, line 37 of the iliad
-#   interlinear.rb iliad 1.37-39
-#     ... multiple lines
+#   do_interlinear.rb tex iliad 1.37-39
+#     ... multiple lines, latex output
 
-raise "two args required" unless ARGV.length==2
-text = ARGV[0]
-lines = ARGV[1]
+raise "three args required" unless ARGV.length==3
+format = ARGV[0]
+text = ARGV[1]
+lines = ARGV[2]
 lines=~/(\d+)\.(.*)/
 book = $1.to_i
 raise "illegal book number: #{book}" unless book>=1 && book<=24
@@ -56,11 +57,35 @@ treebank = TreeBank.new(author)
 genos = GreekGenos.new('epic',is_verse:true)
 db = GlossDB.from_genos(genos)
 
+all_lines = []
 
 line1.upto(line2) { |line|
   words = treebank.get_line(genos,db,text,book,line)
-  print Interlinear.assemble(words,left_margin:[4,line.to_s])
-  if line<line2 then print "\n" end
+  all_lines.push(Interlinear.assemble(genos,words,left_margin:[4,line.to_s],format:format))
 }
+
+if format=='txt' then
+  result = all_lines.join("\n")
+end
+
+if format=='tex' then
+  result = all_lines.join("\n\n\\vspace{4mm}\n\n") # FIXME -- formatting shouldn't be hardcoded here
+  top = %q{
+% https://tex.stackexchange.com/a/37251/6853
+\RequirePackage{fontspec}
+\defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\setmainfont{GFS Didot} % is said to be a good Latin font to match with Porson-style fonts; if changing this, change it on the following line as well
+\newfontfamily\latinfont{GFS Didot}
+\newfontfamily\greekfont{GFS Porson}
+%  Also tried GFS Olga, which is also a Porson-style font; has a higher x-height than GFS Porson, and therefore matches better with Latin fonts.
+\newenvironment{greek}{\greekfont}{}
+\newenvironment{latin}{\latinfont}{}
+% Both Olga and Porson lack real bold:
+\newenvironment{boldgreek}{\fontspec{GFS Olga}[FakeBold=0.1]}{} % discontinuous behavior: 0.0 gives no bolding, 0.0001 gives quite a bit
+  }
+  result="\\documentclass{article}\n#{top}\\begin{document}\\latinfont\n\n#{result}\n\\end{document}\n"
+end
+
+print result
 
 
