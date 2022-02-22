@@ -11,6 +11,7 @@
 *.pag
 # another index file:
 *.line_index.json
+*.para
 
 /*.pdf
 *.pos
@@ -27,4 +28,6 @@ debug.txt
 iliad/core.tex
 iliad/figs/cover.png
 temp.tex
+temp_demo.tex
 *.prose
+wiktextract/la_en.json
