@@ -48,7 +48,9 @@ end
 class Interlinear
 
 def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange,style:InterlinearStyle.new())
-  text,book,line1,line2 = linerange.to_a
+  # linerange can be either a LineRange object or a string used to construct one
+  if linerange.kind_of?(String) then linerange_cooked=LineRange.new(linerange) else linerange_cooked=linerange end
+  text,book,line1,line2 = linerange_cooked.to_a
   all_lines = []
   line1.upto(line2) { |line|
     style_this_line = clown(style)
@@ -105,7 +107,7 @@ def Interlinear.assemble_one_line(foreign_genos,words,style:InterlinearStyle.new
         e = table[col][row]
         if layout[row]=~/[wl]/ then is_foreign=true else is_foreign=false end
         if layout[row]=~/[p]/ then is_pos=true else is_pos=false end
-        if is_pos then e = e.sub(/([A-Z]+)/) {"{\\scriptsize #{$1}}"} end
+        if is_pos then e = e.gsub(/([A-Z]+)/) {"{\\scriptsize #{$1}}"} end
         if foreign_genos.greek && is_foreign then e="\\begin{greek}\\large #{e}\\end{greek}" end
         elements.push(e)
       }

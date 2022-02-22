@@ -19,6 +19,20 @@ db = GlossDB.from_genos(foreign_genos)
 
 if foreign_genos.greek then print "\n\n\\foreignisgreekscript\n\n" end
 
+@@globals = [foreign_genos,db,treebank]
+
+def example(linerange)
+  if linerange.kind_of?(String) then linerange_cooked=LineRange.new(linerange) else linerange_cooked=linerange end
+  text,book,line1,line2 = linerange_cooked.to_a
+  if line2>line1 then
+    style = InterlinearStyle.new(format:'tex',left_margin:[4,'__LINE__'])
+  else
+    style = InterlinearStyle.new(format:'tex')
+  end  
+  foreign_genos,db,treebank = @@globals
+  return Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange_cooked,style:style)
+end
+
 %>
 
 \begin{document}
@@ -30,7 +44,7 @@ This is a test.
 <%
 text,book,line1,line2 = ['iliad',1,1,1]
 style = InterlinearStyle.new(left_margin:[4,'__LINE__'],format:'tex')
-print Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,text,book,line1,line2,style:style)
+print example('iliad 1.52-54')
 %>
 
 %=============================================================================
