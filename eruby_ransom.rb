@@ -21,35 +21,8 @@ class Options
   end
 end
 
-=begin
-['lib','greek'].each { |subdir|
-  Dir[File.join(File.dirname(__FILE__), 'lib', '*.rb')].each {|file| require file }
-}
-=end
-
-require_relative "lib/file_util"
-require_relative "lib/string_util"
-require_relative "lib/debug"
-require_relative "lib/multistring"
-require_relative "lib/treebank"
-require_relative "lib/epos"
-require_relative "lib/genos"
-require_relative "lib/wiktionary"
-require_relative "lib/vlist"
-require_relative "lib/frequency"
-require_relative "lib/vocab_page"
-require_relative "lib/format_gloss"
-require_relative "lib/bilingual"
-require_relative "lib/illustrations"
-require_relative "lib/notes"
-require_relative "lib/latex"
-require_relative "lib/gloss"
-require_relative "lib/clown"
-require_relative "greek/nouns"
-require_relative "greek/verbs"
-require_relative "greek/adjectives"
-require_relative "greek/lemma_util"
-require_relative "greek/writing"
+require_relative "lib/load_common"
+require_relative "greek/load_common"
 
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
 
