@@ -1,19 +1,51 @@
-class Interlinear
+class InterlinearStyle
 
 # examples of how people do this:
 #   https://biblehub.com/interlinear/genesis/1.htm
 #   https://www.eva.mpg.de/lingua/resources/glossing-rules.php
 
-def Interlinear.assemble(foreign_genos,words,layout:'wgp',format:'txt',left_margin:[0,''])
+def initialize(layout:'wgp',format:'txt',left_margin:[0,''])
+  # Layout gives the order of the items, as defined in Word.to_h:
+  #   'w'=>self.word,'r'=>self.romanization,'g'=>self.gloss,'p'=>self.pos.to_s,'l'=>self.lemma
+  @layout = layout
+  @format = format
+  @left_margin = left_margin
+end
+
+attr_accessor :layout,:format,:left_margin
+
+end
+
+class Interlinear
+
+def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,text,book,line1,line2,style:InterlinearStyle.new())
+  all_lines = []
+  line1.upto(line2) { |line|
+    style_this_line = clown(style)
+    style_this_line.left_margin[1].gsub!(/__LINE__/,line.to_s)
+    words = treebank.get_line(foreign_genos,db,text,book,line)
+    all_lines.push(Interlinear.assemble_one_line(foreign_genos,words,style:style_this_line))
+  }
+  if style.format=='tex' then
+    result = all_lines.join("\n\n\\vspace{4mm}\n\n") # FIXME -- formatting shouldn't be hardcoded here
+  end
+  if style.format=='txt' then
+    result = all_lines.join("\n\n")
+  end
+  return result
+end
+
+def Interlinear.assemble_one_line(foreign_genos,words,style:InterlinearStyle.new())
   # To generate output, use scripts/do_interlinear.rb
   # Words is a list of Word objects representing one line of text.
   # Format can be 'txt', 'tex', or 'html'.
-  # Layout gives the order of the items, as defined in Word.to_h:
-  #   'w'=>self.word,'r'=>self.romanization,'g'=>self.gloss,'p'=>self.pos.to_s,'l'=>self.lemma
   # For latex output, this currently assumes that small caps are to be accomplished using {\scriptsize ...},
   # and that there is an environment called greek that can be used to surround Greek characters.
   # Also, the foreign-language texs is formatted as {\large ...}.
   # All of this should be flexible, not hardcoded.
+  layout = style.layout
+  format = style.format
+  left_margin = style.left_margin
   n_rows = layout.length
   n_cols = words.length
   table = words.map { |word| word.to_a(format:layout,nil_to_null_string:true) }

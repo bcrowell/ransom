@@ -57,19 +57,10 @@ treebank = TreeBank.new(author)
 genos = GreekGenos.new('epic',is_verse:true)
 db = GlossDB.from_genos(genos)
 
-all_lines = []
-
-line1.upto(line2) { |line|
-  words = treebank.get_line(genos,db,text,book,line)
-  all_lines.push(Interlinear.assemble(genos,words,left_margin:[4,line.to_s],format:format))
-}
-
-if format=='txt' then
-  result = all_lines.join("\n")
-end
+style = InterlinearStyle.new(format:format,left_margin:[4,'__LINE__'])
+result =  Interlinear.assemble_lines_from_treebank(genos,db,treebank,text,book,line1,line2,style:style)
 
 if format=='tex' then
-  result = all_lines.join("\n\n\\vspace{4mm}\n\n") # FIXME -- formatting shouldn't be hardcoded here
   top = %q{
 % https://tex.stackexchange.com/a/37251/6853
 \RequirePackage{fontspec}

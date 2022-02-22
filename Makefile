@@ -28,7 +28,7 @@ booklet: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	# Instructions for printing: https://tex.stackexchange.com/a/70115/6853
 	# Briefly: (1) Print even pages. (2) Flip about an axis "out of the board." (3) Print odd pages.
 
-book_no_post: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
+book_no_post: lib/*rb greek/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	# makes temp.pdf, which may be either the whole book or some portion, such as the first half of book 1
 	@rm -f warnings help_gloss/__links.html
 	@make figures # renders any figure whose pdf is older than its svg
@@ -41,6 +41,11 @@ book_no_post: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@./fruby $(BOOK).rbtex '{$(GENERIC),"render_glosses":true}' >temp.tex
 	xelatex temp
 	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK).pdf ; true
+
+usage: usage.rbtex lib/*rb greek/*rb iliad/core.tex
+	@./fruby usage.rbtex '{}' >temp_usage.tex
+	xelatex temp_usage
+	mv temp_usage.pdf usage.pdf
 
 dry_run: export DRY_RUN=1
 dry_run: export FORMAT=whole
