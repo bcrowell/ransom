@@ -30,24 +30,34 @@ def example(linerange)
     style = InterlinearStyle.new(format:'tex')
   end  
   foreign_genos,db,treebank = @@globals
-  return Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange_cooked,style:style)
+  return "\\textbf{#{linerange_cooked}}\\\\\n"+Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange_cooked,style:style)
 end
 
 %>
+
+\fancyhead[CE]{Homeric usage}
+\fancyhead[CO]{Homeric usage}
+
+\newcommand{\trans}[1]{\emph{#1}}
 
 \begin{document}
 
 \pagestyle{fancy}
 
-This is a test.
+The word ἄρα is a bland discourse particle. It is cognate with ``harmony'' and ``articulate,'' coming from a PIE root meaning to join or fit together.
+It can thus evoke the linkage of cause and effect or the time-order of events, like English ``then.''
 
-<%
-text,book,line1,line2 = ['iliad',1,1,1]
-style = InterlinearStyle.new(left_margin:[4,'__LINE__'],format:'tex')
-print example('iliad 1.52-54')
-%>
+<% print example('iliad 1.45-46') %>
 
-More text.
+\trans{With bow and close-covered quiver over his shoulder,
+[then] the arrows rattled on the shoulder of the enraged [Apollo].}
+
+When used to describe causation, it may introduce either the outcome or, as in this example, the cause of something previously stated:
+
+<% print example('iliad 1.429-430') %>
+
+\trans{[Thetis speaks to Achilles and then rushes off], angered \ldots
+because they had robbed him of [Briseis] \ldots}
 
 \vfill
 
@@ -55,10 +65,8 @@ More text.
 %    stuff at end
 %=============================================================================
 
-\fancyhead[CE]{Homeric usage}
-\fancyhead[CO]{Homeric usage}
-\fancyhead[LO]{Grammar}
-\input{iliad/grammar}
+%\fancyhead[LO]{Grammar}
+%\input{iliad/grammar}
 \fancyhead[LO]{Core vocabulary}
 \sloppy
 

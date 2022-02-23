@@ -1,5 +1,9 @@
 {
   "word": "ἄρα",
   "short": "then; behold",
-  "medium": "then; of course; behold"
+  "medium": "then, because; of course; behold",
+  "etym":"from ἀρ-, fit, from PIE h2er, join, fit together",
+  "cog":"ἁρμόζω, ἀραρίσκω, harmony, articulate, arthritis",
+  "mnemonic_cog":"harmony",
+  "no_interlinear":1
 }
