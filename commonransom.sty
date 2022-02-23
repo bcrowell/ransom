@@ -1,0 +1,56 @@
+% General utility stuff that is useful for multiple books in the project.
+
+%------------------- pull in other packages -------------------------
+
+\RequirePackage{silence}
+
+% https://tex.stackexchange.com/a/37251/6853
+\RequirePackage{fontspec}
+
+\defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
+\RequirePackage{graphicx} % needed for \resizebox
+\RequirePackage{multicol,xcolor,calc,titlesec,fancyhdr,hyphenat,ifthen}
+\RequirePackage{parskip} % disables indentation at the beginning of a paragraph
+\RequirePackage[absolute,overlay]{textpos}
+\RequirePackage{color,colortbl} % used for colored highlighting in tables
+\usepackage[para]{footmisc}
+% https://tex.stackexchange.com/questions/28736/footnotes-on-the-same-line
+
+%------------------- dingbats, etc. -------------------------
+
+% A symbol to be used like κύνεσσιν < κύων, to show A is an inflected form of B.
+%%%% \newcommand{\from}{$\prec$\hardspace{0.2em}} % or \textless
+\newcommand{\from}{\raisebox{.25ex}{{\tiny{$\prec$}}}\hardspace{0.2em}}
+
+\newcommand{\hardspace}[1]{\unskip\hspace{#1}\ignorespaces} % https://tex.stackexchange.com/a/89096/6853
+\newcommand{\cog}[1]{$\sim$\emph{#1}}
+
+% The following need to be in their own separate paragraphs.
+\newcommand{\bigseparator}{
+  \par
+  %\vspace{-0.5\baselineskip}% % ...affects the space below, not above -- why?; but cutting this causes the hspace to have no effect
+  %\hspace{0.27\textwidth}%
+  \noindent\makebox[\linewidth]{\resizebox{0.3333\linewidth}{1pt}{$\bullet$}}
+  %\bigskip%
+  \vspace{-1.25\baselineskip}
+  \par
+}
+% ... https://tex.stackexchange.com/a/130763/6853
+\newcommand{\smallseparator}{%
+  \vspace{-0.7\baselineskip}%
+  \hspace{-0.01\textwidth}\noindent\makebox[\linewidth]{\resizebox{0.15\linewidth}{1pt}{$\bullet$}}%
+  \vspace{-0.2\baselineskip}
+}
+%     Used mainly between vocab and translation, but also in some spots as a scene separator.
+
+%------------------- gray text, colors -------------------------
+
+% xcolor package, https://tex.stackexchange.com/a/17105/6853
+\newenvironment{graytext}{\color{black!25}}{}
+\newenvironment{mediumgraytext}{\color{black!50}}{} % used for line numbers
+\newenvironment{blacktext}{\color{black}}{} % used in RansomGloss.text_in_box
+\newenvironment{whitetext}{\color{white}}{}
+
+% https://texblog.org/2011/04/19/highlight-table-rowscolumns-with-color/
+\definecolor{TableColorA}{rgb}{1,0.725,0.725}
+\definecolor{TableColorB}{rgb}{0.875,0.875,1}

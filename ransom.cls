@@ -21,18 +21,8 @@
 % https://tex.stackexchange.com/q/80520/6853
 % Bindingoffset refers to the gutter.
 
-\RequirePackage{silence}
-
-% https://tex.stackexchange.com/a/37251/6853
-\RequirePackage{fontspec}
-\defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
-
+\RequirePackage{commonransom}
 \RequirePackage{greekransom}
-
-\RequirePackage{graphicx} % needed for \resizebox
-\RequirePackage{multicol,xcolor,calc,titlesec,fancyhdr,hyphenat,ifthen}
-\RequirePackage{parskip} % disables indentation at the beginning of a paragraph
-\RequirePackage[absolute,overlay]{textpos}
 
 \newcommand{\formatlikechapter}[1]{{\Large\textbf{#1}}}
 \newcommand{\formatlikesection}[1]{{\large\textbf{#1}}}
@@ -59,13 +49,6 @@
 \fancyhead[RO]{\thepage}
 \renewcommand{\headrulewidth}{0pt}
 
-% A symbol to be used like κύνεσσιν < κύων, to show A is an inflected form of B.
-%%%% \newcommand{\from}{$\prec$\hardspace{0.2em}} % or \textless
-\newcommand{\from}{\raisebox{.25ex}{{\tiny{$\prec$}}}\hardspace{0.2em}}
-
-\newcommand{\hardspace}[1]{\unskip\hspace{#1}\ignorespaces} % https://tex.stackexchange.com/a/89096/6853
-\newcommand{\cog}[1]{$\sim$\emph{#1}}
-
 \newcommand{\vocaballheader}{\textit{vocabulary}}
 \newcommand{\formsheader}[1]{\textit{#1}}
 \newenvironment{vocabpage}{\cleardoublepage\begin{raggedright}\setlength{\parskip}{0pt}\begin{multicols}{2}}{\end{multicols}\end{raggedright}}
@@ -89,12 +72,6 @@
   \end{widespacing}\end{raggedright}\restoregeometry\pagebreak%
 }
 
-% xcolor package, https://tex.stackexchange.com/a/17105/6853
-\newenvironment{graytext}{\color{black!25}}{}
-\newenvironment{mediumgraytext}{\color{black!50}}{} % used for line numbers
-\newenvironment{blacktext}{\color{black}}{} % used in RansomGloss.text_in_box
-\newenvironment{whitetext}{\color{white}}{}
-
 \newcommand{\linenumber}[1]{\begin{mediumgraytext}{\footnotesize{}#1}\end{mediumgraytext}}
 \newcommand{\leftpageverseline}[2]{\noindent\rlap{#1}\hskip 20mm minus 20mm \hbox{#2}\\}
 % ... https://tex.stackexchange.com/a/605040/6853
@@ -103,29 +80,6 @@
 %     number on exceptionally long lines (more than max_len_for_num characters).
 %     If changing the 20mm, should also change max_len_for_num in the ruby code.
 
-% The following need to be in their own separate paragraphs.
-\newcommand{\bigseparator}{
-  \par
-  %\vspace{-0.5\baselineskip}% % ...affects the space below, not above -- why?; but cutting this causes the hspace to have no effect
-  %\hspace{0.27\textwidth}%
-  \noindent\makebox[\linewidth]{\resizebox{0.3333\linewidth}{1pt}{$\bullet$}}
-  %\bigskip%
-  \vspace{-1.25\baselineskip}
-  \par
-}
-% ... https://tex.stackexchange.com/a/130763/6853
-\newcommand{\smallseparator}{%
-  \vspace{-0.7\baselineskip}%
-  \hspace{-0.01\textwidth}\noindent\makebox[\linewidth]{\resizebox{0.15\linewidth}{1pt}{$\bullet$}}%
-  \vspace{-0.2\baselineskip}
-}
-%     Used mainly between vocab and translation, but also in some spots as a scene separator.
 
 
-% https://texblog.org/2011/04/19/highlight-table-rowscolumns-with-color/
-\RequirePackage{color,colortbl}
-\definecolor{TableColorA}{rgb}{1,0.725,0.725}
-\definecolor{TableColorB}{rgb}{0.875,0.875,1}
 
-\usepackage[para]{footmisc}
-% https://tex.stackexchange.com/questions/28736/footnotes-on-the-same-line
