@@ -19,8 +19,6 @@ notes = []
 
 stuff = treebank,freq,latin,translation,notes,core
 
-if foreign_genos.greek then print "\n\n\\foreignisgreekscript\n\n" end
-
 %>
 
 \begin{document}

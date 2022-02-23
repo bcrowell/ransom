@@ -17,8 +17,6 @@ translation = Epos.new("text/buckley_iliad.txt","latin",false,genos:Genos.new('e
 bilingual = BareBilingual.new(Genos.new('grc'),Genos.new('en'))
 db = GlossDB.from_genos(foreign_genos)
 
-if foreign_genos.greek then print "\n\n\\foreignisgreekscript\n\n" end
-
 @@globals = [foreign_genos,db,treebank]
 
 def example(linerange)

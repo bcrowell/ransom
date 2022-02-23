@@ -61,7 +61,8 @@ def print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,cor
   if notes.length>0 then print Notes.to_latex(bilingual.foreign_linerefs,notes) end # FIXME: won't work if foreign text is prose, doesn't have linerefs
   print header_latex(bilingual) # includes pagebreak
   print foreign(treebank,db,bilingual,bilingual.foreign_first_line_number,start_chapter,ransom_spacing),"\n\n"
-  print "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatglosses}%\n"
+  if bilingual.foreign.genos.greek then header='Σχόλια' else header='Glosses' end
+  print "\\renewcommand{\\rightheaderwhat}{#{header}}%\n"
   print ransom(treebank,db,bilingual,v,bilingual.foreign_first_line_number,start_chapter,ransom_spacing),"\n\n"
   print bilingual.translation_text
   # https://tex.stackexchange.com/a/308934
@@ -70,10 +71,11 @@ def print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,cor
 end
 
 def header_latex(bilingual)
+  if bilingual.foreign.genos.greek then page_header='Λεξικόνιον' else header='Vocabulary' end
   foreign_header = "#{bilingual.foreign_chapter_number}.#{bilingual.foreign_first_line_number}" # e.g., 2.217 for book 2, line 217
   x = ''
   x += "\\renewcommand{\\rightheaderinfo}{#{foreign_header}}%\n"
-  x += "\\renewcommand{\\rightheaderwhat}{\\rightheaderwhatvocab}%\n"
+  x += "\\renewcommand{\\rightheaderwhat}{#{page_header}}%\n"
   x += "\\pagebreak\n\n"
   x += "\\renewcommand{\\leftheaderinfo}{#{foreign_header}}%\n"
   return x

@@ -27,19 +27,7 @@
 \RequirePackage{fontspec}
 \defaultfontfeatures{Ligatures=TeX,Scale=MatchLowercase}
 
-\newcommand{\rightheaderwhatvocab}{Minivocab} % gets redefined by, e.g., greekransom.sty
-\newcommand{\rightheaderwhatglosses}{Ransom notes}
 \RequirePackage{greekransom}
-
-% FIXME -- I think this is not needed at all anymore. Remove and test.
-\newcommand{\foreignisgreekscript}{%
-  \renewcommand{\boldforeign}[1]{\begin{boldgreek}##1\end{boldgreek}}
-}
-\newcommand{\foreignislatinscript}{%
-  \renewcommand{\boldforeign}[1]{\textbf{##1}}
-}
-\newcommand{\boldforeign}[1]{Boldforeign will immediately be redefined below.}
-\foreignislatinscript
 
 \RequirePackage{graphicx} % needed for \resizebox
 \RequirePackage{multicol,xcolor,calc,titlesec,fancyhdr,hyphenat,ifthen}

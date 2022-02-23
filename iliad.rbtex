@@ -22,8 +22,6 @@ stuff = treebank,freq,greek,translation,notes,core
 Options.set('fig_dir','iliad/figs')
 Illustrations.init
 
-if foreign_genos.greek then print "\n\n\\foreignisgreekscript\n\n" end
-
 %>
 
 \begin{document}
