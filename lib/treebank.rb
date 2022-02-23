@@ -22,7 +22,7 @@ class TreeBank
   end
   attr_reader :lemmas,:lemmas_file,:pos_file
 
-  def get_line(genos,db,text,book,line_number)
+  def get_line(genos,db,text,book,line_number,interlinear:false)
     # returns an array of Word objects
     # FIXME: inefficiently reads the whole file every time
     # The following code is mostly duplicated from lemmas/to_db.rb.
@@ -42,6 +42,7 @@ class TreeBank
         break unless this_text==text && this_book.to_i==book && this_line.to_i==line_number
         gloss_data = Gloss.get(db,lemma,prefer_length:0,if_texify_quotes:false)
         if gloss_data.nil? then gloss=Writing.romanize(lemma) else gloss=gloss_data['gloss'] end
+        if interlinear && !gloss_data.nil? && gloss_data.has_key?('no_interlinear') then gloss='-' end
         words.push(Word.new(genos,word,Tagzig.from_perseus(pos),gloss,lemma:lemma))
       end
     }

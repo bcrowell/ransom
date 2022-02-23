@@ -24,7 +24,7 @@ if foreign_genos.greek then print "\n\n\\foreignisgreekscript\n\n" end
 def example(linerange)
   if linerange.kind_of?(String) then linerange_cooked=LineRange.new(linerange) else linerange_cooked=linerange end
   text,book,line1,line2 = linerange_cooked.to_a
-  if line2>line1 then
+  if line2>line1 && false then
     style = InterlinearStyle.new(format:'tex',left_margin:[4,'__LINE__'])
   else
     style = InterlinearStyle.new(format:'tex')
@@ -46,6 +46,10 @@ text,book,line1,line2 = ['iliad',1,1,1]
 style = InterlinearStyle.new(left_margin:[4,'__LINE__'],format:'tex')
 print example('iliad 1.52-54')
 %>
+
+More text.
+
+\vfill
 
 %=============================================================================
 %    stuff at end

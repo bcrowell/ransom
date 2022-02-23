@@ -55,7 +55,7 @@ def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange
   line1.upto(line2) { |line|
     style_this_line = clown(style)
     style_this_line.left_margin[1].gsub!(/__LINE__/,line.to_s)
-    words = treebank.get_line(foreign_genos,db,text,book,line)
+    words = treebank.get_line(foreign_genos,db,text,book,line,interlinear:true)
     all_lines.push(Interlinear.assemble_one_line(foreign_genos,words,style:style_this_line))
   }
   if style.format=='tex' then
@@ -82,7 +82,7 @@ def Interlinear.assemble_one_line(foreign_genos,words,style:InterlinearStyle.new
   n_cols = words.length
   table = words.map { |word| word.to_a(format:layout,nil_to_null_string:true) }
   if format=='txt' then
-    col_width = Interlinear.col_width_helper(table,n_rows,n_cols)
+    col_width = Interlinear.col_width_helper_monospaced(table,n_rows,n_cols)
     lines = []
     0.upto(n_rows-1) { |row|
       elements = []
@@ -96,18 +96,33 @@ def Interlinear.assemble_one_line(foreign_genos,words,style:InterlinearStyle.new
     return lines.map { |x| x+"\n" }.join('')
   end
   if format=='tex' then
+    have_left_margin = (left_margin[0]>0)
+    max_total_width = 98.0 # in millimeters; FIXME: shouldn't be hardcoded
+    if have_left_margin then
+      max_total_width -= 1.8*left_margin[0] # FIXME: hardcoded coefficient in mm
+    end
+    widths = Interlinear.col_width_helper_proportional(table,n_rows,n_cols,layout,max_total_width)
+    width_string = widths.map { |x| "p{#{x.round(2)}mm}" }.join('')
+    if have_left_margin then
+      width_string='l'+width_string
+    end
+    width_string = "@{}#{width_string}@{}" # the @{} removes extra whitespace at sides
     result = ''
-    result += "\\begin{tabular}{#{'l'*(n_cols+1)}}\n"
+    result += "\\noindent\\begin{tabular}{#{width_string}}\n"
     lines = []
     0.upto(n_rows-1) { |row|
       elements = []
-      if row==0 then m=left_margin[1] else m='' end
-      elements.push(m)
+      if have_left_margin then
+        if row==0 then m=left_margin[1] else m='' end
+        elements.push(m)
+      end
       0.upto(n_cols-1) { |col|
         e = table[col][row]
         if layout[row]=~/[wl]/ then is_foreign=true else is_foreign=false end
         if layout[row]=~/[p]/ then is_pos=true else is_pos=false end
+        if layout[row]=~/[g]/ then is_gloss=true else is_gloss=false end
         if is_pos then e = e.gsub(/([A-Z]+)/) {"{\\scriptsize #{$1}}"} end
+        if is_gloss then e = "{\\small #{e}}" end
         if foreign_genos.greek && is_foreign then e="\\begin{greek}\\large #{e}\\end{greek}" end
         elements.push(e)
       }
@@ -120,7 +135,30 @@ def Interlinear.assemble_one_line(foreign_genos,words,style:InterlinearStyle.new
   raise "format #{format} not implemented"
 end
 
-def Interlinear.col_width_helper(table,n_rows,n_cols)
+def Interlinear.col_width_helper_proportional(table,n_rows,n_cols,layout,max_total_width,max_gloss_lines:3)
+  widths = nil
+  1.upto(max_gloss_lines) { |n|
+    widths = []
+    0.upto(n_cols-1) { |col|
+      cell_widths = []
+      p = 1.8 # average width of a character, in millimeters; (meas of default Latin font in ransom.cls gives more like 1.9 mm)
+      0.upto(n_rows-1) { |row|
+        what = layout[row]
+        q = 1.0 # unitless coefficient that basically represents the average font size
+        if what=='g' then q=0.6 end # glosses are in a slightly smaller font, {\small ...}
+        n_chars = table[col][row].length
+        if what=='g' then b=n_chars.to_f/n else b=n_chars end
+        cell_widths.push(q*b)
+      }
+      widths.push(p*cell_widths.max) # width of this column, in mm, if we use n lines of text for the glosses
+    }
+    total_width = widths.sum
+    break if total_width<=max_total_width
+  }
+  return widths
+end
+
+def Interlinear.col_width_helper_monospaced(table,n_rows,n_cols)
   col_width = []
   0.upto(n_cols-1) { |col|
     col_width.push(0)

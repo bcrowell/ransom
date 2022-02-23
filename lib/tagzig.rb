@@ -50,7 +50,17 @@ def to_s
   list.push(Tagzig.case_to_s(self.case)) if self.case
   # doesn't stringify comparative or superlative
   list = list.filter { |x| !x.nil? }
-  return list.join('.')
+  if list.length==0 then
+    return Tagzig.pos_to_s(self.pos)
+  else
+    return list.join('.')
+  end
+end
+
+def Tagzig.pos_to_s(pos)
+  result = {'n'=>'noun','v'=>'verb','t'=>'ptcp','a'=>'adj','d'=>'adv','l'=>'art','g'=>'pcl',
+            'c'=>'conj','r'=>'prep','p'=>'pron','m'=>'num','i'=>'interj','e'=>'excl','u'=>'punct'}[pos]
+  if result.nil? then return pos.upcase else return result.upcase end
 end
 
 def Tagzig.number_to_s(number)

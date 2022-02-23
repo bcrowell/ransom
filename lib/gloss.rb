@@ -41,6 +41,10 @@ vowel_length
   phonemically long, we put an underbar after it. To convert from standard macronized
   style to this style, use Gloss.macronized_to_underbar_style().
 
+no_interlinear
+  Used for a word like μεν which has many meanings and can't really be glossed usefully in
+  an interlinear text.
+
 pos - a one-character part-of-speech label defined as in project perseus: v=verb, g=particle, ...
 
 short
@@ -186,7 +190,7 @@ def Gloss.validate(db,key)
   if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
   n = a.length
   mandatory_keys = ['word','medium']
-  allowed_keys = ['word','short','medium','long','etym','cog','mnemonic_cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem','vowel_length','aorist_difficult_to_recognize','perseus']
+  allowed_keys = ['word','short','medium','long','etym','cog','mnemonic_cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem','vowel_length','aorist_difficult_to_recognize','perseus','no_interlinear']
   # Try to detect duplicate keys.
   allowed_keys.each { |key|
     if json.scan(/\"#{key}\"\s*:/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
