@@ -42,7 +42,7 @@ x.each { |word,data|
   is_article = false
   stuff.each { |lem| if lem[2][0]=='l' then is_article=true end }
   next if !is_article
-  word = grave_to_acute(word) # don't double count
+  word = to_single_accent(word) # don't double count
   # A word can have both an acute and a grave, and then this converts it into a word with two acutes, which is bogus.
   n_acute = 0
   word.chars.each { |c| if remove_acute_and_grave(c)!=c then n_acute +=1 end }

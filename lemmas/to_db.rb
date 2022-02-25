@@ -31,6 +31,7 @@ end
 # Also outputs an index to line_index_file
 
 def nearly_identical_pos(a,b)
+  # This logic is duplicated in tagzig.rb.
   # Sometimes the same lemmatization is recorded with slightly different POS tags, e.g.:
   #   ῥίγιον,,a-s---nn-
   #   ῥίγιον,,a-s---nnc
@@ -46,6 +47,7 @@ table = {}
 File.open(csv_file,"r") { |f|
 old_pos = 0
 f.each_line { |line|
+  # Some logic below is duplicated in TreeBank.parse_csv_helper(), which is what I should use in the future.
   line = remove_macrons_and_breves(line)
   next unless line=~/[[:alpha:]]/
   line.sub!(/\n/,'')

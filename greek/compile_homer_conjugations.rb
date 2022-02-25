@@ -51,7 +51,7 @@ def process(t,lemma,pos,word)
   if !(t.has_key?(pos)) then t[pos] = {} end
   if !(t[pos].has_key?(lemma)) then t[pos][lemma] = [] end
   x = t[pos][lemma]
-  if !(x.include?(word)) then t[pos][lemma].push(grave_to_acute(word)) end
+  if !(x.include?(word)) then t[pos][lemma].push(to_single_accent(word)) end
 end
 
 def die(message)

@@ -179,7 +179,7 @@ class Pronouns
     return @@memoize_all
   end
   def Pronouns.all_no_grave
-    return Pronouns.all.map { |w| grave_to_acute(w) }.uniq
+    return Pronouns.all.map { |w| to_single_accent(w) }.uniq
   end
   def Pronouns.all_ho
     # Return a list of all forms of the noun/adjective/relative pronoun ὁ/ὅ, "ho," in Homer.

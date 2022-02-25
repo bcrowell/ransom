@@ -50,7 +50,7 @@ class Writing
     # best to use remove_accents:false, because the accents are basically never what's irregular.
     # For these applications, it's also not helpful to respell the final ς as σ, just creates confusion in things like stripping inflectional endings.
     s = s.downcase
-    s = grave_to_acute(s) unless preserve_graves # we don't care about phonetic differences that only occur due to neighboring words
+    s = to_single_accent(s) unless preserve_graves # we don't care about phonetic differences that only occur due to neighboring words
     s = s.sub(/ψ/,'πσ')
     s = s.sub(/ξ/,'κσ')
     s = s.sub(/γκ/,'νκ')

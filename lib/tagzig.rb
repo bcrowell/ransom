@@ -7,6 +7,7 @@ https://www.eva.mpg.de/lingua/resources/glossing-rules.php .
 =end
 
 def initialize(pos,data)
+  # If you want to create a Tagzig object directly from a 9-character Perseus POS tag, don't use this, use from_perseus().
   # pos should be a Project Perseus one-character part-of-speech tag, e.g., 'v' for verb, 't' for participle, ...
   # data is a hash such as {'tense'=>'f','mood'=>'o'}, again structured as in perseus
   # Key 'number' can have a value that is either an integer or a one-character string such as '3'.
@@ -26,10 +27,6 @@ def initialize(pos,data)
   @degree = data['degree']
 end
 
-# The following return nil if they're the unmarked possibility, e.g., if mood is indicative.
-# So "if tag.mood then ..." executes something if the mood is not indicative.
-attr_reader :pos,:tense,:mood,:voice,:person,:number,:gender,:case,:degree
-
 def Tagzig.from_perseus(pos)
   data = {}
   {'person'=>1,'number'=>2,'tense'=>3,'mood'=>4,'voice'=>5,'gender'=>6,'case'=>7,'degree'=>8}.each_pair { |key,val|
@@ -38,6 +35,40 @@ def Tagzig.from_perseus(pos)
   }
   return Tagzig.new(pos[0],data)
 end
+
+def ==(y)
+  # Sometimes the same lemmatization is recorded with slightly different POS tags, e.g.:
+  #   ῥίγιον,,a-s---nn-
+  #   ῥίγιον,,a-s---nnc
+  #   ρίγιον,,a-s---n-c ... but note the lack of a rough breathing mark on this one ...!?!?
+  # This logic is duplicated in to_db/rb.
+  if self.super_identical(y) then return true end
+  if !self.first_seven_identical(y) then return false end
+  return (self.case==y.case || self.case=='-' || y.case=='-') \
+         && (self.degree==y.degree || self.degree=='-' || y.degree=='-')
+end
+
+def super_identical(y)
+  return false if !self.first_seven_identical(y)
+  return false if self.case!=y.case
+  return false if self.degree!=y.degree
+  return true
+end
+
+def first_seven_identical(y)
+  return false if self.pos!=y.pos
+  return false if self.person!=y.person
+  return false if self.number!=y.number
+  return false if self.tense!=y.tense
+  return false if self.mood!=y.mood
+  return false if self.voice!=y.voice
+  return false if self.gender!=y.gender
+  return true
+end
+
+# The following return nil if they're the unmarked possibility, e.g., if mood is indicative.
+# So "if tag.mood then ..." executes something if the mood is not indicative.
+attr_reader :pos,:tense,:mood,:voice,:person,:number,:gender,:case,:degree
 
 def to_s
   list = []

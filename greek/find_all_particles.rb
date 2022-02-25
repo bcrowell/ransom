@@ -49,7 +49,7 @@ x.each { |word,data|
     stuff.each { |lem| if lem[2][0]==desired_pos_tag then is_desired_pos=true end }
   end
   next if !is_desired_pos
-  word = grave_to_acute(word) # don't double count
+  word = to_single_accent(word) # don't double count
   # A word can have both an acute and a grave, and then this converts it into a word with two acutes, which is bogus.
   n_acute = 0
   word.chars.each { |c| if remove_acute_and_grave(c)!=c then n_acute +=1 end }
