@@ -44,9 +44,10 @@ class InterlinearStyle
     @prop_gloss_size = 'footnotesize' # also tried small
     @prop_gloss_q = 0.55 # if font size is small, should be more like 0.6; used for estimating size of glosses in col_width_helper_proportional
     @prop_max_total_width = 98.0 # millimeters; this value is about right for a 6"x9" book
+    @prop_space_between_groups = 2.5 # millimeters; when we have interlinears stacked one above the other, this is the extra whitespace in between
   end
 
-  attr_accessor :layout,:format,:left_margin,:prop_gloss_size,:prop_gloss_q,:prop_p,:prop_max_total_width
+  attr_accessor :layout,:format,:left_margin,:prop_gloss_size,:prop_gloss_q,:prop_p,:prop_max_total_width,:prop_space_between_groups
 
 end
 
@@ -64,7 +65,7 @@ def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange
     all_lines.push(Interlinear.assemble_one_line(foreign_genos,words,style:style_this_line))
   }
   if style.format=='tex' then
-    result = all_lines.join("\n\n\\vspace{4mm}\n\n") # FIXME -- formatting shouldn't be hardcoded here
+    result = all_lines.join("\n\n\\vspace{#{style.prop_space_between_groups}mm}\n\n") # FIXME -- formatting shouldn't be hardcoded here
   end
   if style.format=='txt' then
     result = all_lines.join("\n\n")

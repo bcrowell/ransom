@@ -28,7 +28,7 @@ def example(linerange)
     style = InterlinearStyle.new(format:'tex')
   end  
   foreign_genos,db,treebank = @@globals
-  return "\\textbf{#{linerange_cooked}}\\\\\n"+Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange_cooked,style:style)
+  return "\\textbf{#{linerange_cooked}}\n\n\\vspace{-1mm}\n\n"+Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange_cooked,style:style)
 end
 
 %>
@@ -42,6 +42,11 @@ end
 
 \pagestyle{fancy}
 
+\chapter{Particles}
+
+\section{ἄρα}
+%\section{aaa}
+
 The word ἄρα is a bland discourse particle. It is cognate with ``harmony'' and ``articulate,'' coming from a PIE root meaning to join or fit together.
 It can thus evoke the linkage of cause and effect or the time-order of events, like English ``then.''
 
@@ -54,8 +59,8 @@ When used to describe causation, it may introduce either the outcome or, as in t
 
 <% print example('iliad 1.429-430') %>
 
-\trans{[Thetis speaks to Achilles and then rushes off], angered \ldots
-because they had robbed him of [Briseis] \ldots}
+\trans{[Thetis speaks to Achilles and then rushes off, leaving him], angered \ldots
+because of the well-girded woman [Briseis] of whom they had robbed him \ldots}
 
 \vfill
 

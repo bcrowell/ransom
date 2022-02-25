@@ -28,8 +28,8 @@
 \newcommand{\formatlikesection}[1]{{\large\textbf{#1}}}
 \newcommand{\formatlikesubsection}[1]{\textbf{#1}}
 \newcommand{\formatlikesubsubsection}[1]{\textit{#1}}
-\titleformat{\chapter}{\Large\bfseries}{}{}{}{}
-\titleformat{\section}{\large\bfseries}{}{}{}{}
+\titleformat{\chapter}{\normalfont\Large\bfseries}{\thechapter}{1em}{}
+\titleformat{\section}{\normalfont\large\bfseries}{\thesection}{1em}{}
 \titlespacing*{\chapter}{0pt}{-30pt}{10pt}
 \newcommand{\mychapter}[1]{\formatlikechapter{#1}}
 \setlength\headheight{15pt} % https://tex.stackexchange.com/questions/327285/what-does-this-warning-mean-fancyhdr-and-headheight
