@@ -8,4 +8,5 @@
 \newenvironment{greek}{\greekfont}{}
 \newenvironment{latin}{\latinfont}{}
 % Both Olga and Porson lack real bold:
-\newenvironment{boldgreek}{\fontspec{GFS Olga}[FakeBold=0.1]}{} % discontinuous behavior: 0.0 gives no bolding, 0.0001 gives quite a bit
+\newenvironment{boldgreek}{\fontspec{GFS Olga}[FakeBold=0.1]}{\latinfont\selectfont{}}
+% ... discontinuous behavior: 0.0 gives no bolding, 0.0001 gives quite a bit

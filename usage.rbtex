@@ -19,7 +19,7 @@ db = GlossDB.from_genos(foreign_genos)
 
 $globals = [foreign_genos,db,treebank,iliad]
 
-def example(linerange)
+def example(linerange,translation)
   if linerange.kind_of?(String) then linerange_cooked=LineRange.new(linerange) else linerange_cooked=linerange end
   text,book,line1,line2 = linerange_cooked.to_a
   if line2>line1 && false then
@@ -31,13 +31,16 @@ def example(linerange)
   epos = nil
   if text=='iliad' then epos=iliad end
   if epos.nil? then raise "no epos object available for #{text}" end
-  return "\\textbf{#{linerange_cooked}}\n\n\\vspace{-1mm}\n\n"+Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,epos,linerange_cooked,style:style)
+  if translation!='' then
+    translation = translation.sub(/\A\s+/,'').sub(/\s+\Z/,'') # strip leading and trailing whitespace
+    tr = "\n\n\\trans{#{translation}}\n\n" 
+  else
+    tr='' 
+  end
+  return "\\textbf{#{linerange_cooked}}\n\n\\vspace{-1mm}\n\n"+Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,epos,linerange_cooked,style:style)+tr
 end
 
 %>
-
-\fancyhead[CE]{Homeric usage}
-\fancyhead[CO]{Homeric usage}
 
 \newcommand{\trans}[1]{\emph{#1}}
 
@@ -53,41 +56,41 @@ end
 The word ἄρα is a bland discourse particle. It is cognate with ``harmony'' and ``articulate,'' coming from a PIE root meaning to join or fit together.
 It can thus evoke the linkage of cause and effect, or the time-order of events, like English ``then.''
 
-<% print example('iliad 1.45-46') %>
-
-\trans{With bow and close-covered quiver over his shoulder,
-[then] the arrows rattled on the shoulder of the enraged [Apollo].}
+<% print example('iliad 1.45-46',%q(
+With bow and close-covered quiver over his shoulder,
+[then] the arrows rattled on the shoulder of the enraged [Apollo].
+)) %>
 
 When used to describe causation, it may introduce either the outcome or, as in this example, the cause of something previously stated:
 
-<% print example('iliad 1.429-430') %>
-
-\trans{[Thetis speaks to Achilles and then rushes off, leaving him], angered \ldots
-because of the well-girded woman [Briseis] of whom they had robbed him \ldots}
+<% print example('iliad 1.429-430',%q(
+[Thetis speaks to Achilles and then rushes off, leaving him], angered \ldots
+because of the well-girded woman [Briseis] of whom they had robbed him \ldots
+)) %>
 
 Since the default in narrative is to tell events in order, the word often adds nothing to the meaning.
 In the following stereotyped speech-tag formula, it is a tic or metrical filler:
 
-<% print example('iliad 2.35') %>
-
-\trans{[At the end of a divine dream's speech to Agamemnon:] Thus then having spoken, it departed, leaving him with these things [to ponder] \ldots}
+<% print example('iliad 2.35',%q(
+[At the end of a divine dream's speech to Agamemnon:] Thus then having spoken, it departed, leaving him with these things [to ponder] \ldots
+)) %>
 
 But despite the word's origins as a description of time and causality, semantic bleaching made its meaning more broad.
 Sometimes it is better translated as ``you see,'' or ``behold.'' There can be literal vision involved:
 
-<% print example('iliad 2.59') %>
-
-\trans{[Agamemnon recounts the dream.] And behold! There it was standing by my head,
-and it said these words to me.}
+<% print example('iliad 2.59',%q(
+[Agamemnon recounts the dream.] And behold! There it was standing by my head,
+and it said these words to me.
+)) %>
 
 Sometimes it is more of a metaphorical ``you see,'' like a yellow highlighter pen:
 
-<% print example('iliad 19.95-97') %>
-
-\trans{[Agamemnon introduces a myth about the succession of the Mycenean throne.]
+<% print example('iliad 19.95-97',%q(
+[Agamemnon introduces a myth about the succession of the Mycenean throne.]
 \ldots for indeed, at one time [Hera] made a fool of Zeus, who
 they say is the best of men and gods: but, you see,
-Hera, being female, fooled him with trickery \ldots}
+Hera, being female, fooled him with trickery \ldots
+)) %>
 
 \vfill
 
@@ -95,14 +98,15 @@ Hera, being female, fooled him with trickery \ldots}
 %    stuff at end
 %=============================================================================
 
-%\fancyhead[LO]{Grammar}
+%\fancyhead[LO]{\latinfont\selectfont{}Grammar}
 %\input{iliad/grammar}
-\fancyhead[LO]{Core vocabulary}
+\fancyhead[LO]{\latinfont\selectfont{}Core vocabulary}
 \sloppy
 
 \twocolumn[\formatlikechapter{Core vocabulary for Homer}]\label{core-vocab}
 \begingroup
 \setlength{\parskip}{0pt}
+\latinfont\selectfont{}
 \input{iliad/core}
 \label{core-vocab-end}
 \endgroup
