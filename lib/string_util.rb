@@ -179,15 +179,18 @@ def canonicalize_greek_word(w)
   return w
 end
 
+def has_circumflex(s)
+  # regex constructed by hand, may not include every conceivable case
+  if s.downcase=~/[ᾶῖῦῆῶἆἶὖἦὦἇἷὗἧὧᾷῇῷᾆᾖᾦᾇᾗᾧ]/ then return true else return false end
+end
+
 def to_single_accent(w)
   # In most cases, it's better to use canonicalize_greek_word() rather than this.
   # If the word has both an acute and a grave, remove the grave. If it has only a grave, change it to an acute.
   # This is used e.g. in LemmaUtil.make_inflected_form_flavored_like_lemma.
   # Testing: ruby -e "require './lib/string_util'; print to_single_accent('χεῖράς')"
   if remove_accents(w)==w then return w end # for efficiency
-  has_circumflex = (remove_accents(w)!=remove_acute_and_grave(w))
-  # $stderr.print "w=#{w} has_circumflex=#{has_circumflex}, remove_acute_and_grave(w)=#{remove_acute_and_grave(w)}\n"
-  if has_circumflex then return remove_acute_and_grave(w) end
+  if has_circumflex(w) then return remove_acute_and_grave(w) end
   acc = []
   0.upto(w.chars.length-1) { |i|
     c = w[i]
