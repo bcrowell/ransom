@@ -12,12 +12,12 @@ greek_wikt = WiktionaryGlosses.new(foreign_genos)
 if greek_wikt.invalid then greek_wikt=nil end
 db = GlossDB.from_genos(foreign_genos)
 core = json_from_file_or_die("core/homer.json").keys # array containing lemmas not to put in vocab lists, because they're in core vocab in back
-greek = Epos.new("text/ιλιας","greek",true,genos:foreign_genos)
+iliad = Epos.new("text/ιλιας","greek",true,genos:foreign_genos)
 translation = Epos.new("text/buckley_iliad.txt","latin",false,genos:Genos.new('en',is_verse:false),postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
 bilingual = BareBilingual.new(Genos.new('grc'),Genos.new('en'))
 db = GlossDB.from_genos(foreign_genos)
 
-@@globals = [foreign_genos,db,treebank]
+@@globals = [foreign_genos,db,treebank,iliad]
 
 def example(linerange)
   if linerange.kind_of?(String) then linerange_cooked=LineRange.new(linerange) else linerange_cooked=linerange end
@@ -27,8 +27,11 @@ def example(linerange)
   else
     style = InterlinearStyle.new(format:'tex')
   end  
-  foreign_genos,db,treebank = @@globals
-  return "\\textbf{#{linerange_cooked}}\n\n\\vspace{-1mm}\n\n"+Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange_cooked,style:style)
+  foreign_genos,db,treebank,iliad = @@globals
+  epos = nil
+  if text=='iliad' then epos=iliad end
+  if epos.nil? then raise "no epos object available for #{text}" end
+  return "\\textbf{#{linerange_cooked}}\n\n\\vspace{-1mm}\n\n"+Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,epos,linerange_cooked,style:style)
 end
 
 %>
