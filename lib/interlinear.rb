@@ -65,8 +65,8 @@ def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,epos,line
     words = treebank.get_line(foreign_genos,db,text,book,line,interlinear:true)
     r1 = epos.line_to_hard_ref(linerange.book,line)
     r2 = epos.line_to_hard_ref(linerange.book,line+1)
-    text = epos.extract(r1,r2) # includes punctuation, may also be a different edition with different words
-    all_lines.push(Interlinear.assemble_one_line(foreign_genos,words,text,style:style_this_line))
+    punctuated = epos.extract(r1,r2) # includes punctuation, may also be a different edition with different words
+    all_lines.push(Interlinear.assemble_one_line(foreign_genos,words,punctuated,style:style_this_line))
   }
   if style.format=='tex' then
     result = all_lines.join("\n\n\\vspace{#{style.prop_space_between_groups}mm}\n\n") # FIXME -- formatting shouldn't be hardcoded here

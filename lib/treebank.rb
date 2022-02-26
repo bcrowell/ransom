@@ -24,7 +24,6 @@ class TreeBank
 
   def get_line(genos,db,text,book,line_number,interlinear:false)
     # returns an array of Word objects
-    # FIXME: inefficiently reads the whole file every time
     # The following code is mostly duplicated from lemmas/to_db.rb.
     raise "illegal types for inputs" unless book.class==1.class && line_number.class==1.class
     if !File.exist?(@pos_file) then raise "file #{@pos_file} does not exist; generate it using the makefile in the lemmas subdirectory" end
