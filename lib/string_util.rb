@@ -176,7 +176,7 @@ end
 def canonicalize_greek_word(w)
   # works on a single word, not an entire string
   w = to_single_accent(w)
-  w = standardize_greek_elision(w)
+  w = standardize_greek_punctuation(w)
   return w
 end
 
@@ -366,11 +366,13 @@ def char_unicode_property(c,property)
   return result
 end
 
-def standardize_greek_elision(s)
-  # works on any string, doesn't have to be a single word
-  return s.sub(/[᾽’'](?![[:alpha:]])/,'᾽')
-  # There are other possibilities (see comments in contains_greek_elision), but these should already have been taken care of in
-  # flatten.rb.
+def standardize_greek_punctuation(s)
+  # Works on any string, doesn't have to be a single word.
+  # Elision:
+  s = s.gsub(/[᾽’'](?![[:alpha:]])/,'᾽')
+  # ... There are other possibilities (see comments in contains_greek_elision), but these should already have been taken care of in flatten.rb.
+  s = s.gsub(/#{[183].pack('U')}/,[903].pack('U')) # ano teleia has two forms, B7=183 and 387=903; GFS Porson only has the latter code point
+  return s
 end
 
 def contains_greek_elision(s)

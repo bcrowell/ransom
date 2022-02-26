@@ -191,9 +191,10 @@ def Interlinear.reconcile_treebank_with_text_helper(words,text)
   # Is meant to work on one line of text at a time.
   # FIXME: won't work if the same word occurs twice on the same line, but with different punctuation
   words = clown(words)
+  text = standardize_greek_punctuation(text)
   0.upto(words.length-1) { |i|
-    bare = standardize_greek_elision(words[i].word)
-    if standardize_greek_elision(text)=~/([^\s]*#{bare}[^\s]*)/i then
+    bare = standardize_greek_punctuation(words[i].word)
+    if text=~/([^\s]*#{bare}[^\s]*)/i then
       decorated = $1
     else
       decorated = bare
