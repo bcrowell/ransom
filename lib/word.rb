@@ -11,7 +11,7 @@ testing:
   ruby -e "require './greek/writing.rb'; require './lib/genos.rb'; require './lib/string_util.rb'; require './lib/word.rb'; require './lib/tagzig.rb'; w=Word.new(Genos.new('grc'),'μῆνιν',Tagzig.from_perseus('n-s---fa-'),'rage'); print w"
 =end
 
-def initialize(genos,word,pos,gloss,lemma:nil)
+def initialize(genos,word,pos,gloss,lemma:nil,punctuated:nil)
   # Word is the original word in the text; can be a transliteration if there will be no presentation in the original writing system.
   # Pos is a Tagzig object, e.g., showing that the word is a verb in the passive voice.
   # When the word is to be presented both in the original writing system and in transliteration, that's worked out later, not in this constuctor.
@@ -22,12 +22,15 @@ def initialize(genos,word,pos,gloss,lemma:nil)
   @gloss = gloss # can be nil
   if genos.greek then @romanization=Writing.romanize(word) else @romanization=nil end
   @lemma = lemma
+  @punctuated = punctuated
 end
 
 attr_reader :genos,:word,:pos,:gloss,:romanization,:lemma
+attr_accessor :punctuated
 
 def to_a(format:'wrgpl',nil_to_null_string:false,remove_nils:false)
-  # returns an array whose elements are strings or nil, based on the fields in the given format
+  # returns an array whose elements are strings or nil, based on the fields in the given format.
+  # key 'w' is treated
   h = self.to_h
   result = []
   format.chars.each { |field|
@@ -39,8 +42,12 @@ def to_a(format:'wrgpl',nil_to_null_string:false,remove_nils:false)
 end
 
 def to_h
-  # returns a hash whose keys are one-character codes and whose values are strings or nil
-  return {'w'=>self.word,'r'=>self.romanization,'g'=>self.gloss,'p'=>self.pos.to_s,'l'=>self.lemma}
+  # Returns a hash whose keys are one-character codes and whose values are strings or nil.
+  # Key 't' has a value that is the version of the word from the treebank, without punctuation.
+  # Value 'w' is the punctuated value from the text, if available, or else a copy of the value for 't'.
+  h = {'t'=>self.word,'r'=>self.romanization,'g'=>self.gloss,'p'=>self.pos.to_s,'l'=>self.lemma}
+  if !self.punctuated.nil? then h['w']=self.punctuated else h['w']=self.word end
+  return h
 end
 
 def to_s

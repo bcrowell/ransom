@@ -53,16 +53,20 @@ end
 
 class Interlinear
 
-def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange,style:InterlinearStyle.new())
+def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,epos,linerange,style:InterlinearStyle.new())
   # linerange can be either a LineRange object or a string used to construct one
   if linerange.kind_of?(String) then linerange_cooked=LineRange.new(linerange) else linerange_cooked=linerange end
   text,book,line1,line2 = linerange_cooked.to_a
   all_lines = []
+  raise "wrong types" unless linerange.kind_of?(LineRange) && epos.kind_of?(Epos)
   line1.upto(line2) { |line|
     style_this_line = clown(style)
     style_this_line.left_margin[1].gsub!(/__LINE__/,line.to_s)
     words = treebank.get_line(foreign_genos,db,text,book,line,interlinear:true)
-    all_lines.push(Interlinear.assemble_one_line(foreign_genos,words,style:style_this_line))
+    r1 = epos.line_to_hard_ref(linerange.book,line)
+    r2 = epos.line_to_hard_ref(linerange.book,line+1)
+    text = epos.extract(r1,r2) # includes punctuation, may also be a different edition with different words
+    all_lines.push(Interlinear.assemble_one_line(foreign_genos,words,text,style:style_this_line))
   }
   if style.format=='tex' then
     result = all_lines.join("\n\n\\vspace{#{style.prop_space_between_groups}mm}\n\n") # FIXME -- formatting shouldn't be hardcoded here
@@ -73,7 +77,7 @@ def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,linerange
   return result
 end
 
-def Interlinear.assemble_one_line(foreign_genos,words,style:InterlinearStyle.new())
+def Interlinear.assemble_one_line(foreign_genos,words,text,style:InterlinearStyle.new())
   # To generate output, use scripts/do_interlinear.rb
   # Words is a list of Word objects representing one line of text.
   # Format can be 'txt', 'tex', or 'html'.
@@ -85,6 +89,7 @@ def Interlinear.assemble_one_line(foreign_genos,words,style:InterlinearStyle.new
   format = style.format
   left_margin = style.left_margin
   n_rows = layout.length
+  words = Interlinear.reconcile_treebank_with_text_helper(words,text)
   n_cols = words.length
   table = words.map { |word| word.to_a(format:layout,nil_to_null_string:true) }
   if format=='txt' then
@@ -177,6 +182,22 @@ def Interlinear.col_width_helper_monospaced(table,n_rows,n_cols)
     }
   }
   return col_width
+end
+
+def Interlinear.reconcile_treebank_with_text_helper(words,text)
+  # Is meant to work on one line of text at a time.
+  # FIXME: won't work if the same word occurs twice on the same line, but with different punctuation
+  words = clown(words)
+  0.upto(words.length-1) { |i|
+    bare = canonicalize_greek_word(words[i].word)
+    if text=~/([^\s]*#{bare}[^\s]*)/i then
+      decorated = $1
+    else
+      decorated = bare
+    end
+    words[i].punctuated = decorated
+  }
+  return words
 end
 
 end

@@ -1,4 +1,5 @@
 #!/bin/ruby
+# coding: utf-8
 
 # usage:
 #   do_interlinear.rb txt iliad 1.37
@@ -49,8 +50,15 @@ treebank = TreeBank.new(author)
 genos = GreekGenos.new('epic',is_verse:true)
 db = GlossDB.from_genos(genos)
 
+# Get an Epos object that includes the actual text, with punctuation; currently, this is a different edition than the one used for the treebank.
+if text=='iliad' then
+  text = Epos.new("text/ιλιας","greek",true,genos:genos)
+else
+  raise "no text available for #{text}"
+end
+
 style = InterlinearStyle.new(format:format,left_margin:[4,'__LINE__'])
-result =  Interlinear.assemble_lines_from_treebank(genos,db,treebank,linerange,style:style)
+result =  Interlinear.assemble_lines_from_treebank(genos,db,treebank,text,linerange,style:style)
 
 if format=='tex' then
   top = %q{
@@ -70,5 +78,4 @@ if format=='tex' then
 end
 
 print result
-
 
