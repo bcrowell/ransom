@@ -174,6 +174,7 @@ def alpha_compare(a,b)
 end
 
 def canonicalize_greek_word(w)
+  # works on a single word, not an entire string
   w = to_single_accent(w)
   w = standardize_greek_elision(w)
   return w
@@ -366,7 +367,8 @@ def char_unicode_property(c,property)
 end
 
 def standardize_greek_elision(s)
-  return s.sub(/᾽’'$/,'᾽')
+  # works on any string, doesn't have to be a single word
+  return s.sub(/[᾽’'](?![[:alpha:]])/,'᾽')
   # There are other possibilities (see comments in contains_greek_elision), but these should already have been taken care of in
   # flatten.rb.
 end

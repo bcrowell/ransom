@@ -33,17 +33,20 @@ end
 
 class InterlinearStyle
 
-  def initialize(layout:'wgp',format:'txt',left_margin:[0,''])
+  def initialize(layout:'wgp',format:'txt',left_margin:[0,''],paper_width:7.0,point_size:11.0)
     # Layout gives the order of the items, as defined in Word.to_h:
     #   'w'=>self.word,'r'=>self.romanization,'g'=>self.gloss,'p'=>self.pos.to_s,'l'=>self.lemma
+    # Paper width is in inches.
     @layout = layout
     @format = format
     @left_margin = left_margin
     # style and estimation for proportional fonts:
-    @prop_p = 1.8  # average width of a character, in millimeters; (meas of default Latin font in ransom.cls gives more like 1.9 mm)
+    @prop_p = 1.8*(point_size/12.0)  # average width of a character, in millimeters; (meas of default Latin font in ransom.cls gives more like 1.9 mm)
     @prop_gloss_size = 'footnotesize' # also tried small
     @prop_gloss_q = 0.55 # if font size is small, should be more like 0.6; used for estimating size of glosses in col_width_helper_proportional
-    @prop_max_total_width = 98.0 # millimeters; this value is about right for a 6"x9" book
+    in_to_mm = 25.4 # convert inches to millimeters
+    total_page_margin = 54.4 # set sort of empirically by looking at output; changing this usually makes zero change in output
+    @prop_max_total_width = paper_width*in_to_mm-total_page_margin # millimeters
     @prop_space_between_groups = 2.5 # millimeters; when we have interlinears stacked one above the other, this is the extra whitespace in between
   end
 
@@ -189,8 +192,8 @@ def Interlinear.reconcile_treebank_with_text_helper(words,text)
   # FIXME: won't work if the same word occurs twice on the same line, but with different punctuation
   words = clown(words)
   0.upto(words.length-1) { |i|
-    bare = canonicalize_greek_word(words[i].word)
-    if text=~/([^\s]*#{bare}[^\s]*)/i then
+    bare = standardize_greek_elision(words[i].word)
+    if standardize_greek_elision(text)=~/([^\s]*#{bare}[^\s]*)/i then
       decorated = $1
     else
       decorated = bare
