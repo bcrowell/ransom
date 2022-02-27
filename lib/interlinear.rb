@@ -27,7 +27,8 @@ class LineRange
   end
 
   def to_s
-    return "#{@text.sub(/^(.)/) {$1.upcase}} #{@book}.#{@line1}-#{@line2}"
+    if @line1==@line2 then x=@line1.to_s else x="#{@line1}-#{@line2}" end
+    return "#{@text.sub(/^(.)/) {$1.upcase}} #{@book}.#{x}"
   end
 end
 
