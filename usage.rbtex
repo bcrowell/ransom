@@ -4,6 +4,9 @@
 
 load 'eruby_ransom.rb'
 
+opts=nil
+if ARGV.length==1 then opts=JSON.parse(ARGV[0]); $stderr.print "opts=#{opts}\n" end
+if opts.nil? then format='tex' else format=opts['format'] end
 author = "homer"
 treebank = TreeBank.new(author)
 freq = Frequency.new("lemmas/#{author}_freq.json")
@@ -17,28 +20,37 @@ translation = Epos.new("text/buckley_iliad.txt","latin",false,genos:Genos.new('e
 bilingual = BareBilingual.new(Genos.new('grc'),Genos.new('en'))
 db = GlossDB.from_genos(foreign_genos)
 
-$globals = [foreign_genos,db,treebank,iliad]
+$globals = [foreign_genos,db,treebank,iliad,format]
 
 def example(linerange,translation)
+  foreign_genos,db,treebank,iliad,format = $globals
   if linerange.kind_of?(String) then linerange_cooked=LineRange.new(linerange) else linerange_cooked=linerange end
   text,book,line1,line2 = linerange_cooked.to_a
   if line2>line1 && false then
-    style = InterlinearStyle.new(format:'tex',left_margin:[4,'__LINE__'])
+    style = InterlinearStyle.new(format:format,left_margin:[4,'__LINE__'])
   else
-    style = InterlinearStyle.new(format:'tex')
+    style = InterlinearStyle.new(format:format)
   end  
-  foreign_genos,db,treebank,iliad = $globals
   epos = nil
   if text=='iliad' then epos=iliad end
   if epos.nil? then raise "no epos object available for #{text}" end
   if translation!='' then
     translation = translation.sub(/\A\s+/,'').sub(/\s+\Z/,'') # strip leading and trailing whitespace
-    translation = translation.gsub(/<([^>]*)>/) {Latex.macro('underline',$1)}
-    tr = "\n\n\\trans{#{translation}}\n\n" 
+  end
+  translation = Spew.new(format,translation)
+  if translation!='' then
+    translation = Spew.new(format,translation.to_s.gsub(/<([^>]*)>/) {Spew.new(format,$1).underline})
+    tr = translation.to_s
+    if format=='tex' then tr = "\n\n\\trans{#{translation}}\n\n" end
+    if format=='bbcode' then tr = "\n\n#{translation.italic}\n\n" end
   else
     tr='' 
   end
-  return "\\textbf{#{linerange_cooked}}\n\n\\vspace{-1mm}\n\n"+Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,epos,linerange_cooked,style:style)+tr
+  header = Spew.new(format,linerange_cooked.to_s).bold.to_s
+  if format=='tex' then header = "#{header}\n\n\\vspace{-1mm}" end
+  content = Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,epos,linerange_cooked,style:style)
+  if format=='bbcode' then content=Spew.new(format,content).pre.to_s end
+  return "#{header}\n\n"+content+tr
 end
 
 %>

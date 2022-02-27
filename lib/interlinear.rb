@@ -65,6 +65,7 @@ def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,epos,line
   raise "wrong types" unless linerange.kind_of?(LineRange) && epos.kind_of?(Epos)
   line1.upto(line2) { |line|
     style_this_line = clown(style)
+    if style_this_line.format=='bbcode' then style_this_line.format='txt' end
     style_this_line.left_margin[1].gsub!(/__LINE__/,line.to_s)
     words = treebank.get_line(foreign_genos,db,text,book,line,interlinear:true)
     r1 = epos.line_to_hard_ref(linerange.book,line)
@@ -75,7 +76,7 @@ def Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,epos,line
   if style.format=='tex' then
     result = all_lines.join("\n\n\\vspace{#{style.prop_space_between_groups}mm}\n\n") # FIXME -- formatting shouldn't be hardcoded here
   end
-  if style.format=='txt' then
+  if style.format=='txt' || style.format=='bbcode' then
     result = all_lines.join("\n\n")
   end
   return result

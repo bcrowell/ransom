@@ -49,6 +49,9 @@ usage: usage.rbtex lib/*rb greek/*rb iliad/core.tex
 	xelatex temp_usage
 	mv temp_usage.pdf usage.pdf
 
+usage_bbcode: usage.rbtex lib/*rb greek/*rb iliad/core.tex
+	@./fruby usage.rbtex '{"format":"bbcode"}' >usage.bbcode
+
 dry_run: export DRY_RUN=1
 dry_run: export FORMAT=whole
 dry_run: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
