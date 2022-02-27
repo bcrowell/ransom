@@ -1,8 +1,8 @@
 // https://en.wiktionary.org/wiki/τέκμαρ https://logeion.uchicago.edu/τέκμαρ
 // goal, end, token, pledge
 {
-  "word":"τέκμαρ",
-  "medium":"limit, end, token",
-  "long":"in Homer, τέκμωρ"
+  "word":"τέκμωρ",
+  "perseus":"τέκμαρ",
+  "medium":"limit, end, token"
 }
       

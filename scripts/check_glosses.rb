@@ -22,6 +22,7 @@ latin_db = GlossDB.from_genos(Genos.new('la'))
     key = $1
     next if key=~/^_/
     count += 1
+    if key.nil? then print "error, file #{filename} results in a nil key\n"; next end
     err,message = Gloss.validate(db,key)
     if err then
       print "error in file #{key}\n  ",message,"\n"

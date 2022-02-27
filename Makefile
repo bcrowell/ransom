@@ -46,6 +46,8 @@ usage: usage.rbtex lib/*rb greek/*rb iliad/core.tex
 	@./fruby usage.rbtex '{}' >temp_usage.tex
 	xelatex temp_usage
 	mv temp_usage.pdf usage.pdf
+	xelatex temp_usage
+	mv temp_usage.pdf usage.pdf
 
 dry_run: export DRY_RUN=1
 dry_run: export FORMAT=whole

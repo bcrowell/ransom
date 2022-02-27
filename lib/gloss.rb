@@ -177,6 +177,7 @@ end
 
 def Gloss.validate(db,key)
   # Returns [err,message].
+  if key.nil? then return [true,"key is nil"] end
   if key!=remove_accents(key).downcase then return [true,"filename #{key} contains accents or uppercase, should be #{remove_accents(key).downcase}"] end
   path = db.key_to_path(key)
   if !FileTest.exist?(path) then return [true,"file #{path} doesn't exist"] end

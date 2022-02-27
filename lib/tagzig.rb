@@ -90,7 +90,9 @@ end
 
 def Tagzig.pos_to_s(pos)
   result = {'n'=>'noun','v'=>'verb','t'=>'ptcp','a'=>'adj','d'=>'adv','l'=>'art','g'=>'pcl',
-            'c'=>'conj','r'=>'prep','p'=>'pron','m'=>'num','i'=>'interj','e'=>'excl','u'=>'punct'}[pos]
+            'c'=>'conj','r'=>'prep','p'=>'pron','m'=>'num','i'=>'interj','e'=>'excl','u'=>'punct','x'=>'?'}[pos]
+  # The use of x is not in the perseus documentation; I think it must be a marker for ambiguous cases; it occurs
+  # for forms of τίς, τέττα, τέκμωρ, ὕπαρ.
   if result.nil? then return pos.upcase else return result.upcase end
 end
 

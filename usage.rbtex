@@ -33,6 +33,7 @@ def example(linerange,translation)
   if epos.nil? then raise "no epos object available for #{text}" end
   if translation!='' then
     translation = translation.sub(/\A\s+/,'').sub(/\s+\Z/,'') # strip leading and trailing whitespace
+    translation = translation.gsub(/<([^>]*)>/) {Latex.macro('underline',$1)}
     tr = "\n\n\\trans{#{translation}}\n\n" 
   else
     tr='' 
@@ -51,46 +52,57 @@ end
 \chapter{Particles}
 
 \section{ἄρα}
-%\section{aaa}
 
-The word ἄρα is a bland discourse particle. It is cognate with ``harmony'' and ``articulate,'' coming from a PIE root meaning to join or fit together.
+The word ἄρα is a bland discourse particle. It is postpositive. It becomes ἄρ (enclitic) when followed by a consonant, and
+is often ῥά when it comes after a monosyllabic word.
+
+It is cognate with ``harmony'' and ``articulate,'' coming from a PIE root meaning to join or fit together.
 It can thus evoke the linkage of cause and effect, or the time-order of events, like English ``then.''
 
 <% print example('iliad 1.45-46',%q(
 With bow and close-covered quiver over his shoulder,
-[then] the arrows rattled on the shoulder of the enraged [Apollo].
+<then> the arrows rattled on the shoulder of the enraged [Apollo].
 )) %>
 
 When used to describe causation, it may introduce either the outcome or, as in this example, the cause of something previously stated:
 
 <% print example('iliad 1.429-430',%q(
 [Thetis speaks to Achilles and then rushes off, leaving him], angered \ldots
-because of the well-girded woman [Briseis] of whom they had robbed him \ldots
+<because of> the well-girded woman [Briseis] of whom they had robbed him \ldots
 )) %>
 
 Since the default in narrative is to tell events in order, the word often adds nothing to the meaning.
 In the following stereotyped speech-tag formula, it is a tic or metrical filler:
 
 <% print example('iliad 2.35',%q(
-[At the end of a divine dream's speech to Agamemnon:] Thus then having spoken, it departed, leaving him with these things [to ponder] \ldots
+[At the end of a divine dream's speech to Agamemnon:] Thus <then> having spoken, it departed, leaving him with these things [to ponder] \ldots
 )) %>
 
 But despite the word's origins as a description of time and causality, semantic bleaching made its meaning more broad.
 Sometimes it is better translated as ``you see,'' or ``behold.'' There can be literal vision involved:
 
 <% print example('iliad 2.59',%q(
-[Agamemnon recounts the dream.] And behold! There it was standing by my head,
+[Agamemnon recounts the dream.] And <behold!> There it was standing by my head,
 and it said these words to me.
 )) %>
 
-Sometimes it is more of a metaphorical ``you see,'' like a yellow highlighter pen:
+Sometimes it is more of a metaphorical ``you see,'' like a marking with a yellow highlighter pen, also
+sometimes translatable as ``of course,'' or ``naturally:''
 
 <% print example('iliad 19.95-97',%q(
 [Agamemnon introduces a myth about the succession of the Mycenean throne.]
 \ldots for indeed, at one time [Hera] made a fool of Zeus, who
-they say is the best of men and gods: but, you see,
+they say is the best of men and gods: but, <you see/naturally>,
 Hera, being female, fooled him with trickery \ldots
 )) %>
+
+Use in questions:
+
+<% print example('iliad 1.8',%q(
+And which, then, of the gods pitted those two against one another in strife?
+)) %>
+
+References: \cite{Beekes}; \cite{Cunliffe}; \cite{Denniston}; \cite{Monro}, \pagesec{316}{347}; \cite{Smyth}, \pagesec{635}{2787ff}
 
 \vfill
 
@@ -112,6 +124,14 @@ Hera, being female, fooled him with trickery \ldots
 \endgroup
 \onecolumn
 
+%================ bibliography ==================
+\begin{thebibliography}{100}
+\bibitem[Beekes 2010]{Beekes} Beekes, \emph{Etymological dictionary of Greek}, 2010.
+\bibitem[Cunliffe 1924]{Cunliffe} Cunliffe, \emph{A lexicon of the Homeric dialect}, 1924.
+\bibitem[Denniston 1954]{Denniston} Denniston, \emph{The Greek particles}, 2nd ed., 1954.
+\bibitem[Monro 1891]{Monro} Monro, \emph{A grammar of the Homeric Dialect}, 1891.
+\bibitem[Smyth 1920]{Smyth} Smyth, \emph{Greek grammar for colleges}, 1920.
+\end{thebibliography}
 
 %=============================================================================
 %    end of file
