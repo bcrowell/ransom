@@ -4,9 +4,10 @@
 
 load 'eruby_ransom.rb'
 
-opts=nil
-if ARGV.length==1 then opts=JSON.parse(ARGV[0]); $stderr.print "opts=#{opts}\n" end
-if opts.nil? then format='tex' else format=opts['format'] end
+opts={}
+if ARGV.length==1 then opts=JSON.parse(ARGV[0]) end
+if opts['format'].nil? then opts['format']='tex' end
+$stderr.print "opts=#{opts}\n"
 author = "homer"
 treebank = TreeBank.new(author)
 freq = Frequency.new("lemmas/#{author}_freq.json")
@@ -20,7 +21,7 @@ translation = Epos.new("text/buckley_iliad.txt","latin",false,genos:Genos.new('e
 bilingual = BareBilingual.new(Genos.new('grc'),Genos.new('en'))
 db = GlossDB.from_genos(foreign_genos)
 
-$globals = [foreign_genos,db,treebank,iliad,format]
+$globals = [foreign_genos,db,treebank,iliad,opts['format']]
 
 def example(linerange,translation)
   foreign_genos,db,treebank,iliad,format = $globals
@@ -53,6 +54,22 @@ def example(linerange,translation)
   return "#{header}\n\n"+content+tr
 end
 
+def section(h)
+  foreign_genos,db,treebank,iliad,format = $globals
+  s = h
+  if format=='tex' then s=Latex.macro('section',h) end  
+  if format=='bbcode' then s=BBCode.bold("--- "+h+" ---") end  
+  return s
+end
+
+def subsection(h)
+  foreign_genos,db,treebank,iliad,format = $globals
+  s = h
+  if format=='tex' then s=Latex.macro('subsection',h) end  
+  if format=='bbcode' then s=BBCode.bold(h) end  
+  return s
+end
+
 %>
 
 \newcommand{\trans}[1]{\emph{#1}}
@@ -63,13 +80,13 @@ end
 
 \chapter{Particles}
 
-\section{ἄρα}
+<% print section('ἄρα') %>
 
 The word ἄρα is a bland discourse particle. It becomes ἄρ (enclitic) when followed by a consonant, and
 is often ῥά when it comes after a monosyllabic word.
 It is postpositive and usually comes packed into two-word phrases such as δ᾽ ἄρ, τ᾽ ἄρ, and ὣς ἄρα.
 
-\subsection{Time sequence and causality}
+<% print subsection('Time sequence and causality') %>
 
 Ἄρα is cognate with ``harmony'' and ``articulate,'' coming from a PIE root meaning to join or fit together.
 It can thus evoke the linkage of cause and effect, or the time-order of events, like English ``then.''
@@ -101,7 +118,7 @@ and serves only as metrical filler. In this stock phrase it prevents hiatus:
 But after [Chryses, his daughter, and Odysseus] had prayed and scattered the ceremonial barley, \ldots
 )) %>
 
-\subsection{Highlighting facts}
+<% print subsection('Highlighting facts') %>
 
 Sometimes the word does contribute something identifiable to the meaning, but semantic bleaching has introduced
 meanings that diverge from its origins as a description of time and causality.
@@ -124,7 +141,7 @@ Hera, being female, fooled him with trickery \ldots
 
 These two meanings are almost opposite: an expression of surprise, or a statement that of course something is true.
 
-\subsection{Questions and rhetoric}
+<% print subsection('Questions and rhetoric') %>
 
 Ἄρα can connect a question to the preceding material that motivates it, as in
 English examples like ``But in that case...?,'' or ``Who, then, will bell the cat?''

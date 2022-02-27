@@ -53,6 +53,10 @@ class InterlinearStyle
 
   attr_accessor :layout,:format,:left_margin,:prop_gloss_size,:prop_gloss_q,:prop_p,:prop_max_total_width,:prop_space_between_groups
 
+  def to_s
+    return "layout=#{self.layout}, format=#{self.format}"
+  end
+
 end
 
 class Interlinear
