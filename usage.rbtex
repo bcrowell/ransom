@@ -85,143 +85,149 @@ end
 
 \chapter{Particles}
 
-<% section('ἄρα') %>
+<%
 
-<% text(%q(
+section('ἄρα')
+
+text(%q(
   The word ἄρα is a bland discourse particle. It becomes ἄρ (enclitic) when followed by a consonant, and
   is often ῥά when it comes after a monosyllabic word.
   It is postpositive and usually comes packed into two-word phrases such as δ᾽ ἄρ, τ᾽ ἄρ, and ὣς ἄρα.
-)) %>
+))
 
-<% subsection('Time sequence and causality') %>
+subsection('Time sequence and causality')
 
-<% text(%q(
+text(%q(
   Ἄρα is cognate with ``harmony'' and ``articulate,'' coming from a PIE root meaning to join or fit together.
   It can thus evoke the linkage of cause and effect, or the time-order of events, like English ``then.''
-)) %>
+))
 
-<% example('iliad 1.45-46',%q(
+example('iliad 1.45-46',%q(
 With bow and close-covered quiver over his shoulder,
 <then> the arrows rattled on the shoulder of the enraged [Apollo].
-)) %>
+))
 
-<% text(%q(
+text(%q(
   When used to describe causation, it may introduce either the outcome or, as in this example, the cause of something previously stated:
-)) %>
+))
 
-<% example('iliad 1.429-430',%q(
+example('iliad 1.429-430',%q(
 [Thetis speaks to Achilles and then rushes off, leaving him], angered \ldots
 <because of> the well-girded woman [Briseis] of whom they had robbed him \ldots
-)) %>
+))
 
-<% text(%q(
+text(%q(
   Sometimes when serving its time-ordering function, it helps to mark the transition from speech
   to narrative, like a verbal close-quotes placed near the beginning of the first sentence after the transition.
   An alternative to the standard ὣς ἔφατ᾽ is the following equally stereotyped speech-tag formula:
-)) %>
+))
 
-<% example('iliad 2.35',%q(
+example('iliad 2.35',%q(
 [At the end of a divine dream's speech to Agamemnon:] Thus <then> having spoken, it departed, leaving him with these things [to ponder] \ldots
-)) %>
+))
 
-<% text(%q(
+text(%q(
   Since the default in narrative is to string together events, the word often adds nothing to the meaning
   and serves only as metrical filler. In this stock phrase it prevents hiatus:
-)) %>
+))
 
-<% example('iliad 1.458',%q(
+example('iliad 1.458',%q(
 But after [Chryses, his daughter, and Odysseus] had prayed and scattered the ceremonial barley, \ldots
-)) %>
+))
 
-<% subsection('Highlighting facts') %>
+subsection('Highlighting facts')
 
-<% text(%q(
+text(%q(
   Sometimes the word does contribute something identifiable to the meaning, but semantic bleaching has introduced
   meanings that diverge from its origins as a description of time and causality.
   Some usages in quoted speech can be translated as visual phrases like ``you see,'' or ``behold.'' There can be literal vision involved:
-)) %>
+))
 
-<% example('iliad 2.59',%q(
+example('iliad 2.59',%q(
 [Agamemnon recounts the dream.] And <behold!> There it was standing by my head,
 and it said these words to me.
-)) %>
+))
 
-<% text(%q(
+text(%q(
   Sometimes it is more of a metaphorical ``you see,'' like a marking with a yellow highlighter pen, also
   sometimes translatable as ``of course,'' or ``naturally:''
-)) %>
+))
 
-<% example('iliad 19.95-97',%q(
+example('iliad 19.95-97',%q(
 [Agamemnon introduces a myth about the succession of the Mycenean throne.]
 \ldots for indeed, at one time [Hera] made a fool of Zeus, who
 they say is the best of men and gods: but, <you see/naturally>,
 Hera, being female, fooled him with trickery \ldots
-)) %>
+))
 
-<% text(%q(
+text(%q(
   These two meanings are almost opposite: an expression of surprise, or a statement that of course something is true.
-)) %>
+))
 
-<% subsection('Questions and rhetoric') %>
+subsection('Questions and rhetoric')
 
-<% text(%q(
+text(%q(
   Ἄρα can connect a question to the preceding material that motivates it, as in
   English examples like ``But in that case...?,'' or ``Who, then, will bell the cat?''
-)) %>
+))
 
-<% example('iliad 1.8',%q(
+example('iliad 1.8',%q(
 And which, then, of the gods pitted those two against one another in strife?
-)) %>
+))
 
-<% text(%q(
+text(%q(
   It can be used to point out that a certain thing \emph{would} have happened, if some other
   unexpected event had not prevented it.
-)) %>
+))
 
-<% example('iliad 6.75',%q(
+example('iliad 6.75',%q(
 [The Trojans would have been defeated] had not [Priamides], being with Aineias and Hector, said \ldots
-)) %>
+))
 
-References: A recent review is \cite{George}. See also \cite{Beekes}; \cite{Cunliffe}; \cite{Denniston};
-\cite{Monro}, \pagesec{316}{347}; \cite{Smyth}, \pagesec{635}{2787ff}.
+text(%q(
+  References: A recent review is \cite{George}. See also \cite{Beekes}; \cite{Cunliffe}; \cite{Denniston};
+  \cite{Monro}, \pagesec{316}{347}; \cite{Smyth}, \pagesec{635}{2787ff}.
+))
 
-\section{αὐτάρ, ἀτάρ}
+section('αὐτάρ, ἀτάρ')
 
-<% text(%q(
+text(%q(
   These two particles are synonyms in Homer, the purely epic αὐτάρ being used about 85\% of
   the time, because it so often comes at the beginning of a line, where ἀτάρ would not fit the meter. They come from compounds
   formed by ἀρα, ``then,'' as a suffix, with PIE prefixes meaning ``away, again'' ($\sim$ αὖ)
   and ``but'' ($\sim$ Latin at).
-)) %>
+))
 
-<% text(%q(
+text(%q(
   With the causal implication of ``then:''
-)) %>
+))
 
-<% example('iliad 3.290',%q(
+example('iliad 3.290',%q(
 [Agamemnon prays to Zeus, making a series of pledges as to what he will do under various
 circumstances.] <But then>, in that case, I will fight on because of the [unpaid] blood-price.
-)) %>
+))
 
-<% text(%q(
+text(%q(
   Often the meaning is simply a less vivid form of ἀλλά, ``but,'' expressing an opposition and
   without any implication of ``then'' beyond a possible connotation that this is what happens
   next in the narrative:
-)) %>
+))
 
-<% example('iliad 1.333',%q(
+example('iliad 1.333',%q(
 [Agamemnon's henchmen arrive at Achilles' tent to take away Briseis, and are afraid to
 tell him their business.] <But> he saw what it was and spoke: \ldots
-)) %>
+))
 
-<% text(%q(
+text(%q(
   In other usages, nothing more than continuation is implied:
-)) %>
+))
 
-<% example('iliad 2.313',%q(
+example('iliad 2.313',%q(
 [In the portent at Aulis, sparrow chicks cower in a tree, afraid of a serpent. There are]
 eight, <plus> a ninth, the mother, which begat the chicks.
-)) %>
+))
+
+%>
 
 
 
