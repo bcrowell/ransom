@@ -324,6 +324,10 @@ class IliadNotes
     'about_what'    => %q{ἀλλὰ καὶ ὧς τοίη περ ἐοῦσ᾽},
     'explain'       => %q{but even being she thus}
   }],
+  ["3.167" , {
+    'about_what'    => %q{ὅς τις ὅδ᾽ ἐστὶν},
+    'explain'       => %q{who he is, this; art+τις=relative pronoun}
+  }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}
