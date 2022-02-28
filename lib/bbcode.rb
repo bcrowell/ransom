@@ -12,6 +12,6 @@ class BBCode
     return BBCode.tag('u',s)
   end
   def BBCode.pre(s) # preformatted text
-    return BBCode.tag('pre',s)
+    return BBCode.tag('code',s)
   end
 end

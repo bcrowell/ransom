@@ -51,7 +51,8 @@ def example(linerange,translation)
   if format=='tex' then header = "#{header}\n\n\\vspace{-1mm}" end
   content = Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,epos,linerange_cooked,style:style)
   if format=='bbcode' then content=Spew.new(format,content).pre.to_s end
-  return "#{header}\n\n"+content+tr
+  result = "#{header}\n\n"+content+tr
+  return result
 end
 
 def section(h)

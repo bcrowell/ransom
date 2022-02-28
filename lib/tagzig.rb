@@ -105,7 +105,7 @@ def Tagzig.tense_to_s(tense)
 end
 
 def Tagzig.mood_to_s(mood)
-  return {'i'=>'IND','s'=>'SBJV','o'=>'OPT','n'=>'INF','m'=>'IMP','p'=>'PTCP'}[mood]
+  return {'i'=>'IND','s'=>'SBJV','o'=>'OPT','n'=>'INF','m'=>'IMPV','p'=>'PTCP'}[mood]
 end
 
 def Tagzig.voice_to_s(voice)

@@ -312,6 +312,18 @@ class IliadNotes
     'about_what'    => %q{νυὸν ἀνδρῶν αἰχμητάων},
     'explain'       => %q{Helen has kin by marriage (not literally a plural set of fathers in law) who are powerful military men expected to avenge Paris's insult.}
   }],
+  ["3.156" , {
+    'about_what'    => %q{οὐ},
+    'explain'       => %q{[It is] not}
+  }],
+  ["3.158" , {
+    'about_what'    => %q{εἰς ὦπα},
+    'explain'       => %q{in [her] eye}
+  }],
+  ["3.159" , {
+    'about_what'    => %q{ἀλλὰ καὶ ὧς τοίη περ ἐοῦσ᾽},
+    'explain'       => %q{but even being she thus}
+  }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}
