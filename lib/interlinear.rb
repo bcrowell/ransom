@@ -102,12 +102,15 @@ def Interlinear.assemble_one_line(foreign_genos,words,text,style:InterlinearStyl
   n_cols = words.length
   table = words.map { |word| word.to_a(format:layout,nil_to_null_string:true) }
   if format=='txt' then
-    col_width = Interlinear.col_width_helper_monospaced(table,n_rows,n_cols)
+    col_width = Interlinear.col_width_helper_monospaced(table,n_rows,n_cols,layout)
     lines = []
     0.upto(n_rows-1) { |row|
       elements = []
       0.upto(n_cols-1) { |col|
-        elements.push(sprintf("%-#{col_width[col]}s",table[col][row]))
+        e = table[col][row]
+        if layout[row]=~/[p]/ then is_pos=true else is_pos=false end
+        if is_pos then narrower,e=Interlinear.chop_up_pos_helper(e,format,col_width[col]) end        
+        elements.push(sprintf("%-#{col_width[col]}s",e))
       }
       if row==0 then m=left_margin[1] else m='' end
       marg = sprintf("%-#{left_margin[0]}s",m)
@@ -139,7 +142,10 @@ def Interlinear.assemble_one_line(foreign_genos,words,text,style:InterlinearStyl
         if layout[row]=~/[wl]/ then is_foreign=true else is_foreign=false end
         if layout[row]=~/[p]/ then is_pos=true else is_pos=false end
         if layout[row]=~/[g]/ then is_gloss=true else is_gloss=false end
-        if is_pos then e = e.gsub(/([A-Z]+)/) {"{\\scriptsize #{$1}}"} end
+        if is_pos then
+          narrower,e = Interlinear.chop_up_pos_helper(e,format,widths[col])
+          e = e.gsub(/([A-Z]+)/) {"{\\scriptsize #{$1}}"}
+        end
         if is_gloss then e = "{\\#{style.prop_gloss_size} #{e}}" end
         if foreign_genos.greek && is_foreign then e="\\begin{greek}\\large #{e}\\end{greek}" end
         elements.push(e)
@@ -157,7 +163,26 @@ def Interlinear.assemble_one_line(foreign_genos,words,text,style:InterlinearStyl
   raise "format #{format} not implemented"
 end
 
+def Interlinear.chop_up_pos_helper(pos,format,width,p:2.0)
+  # reduce the width of very long POS tags like pl.FUT.PTCP.MID.n.ACC (Iliad 1.70)
+  if format=='tex' then
+    chars_width=width/p # the input called width is in mm and is based on all the other rows
+    l = pos.split(/\./)
+    n = l.length
+    return [pos.length,pos] if pos.length<=chars_width || n<2
+    a = l[0..(n/2-1)]
+    b = l[(n/2)..n]
+    narrower = [a.length,b.length+1].max
+    return [narrower,a.join('.')+' .'+b.join('.')]
+  else
+    return [pos.length,pos] if pos.length<=width
+    target_width = [width,10].max
+    return [target_width,pos[0..target_width-4]+"..."]
+  end
+end
+
 def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,max_total_width,max_gloss_lines:3)
+  if layout=~/p/ then layout=layout.sub(/p/,'')+'p' end # do POS last
   widths = nil
   1.upto(max_gloss_lines) { |n|
     widths = []
@@ -168,7 +193,10 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
         what = layout[row]
         q = 1.0 # unitless coefficient that basically represents the font size, compared to the main font
         if what=='g' then q=style.prop_gloss_q end
-        n_chars = table[col][row].length
+        e = table[col][row]
+        n_chars = e.length
+        width_so_far = p*cell_widths.max # duplicated below; preliminary estimate based on all cols so far
+        if what=='p' then n_chars,e=Interlinear.chop_up_pos_helper(e,'tex',width_so_far,p:p) end # guaranteed to be the last
         if what=='g' then b=n_chars.to_f/n else b=n_chars end
         cell_widths.push(q*b)
       }
@@ -180,14 +208,20 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
   return widths
 end
 
-def Interlinear.col_width_helper_monospaced(table,n_rows,n_cols)
+def Interlinear.col_width_helper_monospaced(table,n_rows,n_cols,layout)
+  if layout=~/p/ then layout=layout.sub(/p/,'')+'p' end # do POS last
   col_width = []
   0.upto(n_cols-1) { |col|
     col_width.push(0)
   }
   0.upto(n_cols-1) { |col|
     0.upto(n_rows-1) { |row|
-      col_width[col] = [col_width[col],table[col][row].length].max
+      what = layout[row]
+      width_so_far = col_width[col]
+      e=table[col][row]
+      n_chars = e.length
+      if what=='p' then n_chars,e=Interlinear.chop_up_pos_helper(e,'txt',width_so_far) end # guaranteed to be the last
+      col_width[col] = [width_so_far,n_chars].max
     }
   }
   return col_width
