@@ -195,8 +195,10 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
         if what=='g' then q=style.prop_gloss_q end
         e = table[col][row]
         n_chars = e.length
-        width_so_far = p*cell_widths.max # duplicated below; preliminary estimate based on all cols so far
-        if what=='p' then n_chars,e=Interlinear.chop_up_pos_helper(e,'tex',width_so_far,p:p) end # guaranteed to be the last
+        if what=='p' then # guaranteed to be the last
+          width_so_far = p*cell_widths.max # formula duplicated below; preliminary estimate based on all cols so far
+          n_chars,e=Interlinear.chop_up_pos_helper(e,'tex',width_so_far,p:p) 
+        end      
         if what=='g' then b=n_chars.to_f/n else b=n_chars end
         cell_widths.push(q*b)
       }

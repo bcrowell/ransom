@@ -250,13 +250,36 @@ text(%q(
   as seen in Senatus Populusque Romanus (SPQR), ``the senate and people of Rome.''
   In Greek, et shifted meanings and ended up as the past-tense prefix ἐ- and adverb ἔτι (``yet, still''),
   but the postpositive -que mostly kept on doing the same job while undergoing regular phonetic change to become τε.
-  An overwhelming majority of the time, when Homer uses τε it is in this sense. The typical construction is somewhat like the use
-  of the big black dots in bullet lists, except that τε comes after the first word of each item.
+  An overwhelming majority of the time, when Homer uses τε it is in this sense. 
+))
+
+text(%q(
+For a simple two-word list, there can be a single τε, which, being postpositive, comes after the second word:
+))
+
+example('iliad 1.4-5',%q(
+[...casting to Hades the souls of] heroes, making their bodies into booty for dogs and vultures ---
+as Zeus had planned.
+))
+
+text(%q(
+If the items are multi-word phrases, τε will be buried after the first word of the item:
+))
+
+example('iliad 6.476',%q(
+``Zeus and the other gods, permit and let this happen \ldots
+))
+
+text(%q(
+For emphasis, as in ``both X and Y,'' there can be a τε for every item.
+This construction is somewhat like a bullet list,
+except that τε-bullets comes after the first word of each item.
 ))
 
 example('iliad 1.70',%q(
-[The seer Calchas is introduced as the one] who knows what is, what will be, and what was, \ldots
+[The seer Calchas is introduced as the one] who knew what is, what will be, and what was, \ldots
 ))
+
 
 
 %>
