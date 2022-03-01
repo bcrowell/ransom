@@ -52,7 +52,7 @@ def example(linerange,translation)
   content = Interlinear.assemble_lines_from_treebank(foreign_genos,db,treebank,epos,linerange_cooked,style:style)
   if format=='bbcode' then content=Spew.new(format,content).pre.to_s end
   result = "#{header}\n\n"+content+tr
-  print result
+  print result+"\n"
 end
 
 def section(h)
@@ -60,7 +60,7 @@ def section(h)
   s = h
   if format=='tex' then s=Latex.macro('section',h) end  
   if format=='bbcode' then s=BBCode.bold("--- "+h+" ---") end  
-  print s
+  print s+"\n"
 end
 
 def subsection(h)
@@ -68,11 +68,12 @@ def subsection(h)
   s = h
   if format=='tex' then s=Latex.macro('subsection',h) end  
   if format=='bbcode' then s=BBCode.bold(h) end  
-  print s
+  print s+"\n"
 end
 
 def text(s)
-  print s
+  foreign_genos,db,treebank,iliad,format = $globals
+  print Spew.new(format,s).to_s+"\n"
 end
 
 %>
@@ -189,6 +190,12 @@ text(%q(
   \cite{Monro}, \pagesec{316}{347}; \cite{Smyth}, \pagesec{635}{2787ff}.
 ))
 
+%>
+
+%--------------------------------------------------------------------------------------------------------
+
+<%
+
 section('αὐτάρ, ἀτάρ')
 
 text(%q(
@@ -226,6 +233,31 @@ example('iliad 2.313',%q(
 [In the portent at Aulis, sparrow chicks cower in a tree, afraid of a serpent. There are]
 eight, <plus> a ninth, the mother, which begat the chicks.
 ))
+
+%>
+
+%--------------------------------------------------------------------------------------------------------
+
+<%
+
+section('τε')
+
+subsection("``And''")
+
+text(%q(
+  Proto-Indo-European had two ways of saying ``and,'' which are hidden inside English words like ``<edd>y'' and ``thou<gh>'' but more
+  explicit in Latin et and -que. The first of these is a conjunction like English ``and'' and the latter a postposition,
+  as seen in Senatus Populusque Romanus (SPQR), ``the senate and people of Rome.''
+  In Greek, et shifted meanings and ended up as the past-tense prefix ἐ- and adverb ἔτι (``yet, still''),
+  but the postpositive -que mostly kept on doing the same job while undergoing regular phonetic change to become τε.
+  An overwhelming majority of the time, when Homer uses τε it is in this sense. The construction is somewhat like the use
+  of the big black dots in bullet lists, except that τε comes after the first word of each item.
+))
+
+example('iliad 1.70',%q(
+[The seer Calchas is introduced as the one] who knows what is, what will be, and what was, \ldots
+))
+
 
 %>
 
