@@ -44,11 +44,13 @@ class InterlinearStyle
     @format = format
     @left_margin = left_margin
     @point_size = point_size
-    @latin_font_name = "GFS Didot"
     @column_sep = 3 # horizontal separation between columns, in pt (LaTeX tabcolsep)
     # style and estimation for proportional fonts:
     @prop_p = 1.8*(point_size/12.0)  # average width of a character, in millimeters; (meas of default Latin font in ransom.cls gives more like 1.9 mm)
+    @greek_font_name = "GFS Porson"
+    @latin_font_name = "GFS Didot"
     @prop_gloss_size = 'footnotesize' # also tried small
+    @prop_foreign_size = 'normalsize'
     @prop_gloss_q = 0.55 # if font size is small, should be more like 0.6; used for estimating size of glosses in col_width_helper_proportional
     in_to_mm = 25.4 # convert inches to millimeters
     total_page_margin = 54.4 # set sort of empirically by looking at output; changing this usually makes zero change in output
@@ -57,7 +59,7 @@ class InterlinearStyle
   end
 
   attr_accessor :layout,:format,:left_margin,:prop_gloss_size,:prop_gloss_q,:prop_p,:prop_max_total_width,:prop_space_between_groups,
-            :point_size,:latin_font_name,:column_sep
+            :point_size,:latin_font_name,:column_sep,:greek_font_name,:prop_foreign_size
 
   def to_s
     return "layout=#{self.layout}, format=#{self.format}"
@@ -195,7 +197,7 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
   if layout=~/p/ then layout=layout.sub(/p/,'')+'p' end # do POS last
   widths = nil
   1.upto(max_gloss_lines) { |n|
-    $stderr.print "n=#{n}, first word=#{table[0][0]}\n" # qwe
+    # $stderr.print "n=#{n}, first word=#{table[0][0]}\n"
     widths = []
     0.upto(n_cols-1) { |col|
       cell_widths = []
@@ -210,22 +212,25 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
           width_so_far = p*cell_widths.max # formula duplicated below; preliminary estimate based on all cols so far
           n_chars,e=Interlinear.chop_up_pos_helper(e,'tex',width_so_far,p:p) 
         end      
-        if what=='g' then b=n_chars.to_f/n else b=n_chars end
+        cell_width = p*q*n_chars # default is crude character counting
         if what=='g' then
           cell_width = Typesetting.width_to_fit_para_in_n_lines(e,n,
-                          style.point_size,"\\setmainfont{#{style.latin_font_name}}","\\#{style.prop_gloss_size}{}") \
-        else
-          cell_width = p*q*b
+                          style.point_size,"\\setmainfont{#{style.latin_font_name}}","\\#{style.prop_gloss_size}{}")
+        end
+        if what=='w' then
+          # FIXME: assumes foreign is greek
+          cell_width = Typesetting.width_to_fit_para_in_n_lines(e,1,
+                          style.point_size,"\\setmainfont{#{style.greek_font_name}}","\\#{style.prop_foreign_size}{}")
         end
         cell_widths.push(cell_width+1.0) # the 1.0 mm is because otherwise it seems to refuse to squeeze it in in some cases
       }
       widths.push(cell_widths.max) # width of this column, in mm, if we use n lines of text for the glosses
     }
     total_width = widths.sum+InterlinearStyle.pt_to_mm(style.column_sep)*(n_cols-1)
-    $stderr.print "  total_width=#{total_width}\n" # qwe
+    # $stderr.print "  total_width=#{total_width}\n" # qwe
     break if total_width<=max_total_width
   }
-  $stderr.print "widths=#{widths}\n---------------------------------------------\n" # qwe
+  # $stderr.print "widths=#{widths}\n---------------------------------------------\n"
   return widths
 end
 
