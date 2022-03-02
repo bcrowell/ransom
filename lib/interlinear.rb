@@ -34,6 +34,8 @@ end
 
 class InterlinearStyle
 
+  @@pt_per_mm = 2.8346456692913 # conversion factor
+
   def initialize(layout:'wgp',format:'txt',left_margin:[0,''],paper_width:7.0,point_size:11.0)
     # Layout gives the order of the items, as defined in Word.to_h:
     #   'w'=>self.word,'r'=>self.romanization,'g'=>self.gloss,'p'=>self.pos.to_s,'l'=>self.lemma
@@ -43,6 +45,7 @@ class InterlinearStyle
     @left_margin = left_margin
     @point_size = point_size
     @latin_font_name = "GFS Didot"
+    @column_sep = 3 # horizontal separation between columns, in pt (LaTeX tabcolsep)
     # style and estimation for proportional fonts:
     @prop_p = 1.8*(point_size/12.0)  # average width of a character, in millimeters; (meas of default Latin font in ransom.cls gives more like 1.9 mm)
     @prop_gloss_size = 'footnotesize' # also tried small
@@ -54,10 +57,14 @@ class InterlinearStyle
   end
 
   attr_accessor :layout,:format,:left_margin,:prop_gloss_size,:prop_gloss_q,:prop_p,:prop_max_total_width,:prop_space_between_groups,
-            :point_size,:latin_font_name
+            :point_size,:latin_font_name,:column_sep
 
   def to_s
     return "layout=#{self.layout}, format=#{self.format}"
+  end
+
+  def InterlinearStyle.pt_to_mm(p)
+    return p/@@pt_per_mm
   end
 
 end
@@ -132,7 +139,7 @@ def Interlinear.assemble_one_line(foreign_genos,words,text,style:InterlinearStyl
     end
     width_string = "@{}#{width_string}@{}" # the @{} removes extra whitespace at sides
     result = ''
-    result += "\\noindent\\begin{tabular}{#{width_string}}\n"
+    result += "\\noindent{\\setlength{\\tabcolsep}{#{style.column_sep}pt}\\begin{tabular}{#{width_string}}\n"
     lines = []
     0.upto(n_rows-1) { |row|
       elements = []
@@ -156,7 +163,7 @@ def Interlinear.assemble_one_line(foreign_genos,words,text,style:InterlinearStyl
       lines.push(elements.join(' & '))
     }
     result += lines.join("\\\\\n")+"\n"
-    result += %q(\end{tabular})+"\n"
+    result += %q(\end{tabular}})+"\n" # second } closes off the group inside of which we set tabcolsep
     result = "{\\renewcommand{\\arraystretch}{1.1}\\setstretch{0.7}\n#{result}\\par}"
     # Setstretch is from package setspace; \par is necessary; https://tex.stackexchange.com/questions/83855/change-line-spacing-inside-the-document
     # The arraystretch is to add more space between rows, compensating for the setstretch.
@@ -188,6 +195,7 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
   if layout=~/p/ then layout=layout.sub(/p/,'')+'p' end # do POS last
   widths = nil
   1.upto(max_gloss_lines) { |n|
+    $stderr.print "n=#{n}, first word=#{table[0][0]}\n" # qwe
     widths = []
     0.upto(n_cols-1) { |col|
       cell_widths = []
@@ -203,19 +211,21 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
           n_chars,e=Interlinear.chop_up_pos_helper(e,'tex',width_so_far,p:p) 
         end      
         if what=='g' then b=n_chars.to_f/n else b=n_chars end
-        cell_widths.push(q*b)
         if what=='g' then
-          $stderr.print "finding accurate width for e=#{e}, n=#{n}\n" # qwe
-          accurate = Typesetting.width_to_fit_para_in_n_lines(e,n,
-                          style.point_size,"\\setmainfont{#{style.latin_font_name}}","\\#{style.prop_gloss_size}{}")
-          $stderr.print "... #{accurate} mm, compared to estimate of #{(p*q*b).round(2)}\n" # qwe
+          cell_width = Typesetting.width_to_fit_para_in_n_lines(e,n,
+                          style.point_size,"\\setmainfont{#{style.latin_font_name}}","\\#{style.prop_gloss_size}{}") \
+        else
+          cell_width = p*q*b
         end
+        cell_widths.push(cell_width+1.0) # the 1.0 mm is because otherwise it seems to refuse to squeeze it in in some cases
       }
-      widths.push(p*cell_widths.max) # width of this column, in mm, if we use n lines of text for the glosses
+      widths.push(cell_widths.max) # width of this column, in mm, if we use n lines of text for the glosses
     }
-    total_width = widths.sum
+    total_width = widths.sum+InterlinearStyle.pt_to_mm(style.column_sep)*(n_cols-1)
+    $stderr.print "  total_width=#{total_width}\n" # qwe
     break if total_width<=max_total_width
   }
+  $stderr.print "widths=#{widths}\n---------------------------------------------\n" # qwe
   return widths
 end
 
