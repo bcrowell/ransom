@@ -133,7 +133,7 @@ text(%q(
 ))
 
 example('iliad 1.458',%q(
-But after [Chryses, his daughter, and Odysseus] had prayed and scattered the ceremonial barley, \ldots
+But after [Chryses and Odysseus] had prayed and scattered the ceremonial barley, \ldots
 ))
 
 subsection('Highlighting facts')

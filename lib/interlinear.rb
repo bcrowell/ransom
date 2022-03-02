@@ -41,6 +41,8 @@ class InterlinearStyle
     @layout = layout
     @format = format
     @left_margin = left_margin
+    @point_size = point_size
+    @latin_font_name = "GFS Didot"
     # style and estimation for proportional fonts:
     @prop_p = 1.8*(point_size/12.0)  # average width of a character, in millimeters; (meas of default Latin font in ransom.cls gives more like 1.9 mm)
     @prop_gloss_size = 'footnotesize' # also tried small
@@ -51,7 +53,8 @@ class InterlinearStyle
     @prop_space_between_groups = 2.5 # millimeters; when we have interlinears stacked one above the other, this is the extra whitespace in between
   end
 
-  attr_accessor :layout,:format,:left_margin,:prop_gloss_size,:prop_gloss_q,:prop_p,:prop_max_total_width,:prop_space_between_groups
+  attr_accessor :layout,:format,:left_margin,:prop_gloss_size,:prop_gloss_q,:prop_p,:prop_max_total_width,:prop_space_between_groups,
+            :point_size,:latin_font_name
 
   def to_s
     return "layout=#{self.layout}, format=#{self.format}"
@@ -201,6 +204,12 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
         end      
         if what=='g' then b=n_chars.to_f/n else b=n_chars end
         cell_widths.push(q*b)
+        if what=='g' then
+          $stderr.print "finding accurate width for e=#{e}, n=#{n}\n" # qwe
+          accurate = Typesetting.width_to_fit_para_in_n_lines(e,n,
+                          style.point_size,"\\setmainfont{#{style.latin_font_name}}","\\#{style.prop_gloss_size}{}")
+          $stderr.print "... #{accurate} mm, compared to estimate of #{(p*q*b).round(2)}\n" # qwe
+        end
       }
       widths.push(p*cell_widths.max) # width of this column, in mm, if we use n lines of text for the glosses
     }
