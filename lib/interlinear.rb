@@ -222,7 +222,9 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
           cell_width = Typesetting.width_to_fit_para_in_n_lines(e,1,
                           style.point_size,"\\setmainfont{#{style.greek_font_name}}","\\#{style.prop_foreign_size}{}")
         end
-        cell_widths.push(cell_width+1.0) # the 1.0 mm is because otherwise it seems to refuse to squeeze it in in some cases
+        cell_widths.push(cell_width+1.5)
+        # ... the 1.5 mm is because otherwise it seems to refuse to squeeze it in in some cases; the symptom is then that I get a two-line
+        #     gloss where there could have been a one-line gloss, and there's lots of extra, mysterious whitespace; a good test case is Iliad 1.4
       }
       widths.push(cell_widths.max) # width of this column, in mm, if we use n lines of text for the glosses
     }

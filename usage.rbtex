@@ -242,15 +242,16 @@ eight, <plus> a ninth, the mother, which begat the chicks.
 
 section('τε')
 
-subsection("``And''")
+subsection("A single τε as ``and''")
 
 text(%q(
   Proto-Indo-European had two ways of saying ``and,'' which are hidden inside English words like ``<edd>y'' and ``thou<gh>'' but more
-  explicit in Latin et and -que. The first of these is a conjunction like English ``and'' and the latter a postposition,
+  explicit in Latin et and -que. The first of these is an infix like English ``and'' and the latter a postposition,
   as seen in Senatus Populusque Romanus (SPQR), ``the senate and people of Rome.''
   In Greek, et shifted meanings and ended up as the past-tense prefix ἐ- and adverb ἔτι (``yet, still''),
-  but the postpositive -que mostly kept on doing the same job while undergoing regular phonetic change to become τε.
-  An overwhelming majority of the time, when Homer uses τε it is in this sense. 
+  its task as an infix being taken over by καί.
+  But the postpositive -que mostly kept on doing the same job while undergoing regular phonetic change to become τε.
+  Although τε does have other uses, overwhelming majority of the time, when Homer uses τε it is in this sense.
 ))
 
 text(%q(
@@ -263,24 +264,94 @@ as Zeus had planned.
 ))
 
 text(%q(
-If the items are multi-word phrases, τε will be buried after the first word of the item:
+Compared to καί, the use of τε may emphasize that the list isn't done until it's done.
+Iliad 1.5 then suggests that it's bad enough to get eaten by dogs, but that's not all: you get eaten by vultures, too.
+If a two-item list consists of multi-word phrases, τε will typically be buried after the first word of the second item:
 ))
 
 example('iliad 6.476',%q(
 ``Zeus and the other gods, permit and let this happen \ldots
 ))
 
+subsection("Τε...τε as ``and''")
+
 text(%q(
-For emphasis, as in ``both X and Y,'' there can be a τε for every item.
+For heavier emphasis, as in ``both X and Y,'' there can be a τε for every item.
 This construction is somewhat like a bullet list,
 except that τε-bullets comes after the first word of each item.
 ))
 
 example('iliad 1.70',%q(
-[The seer Calchas is introduced as the one] who knew what is, what will be, and what was, \ldots
+[The seer Calchas is introduced as the one] who knew what is, what will be, <and> what was, \ldots
 ))
 
+text(%q(
+The combinations τε...καὶ and τε...ἠδέ have the same meaning as τε...τε:
+))
 
+example('iliad 1.7',%q(
+...the son of Atreus, lord of men, and godlike Achilles.
+))
+
+text(%q(
+The first τε can show up earlier, as a postpositive attached to the first word of the clause rather than the
+first word of the list. Here, this prevents hiatus:
+))
+
+example('iliad 5.878',%q(
+[Mars prays to Zeus to restrain Athena. ``...for all the gods in Olympus] obey you, <and> we submit to you...''
+))
+
+text(%q(
+Sometimes the meaning is best translated not as ``and'' but as ``for,'' ``by,'' or ``in order to:''
+))
+
+example('iliad 5.359',%q(
+[Athena asks Mars:] ``My brother, help me <by> giving me your horses, ...''
+))
+
+subsection("Epic τε for generalization")
+
+text(%q(
+Besides its use as a conjunction, τε has a second and completely different set of uses. (There may even
+be two etymologically separate words.\cite{Denniston}) There is some disagreement among authors, and
+no explanation works for every such use of the word, but in many cases it appears that τε
+marks a statement as universally true, or tells us that it describes habits
+or permanent characteristics.
+))
+
+example('iliad 16.688',%q(
+But <ever> is the mind of Zeus more powerful than those of men
+))
+
+# ... buckley translates as counsel, lang as wit
+
+example('iliad 2.292',%q(
+For <it is true in general that> one who remains away from his wife [becomes distressed...]
+))
+
+text(%q(
+Τε is often used after a relative pronoun. This marks the relative clause as general, habitual, or permanent.
+))
+
+example('iliad 1.86-87',%q(
+[Calchas is worried that the Danaans will react angrily to his prophecy.
+Achilles swears] ``...for not, by Apollo, son of Zeus, of these Danaans to whom you [<habitually>] prophesize...'' [will anyone lay hands on him]
+))
+
+text(%q(
+Some writers, such as \cite{Smyth}, believe instead that this usage is ``probably connective (not indefinite),'' and is used to show that ``its clause corresponds in some way to the preceding clause.'' But the generalization idea seems
+equally consistent with the examples cited by Smyth, such as Iliad 1.218 and the following:
+))
+
+example('iliad 2.668-669',%q(
+[Rhodes] was inhabited by three tribes, and beloved by Zeus, who <timelessly> rules gods and men...
+))
+
+text(%q(
+See \cite{Denniston} for more references to the literature on differing points of view on this topic (p.~520), and
+for examples that are clearly not generalizations (p.~530).
+))
 
 %>
 

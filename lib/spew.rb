@@ -14,7 +14,12 @@ class Spew
   def to_s
     s = @s
     s = s.gsub(/<([^>]*)>/) {self.like($1).underline}
-    unless @format=='tex' then s=s.gsub(/\\ldots/,'...') end
+    if @format=='tex' then
+      s=s.gsub(/\.\.\./,"\\ldots{}")
+    else
+      s=s.gsub(/\\ldots({})?/,'...')
+      if @format=='txt' || @format=='bbcode' then s=Spew.reparagraph(s) end
+    end
     return s
   end
 
@@ -44,6 +49,18 @@ class Spew
     if @format=='tex'    then new_s = Latex.envir('verbatim',self.to_s) end
     if @format=='bbcode' then new_s = BBCode.pre(self.to_s) end
     return self.like(new_s)
+  end
+
+  def Spew.reparagraph(t)
+    temp_file = "temp-"+Process.pid.to_s+"-"+Digest::MD5.hexdigest(t)+"-reparagraph.txt"
+    File.open(temp_file,"w") { |f| f.print t }
+    begin
+      t = `fmt --width=100 #{temp_file}`
+      # ... standard on linux systems, won't work on windows
+    ensure
+      FileUtils.rm_f(temp_file)
+    end
+    return t
   end
 
 end

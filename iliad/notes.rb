@@ -328,6 +328,14 @@ class IliadNotes
     'about_what'    => %q{ὅς τις ὅδ᾽ ἐστὶν},
     'explain'       => %q{who he is, this; art+τις=relative pronoun}
   }],
+  ["3.173" , {
+    'about_what'    => %q{ὄφελεν ... ἁδεῖν},
+    'explain'       => %q{Ὀφέλλω usually takes an infinitive, even when, as here, it means ``if only,'' so that we would expect an optative.}
+  }],
+  ["3.180" , {
+    'about_what'    => %q{κυνώπιδος},
+    'explain'       => %q{Referring to herself. The genitive -ος for adjectives in -ης applies to all three genders (paradigm ἀληθής).}
+  }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}
