@@ -12,6 +12,7 @@ def Typesetting.width_to_fit_para_in_n_lines(string,n,font_size_pt,preamble,para
     SDBM.open(cache_filename) { |db| if db.has_key?(key) then result=db[key].to_f end }
   end
   if !(result.nil?) then return result end # return cached result
+  $stderr.print "...typesetting data not found in cache for #{string}, recalculating\n" if n==1
   result = Typesetting.width_to_fit_para_in_n_lines_no_caching(string,n,font_size_pt,preamble,para_preface)
   SDBM.open(cache_filename) { |db| db[key]=result.to_s }
   return result

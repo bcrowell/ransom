@@ -113,7 +113,7 @@ def Interlinear.assemble_one_line(foreign_genos,words,text,style:InterlinearStyl
   words = Interlinear.reconcile_treebank_with_text_helper(words,text)
   n_cols = words.length
   table = words.map { |word| word.to_a(format:layout,nil_to_null_string:true) }
-  if format=='txt' then
+  if format=='txt' then # also covers bbcode
     col_width = Interlinear.col_width_helper_monospaced(table,n_rows,n_cols,layout)
     lines = []
     0.upto(n_rows-1) { |row|
@@ -188,7 +188,7 @@ def Interlinear.chop_up_pos_helper(pos,format,width,p:2.0)
     return [narrower,a.join('.')+' .'+b.join('.')]
   else
     return [pos.length,pos] if pos.length<=width
-    target_width = [width,10].max
+    target_width = [width,15].max
     return [target_width,pos[0..target_width-4]+"..."]
   end
 end

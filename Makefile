@@ -51,6 +51,7 @@ usage: usage.rbtex lib/*rb greek/*rb iliad/core.tex
 
 usage_bbcode: usage.rbtex lib/*rb greek/*rb iliad/core.tex
 	@./fruby usage.rbtex '{"format":"bbcode"}' >usage.bbcode
+	perl -0777 -i -pe "s/\n{3,}/\n\n/gs" usage.bbcode
 
 dry_run: export DRY_RUN=1
 dry_run: export FORMAT=whole

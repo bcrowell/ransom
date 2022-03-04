@@ -18,7 +18,8 @@ class Spew
       s=s.gsub(/\.\.\./,"\\ldots{}")
     else
       s=s.gsub(/\\ldots({})?/,'...')
-      if @format=='txt' || @format=='bbcode' then s=Spew.reparagraph(s) end
+      s=s.gsub(/\n{3,}/,"\n\n")
+      s=s.sub(/\n{2,}\Z/,"\n")
     end
     return s
   end

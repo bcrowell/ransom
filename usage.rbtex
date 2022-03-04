@@ -73,6 +73,7 @@ end
 
 def text(s)
   foreign_genos,db,treebank,iliad,format = $globals
+  if format=='txt' || format=='bbcode' then s=Spew.reparagraph(s) end
   print Spew.new(format,s).to_s+"\n"
 end
 
@@ -84,6 +85,62 @@ end
 
 \pagestyle{fancy}
 
+%====================================== voices =======================================
+
+\chapter{The voices}
+
+<%
+
+section('Tagging the agent in passive constructions')
+
+text(%q(
+My uncle was killed by an anvil that a careless blacksmith dropped from a third-floor balcony.
+As an English speaker, I tell that story using the passive voice because it would feel less natural
+to have as the subject an inanimate object like an anvil. (Try it.) Homeric Greek doesn't have this
+constraint, and tends to avoid the passive in general compared to Attic, so we find  surprisingly
+few examples in Homer where a passive verb needs to have its agent explicitly tagged using a construction
+like English ``by.'' Of those cases where it does occur, many involve the following two special cases.
+
+In describing his world of Bronze Age violence, Homer tends to use many
+verbs of domination and subjugation, such as δαμάζω/δάμνημι (the most common), but also κτείνω, ἀνάσσω, and ἔχω (Iliad 6.398).
+This domination is done for the benefit of the dominator, so if we need to tag him as the agent, it's natural
+that we use the dative.
+))
+
+example('iliad 3.300-301',%q(
+[A Greek or Trojan prays to Zeus: if anyone breaks their oath,]
+let their brains flow onto the ground like this wine, and their children's likewise, and may their wives be raped by other men.
+))
+
+text(%q(
+The genitive is not used in this way by Homer without a preposition (with the possible exception of Odyssey 8.499).
+
+The other common special case is a set phrase ``at the hands of,'' expressed using ὑπό + dat.
+))
+
+example('iliad 2.860',%q(
+[The seer Ennomos's augury did not save him,] for he was killed in the river at the hands of [Achilles, grandson of Aeacus].
+))
+
+text(%q(
+It's much less common for ὑπό to be used this way with the dative or genitive of the actual person, as opposed to that
+person's hands. There are roughly 2 to 20 such examples in all of Homer, depending on how you count (\cite{George-agency}, pp.~61ff).
+Some of these are δάμνημι with an optional ὑπό thrown in before the dative. Most other verbs take ὑπό + gen., a usage that is rare in Homer but
+became the default in Attic. Some examples of ὑπό+dat.~are Iliad 5.646 (ὑπ’ ἐμοὶ δμηθέντα) and 16.490 (ὑπὸ Πατρόκλῳ κτεινόμενος);
+for ὑπό+gen.~Odyssey 5.393 (μεγάλου ὑπὸ κύματος ἀρθείς) and Iliad 8.149 (Τυδεΐδης ὑπ’ ἐμεῖο φοβεύμενος).
+
+Sometimes a preposition other than ὑπό is used:
+))
+
+example('iliad 15.122',%q(
+[Mars defies Zeus.] Anger and rage against the immortals would have been made by Zeus [if Athena had not intervened...]
+))
+
+
+%>
+
+%====================================== particles =======================================
+
 \chapter{Particles}
 
 <%
@@ -91,9 +148,9 @@ end
 section('ἄρα')
 
 text(%q(
-  The word ἄρα is a bland discourse particle. It becomes ἄρ (enclitic) when followed by a consonant, and
-  is often ῥά when it comes after a monosyllabic word.
-  It is postpositive and usually comes packed into two-word phrases such as δ᾽ ἄρ, τ᾽ ἄρ, and ὣς ἄρα.
+The word ἄρα is a bland discourse particle. It becomes ἄρ (enclitic) when followed by a consonant, and
+is often ῥά when it comes after a monosyllabic word.
+It is postpositive and usually comes packed into two-word phrases such as δ᾽ ἄρ, τ᾽ ἄρ, and ὣς ἄρα.
 ))
 
 subsection('Time sequence and causality')
@@ -245,13 +302,13 @@ section('τε')
 subsection("A single τε as ``and''")
 
 text(%q(
-  Proto-Indo-European had two ways of saying ``and,'' which are hidden inside English words like ``<edd>y'' and ``thou<gh>'' but more
-  explicit in Latin et and -que. The first of these is an infix like English ``and'' and the latter a postposition,
-  as seen in Senatus Populusque Romanus (SPQR), ``the senate and people of Rome.''
-  In Greek, et shifted meanings and ended up as the past-tense prefix ἐ- and adverb ἔτι (``yet, still''),
-  its task as an infix being taken over by καί.
-  But the postpositive -que mostly kept on doing the same job while undergoing regular phonetic change to become τε.
-  Although τε does have other uses, overwhelming majority of the time, when Homer uses τε it is in this sense.
+Proto-Indo-European had two ways of saying ``and,'' which are hidden inside English words like ``<edd>y'' and ``thou<gh>'' but more
+explicit in Latin et and -que. The first of these is an infix like English ``and'' and the latter a postposition,
+as seen in Senatus Populusque Romanus (SPQR), ``the senate and people of Rome.''
+In Greek, et shifted meanings and ended up as the past-tense prefix ἐ- and adverb ἔτι (``yet, still''),
+its task as an infix being taken over by καί.
+But the postpositive -que mostly kept on doing the same job while undergoing regular phonetic change to become τε.
+Although τε does have other uses, the overwhelming majority of the time, when Homer uses τε it's in this sense.
 ))
 
 text(%q(
@@ -264,14 +321,28 @@ as Zeus had planned.
 ))
 
 text(%q(
-Compared to καί, the use of τε may emphasize that the list isn't done until it's done.
-Iliad 1.5 then suggests that it's bad enough to get eaten by dogs, but that's not all: you get eaten by vultures, too.
+If there's a difference in meaning compared to καί, it's subtle, and commentators don't necessarily agree on what it is.
+\cite{Denniston} thinks τε shows a ``closer connection.'' \cite{Monro} thinks that τε implies an equal footing.
+Then in Iliad 1.5, it's bad enough to get eaten by dogs, but that's not all: don't forget  that you get eaten by vultures, too.
 If a two-item list consists of multi-word phrases, τε will typically be buried after the first word of the second item:
 ))
 
 example('iliad 6.476',%q(
 ``Zeus and the other gods, permit and let this happen \ldots
 ))
+
+text(%q(
+The single τε as ``and'' is mainly found in poetry.
+))
+
+text(%q(
+The two-word unit τε καί can be used in the same way as καί:
+))
+
+example('iliad 1.17',%q(
+Sons of Atreus, and all the other well-greaved Achaeans, \ldots
+))
+
 
 subsection("Τε...τε as ``and''")
 
@@ -286,11 +357,16 @@ example('iliad 1.70',%q(
 ))
 
 text(%q(
-The combinations τε...καὶ and τε...ἠδέ have the same meaning as τε...τε:
+The combinations τε...καὶ and τε...ἠδέ function like τε...τε:
 ))
 
 example('iliad 1.7',%q(
 ...the son of Atreus, lord of men, and godlike Achilles.
+))
+
+text(%q(
+\cite{Monro} thinks the meanings are ``not sensibly different'' from that of τε...τε in Homer, but
+\cite{Smyth} (\pagesec{667}{2974ff}) describes differences in prose and Attic Greek.
 ))
 
 text(%q(
@@ -300,6 +376,10 @@ first word of the list. Here, this prevents hiatus:
 
 example('iliad 5.878',%q(
 [Mars prays to Zeus to restrain Athena. ``...for all the gods in Olympus] obey you, <and> we submit to you...''
+))
+
+text(%q(
+For more on the placement of τε, see \cite{Smyth}, \pagesec{667}{2983}.
 ))
 
 text(%q(
@@ -327,7 +407,7 @@ But <ever> is the mind of Zeus more powerful than those of men
 # ... buckley translates as counsel, lang as wit
 
 example('iliad 2.292',%q(
-For <it is true in general that> one who remains away from his wife [becomes distressed...]
+For [<it is true in general that>] one who remains away from his wife [becomes distressed...]
 ))
 
 text(%q(
@@ -384,6 +464,7 @@ for examples that are clearly not generalizations (p.~530).
 \bibitem[Cunliffe 1924]{Cunliffe} Cunliffe, \emph{A lexicon of the Homeric dialect}, 1924.
 \bibitem[Denniston 1954]{Denniston} Denniston, \emph{The Greek particles}, 2nd ed., 1954.
 \bibitem[George 2018]{George} George, ``Homeric ἄρα: An (in)consequential particle,'' Classical Philology, 113 (2018) 241. doi:10.1086/698210.
+\bibitem[George 2005]{George-agency} George, \emph{Expressions of agency in ancient Greek}, 2005.
 \bibitem[Monro 1891]{Monro} Monro, \emph{A grammar of the Homeric Dialect}, 1891.
 \bibitem[Smyth 1920]{Smyth} Smyth, \emph{Greek grammar for colleges}, 1920.
 \end{thebibliography}
