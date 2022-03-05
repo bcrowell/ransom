@@ -103,8 +103,7 @@ like English ``by.'' Of those cases where it does occur, many involve the follow
 
 In describing his world of Bronze Age violence, Homer tends to use many
 verbs of domination and subjugation, such as δαμάζω/δάμνημι (the most common), but also κτείνω, ἀνάσσω, and ἔχω (Iliad 6.398).
-This domination is done for the benefit of the dominator, so if we need to tag him as the agent, it's natural
-that we use the dative.
+If we need to tag the dominator as an agent, we do it using the dative and usually without any preposition.
 ))
 
 example('iliad 3.300-301',%q(
@@ -113,6 +112,8 @@ let their brains flow onto the ground like this wine, and their children's likew
 ))
 
 text(%q(
+This domination is presumably done for the benefit of the dominator, so in that sense the dative is natural, but
+the dative is also used in this way with verbs of motion when the agent is an animal or a natural force such as a wave or the wind.
 The genitive is not used in this way by Homer without a preposition (with the possible exception of Odyssey 8.499).
 
 The other common special case is a set phrase ``at the hands of,'' expressed using ὑπό + dat.
@@ -123,13 +124,18 @@ example('iliad 2.860',%q(
 ))
 
 text(%q(
-It's much less common for ὑπό to be used this way with the dative or genitive of the actual person, as opposed to that
+It's much less common for ὑπό to be used this way with the dative or genitive of the actual person (or force of nature), as opposed to that
 person's hands. There are roughly 2 to 20 such examples in all of Homer, depending on how you count (\cite{George-agency}, pp.~61ff).
 Some of these are δάμνημι with an optional ὑπό thrown in before the dative. Most other verbs take ὑπό + gen., a usage that is rare in Homer but
 became the default in Attic. Some examples of ὑπό+dat.~are Iliad 5.646 (ὑπ’ ἐμοὶ δμηθέντα) and 16.490 (ὑπὸ Πατρόκλῳ κτεινόμενος);
-for ὑπό+gen.~Odyssey 5.393 (μεγάλου ὑπὸ κύματος ἀρθείς) and Iliad 8.149 (Τυδεΐδης ὑπ’ ἐμεῖο φοβεύμενος).
+for ὑπό+gen.~Odyssey 5.393 (μεγάλου ὑπὸ κύματος ἀρθείς) and Iliad 8.149 (Τυδεΐδης ὑπ’ ἐμεῖο φοβεύμενος). 
 
-Sometimes a preposition other than ὑπό is used:
+These constructions are never used with an inanimate object or an abstraction as the lone agent, but occasionally we do have both
+the genitive of a person and the dative of that person's tool or act (Odyssey 3.234,
+Ἀγαμέμνων ὤλεθ' ὑπ' Αἰγίσθοιο δόλῳ καὶ ἧς ἀλόχοιο, Agamemnon was destroyed by the trickery of Aegisthus and his wife; also Iliad 11.821 and 17.303
+involving spears). We then have ambiguities in translation such as X was killed by the spear of Y / X was killed by Y using a spear.
+
+Sometimes a preposition or adverb other than ὑπό is used:
 ))
 
 example('iliad 15.122',%q(
@@ -289,6 +295,56 @@ text(%q(
 example('iliad 2.313',%q(
 [In the portent at Aulis, sparrow chicks cower in a tree, afraid of a serpent. There are]
 eight, <plus> a ninth, the mother, which begat the chicks.
+))
+
+%>
+
+%--------------------------------------------------------------------------------------------------------
+
+<%
+
+section('γάρ')
+
+text(%q(
+In the words of Ῥόγερ Ὀυάτερς, ``We don't need no education. We γὰρ don't need no thought control.''
+The postpositive coordinating particle is left untranslated because it has no precise English equivalent, although
+English speakers will have heard it rendered many times as ``for'' in the King James bible.
+Ancient Greek has more of a tendency than English to feel the need for explicit words that spell out
+the logical connections between successive sentences. Γάρ fulfills this need when the first sentence
+provokes a ``what??'' reaction in the listener, and the next one leads off with γάρ as a promise:
+``Don't worry, I'm about to explain that.''
+))
+
+example('iliad 3.204-206',%q(
+[Helen points out the Greek dramatic personae to Priam from the battlements of Troy. When she comes to
+Odysseus, Antenor cuts her off as she's just getting started.]
+``Indeed, woman, your words are all very clear.
+[Wait, why is he cutting her off?]
+You see, the divine Odysseus has been here before --- and it was because of
+you, as an ambassador, along with war-loving Menelaus ...''
+))
+
+text(%q(
+As a tool, γάρ is good for many of the same jobs as ἄρα. Both can describe a causal relationship,
+and although each allows cause and effect to be in either order, each has a preferred order, and
+they're the opposite of each other. With γάρ, we typically have EEE, CγάρCC, where E is the effect
+and C is the cause, whereas most often causal ἄρα puts them the other way around.
+
+The default in narrative is to tell events in time sequence, and indeed we find that ἄρα is the
+more common of the two words (they both have other uses), but as a special effect, Homer likes to start in media res and then
+move backward in time using γάρ:
+))
+
+example('iliad 1.8-12',%q(
+Which, then, of the gods got them fighting each other?
+[Apollo did:] <for>, angered at the king,
+he stirred up disease among the armies, slaughtering the people ---
+[all because Agamemnon] dishonored the priest Chryses.
+<You see>, when Chryses came to the ships of the Achaeans...
+))
+
+text(%q(
+(Another such zoom-out comes at lines 55-56.)
 ))
 
 %>
