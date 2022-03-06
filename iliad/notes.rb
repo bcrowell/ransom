@@ -128,6 +128,10 @@ class IliadNotes
     'about_what'    => %q{οὐδέ σ᾽ ὀΐω},
     'explain'       => %q{But neither do I think that for your sake}
   }],
+  ["1.232" , {
+    'about_what'    => %q{γὰρ ἂν},
+    'explain'       => %q{for if not}
+  }],
   ["1.351" , {
     'about_what'    => %q{},
     'explain'       => %q{Achilles prays for help to his mother, the sea nymph Thetis.}
@@ -324,6 +328,9 @@ class IliadNotes
     'about_what'    => %q{ἀλλὰ καὶ ὧς τοίη περ ἐοῦσ᾽},
     'explain'       => %q{but even being she thus}
   }],
+  ["3.166" , {
+    'explain'       => %q{Priam's request to Helen is a dramatic device that requires some suspension of disbelief. The war has been going on for nine years, so if this conversation were to happen, it would have happened a long time before.}
+  }],
   ["3.167" , {
     'about_what'    => %q{ὅς τις ὅδ᾽ ἐστὶν},
     'explain'       => %q{who he is, this; art+τις=relative pronoun}
@@ -335,6 +342,9 @@ class IliadNotes
   ["3.180" , {
     'about_what'    => %q{κυνώπιδος},
     'explain'       => %q{Referring to herself. The genitive -ος for adjectives in -ης applies to all three genders (paradigm ἀληθής).}
+  }],
+  ["3.242" , {
+    'explain'       => %q{It's difficult to follow Helen's logic, since she has other kinsmen who find it honorable to fight in the Trojan war, nor would it make sense for Castor and Pollux to travel so far only to spend nine years hanging back from the fighting.}
   }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},

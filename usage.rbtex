@@ -305,6 +305,8 @@ eight, <plus> a ninth, the mother, which begat the chicks.
 
 section('γάρ')
 
+subsection('Causal')
+
 text(%q(
 In the words of Ῥόγερ Ὀυάτερς, ``We don't need no education. We γὰρ don't need no thought control.''
 The postpositive coordinating particle is left untranslated because it has no precise English equivalent, although
@@ -320,18 +322,21 @@ example('iliad 3.204-206',%q(
 Odysseus, Antenor cuts her off as she's just getting started.]
 ``Yes, woman, your words are all very clear.
 [Wait, why is he cutting her off?]
-You see, the divine Odysseus has been here before --- and it was because of
+<You see>, the divine Odysseus has been here before --- and it was because of
 you, as an ambassador, along with war-loving Menelaus ...''
 ))
 
 text(%q(
+Most often in Homer, the explanation provided by γάρ gives the cause of something that has just been stated.
+Antenor finds Helen's statements obvious and uninteresting \emph{because} he has already met Odysseus.
+
 As a tool, γάρ is good for many of the same jobs as ἄρα. Both can describe a causal relationship,
 and although each allows cause and effect to be in either order, each has a preferred order, and
 they're opposites of one another. With γάρ, we typically have EEE, CγάρCC, where E is the effect
 and C is the cause, whereas most often causal ἄρα puts them the other way around.
 
-The default in narrative is to tell events in time sequence, and indeed we find that ἄρα is the
-more common of the two words (they both have other uses), but as a special effect, Homer likes to start in media res and then
+The default in narrative is to tell events in time sequence, as a chain of dominos falling, and indeed we find that ἄρα is the
+more common of the two words (they both have other uses). But as a special effect, Homer likes to start in media res and then
 move backward in time using γάρ:
 ))
 
@@ -347,17 +352,6 @@ text(%q(
 Another such narrative zoom-out comes soon after this, at lines 55-56 (a chain of events involving Hera),
 while in a quoted speech, 2.11-15, Zeus instructs a dream to lay out for Agamemnon, in reverse causal order,
 the reasons why he should go on the offensive.
-
-In later dialects, γάρ comes to be used more for retroactive clarifications that don't express cause and effect,
-e.g., Mark 1.16, καὶ παράγων παρὰ τὴν θάλασσαν τῆς Γαλιλαίας εἶδεν Σίμωνα καὶ Ἀνδρέαν τὸν ἀδελφὸν Σίμωνος ἀμφιβάλλοντας ἐν τῇ θαλάσσῃ· ἦσαν γὰρ ἁλιεῖς;
-\emph{And going along the sea of Galilee he saw Simon and his brother Andrew casting their nets, <for> they were fishermen.}
-This is much less common in Homer (\cite{Denniston}, p.~58), but does occur:
-))
-
-example('iliad 1.231-232',%q(
-You are a people-eating king, because you rule those who are
-worthless. For truly, son of Atreus, otherwise you would have
-treated them this way for the last time.
 ))
 
 text(%q(
@@ -372,7 +366,22 @@ each of them should be given orders by its own chief ...
 ))
 
 text(%q(
-(Cf.~John 3.16, in which the construction is surrounded by Οὕτως γὰρ ... ὥστε, \emph{for so greatly ... that ...})
+(Cf.~John 3.16, in which the forward-ordered construction is surrounded by Οὕτως γὰρ ... ὥστε, \emph{for so greatly ... that ...})
+))
+
+subsection('Explanation not related to causation')
+
+text(%q(
+In later dialects, γάρ comes to be used more for retroactive clarifications that don't express cause and effect,
+e.g., Mark 1.16, καὶ παράγων παρὰ τὴν θάλασσαν τῆς Γαλιλαίας εἶδεν Σίμωνα καὶ Ἀνδρέαν τὸν ἀδελφὸν Σίμωνος ἀμφιβάλλοντας ἐν τῇ θαλάσσῃ· ἦσαν γὰρ ἁλιεῖς;
+\emph{And going along the sea of Galilee he saw Simon and his brother Andrew casting their nets, <for> they were fishermen.}
+This is much less common in Homer (\cite{Denniston}, p.~58), but does occur:
+))
+
+example('iliad 1.231-232',%q(
+You are a people-eating king, because you rule those who are
+worthless. For truly, son of Atreus, otherwise you would have
+treated them this way for the last time.
 ))
 
 text(%q(
