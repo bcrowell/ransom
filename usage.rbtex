@@ -318,7 +318,7 @@ provokes a ``what??'' reaction in the listener, and the next one leads off with 
 example('iliad 3.204-206',%q(
 [Helen points out the Greek dramatic personae to Priam from the battlements of Troy. When she comes to
 Odysseus, Antenor cuts her off as she's just getting started.]
-``Indeed, woman, your words are all very clear.
+``Yes, woman, your words are all very clear.
 [Wait, why is he cutting her off?]
 You see, the divine Odysseus has been here before --- and it was because of
 you, as an ambassador, along with war-loving Menelaus ...''
@@ -327,7 +327,7 @@ you, as an ambassador, along with war-loving Menelaus ...''
 text(%q(
 As a tool, γάρ is good for many of the same jobs as ἄρα. Both can describe a causal relationship,
 and although each allows cause and effect to be in either order, each has a preferred order, and
-they're the opposite of each other. With γάρ, we typically have EEE, CγάρCC, where E is the effect
+they're opposites of one another. With γάρ, we typically have EEE, CγάρCC, where E is the effect
 and C is the cause, whereas most often causal ἄρα puts them the other way around.
 
 The default in narrative is to tell events in time sequence, and indeed we find that ἄρα is the
@@ -344,8 +344,47 @@ he stirred up disease among the armies, slaughtering the people ---
 ))
 
 text(%q(
-(Another such zoom-out comes at lines 55-56.)
+Another such narrative zoom-out comes soon after this, at lines 55-56 (a chain of events involving Hera),
+while in a quoted speech, 2.11-15, Zeus instructs a dream to lay out for Agamemnon, in reverse causal order,
+the reasons why he should go on the offensive.
+
+In later dialects, γάρ comes to be used more for retroactive clarifications that don't express cause and effect,
+e.g., Mark 1.16, καὶ παράγων παρὰ τὴν θάλασσαν τῆς Γαλιλαίας εἶδεν Σίμωνα καὶ Ἀνδρέαν τὸν ἀδελφὸν Σίμωνος ἀμφιβάλλοντας ἐν τῇ θαλάσσῃ· ἦσαν γὰρ ἁλιεῖς;
+\emph{And going along the sea of Galilee he saw Simon and his brother Andrew casting their nets, <for> they were fishermen.}
+This is much less common in Homer (\cite{Denniston}, p.~58), but does occur:
 ))
+
+example('iliad 1.231-232',%q(
+You are a people-eating king, because you rule those who are
+worthless. For truly, son of Atreus, otherwise you would have
+treated them this way for the last time.
+))
+
+text(%q(
+Occasionally the rigid reverse-ordering of cause-and-effect chains with γάρ becomes looser:
+))
+
+example('iliad 2.802-805',%q(
+[Iris speaks to Priam and Hector, disguised as Priam's son Polites.]
+... Hector, I want you in particular to do exactly as I say. <For> there are many allies scattered throughout
+Priam's great city, each speaking to one another in their own languages, [<and therefore>]
+each of them should be given orders by its own chief ...
+))
+
+text(%q(
+(Cf.~John 3.16, in which the construction is surrounded by Οὕτως γὰρ ... ὥστε, \emph{for so greatly ... that ...})
+))
+
+text(%q(
+Sometimes γάρ is used to back up a statement with evidence or examples:
+))
+
+example('iliad 24.67-68',%q(
+[Zeus says that Hector] was the most beloved to the gods of all the mortals in Troy.
+In my own case, <for example>, he never failed to give the appropriate sacrifices.
+))
+
+
 
 %>
 
