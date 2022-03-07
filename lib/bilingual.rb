@@ -41,6 +41,12 @@ class Bilingual
       end
     end
     @foreign_text = foreign.extract(@foreign_hr1,@foreign_hr2)
+    # The extracted text may begin with a paragraph break, which is represented by a double newline. But Epos.extract on verse won't keep this on
+    # the front. So:
+    before_me = foreign.lookbehind(@foreign_hr1,50)
+    before_me = before_me.gsub(/[ \t]/,'')
+    if before_me=~/(\n+)\Z/ then @foreign_text=$1+@foreign_text end
+    #if before_me=~/(\n+)\Z/ then @foreign_text=$1+@foreign_text; raise "totally doing it #{@foreign_hr1}, =#{$1}= #{@foreign_text}" end
     if t1.kind_of?(String) then # translation is referred to by word glob
       # Let word globs contain, e.g., Hera rather than Juno:
       t1 = Patch_names.antipatch(t1)

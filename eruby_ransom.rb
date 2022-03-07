@@ -174,6 +174,7 @@ def foreign_verse(treebank,db,bilingual,ransom,first_line_number,start_chapter,r
   gloss_code = ''
   main_code = ''
   t = t.gsub(/\n{2,}/,"\n__PAR__")
+  t = t.sub(/\A\n/,'') # eliminate single newline, if it exists, on the front
   t = t.gsub(/__PAR__/,%q(\hspace{\verseparindent}))
   lines = t.split(/\s*\n\s*/)
   if gloss_these.length>0 then
