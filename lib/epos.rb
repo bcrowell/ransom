@@ -202,8 +202,61 @@ class Epos
     end
     result = strip_whitespace(result)
     if self.is_verse then result=result+"\n" end
-    if remove_numerals then result = result.gsub(/\s+\d+/,'').gsub(/^\d+/,'') end
+    if remove_numerals then result = Epos.remove_numerals(result) end
     return result
+  end
+
+  def lookbehind(r,n)
+    # See comments in lookahead for documentation on what this does. This just looks behind the reference rather than ahead, and
+    # is currently not as fancy.
+    # TO DO: make this fancier by allowing remove_numerals and span_files, as in lookahead
+    sanity_check_ref(r)
+    if n<=0 then return '' end
+    if r[1]<=0 then return '' end # span_files is currently not implemented
+    c = self.get_contents
+    s = c[r[0]]
+    offset = r[1]-n # conceptually the ref points to just before this character
+    if offset<0 then offset=0 end # span_files is currently not implemented
+    return s[offset..r[1]-1] # r[1] is guaranteed to be >=1
+  end
+
+  def lookahead(r,n,remove_numerals:true,span_files:false)
+    # Given the hard ref r, returns the n characters after the end of the ref. (Refs point between characters.)
+    # If there isn't enough text left, returns a shorter result, possibly null string.
+    # If remove_numerals is true, then we return what the result would have been had the numerals not been present.
+    # If span_files is true and we need to dip into the next file, we make sure at least one newline is present in between them in the returned result.
+    sanity_check_ref(r)
+    if n<=0 then return '' end
+    r = Regexp.new("(.{,#{n+10}})",Regexp::MULTILINE) # e.g., if n=3 then the pattern is /(.{,13})/, capturing up to 13 characters
+    # ... the +10 is to allow for numerals (and associated whitespace) that are to be stripped, and it's actually OK if the number of chars to be
+    #     stripped is greater than 10 -- we take care of that with recursion
+    c = self.get_contents
+    s = c[r[0]]
+    offset = r[1] # conceptually the ref points to just before this character
+    result = ''
+    if offset>=s.length && !span_files then return '' end
+    if offset<=s.length-1 && s.match(r,offset) then result=$1 end
+    raw_len = result.length # before stripping numerals
+    if remove_numerals then result = Epos.remove_numerals(result) end
+    if result.length>=n then return result[0..(n-1)] end # n>=1 guaranteed at this point
+    # If we fall through to here, then we didn't get enough characters. This can happen either because we hit EOF or because the 10 extra
+    # chars weren't enough to get past the numerals.
+    deficit = n-result_length
+    r2 = [r[0],r[1]+raw_len]
+    if r2[1]>=s.length then # hit EOF
+      if span_files && r[0]<c.length-1 then
+        if !(result=~/\n\s*\Z/) then result=result+"\n" end
+        return result + self.lookahead([r[0]+1,0],deficit,remove_numerals:remove_numerals,span_files:span_files)
+      else
+        return ''
+      end
+    end
+    # If we fall through to here, we didn't hit an EOF, we just need to read more.
+    return result + self.lookahead(r2,deficit,remove_numerals:remove_numerals,span_files:span_files)
+  end
+
+  def Epos.remove_numerals(s)
+    return s.gsub(/\s+\d+/,'').gsub(/^\d+/,'')
   end
 
   def sanity_check_ref(r,die_if_bad:true)
