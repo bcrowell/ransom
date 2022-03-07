@@ -173,6 +173,8 @@ def foreign_verse(treebank,db,bilingual,ransom,first_line_number,start_chapter,r
   t = bilingual.foreign_text
   gloss_code = ''
   main_code = ''
+  t = t.gsub(/\n{2,}/,"\n__PAR__")
+  t = t.gsub(/__PAR__/,%q(\hspace{\verseparindent}))
   lines = t.split(/\s*\n\s*/)
   if gloss_these.length>0 then
     gg = gloss_these.map { |x| remove_accents(x)}

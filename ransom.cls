@@ -80,6 +80,8 @@
 %     number on exceptionally long lines (more than max_len_for_num characters).
 %     If changing the 20mm, should also change max_len_for_num in the ruby code.
 
-
-
+% The following is because I have the normal \indent and \noindent stuff totally disabled by loading the parskip package
+% (and a line of verse may also be surrounded by \leftpageverseline, which has a \noindent).
+\newlength{\verseparindent}
+\setlength{\verseparindent}{1.1em} % to match OCT edition of Iliad
 
