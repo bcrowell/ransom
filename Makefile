@@ -4,17 +4,25 @@ GENERIC = "pos_file":"$(POS)"
 .PHONY: clean default check check_glosses core update_github_pages reconfigure_git book_no_post post flush_epos_cache test_epos
 
 default:
-	@make --no-print-directory --assume-new iliad.rbtex $(BOOK).pdf
+	@make --no-print-directory --assume-new iliad.rbtex iliad-i.pdf
 
-$(BOOK).pdf: export FORMAT=whole
-$(BOOK).pdf: export OVERWRITE=1
-$(BOOK).pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
+iliad-i.pdf: export FORMAT=whole
+iliad-i.pdf: export OVERWRITE=1
+iliad-i.pdf: export VOL=i
+iliad-i.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	make book_no_post
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 
-post: $(BOOK).pdf booklet.pdf
-	cp $(BOOK).pdf ~/Lightandmatter/iliad
-	cp booklet.pdf ~/Lightandmatter/iliad/$(BOOK)_booklet.pdf
+iliad-ii.pdf: export FORMAT=whole
+iliad-ii.pdf: export OVERWRITE=1
+iliad-ii.pdf: export VOL=ii
+iliad-ii.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
+	make book_no_post
+	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
+
+post: iliad-i.pdf iliad-ii.pdf
+	cp iliad-i.pdf ~/Lightandmatter/iliad
+	cp iliad-ii.pdf ~/Lightandmatter/iliad
 
 booklet.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	make booklet
@@ -32,15 +40,15 @@ book_no_post: lib/*rb greek/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	# makes temp.pdf, which may be either the whole book or some portion, such as the first half of book 1
 	@rm -f warnings help_gloss/__links.html
 	@make figures # renders any figure whose pdf is older than its svg
-	@./fruby $(BOOK).rbtex '{$(GENERIC),"clean":true}' >temp.tex
+	@./fruby $(BOOK).rbtex '{$(GENERIC),"vol":"$(VOL)","clean":true}' >temp.tex
 	xelatex temp
-	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK).pdf ; true
-	@./fruby $(BOOK).rbtex '{$(GENERIC),"write_pos":true}' >temp.tex
+	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK)-$(VOL).pdf ; true
+	@./fruby $(BOOK).rbtex '{$(GENERIC),"vol":"$(VOL)","write_pos":true}' >temp.tex
 	xelatex temp
-	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK).pdf ; true
-	@./fruby $(BOOK).rbtex '{$(GENERIC),"render_glosses":true}' >temp.tex
+	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK)-$(VOL).pdf ; true
+	@./fruby $(BOOK).rbtex '{$(GENERIC),"vol":"$(VOL)","render_glosses":true}' >temp.tex
 	xelatex temp
-	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK).pdf ; true
+	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK)-$(VOL).pdf ; true
 
 usage: usage.rbtex lib/*rb greek/*rb iliad/core.tex
 	@./fruby usage.rbtex '{}' >temp_usage.tex

@@ -10,6 +10,7 @@ class Options
   def Options.if_render_glosses() return Options.has_flag('render_glosses') end
   def Options.if_clean() return Options.has_flag('clean') end # pre-delete .pos file; not actually needed, since we open it to write
   def Options.pos_file() return @@the_options['pos_file'] end
+  def Options.vol() return @@the_options['vol'] end
   def Options.has_flag(flag)
     return @@the_options.has_key?(flag) && @@the_options[flag]
   end
