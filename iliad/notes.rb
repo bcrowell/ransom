@@ -316,6 +316,18 @@ class IliadNotes
     'about_what'    => %q{νυὸν ἀνδρῶν αἰχμητάων},
     'explain'       => %q{Helen has kin by marriage (not literally a plural set of fathers in law) who are powerful military men expected to avenge Paris's insult.}
   }],
+  ["3.52" , {
+    'about_what'    => %q{ἂν μείνειας ... γνοίης ... ἄν χραίσμῃ},
+    'explain'       => %q{The series of optative and subjunctive verbs, one per line, indicate could have, would have, and would/will.}
+  }],
+  ["3.56" , {
+    'about_what'    => %q{κεν ... ἕσσο},
+    'explain'       => %q{would have worn}
+  }],
+  ["3.64" , {
+    'about_what'    => %q{πρόφερε},
+    'explain'       => %q{lit.~carry forward; here, bring up, reproach with}
+  }],
   ["3.156" , {
     'about_what'    => %q{οὐ},
     'explain'       => %q{[It is] not}
