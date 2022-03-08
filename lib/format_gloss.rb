@@ -30,6 +30,7 @@ def FormatGloss.with_english(bilingual,db,stuff)
   has_mnemonic_cog = entry.has_key?('mnemonic_cog')
   # Generate latex:
   inflected = LemmaUtil.make_inflected_form_flavored_like_lemma(word)
+  if inflected=='ἑλὼν' then raise "word=#{word}, inflected=#{inflected}" end # qwe
   # FIXME: The explainer doesn't actually get printed for θᾶσσον ≺ ταχύς in Ilid 2.440.
   explained = gloss+FormatGloss.explainer_in_gloss(inflected,flags,data['pos'])
   items = {}
@@ -46,11 +47,11 @@ def FormatGloss.inflection(bilingual,stuff)
   items = nil
   if pos[0]=='n' then items={'b'=>lemma_flavored,'l'=>lexical,'p'=>describe_declension(pos,true)[0]} end
   if pos[0]=~/[vt]/ then
-    # File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} \n" }
-    items = {'b'=>word.downcase,'l'=>lexical,
+    #if word=='ἑλὼν' then File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} #{lemma_flavored} \n" } end
+    items = {'b'=>lemma_flavored,'l'=>lexical,
                  'p'=>Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical,omit_easy_number_and_person:true,omit_voice:true)}
   end
-  if items.nil? then items={'b'=>word.downcase,'l'=>lexical} end
+  if items.nil? then items={'b'=>lemma_flavored,'l'=>lexical} end
   return FormatGloss.assemble(bilingual,items)+"\\\\\n"
 end
 
