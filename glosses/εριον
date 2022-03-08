@@ -1,6 +1,9 @@
 {
-  "word":"ἔριον",
+  "word":"εἴριον",
+  "perseus":"ἔριον",
   "medium":"wool",
-  "cog":"Eriogonum (genus of buckwheat)"
+  "cog":"Eriogonum (genus of buckwheat)",
+  "mnemonic_cog":"Eriogonum",
+  "syn":"ἄωτος, λάχνος"
 }
       

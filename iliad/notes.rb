@@ -297,12 +297,14 @@ class IliadNotes
     'explain'       => %q{Plural aor. imperative of ἔννεπω, to tell.}
   }],
   ["2.494" , {
-    'about_what'    => %q{},
     'explain'       => %q{The catalog of the Achaean ships begins here and is followed at line 785 by some framing material and then a similar description of the Trojan forces.}
+  }],
+  ["2.802" , {
+    'explain'       => %q{It appears that the Greek invasion forces all speak mutually intelligible dialects of Greek, while the Trojan armies speak a variety of other languages, probably Anatolian languages such as Luwian. When scenes are dramatized with the Trojan characters speaking Greek to the Greeks, it's probably a dramatic convention.}
   }],
   ["3.16" , {
     'about_what'    => %q{Ἀλέξανδρος},
-    'explain'       => %q{another name for Paris, who appears here for the first time}
+    'explain'       => %q{A Greek name for Paris, who appears here for the first time.}
   }],
   ["3.28" , {
     'about_what'    => %q{φάτο γὰρ τίσεσθαι ἀλείτην},
@@ -327,6 +329,22 @@ class IliadNotes
   ["3.64" , {
     'about_what'    => %q{πρόφερε},
     'explain'       => %q{lit.~carry forward; here, bring up, reproach with}
+  }],
+  ["3.69" , {
+    'about_what'    => %q{ἔμ’},
+    'explain'       => %q{=ἐμοί}
+  }],
+  ["3.69" , {
+    'about_what'    => %q{μέσσῳ},
+    'explain'       => %q{=μέσῳ}
+  }],
+  ["3.70" , {
+    'about_what'    => %q{ἀμφ’ Ἑλένῃ καὶ ...},
+    'explain'       => %q{ἀμφί+dat.~= about, regarding}
+  }],
+  ["3.73" , {
+    'about_what'    => %q{οἳ ... ἄλλοι},
+    'explain'       => %q{everyone else}
   }],
   ["3.156" , {
     'about_what'    => %q{οὐ},
