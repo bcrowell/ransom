@@ -77,7 +77,7 @@ class Bilingual
     length_ratio = l_t.to_f/l_f.to_f
     lo,hi = length_ratio_expected/length_ratio_tol_factor,length_ratio_expected*length_ratio_tol_factor
     if length_ratio<lo || length_ratio>hi then
-      message = "length ratio=#{length_ratio}, outside of expected range of #{lo}-#{hi}"
+      message = "length ratio=trans/foreign=#{length_ratio}, outside of expected range of #{lo}-#{hi}"
       self.raise_failed_sanity_check(message,t1,t2,translation_hr1,translation_hr2)
     end
   end
