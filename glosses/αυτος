@@ -1,4 +1,7 @@
+// https://en.wiktionary.org/wiki/αὐτός https://logeion.uchicago.edu/αὐτός
+// self, self, himself, herself, itself, themselves, self, by or in itself, he, she, it, they, same
 {
-  "word": "αὐτός",
-  "medium": "self, same; pronoun"
+  "word":"αὐτός",
+  "medium":"self; pronoun"
 }
+      

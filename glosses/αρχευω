@@ -1,6 +1,8 @@
+// https://en.wiktionary.org/wiki/ἀρχεύω https://logeion.uchicago.edu/ἀρχεύω
+// 
 {
-  "word": "ἀρχεύω",
-  "medium": "lead, command",
-  "syn":"ἄρχω, ὑπάρχω",
-  "mnemonic_cog":"archaic"
+  "word":"ἀρχεύω",
+  "short":"lead",
+  "medium":"to lead (+dat)"
 }
+      
