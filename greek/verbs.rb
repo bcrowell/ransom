@@ -134,8 +134,8 @@ end
   def Verb_difficulty.guess_no_elision(word,lemma,pos)
     f = Vform.new(pos)
     f_lemma = f.make_lemma(lemma)
-    # The effect of the following is to strip accents, phoneticize rough breathing as 'h' or null string, and archaicize iota subscripts.
     μι_verb = (/μι$/.match?(remove_accents(lemma))) # won't work if, e.g., lemma is 2nd aorist, but failure is awesome
+    # The effect of the following is to strip accents, phoneticize rough breathing as 'h' or null string, and archaicize iota subscripts.
     # In the following, the reduce_double_sigma:true helps with forms like ἐρύσσομεν < ἐρύω, which are pretty obvious to a human.
     w = Writing.phoneticize(word,reduce_double_sigma:true)
     stem_from_word,ending =  Verb_difficulty.strip_ending(w,μι_verb,f)
@@ -240,7 +240,7 @@ end
     # The point of the following is not to be correct in all cases. The goal is actually to strip the ending in the way that a bewildered
     # human would be likely to do. This is the "failure is awesome" philosophy.
     # Input s should be phoneticized, not raw accented Greek.
-    if remove_accents(s)!=s then $stderr.print "input to Verb_difficulty.strip_ending not phoneticized: #{s}\n"; exit(-1) end
+    if remove_accents(s)!=s then raise "input to Verb_difficulty.strip_ending not phoneticized: #{s}" end
     pat = nil
     if f.active then
       if f.indicative then

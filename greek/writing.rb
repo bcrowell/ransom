@@ -98,7 +98,10 @@ class Writing
   end
   def Writing.remove_iota_subscript(s)
     # https://en.wikipedia.org/wiki/Iota_subscript
-    # doesn't handle uppercase, or grave accents
+    # FIXME: doesn't handle uppercase
+    s = s.tr('ᾂᾒᾢ','ἂἢὢ')
+    s = s.tr('ᾃᾓᾣ','ἃἣὣ')
+    s = s.tr('ᾲῂῲ','ὰὴὼ')
     s = s.tr('ᾳῃῳ','αηω')
     s = s.tr('ᾷῇῷ','ᾶῆῶ')
     s = s.tr('ᾴῄῴ','άήώ')
