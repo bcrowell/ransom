@@ -31,3 +31,6 @@ temp.tex
 temp_demo.tex
 *.prose
 wiktextract/la_en.json
+ambig_temp.json
+temp_usage.tex
+*.bbcode
