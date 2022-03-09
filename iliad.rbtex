@@ -187,6 +187,10 @@ breaks = [
   [ [4,429], "The rest went in silence"],
   [ [4,446], "But they, when now meeting, they had reached the same place"],
   [ [4,463], "Him fallen, king Elephenor, the offspring of Chalcodon"],
+  [ [4,480], "For him advancing first, he struck on the breast, near the right pap"],
+  [ [4,497], "But the Trojans retired in confusion"],
+  [ [4,514], "Thus spoke the dreadful god from the city"],
+  [ [4,532], "But he did not spoil him of his armour",{'end_at'=> "were stretched prone in the dust beside one another"}],
 
 ]
 
