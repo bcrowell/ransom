@@ -215,7 +215,7 @@ def postprocess_foreign_or_ransom(which,bilingual,main_code,environment,start_ch
   if which=='ransom' then main_code = Latex.envir('graytext',main_code)+gloss_code end
   code = Latex.envir(environment,main_code)
   if bilingual.foreign.genos.greek then code = Latex.envir('greek',code) end
-  code = clean_up_unicode(code)
+  code = standardize_greek_punctuation(code)
   return code
 end
 
@@ -232,12 +232,6 @@ def render_gloss_for_foreign_page(line_hash,word,key,gloss,bilingual)
   code = %q{\begin{whitetext}\mbox{WORD}\end{whitetext}}
   code.gsub!(/WORD/,word)
   return [code,new_gloss_code]
-end
-
-def clean_up_unicode(s)
-  # Olga and Porson lack B7 middle dot, have 387 Greek ano teleia.
-  s = s.gsub(/\u{b7}/,"\u{387}")
-  return s
 end
 
 def verse_lines_to_latex(lines,first_line_number,left_page_verse)

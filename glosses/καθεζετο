@@ -1,0 +1,8 @@
+// https://en.wiktionary.org/wiki/καθέζετο https://logeion.uchicago.edu/καθέζετο
+// third-person singular imperfect/aorist mediopassive indicative of καθέζομαι (kathézomai)
+{
+  "word":"καθέζετο",
+  "medium":"=καθέζομαι, sit down",
+  "notes":"I don't know why Perseus has this several times when the lemma should obviously be καθέζομαι."
+}
+      

@@ -366,12 +366,20 @@ def char_unicode_property(c,property)
   return result
 end
 
+def clean_up_greek(s,thorough:false,silent:true)
+  # s is any string, can contain any script or mix of scripts, can be more than one word.
+  # Use the thorough option for external sources like raw Perseus xml files. This option is slow.
+  s = standardize_greek_punctuation(s) # Standardize elision character and middle dot/ano teleia.
+  if thorough then s=clean_up_grotty_greek(s,silent:silent) end
+  return s
+end
+
 def standardize_greek_punctuation(s)
-  # Works on any string, doesn't have to be a single word.
+  # Works on any string, doesn't have to be a single word. Standardize elision character and middle dot/ano teleia.
   # Elision:
   s = s.gsub(/[᾽’'](?![[:alpha:]])/,'᾽')
   # ... There are other possibilities (see comments in contains_greek_elision), but these should already have been taken care of in flatten.rb.
-  s = s.gsub(/#{[183].pack('U')}/,[903].pack('U')) # ano teleia has two forms, B7=183 and 387=903; GFS Porson only has the latter code point
+  s = s.gsub(/#{[183].pack('U')}/,[903].pack('U')) # ano teleia has two forms, B7=183 and 387=903; GFS Porson and Olga only have the latter code point
   return s
 end
 
@@ -383,6 +391,81 @@ def contains_greek_elision(s)
   # to me to be a mistake on their part.
   # https://github.com/PerseusDL/treebank_data/issues/31
   # One could also have 700=2bc hex, spacing smooth breathing, which seems like an error, or 39=27 hex, the ascii apostrophe.
+end
+
+def clean_up_grotty_greek(s,silent:true)
+  # Designed for external data sources that can have all kinds of nasty crap in them. Slow, thorough, silent, and brutal.
+  a = s.split(/(\s+)/) # returns a string in which even indices are words, odd indices are whitespace
+  b = []
+  0.upto(a.length-1) { |i|
+    w = a[i]
+    if i%2==0 then
+      unless w=~/[a-zA-Z]/ then # for speed and reliability; if it contains Latin letters, it shouldn't be a greek word
+        w=clean_up_grotty_greek_one_word(w,silent:silent)
+      end
+    end
+    b.push(w)
+  }
+  return b.join('')
+end
+
+def clean_up_grotty_greek_one_word(s,silent:true)
+  # This works on a single word.
+  s = s.sub(/σ$/,'ς').unicode_normalize(:nfc).sub(/&?απο[σς];/,"᾽")
+  s = s.unicode_normalize(:nfc)
+  s = clean_up_combining_characters(s)
+  s2 = clean_up_beta_code(s)
+  if s2!=s then
+    $stderr.print "cleaning up what appears to be beta code, #{s} -> #{s2}\n" unless silent
+    s = s2
+  end
+  if s=~/[^[:alpha:]᾽[0-9]\?;]/ then raise "word #{s} contains unexpected characters; unicode=#{s.chars.map { |x| x.ord}}\n" end
+  return s
+end
+
+def clean_up_combining_characters(s)
+  combining_comma_above = [787].pack('U')
+  greek_koronis = [8125].pack('U')
+  s = s.sub(/#{combining_comma_above}/,greek_koronis)
+  # ... mistaken use of combining comma above rather than the spacing version
+  #     https://github.com/PerseusDL/treebank_data/issues/31
+  # seeming one-off errors in perseus:
+  s2 = s
+  s2 = s2.sub(/#{[8158, 7973].pack('U')}/,"ἥ") # dasia and oxia combining char with eta
+  s2 = s2.sub(/#{[8142, 7940].pack('U')}/,"ἄ") # psili and oxia combining char with alpha
+  s2 = s2.sub(/#{[8142, 7988].pack('U')}/,"ἴ")
+  s2 = s2.sub(/ἄἄ/,'ἄ') # why is this necessary...??
+  s2 = s2.sub(/ἥἥ/,'ἥ') # why is this necessary...??
+  s2 = s2.sub(/#{[769].pack('U')}([μτ])/) {$1} # accent on a mu or tau, obvious error
+  s2 = s2.sub(/#{[769].pack('U')}ε/) {'έ'}
+  s2 = s2.sub(/#{[180].pack('U')}([κ])/) {$1} # accent on a kappa, obvious error
+  s2 = s2.sub(/#{[834].pack('U')}/,'') # what the heck is this?  
+  s2 = s2.sub(/ʽ([ἁἑἱὁὑἡὡ])/) {$1} # redundant rough breathing mark
+  # another repeating error:
+  s2 = s2.sub(/(?<=[[:alpha:]][[:alpha:]])([ἀἐἰὀὐἠὠ])(?![[:alpha:]])/) { $1.tr("ἀἐἰὀὐἠὠ","αειουηω")+"᾽" }
+  # ... smooth breathing on the last character of a long word; this is a mistake in representation of elision
+  #     https://github.com/PerseusDL/treebank_data/issues/31
+  if s2!=s then
+    $stderr.print "cleaning up what appears to be an error in a combining character, #{s} -> #{s2}, unicode #{s.chars.map { |x| x.ord}} -> #{s2.chars.map { |x| x.ord}}\n"
+    s = s2
+  end
+  return s
+end
+
+def clean_up_beta_code(s)
+  # This was for when I mistakenly used old beta code version of project perseus.
+  # Even with perseus 2.1, some stuff seems to come through that looks like beta code, e.g., ἀργει~ος.
+  # https://github.com/PerseusDL/treebank_data/issues/30
+  s = s.sub(/\((.)/) { $1.tr("αειουηω","ἁἑἱὁὑἡὡ") }
+  s = s.sub(/\)(.)/) { $1.tr("αειουηω","ἀἐἰὀὐἠὠ") } 
+  s = s.sub(/(.)~/) { $1.tr("αιυηω","ᾶῖῦῆῶ") } 
+  s = s.sub(/\|/,'ϊ') 
+  s = s.sub(/\/(.)/) { $1.tr("αειουηω","άέίόύήώ") }
+  s = s.sub(/&θυοτ;/,'')
+  s = s.sub(/θεοισ=ν/,'θεοῖσιν')
+  s = s.sub(/ὀ=νοψ1/,'οἴνοπα1')
+  s = s.sub(/π=ας/,'πᾶς')
+  return s
 end
 
 def escape_double_quotes(s)

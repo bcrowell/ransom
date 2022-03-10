@@ -74,7 +74,7 @@ def VocabPage.make_helper(bilingual,db,commonness,vl,lo,hi,core)
         if type=='gloss' then s=FormatGloss.with_english(bilingual,db,entry) end
         if type=='conjugation' || type=='declension' then s=FormatGloss.inflection(bilingual,entry) end
         if !(s.nil?) then
-          this_sec += clean_up_unicode("#{s}\n")
+          this_sec += standardize_greek_punctuation("#{s}\n")
         else
           die("unrecognized vocab type: #{type}")
         end

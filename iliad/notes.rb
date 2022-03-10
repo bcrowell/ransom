@@ -343,6 +343,9 @@ class IliadNotes
     'explain'       => %q{ἀμφί+dat.~= about, regarding}
   }],
   ["3.73" , {
+    'explain'       => %q{Paris proposes to end the entire war by single combat between him and Menelaus, Helen's original husband. In Homer's telling, Helen went with Paris willingly (3.174). The great wrong is that Paris abused Menelaus's hospitality (3.351).}
+  }],
+  ["3.73" , {
     'about_what'    => %q{οἳ ... ἄλλοι},
     'explain'       => %q{everyone else}
   }],
@@ -383,6 +386,10 @@ class IliadNotes
   ["3.351" , {
     'about_what'    => %q{τίσασθαι},
     'explain'       => %q{be avenged (lit.~to pay for myself)}
+  }],
+  ["4.185" , {
+    'about_what'    => %q{καιρίῳ},
+    'explain'       => %q{From καίριος, deadly. Here, a fatal spot.}
   }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
