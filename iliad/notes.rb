@@ -376,6 +376,14 @@ class IliadNotes
   ["3.242" , {
     'explain'       => %q{It's difficult to follow Helen's logic, since she has other kinsmen who find it honorable to fight in the Trojan war, nor would it make sense for Castor and Pollux to travel so far only to spend nine years hanging back from the fighting.}
   }],
+  ["3.347" , {
+    'about_what'    => %q{ἀσπίδα πάντοσε ἴσην},
+    'explain'       => %q{the round shield (a circle, equal in all directions)}
+  }],
+  ["3.351" , {
+    'about_what'    => %q{τίσασθαι},
+    'explain'       => %q{be avenged (lit.~to pay for myself)}
+  }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}
