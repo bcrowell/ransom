@@ -266,7 +266,7 @@ def remove_macrons_and_breves(s)
   "άίύὰὶὺΆΊΎᾺῚῪ".chars.each { |c|
     [772,774].each { |combining| # 772=combining macron, 774=combining breve (773=combining overline, presumably used for math)
       m = [c.ord, combining].pack("U*") # is not a single character
-      s = s.sub(/#{m}/,c)
+      s = s.gsub(/#{m}/,c)
     }
   }
   return s
