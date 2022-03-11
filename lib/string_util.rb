@@ -257,7 +257,19 @@ end
 def remove_macrons_and_breves(s)
   if !(s.kind_of?(String)) then return s end
   # ...convenience feature for stuff like parsing json data, which may include integers. Won't work for arrays containing strings.
-  return safe_normalize(s).tr("ᾰᾱᾸᾹῐῑῘῙῠῡῨῩ","ααΑΑιιΙΙυυΥΥ").tr("āēīōūӯ","aeiouy")
+  s = safe_normalize(s)
+  s = s.tr("āēīōūӯ","aeiouy") # latin
+  s = s.tr("ᾰᾱᾸᾹῐῑῘῙῠῡῨῩ","ααΑΑιιΙΙυυΥΥ")
+  # Accent combined with macron. The monospaced fonts I'm using for coding display these incorrectly, and I also don't know how to type them.
+  #         Furthermore, these seem to be represented as multiple characters, so that tr won't work. The following will be slow on short strings,
+  #         but should perform well on long ones.
+  "άίύὰὶὺ".chars.each { |c|
+    [772,774].each { |combining| # 772=combining macron, 774=combining breve (773=combining overline, presumably used for math)
+      m = [c.ord, combining].pack("U*") # is not a single character
+      s = s.sub(/#{m}/,c)
+    }
+  }
+  return s
 end
 
 def safe_normalize(s)
