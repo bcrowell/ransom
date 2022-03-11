@@ -1,4 +1,7 @@
+// https://en.wiktionary.org/wiki/σύ https://logeion.uchicago.edu/σύ
+// second person singular personal pronoun: thou, you
 {
-  "word": "σύ",
-  "medium": "you"
+  "word":"σύ",
+  "medium":"you"
 }
+      

@@ -263,7 +263,7 @@ def remove_macrons_and_breves(s)
   # Accent combined with macron. The monospaced fonts I'm using for coding display these incorrectly, and I also don't know how to type them.
   #         Furthermore, these seem to be represented as multiple characters, so that tr won't work. The following will be slow on short strings,
   #         but should perform well on long ones.
-  "άίύὰὶὺ".chars.each { |c|
+  "άίύὰὶὺΆΊΎᾺῚῪ".chars.each { |c|
     [772,774].each { |combining| # 772=combining macron, 774=combining breve (773=combining overline, presumably used for math)
       m = [c.ord, combining].pack("U*") # is not a single character
       s = s.sub(/#{m}/,c)
