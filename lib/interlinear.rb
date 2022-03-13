@@ -191,7 +191,7 @@ def Interlinear.chop_up_pos_helper(pos,format,width,p:2.0)
     return [narrower,a.join('.')+' .'+b.join('.')]
   else
     return [pos.length,pos] if pos.length<=width
-    target_width = [width,15].max
+    target_width = [[width,15].max,pos.length].min
     return [target_width,pos[0..target_width-4]+"..."]
   end
 end
@@ -240,6 +240,7 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
 end
 
 def Interlinear.col_width_helper_monospaced(table,n_rows,n_cols,layout)
+  $stderr.print "-------------\n" # qwe
   if layout=~/p/ then layout=layout.sub(/p/,'')+'p' end # do POS last
   col_width = []
   0.upto(n_cols-1) { |col|
@@ -252,6 +253,7 @@ def Interlinear.col_width_helper_monospaced(table,n_rows,n_cols,layout)
       e=table[col][row]
       n_chars = e.length
       if what=='p' then n_chars,e=Interlinear.chop_up_pos_helper(e,'txt',width_so_far) end # guaranteed to be the last
+      $stderr.print "  width_so_far=#{width_so_far} e=#{e} n_chars=#{n_chars}\n" # qwe
       col_width[col] = [width_so_far,n_chars].max
     }
   }
