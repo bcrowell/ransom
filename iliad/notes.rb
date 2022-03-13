@@ -395,6 +395,10 @@ class IliadNotes
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}
   }],
+  ["8.529" , {
+    'about_what'    => %q{ἐπὶ νυκτὶ φυλάξομεν},
+    'explain'       => %q{stay where we are for the night}
+  }],
   ["16.30" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}

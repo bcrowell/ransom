@@ -6,6 +6,14 @@ def die(message)
   exit(-1)
 end
 
+def patch(a)
+  # iliad,8,529,φυλάξομεν,φυλάζω,,v1pfia---
+  # This should be φυλάσσω. (φυλάζω is a different verb with a meaning that doesn't make sense here.)
+  # https://github.com/PerseusDL/treebank_data/issues/33
+  if a[3]=='φυλάξομεν' && a[0]=='iliad' then a[4]='φυλάσσω' end
+  return a
+end
+
 script = ARGV[0]
 # ... latin or greek
 
@@ -72,5 +80,6 @@ $stdin.each_line { |line|
 results = results.sort { |a,b| [a[0],a[1]] <=> [b[0],b[1]]}
 
 results.each { |a|
+  a = patch(a)
   print a.join(","),"\n"
 }
