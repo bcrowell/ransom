@@ -110,12 +110,9 @@ def Interlinear.assemble_one_line(foreign_genos,words,text,style:InterlinearStyl
   format = style.format
   left_margin = style.left_margin
   n_rows = layout.length
-  $stderr.print "------- #{words[4]}\n" # qwe
   words = Interlinear.reconcile_treebank_with_text_helper(words,text)
   n_cols = words.length
-  $stderr.print "------- #{words[4]}\n" # qwe
   table = words.map { |word| word.to_a(format:layout,nil_to_null_string:true) }
-  $stderr.print "------- #{words[4]} #{table[4]}\n" # qwe
   if format=='txt' then # also covers bbcode
     col_width = Interlinear.col_width_helper_monospaced(table,n_rows,n_cols,layout)
     lines = []
@@ -232,7 +229,6 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
       widths.push(cell_widths.max) # width of this column, in mm, if we use n lines of text for the glosses
     }
     total_width = widths.sum+InterlinearStyle.pt_to_mm(style.column_sep)*(n_cols-1)
-    # $stderr.print "  total_width=#{total_width}\n" # qwe
     break if total_width<=max_total_width
   }
   # $stderr.print "widths=#{widths}\n---------------------------------------------\n"
@@ -240,7 +236,6 @@ def Interlinear.col_width_helper_proportional(style,table,n_rows,n_cols,layout,m
 end
 
 def Interlinear.col_width_helper_monospaced(table,n_rows,n_cols,layout)
-  $stderr.print "-------------\n" # qwe
   if layout=~/p/ then layout=layout.sub(/p/,'')+'p' end # do POS last
   col_width = []
   0.upto(n_cols-1) { |col|
@@ -253,7 +248,6 @@ def Interlinear.col_width_helper_monospaced(table,n_rows,n_cols,layout)
       e=table[col][row]
       n_chars = e.length
       if what=='p' then n_chars,e=Interlinear.chop_up_pos_helper(e,'txt',width_so_far) end # guaranteed to be the last
-      $stderr.print "  width_so_far=#{width_so_far} e=#{e} n_chars=#{n_chars}\n" # qwe
       col_width[col] = [width_so_far,n_chars].max
     }
   }
