@@ -110,9 +110,12 @@ def Interlinear.assemble_one_line(foreign_genos,words,text,style:InterlinearStyl
   format = style.format
   left_margin = style.left_margin
   n_rows = layout.length
+  $stderr.print "------- #{words[4]}\n" # qwe
   words = Interlinear.reconcile_treebank_with_text_helper(words,text)
   n_cols = words.length
+  $stderr.print "------- #{words[4]}\n" # qwe
   table = words.map { |word| word.to_a(format:layout,nil_to_null_string:true) }
+  $stderr.print "------- #{words[4]} #{table[4]}\n" # qwe
   if format=='txt' then # also covers bbcode
     col_width = Interlinear.col_width_helper_monospaced(table,n_rows,n_cols,layout)
     lines = []
@@ -256,13 +259,14 @@ def Interlinear.col_width_helper_monospaced(table,n_rows,n_cols,layout)
 end
 
 def Interlinear.reconcile_treebank_with_text_helper(words,text)
+  # Decorate words with punctuation from the text.
   # Is meant to work on one line of text at a time.
   # FIXME: won't work if the same word occurs twice on the same line, but with different punctuation
   words = clown(words)
   text = standardize_greek_punctuation(text)
   0.upto(words.length-1) { |i|
     bare = standardize_greek_punctuation(words[i].word)
-    if text=~/([^\s]*#{bare}[^\s]*)/i then
+    if text=~/([[:punct:]]*#{bare}[[:punct:]]*)/i then
       decorated = $1
     else
       decorated = bare

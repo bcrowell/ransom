@@ -537,6 +537,22 @@ See \cite{Denniston} for more references to the literature on differing points o
 for examples that are clearly not generalizations (p.~530).
 ))
 
+subsection("Miscellaneous uses")
+
+text(%q(
+In addition, τε has a number of other uses that grammarians have tried to infer, often based on
+a limited number of examples and allowing for exceptions. See
+\cite{Monro} (pp.~232, 241, 272) and \cite{LSJ}, which makes an attempt to catalog these
+in the entry for τε. For example, LSJ include among gnomic usages some in which τε is used to indicate that something is knowledge
+that is widely known, then using this thread to connect to an idiom in which ὅτε τε seems to be used when defining a time based on a
+well-known event:
+))
+
+example('iliad 3.189',%q(
+the day when the man-hating Amazons came
+))
+
+
 %>
 
 
@@ -569,6 +585,7 @@ for examples that are clearly not generalizations (p.~530).
 \bibitem[Denniston 1954]{Denniston} Denniston, \emph{The Greek particles}, 2nd ed., 1954.
 \bibitem[George 2018]{George} George, ``Homeric ἄρα: An (in)consequential particle,'' Classical Philology, 113 (2018) 241. doi:10.1086/698210.
 \bibitem[George 2005]{George-agency} George, \emph{Expressions of agency in ancient Greek}, 2005.
+\bibitem[LSJ 1843]{LSJ} Liddell, Scott, and Jones, \emph{A Greek–English Lexicon}, 1843.
 \bibitem[Monro 1891]{Monro} Monro, \emph{A grammar of the Homeric Dialect}, 1891.
 \bibitem[Smyth 1920]{Smyth} Smyth, \emph{Greek grammar for colleges}, 1920.
 \end{thebibliography}
