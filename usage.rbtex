@@ -93,32 +93,8 @@ end
 
 <%
 
-section("Quantitative idioms that Homer never uses: ``ago,'' age in years, names of months")
-
 text(%q(
-In ``The Godfather,'' Michael Corleone's naive young Sicilian bride shows her
-proficiency in English by rattling off the days of the week. In our measure-hungry
-time, even a small child is expected to be able to tell a looming stranger their
-age as a number of years, or if necessary show it by holding up fingers. 
-
-The Myceneans did have a calendar, but by Homer's account the habit of reckoning time seems
-to have dwindled among the illiterate people of a dark age. Named months do not occur, although \cite{Papathanassiou}
-speculates that this is only because they differed among regions.\cite{Papathanassiou}
-Iliad 22.27 mentions Sirius as being visible at harvest time.
-
-A person with even basic competence in English is supposed to be able to say things like
-``five years ago,'' but such constructions are actually pretty rare in the classical period,\cite{George-time}
-and do not occur in Homer. There is no word meaning ``ago.'' For ``five years ago,'' the Attic idiom would be essentially ``the sixth year,''
-using the accusative, i.e., one counts from the present year as year one, and context makes
-it clear that we are reckoning backward in time.
-The Myceneans have a word \emph{pe-ru-si-nwa}, which resurfaces as Attic πέρυσι, ``last year, a year ago.''
-
-There is no evidence in Homer that people were in the habit of counting up their ages.
-For ``thirty years old,'' Attic authors would have said τριάκοντα ἔτη γεγονώς, with the accusative, while Luke 3:23
-has ἦν Ἰησοῦς ἀρχόμενος ὡσεὶ ἐτῶν τριάκοντα, with the genitive. Neither of these constructions shows up in Homer.
-The aged Priam dates himself by recalling the war with the Amazons.
-
-Homer nevertheless had a bristling poetic arsenal to aim at the human experience of
+Homer had a bristling poetic arsenal to aim at the human experience of
 time, built around a set of cases inherited from Indo European. These were used either alone
 or in combination with a set of prepositions, for a maximum of variety and expression.
 The ancestral case system was inherently simple and logical as applied to time, and remained so in Homer's
@@ -127,7 +103,7 @@ give oversimplified descriptions of temporal language in Attic and Koine, they a
 actually presenting something more like the Homeric system.\cite{George-time}
 ))
 
-section('Vocabulary of nouns and adjectives')
+section('Vocabulary')
 
 text(%q(
 These cases and prepositions are applied to nouns --- sometimes special-purpose nouns,
@@ -136,19 +112,32 @@ as in ``the time of the first men,'' but more often to nouns that refer directly
 
 %>
 
+nouns:\\
 ἦμαρ - day (n., ἤματος); also ἡμέρη\\
 νύξ - night (f., νυκτός)\\
 ἠώς - dawn (f., ἠοῦς/ἠῶθι)\\
 μήν - month (m., μηνός)\\
 χειμών - winter, winter storm, stormy weather\\
 ὀπώρη - late summer, harvest time (f., ὀπώρης)\\
-εἰαρινός - vernal\\
 ἔτος - year (n., ἔτεος)\\
 ἐνιαυτός - the year considered as a cycle of time\\
 ὥρη - season, time\\
-χρόνον - time (m, only the singular accusative used in Homer)\\
+χρόνον - time (m, only the singular accusative used in Homer)
 
-special-purpose adjectives: ἐννῆμαρ, πανῆμαρ, εἰνάετες, εἰνάνυχες
+adjectives:\\
+εἰαρινός - vernal\\
+ἐννῆμαρ - nine days \\
+πανῆμαρ - all day
+
+adverbs:
+εἰνάετες - for nine years\\
+εἰνάνυχες - for nine nights
+
+πότε - when?\\
+ποτέ - at some time, ``in former times,'' ``someday;'' (negative) ever\\
+τότε - then, at that time, and then\\
+ὅτε - when (relative pronoun)\\
+ὁπότε - whenever
 
 <%
 
@@ -304,7 +293,8 @@ example('iliad 19.32',%q(
 [Thetis reassures Achilles:] for even if [Patroclus] lies for a year [his body will not decay]
 ))
 
-text(%q(Μετά can be used in expressions of time to mean after:
+text(%q(
+Μετά can be used in expressions of time to mean after:
 ))
 
 example('iliad 18.96',%q(
@@ -315,40 +305,111 @@ example('iliad 18.96',%q(
 
 <%
 
-section('Use of prepositions')
+section('Use of ἐπί')
 
 %>
 
 Overview:
 
-\begin{description}
-  \item[accusative]  durative: action in a measured span of time
-  \item genitive
-    \begin{itemize}
-      \item descriptive: action in a described time
-    \end{itemize}
-  \item dative
-    \begin{itemize}
-      \item limitative: emphasis on limited time
-      \item punctual: action at a point in time
-      \begin{itemize}
-        \item ἐπί - for this day, by night, etc.
-      \end{itemize}
-    \end{itemize}
-\end{description}
-
-\begin{tabular}{lp{25mm}p{55mm}p{40mm}}
-        &  \emph{genitive} & \emph{dative} & \emph{accusative} \\
-ἀνά     &           &        & (during) \\
-διά     &           &        & lasting through \\
-εἰς     &           &        & until, in x time\\
-ἐν      &           & during; limitative, multiple events & \\
-ἐπί     & in the time of & for, by; limitative, multiple events; per unit of time & until, during \\
-μετά    &           &        & after \\
-πρό     & (before)  &        & \\
-ὑπό     &           &        & (during) \\
+\begin{tabular}{lp{100mm}}
+ἐπί + gen. & in the time of \\
+ἐπί + acc. & until, during \\
+ἐπί + dat. & punctual: ``for this day,'' ``by night''\\
+ἐπί + dat. & limitative: (1) same as without the preposition; (2) emphasizing multiple events within a fixed time
 \end{tabular}
 
+<%
+text(%q(
+Unlike διά, εἰς, and μετά, which govern the accusative in expressions of time,
+the preposition ἐπί can be applied to expressions of time in all three of the oblique cases.
+
+The genitives of words like ``day'' and ``night,'' when used without a preposition, are
+descriptive, i.e., when there is no notion of measuring time --- for example, ``Siruis,
+which comes in harvest time.'' When the noun doesn't explicitly refer to time, adding the
+preposition ἐπί to the genitive helps to clarify the meaning, setting up an adverbial
+phrase that is understood from context as referring to time. Cf.~``love in the time of
+cholera,'' or, with less semantic similarity, ``once upon a time.''
+))
+
+example('iliad 5.637',%q(
+[Lyingly they say that you were born to Zeus, for you are wanting compared to many men] who were born to zeus, in the days of the first men.
+))
+
+text(%q(
+Ἐπί + acc.~can mean ``until the end of.''
+))
+
+example('iliad 2.299',%q(
+Bear up, my friends, and wait a while to learn [whether Calchas's prophecy is right.]
+))
+
+text(%q(
+The dative is used for both punctual and limitative constructions. In punctual usages, ἐπί + dat.~can be translated with
+phrases such as ``for this day'' or ``by night.''
+))
+
+example('iliad 8.529',%q(
+But let us stay where we are for the night.
+))
+
+text(%q(
+In limitative constructions, ἐπί + dat.~can have the same meaning as the bare dative, but it is also
+often used when multiple events occur within a certain time, or to describe rates, as in English
+``miles per hour.''
+))
+
+example('iliad 10.48',%q(
+one man [Hector] to devise so many difficult [acts of sacrifice] in a day
+))
+
+example('odyssey 12.105',%q(
+three times per day [describing Charybdis]
+))
+
+%>
+
+<%
+
+section("Rare usages of pronouns")
+
+text(%q(
+ὑπό + acc.: Iliad 22.102, during\\
+ἀνὰ + acc.: Iliad 14.80, during\\
+ἐν + dat.: Iliad 2.471, placing a time expression within a time interval (``that time in spring'')\\
+πρό + gen.: before
+))
+
+section("Quantitative idioms that Homer never uses: ``ago,'' age in years, names of months")
+
+text(%q(
+In ``The Godfather,'' Michael Corleone's naive young Sicilian bride shows her
+proficiency in English by rattling off the days of the week. In our measure-hungry
+time, even a small child is expected to be able to tell a looming stranger their
+age as a number of years, or if necessary show it by holding up fingers. 
+
+The Myceneans did have a calendar, but by Homer's account the habit of reckoning time seems
+to have dwindled among the illiterate people of a dark age. Named months do not occur, although \cite{Papathanassiou}
+speculates that this is only because they differed among regions.
+Iliad 22.27 mentions Sirius as being visible at harvest time.
+
+A person with even basic competence in English is supposed to be able to say things like
+``five years ago,'' but such constructions are actually pretty rare in the classical period,\cite{George-time}
+and do not occur in Homer. There is no word meaning ``ago.'' For ``five years ago,'' the Attic idiom would be essentially ``the sixth year,''
+using the accusative, i.e., one counts from the present year as year one, and context makes
+it clear that we are reckoning backward in time.
+The Myceneans have a word \emph{pe-ru-si-nwa}, which resurfaces as Attic πέρυσι, ``last year, a year ago.''
+
+There is no evidence in Homer that people were in the habit of counting up their ages.
+For ``thirty years old,'' Attic authors would have said τριάκοντα ἔτη γεγονώς, with the accusative, while Luke 3:23
+has ἦν Ἰησοῦς ἀρχόμενος ὡσεὶ ἐτῶν τριάκοντα, with the genitive. Neither of these constructions shows up in Homer.
+The aged Priam dates himself by recalling the war with the Amazons.
+))
+
+text(%q(
+  References: \cite{George-time}, \cite{Chantraine}, \cite{Monro}.
+))
+
+%>
 
 %====================================== voices =======================================
 
@@ -846,6 +907,7 @@ the day when the man-hating Amazons came
 %================ bibliography ==================
 \begin{thebibliography}{100}
 \bibitem[Beekes 2010]{Beekes} Beekes, \emph{Etymological dictionary of Greek}, 2010.
+\bibitem[Chantraine 1953]{Chantraine} Chantraine, \emph{Grammaire Homerique}, 1953.
 \bibitem[Cunliffe 1924]{Cunliffe} Cunliffe, \emph{A lexicon of the Homeric dialect}, 1924.
 \bibitem[Denniston 1954]{Denniston} Denniston, \emph{The Greek particles}, 2nd ed., 1954.
 \bibitem[George 2005]{George-agency} George, \emph{Expressions of agency in ancient Greek}, 2005.
