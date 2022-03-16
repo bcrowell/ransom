@@ -17,14 +17,15 @@ if greek_wikt.invalid then greek_wikt=nil end
 db = GlossDB.from_genos(foreign_genos)
 core = json_from_file_or_die("core/homer.json").keys # array containing lemmas not to put in vocab lists, because they're in core vocab in back
 iliad = Epos.new("text/ιλιας","greek",true,genos:foreign_genos)
+odyssey = Epos.new("text/οδυσσεια","greek",true,genos:foreign_genos)
 translation = Epos.new("text/buckley_iliad.txt","latin",false,genos:Genos.new('en',is_verse:false),postfilter:lambda { |s| Epos.strip_pg_footnotes(s) })
 bilingual = BareBilingual.new(Genos.new('grc'),Genos.new('en'))
 db = GlossDB.from_genos(foreign_genos)
 
-$globals = [foreign_genos,db,treebank,iliad,opts['format']]
+$globals = [foreign_genos,db,treebank,opts['format'],iliad,odyssey]
 
 def example(linerange,translation)
-  foreign_genos,db,treebank,iliad,format = $globals
+  foreign_genos,db,treebank,format,iliad,odyssey = $globals
   if linerange.kind_of?(String) then linerange_cooked=LineRange.new(linerange) else linerange_cooked=linerange end
   text,book,line1,line2 = linerange_cooked.to_a
   if line2>line1 && false then
@@ -34,6 +35,7 @@ def example(linerange,translation)
   end  
   epos = nil
   if text=='iliad' then epos=iliad end
+  if text=='odyssey' then epos=odyssey end
   if epos.nil? then raise "no epos object available for #{text}" end
   if translation!='' then
     translation = translation.sub(/\A\s+/,'').sub(/\s+\Z/,'') # strip leading and trailing whitespace
@@ -56,7 +58,7 @@ def example(linerange,translation)
 end
 
 def section(h)
-  foreign_genos,db,treebank,iliad,format = $globals
+  foreign_genos,db,treebank,format,iliad,odyssey = $globals
   s = h
   if format=='tex' then s=Latex.macro('section',h) end  
   if format=='bbcode' then s=BBCode.bold("--- "+h+" ---") end  
@@ -64,7 +66,7 @@ def section(h)
 end
 
 def subsection(h)
-  foreign_genos,db,treebank,iliad,format = $globals
+  foreign_genos,db,treebank,format,iliad,odyssey = $globals
   s = h
   if format=='tex' then s=Latex.macro('subsection',h) end  
   if format=='bbcode' then s=BBCode.bold(h) end  
@@ -72,7 +74,7 @@ def subsection(h)
 end
 
 def text(s)
-  foreign_genos,db,treebank,iliad,format = $globals
+  foreign_genos,db,treebank,format,iliad,odyssey = $globals
   if format=='txt' || format=='bbcode' then s=Spew.reparagraph(s) end
   print Spew.new(format,s).to_s+"\n"
 end
@@ -84,6 +86,269 @@ end
 \begin{document}
 
 \pagestyle{fancy}
+
+%====================================== time =======================================
+
+\chapter{Time}
+
+<%
+
+section("Quantitative idioms that Homer never uses: ``ago,'' age in years, names of months")
+
+text(%q(
+In ``The Godfather,'' Michael Corleone's naive young Sicilian bride shows her
+proficiency in English by rattling off the days of the week. In our measure-hungry
+time, even a small child is expected to be able to tell a looming stranger their
+age as a number of years, or if necessary show it by holding up fingers. 
+
+The Myceneans did have a calendar, but by Homer's account the habit of reckoning time seems
+to have dwindled among the illiterate people of a dark age. Named months do not occur, although \cite{Papathanassiou}
+speculates that this is only because they differed among regions.\cite{Papathanassiou}
+Iliad 22.27 mentions Sirius as being visible at harvest time.
+
+A person with even basic competence in English is supposed to be able to say things like
+``five years ago,'' but such constructions are actually pretty rare in the classical period,\cite{George-time}
+and do not occur in Homer. There is no word meaning ``ago.'' For ``five years ago,'' the Attic idiom would be essentially ``the sixth year,''
+using the accusative, i.e., one counts from the present year as year one, and context makes
+it clear that we are reckoning backward in time.
+The Myceneans have a word \emph{pe-ru-si-nwa}, which resurfaces as Attic πέρυσι, ``last year, a year ago.''
+
+There is no evidence in Homer that people were in the habit of counting up their ages.
+For ``thirty years old,'' Attic authors would have said τριάκοντα ἔτη γεγονώς, with the accusative, while Luke 3:23
+has ἦν Ἰησοῦς ἀρχόμενος ὡσεὶ ἐτῶν τριάκοντα, with the genitive. Neither of these constructions shows up in Homer.
+The aged Priam dates himself by recalling the war with the Amazons.
+
+Homer nevertheless had a bristling poetic arsenal to aim at the human experience of
+time, built around a set of cases inherited from Indo European. These were used either alone
+or in combination with a set of prepositions, for a maximum of variety and expression.
+The ancestral case system was inherently simple and logical as applied to time, and remained so in Homer's
+dialect; later usage became more complicated and irregular, so that when grammars
+give oversimplified descriptions of temporal language in Attic and Koine, they are
+actually presenting something more like the Homeric system.\cite{George-time}
+))
+
+section('Vocabulary of nouns and adjectives')
+
+text(%q(
+These cases and prepositions are applied to nouns --- sometimes special-purpose nouns,
+as in ``the time of the first men,'' but more often to nouns that refer directly to time:
+))
+
+%>
+
+ἦμαρ - day (n., ἤματος); also ἡμέρη\\
+νύξ - night (f., νυκτός)\\
+ἠώς - dawn (f., ἠοῦς/ἠῶθι)\\
+μήν - month (m., μηνός)\\
+χειμών - winter, winter storm, stormy weather\\
+ὀπώρη - late summer, harvest time (f., ὀπώρης)\\
+εἰαρινός - vernal\\
+ἔτος - year (n., ἔτεος)\\
+ἐνιαυτός - the year considered as a cycle of time\\
+ὥρη - season, time\\
+χρόνον - time (m, only the singular accusative used in Homer)\\
+
+special-purpose adjectives: ἐννῆμαρ, πανῆμαρ, εἰνάετες, εἰνάνυχες
+
+<%
+
+section('Cases used without prepositions')
+
+%>
+
+Overview:
+
+\begin{tabular}{llp{100mm}}
+dative & punctual & ``the day when,'' ``for the night,'' ``the flowers in their season'' \\
+dative & limitative & ``the war was over in a year,'' ``born on the same night'' \\
+genitive & descriptive & ``in ancient times'' \\
+accusative & durative & ``the war went on for nine years'' 
+\end{tabular}
+
+<%
+
+subsection('Accusative: durative')
+
+text(%q(
+The accusative is used when placing an action within a measured span of time defined by
+a noun that explicitly refers to a time unit, but without emphasizing the limited extent of the time.
+\cite{George-time} refers to this as the durative.
+Usually in these constructions if the reference to time is removed then the clause loses
+something central to its meaning; this is similar to the use of the accusative for the
+direct object of a verb.
+))
+
+example('iliad 2.292',%q(
+for if a man remains <for one month> away from his wife
+))
+
+example('iliad 18.274',%q(
+[But if we do as I say, then]
+<during the night> we will be strong as a group, and the towers
+[and gates will protect] the city.
+))
+
+example('odyssey 15.455',%q(
+staying there with us <for a whole year>
+))
+
+subsection('Genitive: descriptive')
+
+text(%q(
+This usage is like the durative except that the fact that the noun is not a unit used for measuring time.
+The time period is only described, not measured.
+))
+
+example('iliad 22.27',%q(
+[Priam sees Achilles coming over the plain, like Sirius,] which comes in harvest time, and its bright light [is a bad omen]
+))
+
+subsection('Dative: limitative')
+
+text(%q(
+What \cite{George-time} calls the limitative is similar to the durative except that
+there is an emphasis on the completion of the action by the end of the time period.
+))
+
+example('iliad 6.422',%q(
+who all went to Hades <in one and the same day>
+))
+
+text(%q(
+If the mode of transportation available for getting to the underworld was a spaceship, we would use
+the dative of ``spaceship;'' similarly, if fate has only a day available
+for sending people there, then we use the dative of ``day.''
+))
+
+subsection('Dative: punctual')
+
+text(%q(
+The dative is also used for locating an action at a point in time.
+))
+
+example('iliad 3.189',%q(
+the day when the man-hating Amazons came
+))
+
+example('iliad 2.468',%q(
+[Onto the plain of Scamander come swarming] countless [Greek soldiers], as many as the leaves and flowers in their season.
+))
+
+text(%q(
+Although Attic Greek deviates from this rule for the specific words referring to night and the seasons,
+Homeric Greek is consistent in its use of the dative:
+))
+
+example('odyssey 5.485',%q(
+[The shipwrecked Odysseus scrapes together a huge bed of leaves, sufficient for protection] even in <violent winter weather>.
+))
+
+example('odyssey 7.253',%q(
+I was carried for nine days, but on the <tenth black night> [the gods bring Odysseus to Ogygia.]
+))
+
+
+
+%>
+
+<%
+
+section('Use of διά, εἰς, and μετά with the accusative')
+
+%>
+
+Overview:
+
+\begin{tabular}{lp{100mm}}
+διά + acc. & lasting through, throughout \\
+εἰς + acc. & until, from now, as in ``in five days'' \\
+μετά + acc. & after
+\end{tabular}
+
+<%
+
+text(%q(
+The use of these three prepositions is fairly intuitively clear to English speakers
+as variations on the durative use of the accusative.
+
+Διά sometimes emphasizes that the action occurs throughout the time period:
+))
+
+example('iliad 8.510 ',%q(
+[Hector tells his people to burn bonfires,] so that <throughout the night>
+the long-haired Achaeans [will not try to flee].
+))
+
+text(%q(
+But sometimes there seem to be no special semantics associated with διά, and
+it may be just metrical filler:
+))
+
+example('iliad 2.57',%q(
+[Agamemnon tells the elders that a divine dream has come to him]
+during ambrosial night, having the appearance of Nestor...
+))
+
+text(%q(
+Εἰς, ``into,'' is used to express ``until,'' or time from now at the end of
+which something will happen, as in ``in five days.'' The word ἐνιαυτόν is
+almost never used except with this preposition.
+))
+
+example('odyssey 11.375',%q(
+[Alkinous asks Odysseus to tell him his triumphs before they go to bed,] and then
+I should be able to wait until dawn, when you [can undertake to tell] me [your sorrows as well.]
+))
+
+example('iliad 19.32',%q(
+[Thetis reassures Achilles:] for even if [Patroclus] lies for a year [his body will not decay]
+))
+
+text(%q(Μετά can be used in expressions of time to mean after:
+))
+
+example('iliad 18.96',%q(
+[My son, it is indeed not long until you meet your fate,] for soon after Hector yours will be at hand.
+))
+
+%>
+
+<%
+
+section('Use of prepositions')
+
+%>
+
+Overview:
+
+\begin{description}
+  \item[accusative]  durative: action in a measured span of time
+  \item genitive
+    \begin{itemize}
+      \item descriptive: action in a described time
+    \end{itemize}
+  \item dative
+    \begin{itemize}
+      \item limitative: emphasis on limited time
+      \item punctual: action at a point in time
+      \begin{itemize}
+        \item ἐπί - for this day, by night, etc.
+      \end{itemize}
+    \end{itemize}
+\end{description}
+
+\begin{tabular}{lp{25mm}p{55mm}p{40mm}}
+        &  \emph{genitive} & \emph{dative} & \emph{accusative} \\
+ἀνά     &           &        & (during) \\
+διά     &           &        & lasting through \\
+εἰς     &           &        & until, in x time\\
+ἐν      &           & during; limitative, multiple events & \\
+ἐπί     & in the time of & for, by; limitative, multiple events; per unit of time & until, during \\
+μετά    &           &        & after \\
+πρό     & (before)  &        & \\
+ὑπό     &           &        & (during) \\
+\end{tabular}
+
 
 %====================================== voices =======================================
 
@@ -583,10 +848,13 @@ the day when the man-hating Amazons came
 \bibitem[Beekes 2010]{Beekes} Beekes, \emph{Etymological dictionary of Greek}, 2010.
 \bibitem[Cunliffe 1924]{Cunliffe} Cunliffe, \emph{A lexicon of the Homeric dialect}, 1924.
 \bibitem[Denniston 1954]{Denniston} Denniston, \emph{The Greek particles}, 2nd ed., 1954.
-\bibitem[George 2018]{George} George, ``Homeric ἄρα: An (in)consequential particle,'' Classical Philology, 113 (2018) 241. doi:10.1086/698210.
 \bibitem[George 2005]{George-agency} George, \emph{Expressions of agency in ancient Greek}, 2005.
+\bibitem[George 2014]{George-time} George, \emph{Expressions of time in ancient Greece}, 2014.
+\bibitem[George 2018]{George} George, ``Homeric ἄρα: An (in)consequential particle,'' Classical Philology, 113 (2018) 241. doi:10.1086/698210.
+\bibitem[Lewis 1934]{Lewis-Styler} Lewis and Styler, \emph{Foundations for Greek prose composition}, 1934.
 \bibitem[LSJ 1843]{LSJ} Liddell, Scott, and Jones, \emph{A Greek–English Lexicon}, 1843.
 \bibitem[Monro 1891]{Monro} Monro, \emph{A grammar of the Homeric Dialect}, 1891.
+\bibitem[Papathanassiou 2008]{Papathanassiou} Papathanassiou, ``Homeric calendar and helios charioteer,'' History of Mechanism and Machine Science, 357.
 \bibitem[Smyth 1920]{Smyth} Smyth, \emph{Greek grammar for colleges}, 1920.
 \end{thebibliography}
 
