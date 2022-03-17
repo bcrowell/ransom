@@ -93,6 +93,19 @@ def lines(s)
   text(s,keep_line_breaks:true)
 end
 
+def table(s)
+  foreign_genos,db,treebank,format,iliad,odyssey = $globals
+  if format=='tex' then 
+    lines(s)
+  else
+    s = s.gsub(/&/,'')  
+    s = s.gsub(/(\\){2,}\s*$/,'')
+    s = s.gsub(/.*\\(begin|end){tabular}.*/,'')
+    s = s.gsub(/^(.*)/) {"  "+$1} # indent
+    print s
+  end
+end
+
 %>
 
 \newcommand{\trans}[1]{\emph{#1}}
@@ -153,25 +166,20 @@ adverbs:
 ὁπότε - whenever
 ))
 
-%>
-
-
-<%
-
 section('Cases used without prepositions')
 
-%>
-
+text(%q(
 Overview:
+))
 
+table(%q(
 \begin{tabular}{llp{100mm}}
 dative & punctual & ``the day when,'' ``for the night,'' ``the flowers in their season'' \\
 dative & limitative & ``the war was over in a year,'' ``born on the same night'' \\
 genitive & descriptive & ``in ancient times'' \\
 accusative & durative & ``the war went on for nine years'' 
 \end{tabular}
-
-<%
+))
 
 subsection('Accusative: durative')
 
@@ -254,24 +262,20 @@ I was carried for nine days, but on the <tenth black night> [the gods bring Odys
 ))
 
 
-
-%>
-
-<%
-
 section('Use of διά, εἰς, and μετά with the accusative')
 
-%>
 
+text(%q(
 Overview:
+))
 
+table(%q(
 \begin{tabular}{lp{100mm}}
 διά + acc. & lasting through, throughout \\
 εἰς + acc. & until, from now, as in ``in five days'' \\
 μετά + acc. & after
 \end{tabular}
-
-<%
+))
 
 text(%q(
 The use of these three prepositions is fairly intuitively clear to English speakers
@@ -318,24 +322,21 @@ example('iliad 18.96',%q(
 [My son, it is indeed not long until you meet your fate,] for soon after Hector yours will be at hand.
 ))
 
-%>
-
-<%
-
 section('Use of ἐπί')
 
-%>
-
+text(%q(
 Overview:
+))
 
+table(%q(
 \begin{tabular}{lp{100mm}}
 ἐπί + gen. & in the time of \\
 ἐπί + acc. & until, during \\
 ἐπί + dat. & punctual: ``for this day,'' ``by night''\\
 ἐπί + dat. & limitative: (1) same as without the preposition; (2) emphasizing multiple events within a fixed time
 \end{tabular}
+))
 
-<%
 text(%q(
 Unlike διά, εἰς, and μετά, which govern the accusative in expressions of time,
 the preposition ἐπί can be applied to expressions of time in all three of the oblique cases.
@@ -383,16 +384,12 @@ example('odyssey 12.105',%q(
 three times per day [describing Charybdis]
 ))
 
-%>
-
-<%
-
 section("Rare usages of pronouns")
 
-text(%q(
-ὑπό + acc.: Iliad 22.102, during\\
-ἀνὰ + acc.: Iliad 14.80, during\\
-ἐν + dat.: Iliad 2.471, placing a time expression within a time interval (``that time in spring'')\\
+lines(%q(
+ὑπό + acc.: Iliad 22.102, during
+ἀνὰ + acc.: Iliad 14.80, during
+ἐν + dat.: Iliad 2.471, placing a time expression within a time interval (``that time in spring'')
 πρό + gen.: before
 ))
 
