@@ -384,6 +384,11 @@ class IliadNotes
     'about_what'    => %q{ποτ'},
     'explain'       => %q{ποτέ, here meaning previously}
   }],
+  ["3.224" , {
+    'about_what'    => %q{οὐ ἀγασσάμεθα},
+    'explain'       => %q{Possibly ``were not offended by.'' This line's logic has confounded commentators.}
+    // https://www.textkit.com/greek-latin-forum/viewtopic.php?p=219668#p219668
+  }],
   ["3.242" , {
     'explain'       => %q{It's difficult to follow Helen's logic, since she has other kinsmen who find it honorable to fight in the Trojan war, nor would it make sense for Castor and Pollux to travel so far only to spend nine years hanging back from the fighting.}
   }],

@@ -73,10 +73,24 @@ def subsection(h)
   print s+"\n"
 end
 
-def text(s)
+def text(s,keep_line_breaks:false)
   foreign_genos,db,treebank,format,iliad,odyssey = $globals
-  if format=='txt' || format=='bbcode' then s=Spew.reparagraph(s) end
+  if keep_line_breaks then
+    if format=='tex' then 
+      # Replace single newline with \\. Don't do this with paragraph breaks, which is a semantic error.
+      s = s.sub(/\A\s+/,'') # a leading \\ on  a blank line is a latex error
+      s = s.gsub(/\n{2,}/,'__PARA__')
+      s = s.gsub(/\n/) {"\\\\\n"}
+      s = s.gsub(/__PARA__/,"\n\n")
+    end
+  else
+    if format=='txt' || format=='bbcode' then s=Spew.reparagraph(s) end
+  end
   print Spew.new(format,s).to_s+"\n"
+end
+
+def lines(s)
+  text(s,keep_line_breaks:true)
 end
 
 %>
@@ -110,34 +124,37 @@ These cases and prepositions are applied to nouns --- sometimes special-purpose 
 as in ``the time of the first men,'' but more often to nouns that refer directly to time:
 ))
 
-%>
-
-nouns:\\
-ἦμαρ - day (n., ἤματος); also ἡμέρη\\
-νύξ - night (f., νυκτός)\\
-ἠώς - dawn (f., ἠοῦς/ἠῶθι)\\
-μήν - month (m., μηνός)\\
-χειμών - winter, winter storm, stormy weather\\
-ὀπώρη - late summer, harvest time (f., ὀπώρης)\\
-ἔτος - year (n., ἔτεος)\\
-ἐνιαυτός - the year considered as a cycle of time\\
-ὥρη - season, time\\
+lines(%q(
+nouns:
+ἦμαρ - day (n., ἤματος); also ἡμέρη
+νύξ - night (f., νυκτός)
+ἠώς - dawn (f., ἠοῦς/ἠῶθι)
+μήν - month (m., μηνός)
+χειμών - winter, winter storm, stormy weather
+ὀπώρη - late summer, harvest time (f., ὀπώρης)
+ἔτος - year (n., ἔτεος)
+ἐνιαυτός - the year considered as a cycle of time
+ὥρη - season, time
 χρόνον - time (m, only the singular accusative used in Homer)
 
-adjectives:\\
-εἰαρινός - vernal\\
-ἐννῆμαρ - nine days \\
+adjectives:
+εἰαρινός - vernal
+ἐννῆμαρ - nine days 
 πανῆμαρ - all day
 
 adverbs:
-εἰνάετες - for nine years\\
+εἰνάετες - for nine years
 εἰνάνυχες - for nine nights
 
-πότε - when?\\
-ποτέ - at some time, ``in former times,'' ``someday;'' (negative) ever\\
-τότε - then, at that time, and then\\
-ὅτε - when (relative pronoun)\\
+πότε - when?
+ποτέ - at some time, ``in former times,'' ``someday;'' (negative) ever
+τότε - then, at that time, and then
+ὅτε - when (relative pronoun)
 ὁπότε - whenever
+))
+
+%>
+
 
 <%
 
