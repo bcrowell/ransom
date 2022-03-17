@@ -376,6 +376,14 @@ class IliadNotes
     'about_what'    => %q{κυνώπιδος},
     'explain'       => %q{Referring to herself. The genitive -ος for adjectives in -ης applies to all three genders (paradigm ἀληθής).}
   }],
+  ["3.201" , {
+    'about_what'    => %q{κραναῆς περ ἐούσης},
+    'explain'       => %q{Ithaka nurtured him despite being barren.}
+  }],
+  ["3.205" , {
+    'about_what'    => %q{ποτ'},
+    'explain'       => %q{ποτέ, here meaning previously}
+  }],
   ["3.242" , {
     'explain'       => %q{It's difficult to follow Helen's logic, since she has other kinsmen who find it honorable to fight in the Trojan war, nor would it make sense for Castor and Pollux to travel so far only to spend nine years hanging back from the fighting.}
   }],

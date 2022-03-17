@@ -88,6 +88,7 @@ module Verb_difficulty
       ["φάσθαι","φημί","v--pne---",true],
       ["ἄνασσε","ἀνάσσω","v3siia---",false],
       ["ἐρυσσάμενος","ἐρύω","v-sapmmn-",false],
+      ["ηὔδα","αὐδάω","v3siia---",true],
     ]
     results = []
     tests.each { |x|
@@ -167,6 +168,7 @@ end
       x += 0.10 if f.future_perfect 
       x += 0.05 if f.participle
     end
+    if ending=='' then x+=0.3 end # This is quite common for contracted forms like ηὔδα, and generally makes it pretty hard.
     if stem_from_lemma=~/δ$/ && stem_from_lemma_with_sigma=~/κσ$/ then x += 0.30 end
     threshold = 0.27
     return [x>threshold,x,threshold,{

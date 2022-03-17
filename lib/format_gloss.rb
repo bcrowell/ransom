@@ -98,10 +98,12 @@ def FormatGloss.assemble_helper(bilingual,format,items)
     if codes_1.include?(code) then s=items[code] else s='' end
     result = result.sub(/#{x}/,FormatGloss.mark_up_element(bilingual,code,s))
   end
+  result = result.sub(/,\s*$/,'') # trim trailing comma, space
   return result
 end
 
 def FormatGloss.mark_up_element(bilingual,type,s)
+  if s=='' && type!='f' then return '' end
   greek = bilingual.foreign.genos.greek
   if type=='b' then
     if greek then return Latex.envir('boldgreek',s) else return Latex.macro('textbf',s) end
