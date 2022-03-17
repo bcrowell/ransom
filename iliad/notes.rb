@@ -299,6 +299,10 @@ class IliadNotes
   ["2.494" , {
     'explain'       => %q{The catalog of the Achaean ships begins here and is followed at line 785 by some framing material and then a similar description of the Trojan forces.}
   }],
+  ["2.653" , {
+    'about_what'    => %q{ἠΰς},
+    'explain'       => %q{=ἐύς, good, brave}
+  }],
   ["2.802" , {
     'explain'       => %q{It appears that the Greek invasion forces all speak mutually intelligible dialects of Greek, while the Trojan armies speak a variety of other languages, probably Anatolian languages such as Luwian. When scenes are dramatized with the Trojan characters speaking Greek to the Greeks, it's probably a dramatic convention.}
   }],
@@ -368,6 +372,10 @@ class IliadNotes
     'about_what'    => %q{ὅς τις ὅδ᾽ ἐστὶν},
     'explain'       => %q{who he is, this; art+τις=relative pronoun}
   }],
+  ["3.167" , {
+    'about_what'    => %q{ἠΰς},
+    'explain'       => %q{=ἐύς, good, brave}
+  }],
   ["3.173" , {
     'about_what'    => %q{ὄφελεν ... ἁδεῖν},
     'explain'       => %q{Ὀφέλλω usually takes an infinitive, even when, as here, it means ``if only,'' so that we would expect an optative.}
@@ -387,10 +395,35 @@ class IliadNotes
   ["3.224" , {
     'about_what'    => %q{οὐ ἀγασσάμεθα},
     'explain'       => %q{Possibly ``were not offended by.'' This line's logic has confounded commentators.}
-    // https://www.textkit.com/greek-latin-forum/viewtopic.php?p=219668#p219668
+    # https://www.textkit.com/greek-latin-forum/viewtopic.php?p=219668#p219668
+  }],
+  ["3.226" , {
+    'about_what'    => %q{ἠΰς},
+    'explain'       => %q{=ἐύς, good, brave}
+  }],
+  ["3.229" , {
+    'about_what'    => %q{ἕρκος},
+    'explain'       => %q{figurative, Ajax as a bulwark}
+  }],
+  ["3.237" , {
+    'about_what'    => %q{Πολυδεύκης},
+    'explain'       => %q{Pollux (accusative -εα)}
+  }],
+  ["3.238" , {
+    'about_what'    => %q{μήτηρ},
+    'explain'       => %q{Leda}
   }],
   ["3.242" , {
     'explain'       => %q{It's difficult to follow Helen's logic, since she has other kinsmen who find it honorable to fight in the Trojan war, nor would it make sense for Castor and Pollux to travel so far only to spend nine years hanging back from the fighting.}
+  }],
+  ["3.250" , {
+    'about_what'    => %q{Λαομεδοντιάδη},
+    'explain'       => %q{Priam}
+  }],
+  ["3.252" , {
+    'about_what'    => %q{τάμητε},
+    'explain'       => %q{Different manuscripts have various forms of the verb here. Τάμητε is 2pl, so the herald is shifting from addressing Priam to expressing a wish for both sides to do something. The meaning is ``cut a deal,'' or ``carve out a deal.''}
+    # https://archive.org/details/firstsixbooksofh01home/page/266/mode/2up
   }],
   ["3.347" , {
     'about_what'    => %q{ἀσπίδα πάντοσε ἴσην},

@@ -55,7 +55,7 @@ class TreeBank
     return nil unless line=~/[[:alpha:]]/
     line.sub!(/\n/,'')
     a = line.split(/,/)
-    if a.length!=7 then die("csv has wrong length, line=#{line}") end
+    if a.length!=7 then die("csv has wrong length, line=#{line}; this may occur if the line_index file hasn't been updated after editing the csv (ruby to_db.rb homer)") end
     return a
   end
 

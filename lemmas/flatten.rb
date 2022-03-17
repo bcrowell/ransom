@@ -7,10 +7,13 @@ def die(message)
 end
 
 def patch(a)
+  inflected = a[3]
+  lemma = a[4]
   # iliad,8,529,φυλάξομεν,φυλάζω,,v1pfia---
   # This should be φυλάσσω. (φυλάζω is a different verb with a meaning that doesn't make sense here.)
   # https://github.com/PerseusDL/treebank_data/issues/33
-  if a[3]=='φυλάξομεν' && a[0]=='iliad' then a[4]='φυλάσσω' end
+  if inflected=='φυλάξομεν' && a[0]=='iliad' then a[4]='φυλάσσω' end
+  if lemma=='Ἀί' then a[4]='Ἄϊδος' end
   return a
 end
 

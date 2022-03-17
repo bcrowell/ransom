@@ -98,11 +98,11 @@ def table(s)
   if format=='tex' then 
     lines(s)
   else
-    s = s.gsub(/&/,'')  
+    s = s.gsub(/&/,'    ')  
     s = s.gsub(/(\\){2,}\s*$/,'')
     s = s.gsub(/.*\\(begin|end){tabular}.*/,'')
     s = s.gsub(/^(.*)/) {"  "+$1} # indent
-    print s
+    print Spew.new(format,s).pre.to_s
   end
 end
 
@@ -121,20 +121,20 @@ end
 <%
 
 text(%q(
-Homer had a bristling poetic arsenal to aim at the human experience of
-time, built around a set of cases inherited from Indo European. These were used either alone
-or in combination with a set of prepositions, for a maximum of variety and expression.
+The Homeric language's resources for talking about time are
+built on a set of cases inherited from Indo European. These were used either alone
+or in combination with a set of prepositions.
 The ancestral case system was inherently simple and logical as applied to time, and remained so in Homer's
 dialect; later usage became more complicated and irregular, so that when grammars
-give oversimplified descriptions of temporal language in Attic and Koine, they are
+give oversimplified descriptions of time talk in Attic and koine, they are
 actually presenting something more like the Homeric system.\cite{George-time}
 ))
 
 section('Vocabulary')
 
 text(%q(
-These cases and prepositions are applied to nouns --- sometimes special-purpose nouns,
-as in ``the time of the first men,'' but more often to nouns that refer directly to time:
+These cases and prepositions are applied to nouns --- sometimes in bespoke phrases,
+such as ``the time of the first men,'' but more often to nouns that refer directly to time:
 ))
 
 lines(%q(
@@ -209,7 +209,7 @@ staying there with us <for a whole year>
 subsection('Genitive: descriptive')
 
 text(%q(
-This usage is like the durative except that the fact that the noun is not a unit used for measuring time.
+This usage is like the durative except that the noun is not a unit used for measuring time.
 The time period is only described, not measured.
 ))
 
@@ -225,7 +225,7 @@ there is an emphasis on the completion of the action by the end of the time peri
 ))
 
 example('iliad 6.422',%q(
-who all went to Hades <in one and the same day>
+who both went to Hades <in one and the same day>
 ))
 
 text(%q(
@@ -350,7 +350,7 @@ cholera,'' or, with less semantic similarity, ``once upon a time.''
 ))
 
 example('iliad 5.637',%q(
-[Lyingly they say that you were born to Zeus, for you are wanting compared to many men] who were born to zeus, in the days of the first men.
+[Lyingly they say that you were born to Zeus, for you are wanting compared to many men] who were born to Zeus, in the days of the first men.
 ))
 
 text(%q(
@@ -420,7 +420,7 @@ The aged Priam dates himself by recalling the war with the Amazons.
 ))
 
 text(%q(
-  References: \cite{George-time}, \cite{Chantraine}, \cite{Monro}.
+  References: \cite{George-time}, \cite{Chantraine}, \cite{Monro}, \cite{Papathanassiou}.
 ))
 
 %>
