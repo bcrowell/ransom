@@ -88,7 +88,8 @@ module Verb_difficulty
       ["φάσθαι","φημί","v--pne---",true],
       ["ἄνασσε","ἀνάσσω","v3siia---",false],
       ["ἐρυσσάμενος","ἐρύω","v-sapmmn-",false],
-      ["ηὔδα","αὐδάω","v3siia---",true],
+      ["ηὔδα","αὐδάω","v3siia---",true], # contracted form, gets rated hard because ending is not recognized
+      ["εἵη","ἵημι","v3saoa---",true],
     ]
     results = []
     tests.each { |x|
@@ -382,13 +383,15 @@ class Vform
     return self.to_s_fancy()
   end
 
-  def to_s_fancy(tex:false,relative_to_lemma:nil,omit_easy_number_and_person:false,omit_voice:false)
+  def to_s_fancy(tex:false,relative_to_lemma:nil,omit_easy_number_and_person:false,omit_voice:false,verbosity:0)
+    # Sometimes we get a form, usually a contracted one like ὁρῶ, that is not at all obvious but results in no output; in those cases
+    # we recurse with a higher verbosity level.
     if !(relative_to_lemma).nil? then f_lemma = self.make_lemma(relative_to_lemma) else f_lemma=nil end
     result = []
     if !(self.participle || self.infinitive) then
       x = self.person.to_s+({'s'=>'s','p'=>'pl','d'=>'dual'}[self.number])
       easy_number_and_person = []
-      if omit_easy_number_and_person then
+      if omit_easy_number_and_person && verbosity<1 then
         if self.imperative then
           x.sub!(/2/,'')
           easy_number_and_person=['s']
@@ -399,15 +402,24 @@ class Vform
       end
       result.push(x) unless omit_easy_number_and_person && easy_number_and_person.include?(x)
     end
-    if !self.present then result.push({'i'=>'impf.','r'=>'pf.','l'=>'plupf.','t'=>'fut. perf.','f'=>'fut.','a'=>'aor.'}[self.tense]) end
-    if !self.indicative then result.push({'s'=>'subj.','o'=>'opt.','n'=>'inf.','m'=>'impv.','p'=>'ppl.'}[@mood]) end
-    unless omit_voice then # usually obvious by looking at an inflected form that it's either active or some variety of mp
-      if (f_lemma.nil? && !(self.active)) || (!(f_lemma.nil?) && self.active!=f_lemma.active) then
+    if !self.present || verbosity>=1 then
+      result.push({'p'=>'pres.','i'=>'impf.','r'=>'pf.','l'=>'plupf.','t'=>'fut. perf.','f'=>'fut.','a'=>'aor.'}[self.tense])
+    end
+    if !self.indicative || verbosity>=2 then
+      result.push({'i'=>'ind.','s'=>'subj.','o'=>'opt.','n'=>'inf.','m'=>'impv.','p'=>'ppl.'}[@mood])
+    end
+    unless omit_voice && verbosity<1 then # usually obvious by looking at an inflected form that it's either active or some variety of mp
+      if (f_lemma.nil? && !(self.active)) || (!(f_lemma.nil?) && self.active!=f_lemma.active) || verbosity>=2 then
         result.push({'a'=>'act.','p'=>'pass.','m'=>'mid.','e'=>'mp'}[@voice])
       end
     end
     if self.participle then result.push(describe_declension(self.get_perseus_tag,tex)[0]) end
     # part mp nom. pl. nom.
+    if result.length==0 && verbosity<2 then
+      # recurse with a higher verbosity in an effort to get some helpful output
+      return self.to_s_fancy(tex:tex,relative_to_lemma:relative_to_lemma,omit_easy_number_and_person:omit_easy_number_and_person,
+                   omit_voice:omit_voice,verbosity:verbosity+1)
+    end
     s = result.join(' ')
     if tex then s = s.gsub(/\. /,'.~') end
     return s
