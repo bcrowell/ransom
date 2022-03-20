@@ -1,9 +1,9 @@
 class VocabPage
 
-def VocabPage.helper(bilingual,genos,db,wikt,core,treebank,freq,notes,vocab_by_chapter,start_chapter,ch)
+def VocabPage.helper(bilingual,context,genos,db,wikt,core,treebank,freq,notes,vocab_by_chapter,start_chapter,ch)
   # Doesn't get called if if_prose_trial_run is set.
   core = core.map { |x| remove_accents(x).downcase }
-  vl = Vlist.from_text(bilingual.foreign_text,treebank,freq,genos,db,wikt,core:core, \
+  vl = Vlist.from_text(bilingual.foreign_text,context,treebank,freq,genos,db,wikt,core:core, \
                exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
   if !ch.nil? then
     if !(start_chapter.nil?) then vocab_by_chapter[ch] = [] end

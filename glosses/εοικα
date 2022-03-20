@@ -4,6 +4,7 @@
   "word":"ἔοικα",
   "short":"seem",
   "medium":"seem like (+dat), seem likely (+inf), beseem",
-  "notes":"The perfect is used as the present."
+  "notes":"The perfect is used as the present. It marks the verb as intransitive, which is why the accusative is not used.",
+  "mnemonic_cog":"icon"
 }
       

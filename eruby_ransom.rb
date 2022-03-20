@@ -28,21 +28,21 @@ require_relative "greek/load_common"
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
 
 
-def four_page_layout(stuff,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
+def four_page_layout(stuff,context,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false)
   # Doesn't get called if if_prose_trial_run is set.
   # The parameter wikt should be a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated,
   # and only a brief warning will be printed to stderr.
   treebank,freq,greek,translation,notes,core = stuff
   return if dry_run
-  print_four_page_layout(stuff,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter)
+  print_four_page_layout(stuff,context,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter)
 end
 
-def print_four_page_layout(stuff,genos,db,wikt,bilingual,next_layout,vocab_by_chapter,start_chapter)  
+def print_four_page_layout(stuff,context,genos,db,wikt,bilingual,next_layout,vocab_by_chapter,start_chapter)  
   # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
   # doesn't get called if if_prose_trial_run is set
   treebank,freq,greek,translation,notes,core = stuff
   ch = bilingual.foreign_ch1
-  core,vl,vocab_by_chapter = VocabPage.helper(bilingual,genos,db,wikt,core,treebank,freq,notes,vocab_by_chapter,start_chapter,ch)
+  core,vl,vocab_by_chapter = VocabPage.helper(bilingual,context,genos,db,wikt,core,treebank,freq,notes,vocab_by_chapter,start_chapter,ch)
   if bilingual.foreign_ch1!=bilingual.foreign_ch2 then
     # This should only happen in the case where reference 2 is to the very first line of the next book.
     if !(bilingual.foreign_hr2[1]<=5 && bilingual.foreign_hr2[0]==bilingual.foreign_hr1[0]+1) then

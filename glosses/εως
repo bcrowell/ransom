@@ -1,7 +1,8 @@
 // https://en.wiktionary.org/wiki/ἕως https://logeion.uchicago.edu/ἕως
 // for a time, like τέως (téōs)
 {
-  "word":"ἕως",
+  "word":"ἧος",
+  "perseus":"ἕως",
   "medium":"for a time",
   "long":"for a time, like τέως"
 }

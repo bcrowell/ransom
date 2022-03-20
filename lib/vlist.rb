@@ -41,7 +41,7 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil,if_texify_quotes:true)
+def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil,if_texify_quotes:true)
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
   # The frequency list is optional; if not using one, then set freq to nil. The main use of it is that if the
   # glossary would be too long, we delete the most common words to cut it down to an appropriate length. If no frequency
@@ -86,7 +86,8 @@ def Vlist.from_text(t,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_
     if if_ambiguous then
       sadness,ii = LemmaUtil.disambiguate_lemmatization(word,ambig)
       if sadness>0 then
-        warn_ambig[word]= "warning(vlist): lemma for #{word} is ambiguous, sadness=#{sadness}, taking most common one; #{ambig}"
+        warn_ambig[word]= "warning(vlist): page=#{context}, lemma for #{word} is ambiguous, sadness=#{sadness}, taking most common one; #{ambig}"
+        # context is chapter and line number of first line on the page
         lemma,lemma_number,pos,count,if_ambiguous = ambig[ii]
       end
     end

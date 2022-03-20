@@ -220,7 +220,8 @@ layouts = []
 0.upto(breaks.length-2) { |i|
   bilingual,starting_ch,dry_run = layouts[i]
   if i<breaks.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
-  four_page_layout(stuff,greek.genos,db,greek_wikt,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run)
+  context = breaks[i][0] # ch and line number of start of page, for reporting in warnings
+  four_page_layout(stuff,context,greek.genos,db,greek_wikt,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run)
 }
 ch_range[0].upto(ch_range[1]) { |ch|
   filename = sprintf("vocab_ch_%02d.txt",ch)

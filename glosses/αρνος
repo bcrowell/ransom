@@ -5,7 +5,9 @@
   "perseus":"ἀρνός",
   "genitive":"ἀρνός",
   "gender":"m",
-  "medium":"lamb, sheep",
-  "notes":"3rd declension. The singular nom. ἀρήν does not actually occur in Homer, and Cunliffe lemmatizes it under the accusative ἄρνα. Project Perseus lemmatizes it under the genitive ἀρνός."
+  "short":"lamb; wool",
+  "medium":"lamb, sheep; wool",
+  "notes":"3rd declension. The singular nom. ἀρήν does not actually occur in Homer, and Cunliffe lemmatizes it under the accusative ἄρνα. Project Perseus lemmatizes it under the genitive ἀρνός.",
+  "cog":"French brebis"
 }
       

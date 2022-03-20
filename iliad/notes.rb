@@ -88,6 +88,10 @@ class IliadNotes
     'explain'       => %q{ἀπὸ is an adverb modifying ἡμῖν, not a preposition modifying λοιγὸν},
     'cite'          => "Anthon, p. 141"
   }],
+  ["1.71" , {
+    'about_what'    => %q{Ἴλιον},
+    'explain'       => %q{The city, as opposed to Τροίη, the whole land.}
+  }],
   ["1.80" , {
     'about_what'    => %q{κρείσσων ... βασιλεὺς ... ὅτε χώσεται},
     'explain'       => %q{As often in statements of general truths, the sentence has no verb, but merely equates one nominal phrase to another, without the need for ἐστί.}
@@ -394,7 +398,7 @@ class IliadNotes
   }],
   ["3.224" , {
     'about_what'    => %q{οὐ ἀγασσάμεθα},
-    'explain'       => %q{Possibly ``were not offended by.'' This line's logic has confounded commentators.}
+    'explain'       => %q{Were not offended by}
     # https://www.textkit.com/greek-latin-forum/viewtopic.php?p=219668#p219668
   }],
   ["3.226" , {
@@ -425,6 +429,30 @@ class IliadNotes
     'explain'       => %q{Different manuscripts have various forms of the verb here. Τάμητε is 2pl, so the herald is shifting from addressing Priam to expressing a wish for both sides to do something. The meaning is ``cut a deal,'' or ``carve out a deal.''}
     # https://archive.org/details/firstsixbooksofh01home/page/266/mode/2up
   }],
+  ["3.261" , {
+    'about_what'    => %q{ἂν},
+    'explain'       => %q{=ἄνα}
+  }],
+  ["3.268" , {
+    'about_what'    => %q{ἂν},
+    'explain'       => %q{=ἄνα}
+  }],
+  ["3.276" , {
+    'about_what'    => %q{Ἴδηθεν μεδέων},
+    'explain'       => %q{Ruling from Mount Ida. A reference to his shrine on the Mount Ida in Troy. Zeus has multiple dwellings, including one on the other Mount Ida, on Crete.}
+  }],
+  ["3.287" , {
+    'explain'       => %q{This obscure line may be saying that among future people the payments will be a precedent, be remembered, or enrich them.}
+    # https://archive.org/details/firstsixbooksofh01home/page/269/mode/1up
+  }],
+  ["3.306" , {
+    'about_what'    => %q{οὐ τλήσομαι},
+    'explain'       => %q{Τλάω can mean either to carry a burden or, as here, to accept one.}
+  }],
+  ["3.319" , {
+    'about_what'    => %q{τις ...},
+    'explain'       => %q{Someone from among ...}
+  }],
   ["3.347" , {
     'about_what'    => %q{ἀσπίδα πάντοσε ἴσην},
     'explain'       => %q{the round shield (a circle, equal in all directions)}
@@ -432,6 +460,10 @@ class IliadNotes
   ["3.351" , {
     'about_what'    => %q{τίσασθαι},
     'explain'       => %q{be avenged (lit.~to pay for myself)}
+  }],
+  ["4.27" , {
+    'about_what'    => %q{ἵπποι},
+    'explain'       => %q{her horses, which evidently took her around on her mission to spread war}
   }],
   ["4.185" , {
     'about_what'    => %q{καιρίῳ},

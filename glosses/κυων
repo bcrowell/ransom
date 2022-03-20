@@ -1,6 +1,6 @@
 {
-  "medium": "dog",
-  "word": "κύων",
+  "word":"κύων",
+  "medium":"dog",
   "mnemonic_cog":"hound",
-  "cog": "hound"
+  "cog":"hound"
 }
