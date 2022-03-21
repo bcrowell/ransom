@@ -2,6 +2,7 @@
 # Functions:
 #   lemmatize a given word
 #   access POS analysis given line number in the text
+#   lemmatize a word with extra disambguation based on line number in text
 
 class TreeBank
   def initialize(corpus)
@@ -21,6 +22,50 @@ class TreeBank
     end
   end
   attr_reader :lemmas,:lemmas_file,:pos_file
+
+  def get_lemma_and_pos_by_line(word,genos,db,loc)
+    # This is slow but typically very precise. In most cases, we should do the following:
+    #   treebank.word_to_lemma_entry(word) ... fast lookup table, works when an inflected form has a unique lemmatization and POS, which is almost always
+    #   LemmaUtil.disambiguate_lemmatization ... resolves ambiguities we don't care about if we don't care about POS (e.g., αἴξ, common gender)
+    #   this routine ... should work unless the treebank's text isn't the same as our text
+    # loc = [text,ch,line_number,approx_word_index]
+    # Approx_word_index is the approximate 0-based array index of the word within the line. This will in general have to be approximate, because
+    # there is no guarantee that the treebank's text matches the one I'm using, e.g., treebank splits ουδέ into two words.
+    # Returns [a,misc]. A is an array, which will be a singleton array unless the same word appears twice on a line and neither matches approx_word_index.
+    # Each element of a is [lemma,pos,word_index]. If there is an error, returns an empty array for a and error info in misc.
+    # If you don't care about the level of precision given by the word index, give -1 for approx_word_index.
+    # When using the result, the normal thing to do is to check if a is empty, and if not, use the first element.
+    # If there are matches to word but none that match approx_word_index, returns all word matches, sorted by distance from approx_word_index.
+    # This is meant for use in constructing vocab lists, where it is optional and almost never needed for disambiguation. Therefore it's designed
+    # to fail or degrade gracefully in most cases.
+    # FIXME: This will fail with a mysterious-looking error if the csv file has been modified but @pos_file hasn't been updated.
+    text,book,line_number,approx_word_index = loc
+    raise "illegal types for inputs" unless book.class==1.class && line_number.class==1.class
+    if !File.exist?(@pos_file) then raise "file #{@pos_file} does not exist; generate it using the makefile in the lemmas subdirectory" end
+    result = []
+    line_index_key = "#{text},#{book},#{line_number}"
+    File.open(@pos_file,'r') { |f|
+      if !(@pos_index.has_key?(line_index_key)) then return [[],{'message'=>"line index #{line_index_key} not found"}] end
+      f.seek(@pos_index[line_index_key]) # works only because position is guaranteed to be at a utf8 character boundary
+      word_index = 0
+      while true
+        line = f.readline
+        a = TreeBank.parse_csv_helper(line)
+        next if a.nil?
+        this_text,this_book,this_line,word_in_text,lemma,lemma_number,pos = a
+        break unless this_text==text && this_book.to_i==book && this_line.to_i==line_number
+        next unless word_in_text=~/[[:alpha:]]/
+        word_index += 1
+        next unless word_in_text.downcase==word.downcase
+        result.push([lemma,pos,word_index-1])
+      end
+    }
+    if result.length==0 then return [[],{'message'=>"no matches to #{word} at line index #{line_index_key}"}] end
+    result = result.sort_by { |x| (x[2]-approx_word_index).abs}
+    precise = result.select { |x| x[2]==approx_word_index }
+    if precise.length>0 then result=precise end
+    return [result,{}]
+  end
 
   def get_line(genos,db,text,book,line_number,interlinear:false)
     # returns an array of Word objects

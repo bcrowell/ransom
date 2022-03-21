@@ -47,6 +47,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
   # glossary would be too long, we delete the most common words to cut it down to an appropriate length. If no frequency
   # list is given, then the choice of which words to cut is random/undefined.
   # The wikt argument is a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated.
+  # The context argument should be a hash with keys 'ch','line', and 'text', where 'line' is the first line number on the page.
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -68,27 +69,61 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
   threshold = thresholds[2] # words ranked higher than this are listed as common
   threshold2 = thresholds[3] # words ranked lower than this get ransom notes
 
+  # Split into lines, then into words tagged according to what line they're on. The line number data is semi-optional, only needed in order
+  # to more reliably disambiguate a few percent of lemmatizations using the treebank. It will be wrong if the page spans chapters.
+  a = t.split(/(\s*\n\s*)/) # even indices are lines, odds are delimiters
+  lines = []
+  0.upto(a.length-1) { |i|
+    if i%2==0 && a[i]=~/[[:alpha:]]/ then lines.push(a[i]) end
+  }
+  words = []
+  0.upto(lines.length-1) { |line_number_offset|
+    line = lines[line_number_offset]
+    word_index = 0
+    line.scan(/[^\s—]+/).each { |word_raw|
+      word = word_raw.gsub(/[^[:alpha:]᾽']/,'') # word_raw is pretty useless, may e.g. have a comma on the end
+      next unless word=~/[[:alpha:]]/
+      words.push([word,[context['text'],context['ch'],context['line']+line_number_offset,word_index],word_raw])
+      word_index += 1
+    }
+  }
+
   result = []
   did_lemma = {}
   warn_ambig = {}
-  t.scan(/[^\s—]+/).each { |word_raw|
-    word = word_raw.gsub(/[^[:alpha:]᾽']/,'') # word_raw is mostly useless, may e.g. have a comma on the end; may also contain elision mark
-    next unless word=~/[[:alpha:]]/
+  words.each { |x|
+    word,loc,word_raw = x
     lemma_entry = treebank.word_to_lemma_entry(word)
     elision = genos.greek && contains_greek_elision(word_raw)
     # ... elision produces so much ambiguity that we aren't going to try to gloss elided forms; if I was going to do improve this, I would
     #     need to stop filtering out elided forms when constructing the csv file, and implement disambiguation based on the line-by-line treebank data
     ουδε_μηδε = genos.greek && ["ουδε","μηδε"].include?(remove_accents(word))
-    # ... I don't understand why, but these seem to occur in Perseus treebank only as lemmas, never as inflected forms, although they are in the text.
+    # ... These occur in Perseus treebank only as lemmas, never as inflected forms, although they are in the text. This seems to be because
+    #     they split them into two words, e.g., at Iliad 1.124...? Confusing, haven't puzzled it out.
     do_not_try = (elision || ουδε_μηδε)
     if lemma_entry.nil? && !do_not_try then whine.push("error(vlist): no index entry for #{word}, raw=#{word_raw}"); next end
     lemma,lemma_number,pos,count,if_ambiguous,ambig = lemma_entry
     if if_ambiguous then
-      sadness,ii = LemmaUtil.disambiguate_lemmatization(word,ambig)
-      if sadness>0 then
-        warn_ambig[word]= "warning(vlist): page=#{context}, lemma for #{word} is ambiguous, sadness=#{sadness}, taking most common one; #{ambig}"
-        # context is chapter and line number of first line on the page
-        lemma,lemma_number,pos,count,if_ambiguous = ambig[ii]
+      sadness,garbage = LemmaUtil.disambiguate_lemmatization(word,ambig)
+      if sadness>=5 then # either the lemma is in doubt or there is a big enough ambiguity in the POS that we might care
+        a,misc = treebank.get_lemma_and_pos_by_line(word,genos,db,loc)
+        if a.length==0 then
+          warn_ambig[word] = \
+              "warning(vlist): text,ch,line,word=#{loc}, lemma for #{word} is ambiguous, unable to resolve using line-by-line treebank data??\n" + \
+              "  taking most common one: ambig=#{ambig}"
+        else
+          # typical a=[["πρῶτος", "a-p---na-", 2]], where 3rd element is word index
+          lemma2,pos2,garbage = a[0] # FIXME: what is lemma_number, and how do I set it correctly now?
+          if lemma2!=lemma || pos2!=pos then
+            #warn_ambig[word] = "improved disambig of lemma, text,ch,line,word=#{loc}, word=#{word}, lemma changed from #{lemma} to #{lemma2}, pos from #{pos} to #{pos2}" # qwe
+            lemma,pos = [lemma2,pos2]
+          end
+          if a.length>1 then
+            warn_ambig[word] = \
+              "warning(vlist): text,ch,line,word=#{loc}, lemma for #{word} is ambiguous, unable to resolve using line-by-line treebank data??\n" + \
+              "  taking the closest one on the line: #{a}"
+          end
+        end
       end
     end
     if lemma.nil? then

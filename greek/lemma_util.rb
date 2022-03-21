@@ -22,11 +22,12 @@ def LemmaUtil.disambiguate_lemmatization(word,ambig)
   # E.g., ambig=[["αἴξ", "", "n-p---mg-", 14], ["αἴξ", "", "n-p---fg-", 7]] because αἴξ has common gender.
   # This routine tries to determine whether it's one of those cases or not, doing the best it can without actually
   # knowing the POS analysis of word.
+  # If this routine fails, then we can try instead using treebank.get_lemma_and_pos_by_line(), which is slower, normally more precise, but
+  # may not work if the treebank's text doesn't match the text we're using.
   # Returns [sadness,i].
-  # If disambiguation worked, sadness<=0 and i is an index into ambig that is as good as any other if all we want it the right dictionary entry.
-  # If it didn't work, sadness>0 and typically i=0, i.e., the best we can do is to pick the most frequent lemma.
-  # Currently we have no data that would allow us to pick a nonzero i, so really only sadness is of interest as a return value.
-  # In the future, could add inputs to this routine that would give treebank info for total disambiguation if necessary.
+  # If disambiguation worked, sadness<=0. If it didn't, then sadness>0.
+  # The i index is basically useless, is always 0. I intended it to be the best index into ambig to use, but this routine
+  # actually has no data that would allow it to determine that, so it always returns 0, which is the most frequent lemma.
   # Other typical examples:
   #  ἀπάνευθε -- [["ἀπάνευθε", "", "r--------", 20], ["ἀπάνευθε", "", "d--------", 15]]
   #    This happens because prepositions in the Homeric dialect haven't finished evolving from adverbs to prepositions.
