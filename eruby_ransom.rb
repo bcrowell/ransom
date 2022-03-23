@@ -185,12 +185,13 @@ def foreign_verse(treebank,db,bilingual,ransom,first_line_number,start_chapter,r
       line_hash = WhereAt.hash(hashable)
       w = words(lines[i])
       ww = w.map { |x| remove_accents(treebank.lemmatize(x)[0]).downcase} # if the lemmatizer fails, it just returns the original word
-      gg.each { |x|
+      gloss_these.each { |lemma|
+        x = remove_accents(lemma)
         if ww.include?(x) then # lemmatized version of line includes this rare lemma that we were asked to gloss
           j = ww.index(x)
           word = w[j] # original inflected form
           key = to_key(x)
-          entry = Gloss.get(db,x,prefer_length:0) # it doesn't matter whether inputs have accents
+          entry = Gloss.get(db,lemma,prefer_length:0) # use less ambiguous, accented form, for, e.g., ὦμος vs ὠμός
           if !(entry.nil?) then gloss=entry['gloss'] else gloss="??" end
           code = nil
           new_gloss_code = nil

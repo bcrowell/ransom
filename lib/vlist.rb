@@ -115,7 +115,6 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
           # typical a=[["πρῶτος", "a-p---na-", 2]], where 3rd element is word index
           lemma2,pos2,garbage = a[0] # FIXME: what is lemma_number, and how do I set it correctly now?
           if lemma2!=lemma || pos2!=pos then
-            #warn_ambig[word] = "improved disambig of lemma, text,ch,line,word=#{loc}, word=#{word}, lemma changed from #{lemma} to #{lemma2}, pos from #{pos} to #{pos2}" # qwe
             lemma,pos = [lemma2,pos2]
           end
           if a.length>1 then

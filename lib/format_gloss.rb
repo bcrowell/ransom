@@ -30,7 +30,6 @@ def FormatGloss.with_english(bilingual,db,stuff)
   has_mnemonic_cog = entry.has_key?('mnemonic_cog')
   # Generate latex:
   inflected = LemmaUtil.make_inflected_form_flavored_like_lemma(word)
-  if inflected=='ἑλὼν' then raise "word=#{word}, inflected=#{inflected}" end # qwe
   # FIXME: The explainer doesn't actually get printed for θᾶσσον ≺ ταχύς in Ilid 2.440.
   explained = gloss+FormatGloss.explainer_in_gloss(inflected,flags,data['pos'])
   items = {}
