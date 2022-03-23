@@ -2,7 +2,6 @@ class VocabPage
 
 def VocabPage.helper(bilingual,context,genos,db,wikt,core,treebank,freq,notes,vocab_by_chapter,start_chapter,ch)
   # Doesn't get called if if_prose_trial_run is set.
-  core = core.map { |x| remove_accents(x).downcase }
   vl = Vlist.from_text(bilingual.foreign_text,context,treebank,freq,genos,db,wikt,core:core, \
                exclude_glosses:list_exclude_glosses(bilingual.foreign_hr1,bilingual.foreign_hr2,notes))
   if !ch.nil? then
@@ -26,6 +25,7 @@ def VocabPage.make(bilingual,db,vl,core)
   tex +=  "\\end{vocabpage}\n"
   v = vl.list.map { |l| l.map{ |entry| entry[1] } }
   result = {'tex'=>tex,'file_lists'=>v}
+  return result
 end
 
 def VocabPage.make_helper(bilingual,db,commonness,vl,lo,hi,core)
@@ -47,7 +47,7 @@ def VocabPage.make_helper(bilingual,db,commonness,vl,lo,hi,core)
       difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lexical,pos)[0])
       Debug.print(debug && is_verb) {"... 200 #{word} #{lexical} #{difficult_to_recognize} #{Verb_difficulty.guess(word,lexical,pos)[0]}"}
       data['difficult_to_recognize'] = difficult_to_recognize
-      data['core'] = core.include?(remove_accents(lexical).downcase)
+      data['core'] = core.include?(lexical)
       entry_type = nil
       file_under_lexical = true
       if !data['core'] then entry_type='gloss' end

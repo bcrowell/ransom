@@ -109,8 +109,11 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
         a,misc = treebank.get_lemma_and_pos_by_line(word,genos,db,loc)
         if a.length==0 then
           warn_ambig[word] = \
-              "warning(vlist): text,ch,line,word=#{loc}, lemma for #{word} is ambiguous, unable to resolve using line-by-line treebank data??\n" + \
+              "warning(vlist): text,ch,line,word=#{loc}, lemma for #{word} is ambiguous, unable to resolve using line-by-line treebank data\n" + \
               "  taking most common one: ambig=#{ambig}"
+          # This happens either when the Perseus text differs from the one I'm using, or when the Perseus data is missing POS data for a word.
+          # As an example of the latter, at Iliad 4.50, treebank 2.1 has blank lemma and POS for βοῶπις. This occurs for several other usages of
+          # βοῶπις, and also for some proper nouns and some other cases.
         else
           # typical a=[["πρῶτος", "a-p---na-", 2]], where 3rd element is word index
           lemma2,pos2,garbage = a[0] # FIXME: what is lemma_number, and how do I set it correctly now?
@@ -185,6 +188,8 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
     result.delete_at(kill_em)
   end  
 
+  debug = false # qwe
+
   gloss_help = []
   result2 = []
   ambig_warnings = []
@@ -204,6 +209,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
         # Without frequency data, no way to judge, so just arbitrarily put everything in class 2, rare. When we do
         # ransom-note glosses, we normally gloss everything in the rare category.
       end
+      if lemma=='ὠμός' then $stderr.print "*** lemma=#{lemma}, commonness=#{commonness}, final result for skip=#{skip}\n"; debug=true end # qwe
       next if skip
       key = remove_accents(lemma).downcase
       if !wikt.nil? && Gloss.get(db,lemma).nil? then gloss_help.push(GlossHelp.prep(wikt,key,lemma)) end # it's OK if this was done in a previous pass
@@ -228,6 +234,8 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
   end
   vl = Vlist.new(result2)
   if whine.length>0 then vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n" end
+
+  if debug then $stderr.print "-------- result2 at end of vlist constructor = #{result2}\n" end # qwe
 
   return vl
 end
