@@ -5,6 +5,7 @@
 load 'eruby_ransom.rb'
 
 author = "petronius"
+text = author
 treebank = TreeBank.new(author)
 foreign_genos = LatinGenos.new('classical')
 freq = Frequency.new("lemmas/classical_latin_freq.json")
@@ -118,8 +119,8 @@ else
   0.upto(layouts.length-1) { |i|
     bilingual,starting_ch,dry_run = layouts[i]
     if i<layouts.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
-    raise "FIXME: need new context variable passed to four_page_layout, as in iliad.rbtex"
-    four_page_layout(stuff,latin.genos,db,latin_wikt,bilingual,next_layout,vocab_by_chapter,dry_run:dry_run)
+    context = {'ch'=>starting_ch,'text'=>text} # This won't really be useful because we can't fill in a line number.
+    four_page_layout(stuff,context,latin.genos,db,latin_wikt,bilingual,next_layout,vocab_by_chapter,dry_run:dry_run)
   }
   1.upto(vocab_by_chapter.length-1) { |ch|
     filename = sprintf("vocab_ch_%02d.txt",ch)

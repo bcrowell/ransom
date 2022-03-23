@@ -48,6 +48,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
   # list is given, then the choice of which words to cut is random/undefined.
   # The wikt argument is a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated.
   # The context argument should be a hash with keys 'ch','line', and 'text', where 'line' is the first line number on the page.
+  # If the line key is absent, we can't make much use of this.
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -83,7 +84,12 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
     line.scan(/[^\s—]+/).each { |word_raw|
       word = word_raw.gsub(/[^[:alpha:]᾽']/,'') # word_raw is pretty useless, may e.g. have a comma on the end
       next unless word=~/[[:alpha:]]/
-      words.push([word,[context['text'],context['ch'],context['line']+line_number_offset,word_index],word_raw])
+      if context.has_key?('line') then
+        loc = [context['text'],context['ch'],context['line']+line_number_offset,word_index]
+      else
+        loc = nil
+      end
+      words.push([word,loc,word_raw])
       word_index += 1
     }
   }
@@ -105,7 +111,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
     lemma,lemma_number,pos,count,if_ambiguous,ambig = lemma_entry
     if if_ambiguous then
       sadness,garbage = LemmaUtil.disambiguate_lemmatization(word,ambig)
-      if sadness>=5 then # either the lemma is in doubt or there is a big enough ambiguity in the POS that we might care
+      if sadness>=5 && !loc.nil? then # either the lemma is in doubt or there is a big enough ambiguity in the POS that we might care
         a,misc = treebank.get_lemma_and_pos_by_line(word,genos,db,loc)
         if a.length==0 then
           warn_ambig[word] = \

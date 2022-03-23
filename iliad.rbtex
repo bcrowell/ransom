@@ -5,6 +5,7 @@
 load 'eruby_ransom.rb'
 
 author = "homer"
+text = 'iliad'
 treebank = TreeBank.new(author)
 freq = Frequency.new("lemmas/#{author}_freq.json")
 foreign_genos = GreekGenos.new('epic',is_verse:true)
@@ -221,7 +222,7 @@ layouts = []
   bilingual,starting_ch,dry_run = layouts[i]
   if i<breaks.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
   ch_line = breaks[i][0] # ch and line number of start of page, for disambiguation of lemmas and for reporting in warnings
-  context = {'ch'=>ch_line[0],'line'=>ch_line[1],'text'=>'iliad'} # FIXME: text shouldn't be hardcoded
+  context = {'ch'=>ch_line[0],'line'=>ch_line[1],'text'=>text}
   four_page_layout(stuff,context,greek.genos,db,greek_wikt,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run)
 }
 ch_range[0].upto(ch_range[1]) { |ch|
