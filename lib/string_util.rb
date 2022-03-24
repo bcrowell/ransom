@@ -388,7 +388,9 @@ end
 
 def standardize_greek_punctuation(s)
   # Works on any string, doesn't have to be a single word. Standardize elision character and middle dot/ano teleia.
-  # Elision:
+  # Perseus writes ρ with breathing mark instead of ρ᾽ when there's elision:
+  s = s.gsub(/([[:alpha:]])[ῤῥ](?![[:alpha:]])/) {$1+"ρ᾽"}
+  # Standardize the elision character:
   s = s.gsub(/[᾽’'](?![[:alpha:]])/,'᾽')
   # ... There are other possibilities (see comments in contains_greek_elision), but these should already have been taken care of in flatten.rb.
   s = s.gsub(/#{[183].pack('U')}/,[903].pack('U')) # ano teleia has two forms, B7=183 and 387=903; GFS Porson and Olga only have the latter code point
