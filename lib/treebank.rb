@@ -156,6 +156,7 @@ class TreeBank
   def word_to_lemma_entry(word)
     # This only handles the case where the word occurs as an inflected form of some lemma. If word is a lemma but never occurs
     # in the text (e.g., λύω in the Iliad), then this function returns nil.
+    word = standardize_greek_punctuation(word) # make sure the elision character being used is the right one
     if @lemmas.has_key?(word) then return @lemmas[word] end
     if @lemmas.has_key?(word.downcase) then return @lemmas[word.downcase] end
     return nil

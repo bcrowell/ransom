@@ -41,7 +41,8 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil,if_texify_quotes:true)
+def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil,if_texify_quotes:true,
+             include_elided_forms:true)
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
   # The frequency list is optional; if not using one, then set freq to nil. The main use of it is that if the
   # glossary would be too long, we delete the most common words to cut it down to an appropriate length. If no frequency
@@ -82,7 +83,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
     line = lines[line_number_offset]
     word_index = 0
     line.scan(/[^\s—]+/).each { |word_raw|
-      word = word_raw.gsub(/[^[:alpha:]᾽']/,'') # word_raw is pretty useless, may e.g. have a comma on the end
+      word = word_raw.gsub(/[^[:alpha:]᾽'’]/,'') # word_raw is pretty useless, may e.g. have a comma on the end
       next unless word=~/[[:alpha:]]/
       if context.has_key?('line') then
         loc = [context['text'],context['ch'],context['line']+line_number_offset,word_index]
@@ -101,12 +102,10 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
     word,loc,word_raw = x
     lemma_entry = treebank.word_to_lemma_entry(word)
     elision = genos.greek && contains_greek_elision(word_raw)
-    # ... elision produces so much ambiguity that we aren't going to try to gloss elided forms; if I was going to do improve this, I would
-    #     need to stop filtering out elided forms when constructing the csv file, and implement disambiguation based on the line-by-line treebank data
     ουδε_μηδε = genos.greek && ["ουδε","μηδε"].include?(remove_accents(word))
     # ... These occur in Perseus treebank only as lemmas, never as inflected forms, although they are in the text. This seems to be because
     #     they split them into two words, e.g., at Iliad 1.124...? Confusing, haven't puzzled it out.
-    do_not_try = (elision || ουδε_μηδε)
+    do_not_try = ((elision && !include_elided_forms) || ουδε_μηδε)
     if lemma_entry.nil? && !do_not_try then whine.push("error(vlist): no index entry for #{word}, raw=#{word_raw}"); next end
     lemma,lemma_number,pos,count,if_ambiguous,ambig = lemma_entry
     if if_ambiguous then
@@ -194,8 +193,6 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
     result.delete_at(kill_em)
   end  
 
-  debug = false # qwe
-
   gloss_help = []
   result2 = []
   ambig_warnings = []
@@ -215,7 +212,6 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
         # Without frequency data, no way to judge, so just arbitrarily put everything in class 2, rare. When we do
         # ransom-note glosses, we normally gloss everything in the rare category.
       end
-      if lemma=='ὠμός' then $stderr.print "*** lemma=#{lemma}, commonness=#{commonness}, final result for skip=#{skip}\n"; debug=true end # qwe
       next if skip
       key = remove_accents(lemma).downcase
       if !wikt.nil? && Gloss.get(db,lemma).nil? then gloss_help.push(GlossHelp.prep(wikt,key,lemma)) end # it's OK if this was done in a previous pass
@@ -240,8 +236,6 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
   end
   vl = Vlist.new(result2)
   if whine.length>0 then vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n" end
-
-  if debug then $stderr.print "-------- result2 at end of vlist constructor = #{result2}\n" end # qwe
 
   return vl
 end

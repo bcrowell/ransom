@@ -5,7 +5,7 @@
 load 'eruby_ransom.rb'
 
 author = "petronius"
-text = author
+text = "satyricon"
 treebank = TreeBank.new(author)
 foreign_genos = LatinGenos.new('classical')
 freq = Frequency.new("lemmas/classical_latin_freq.json")
