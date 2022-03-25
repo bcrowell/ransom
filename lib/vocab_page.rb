@@ -69,15 +69,21 @@ def VocabPage.make_helper(bilingual,db,commonness,vl,lo,hi,core)
     if ll.length>0 then
       this_sec = ''
       this_sec += "\\begin{#{envir}}\n"
-      ll.sort { |a,b| alpha_compare(a[4],b[4])}.each { |entry|
+      entries = []
+      ll.each { |entry|
+        file_under = entry[4] # may get modified below
         s = nil
-        if type=='gloss' then s=FormatGloss.with_english(bilingual,db,entry) end
+        if type=='gloss' then file_under,s=FormatGloss.with_english(bilingual,db,entry) end
         if type=='conjugation' || type=='declension' then s=FormatGloss.inflection(bilingual,entry) end
         if !(s.nil?) then
-          this_sec += standardize_greek_punctuation("#{s}\n")
+          s = standardize_greek_punctuation(s)
         else
           die("unrecognized vocab type: #{type}")
         end
+        entries.push([file_under,s])
+      }
+      entries.sort { |a,b| alpha_compare(a[0],b[0])}.each { |x|
+        this_sec += (x[1]+"\n")
       }
       this_sec += "\\end{#{envir}}\n"
       secs.push(this_sec)

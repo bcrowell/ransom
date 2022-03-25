@@ -1,9 +1,10 @@
 class FormatGloss
 
 def FormatGloss.with_english(bilingual,db,stuff)
-  file_under,word,lexical,data = stuff
+  # Returns [file_under,latex_code]. The file_under in stuff[0] is ignored, only we can determine it properly.
+  garbage_under,word,lexical,data = stuff
   entry = Gloss.get(db,lexical)
-  return if entry.nil?
+  return ['',nil] if entry.nil?
   preferred_lex = entry['word']
   # ...If there is a lexical form used in the database (such as Perseus), but we want some other form (such as Homeric), then
   #    preferred_lex will be different from the form inside stuff.
@@ -36,7 +37,8 @@ def FormatGloss.with_english(bilingual,db,stuff)
   if explain_inflection then items['b']=inflected; items['l']=preferred_lex else items['b']=preferred_lex end
   items['g'] = explained
   if has_mnemonic_cog then items['c']=entry['mnemonic_cog'] end
-  return FormatGloss.assemble(bilingual,items)+"\\\\\n"
+  file_under = items['b']
+  return [file_under,FormatGloss.assemble(bilingual,items)+"\\\\\n"]
 end
 
 def FormatGloss.inflection(bilingual,stuff)

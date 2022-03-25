@@ -14,7 +14,10 @@ def initialize(list)
   # However, as a convenience, the Vlist.from_text() initializer will try to supply missing glosses from
   # wiktionary and write them in a subdirectory.
   @list = list
-  list.each { |l| l.sort! { |a,b| alpha_compare(a[1],b[1]) } } # alphabetical order by lexical form
+  list.each { |l| l.sort! { |a,b| alpha_compare(a[1],b[1]) } }
+  # ... alphabetical order by lexical form; this may be altered later if the word will be presented as, e.g., "ἐρρίγῃσι ≺ ῥιγέω";
+  #     see logic involving the variable "file_under," which gets decided on and then revised in a couple of different places on the way to
+  #     assembling the vocab page
 end
 
 attr_reader :list
