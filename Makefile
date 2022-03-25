@@ -40,7 +40,7 @@ book_no_post: lib/*rb greek/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	# makes temp.pdf, which may be either the whole book or some portion, such as the first half of book 1
 	@rm -f warnings help_gloss/__links.html
 	@make figures # renders any figure whose pdf is older than its svg
-	@./fruby $(BOOK).rbtex '{$(GENERIC),"vol":"$(VOL)","clean":true}' >temp.tex
+	@./fruby $(BOOK).rbtex '{$(GENERIC),"vol":"$(VOL)","clean":true,"if_warn":true}' >temp.tex
 	xelatex temp
 	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK)-$(VOL).pdf ; true
 	@./fruby $(BOOK).rbtex '{$(GENERIC),"vol":"$(VOL)","write_pos":true}' >temp.tex
@@ -65,7 +65,7 @@ dry_run: export DRY_RUN=1
 dry_run: export FORMAT=whole
 dry_run: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@echo "checking that Epos globs are valid, doing sanity checks on their results..."
-	./fruby $(BOOK).rbtex '{$(GENERIC),"clean":true}' >$(BOOK).tex
+	./fruby $(BOOK).rbtex '{$(GENERIC),"clean":true,"if_warn":true}' >$(BOOK).tex
 
 # The following target creates pdf versions of the svg figures.
 # For this to work, the scripts in the scripts directory need to be executable.
@@ -134,7 +134,7 @@ demo: lib/*rb eruby_ransom.rb demo.rbtex
 	cp temp_demo.tex c.tex
 	xelatex temp_demo
 	./scripts/scrape_prose_layout.rb <demo.prose >demo.para
-	@./fruby demo.rbtex '{"pos_file":"demo.pos","clean":true}' >temp_demo.tex
+	@./fruby demo.rbtex '{"pos_file":"demo.pos","clean":true,"if_warn":true}' >temp_demo.tex
 	cp temp_demo.tex d.tex
 	xelatex temp_demo
 	[ "$(OVERWRITE)" = "1" ] && mv temp_demo.pdf demo.pdf ; true

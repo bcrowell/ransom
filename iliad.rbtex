@@ -223,7 +223,8 @@ layouts = []
   if i<breaks.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
   ch_line = breaks[i][0] # ch and line number of start of page, for disambiguation of lemmas and for reporting in warnings
   context = {'ch'=>ch_line[0],'line'=>ch_line[1],'text'=>text}
-  four_page_layout(stuff,context,greek.genos,db,greek_wikt,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run)
+  four_page_layout(stuff,context,greek.genos,db,greek_wikt,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run,
+                   if_warn:Options.if_warn())
 }
 ch_range[0].upto(ch_range[1]) { |ch|
   filename = sprintf("vocab_ch_%02d.txt",ch)

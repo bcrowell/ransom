@@ -42,7 +42,7 @@ def total_entries
 end
 
 def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil,if_texify_quotes:true,
-             include_elided_forms:true)
+             include_elided_forms:true,if_warn:true)
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
   # The frequency list is optional; if not using one, then set freq to nil. The main use of it is that if the
   # glossary would be too long, we delete the most common words to cut it down to an appropriate length. If no frequency
@@ -230,14 +230,14 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
     $stderr.print gloss_help_summary_info,"\n" if !gloss_help_summary_info.nil?
   end
   whine = whine + ambig_warnings
-  if whine.length>0 then
+  if whine.length>0 && if_warn then
     whiny_file = "warnings"
     File.open(whiny_file,"a") { |f|
       whine.each { |complaint| f.print "#{complaint}\n" }
     }
   end
   vl = Vlist.new(result2)
-  if whine.length>0 then vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n" end
+  if whine.length>0 && if_warn then vl.console_messages = "#{whine.length} warnings written to the file #{whiny_file}\n" end
 
   return vl
 end
