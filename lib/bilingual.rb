@@ -32,7 +32,6 @@ class Bilingual
       @foreign_chapter_number = g1[0]
       @foreign_first_line_number = g1[1]
       @foreign_hr1,@foreign_hr2 = foreign.line_to_hard_ref(g1[0],g1[1]),foreign.line_to_hard_ref(g2[0],g2[1])
-      @foreign_ch1,@foreign_ch2 = @foreign_hr1[0],@foreign_hr2[0]
     else
       if g1.kind_of?(String) then
         @foreign_hr1,@foreign_hr2 = foreign.word_glob_to_hard_ref(g1)[0],foreign.word_glob_to_hard_ref(g2)[0]
@@ -40,13 +39,13 @@ class Bilingual
         @foreign_hr1,@foreign_hr2 = [g1,g2] # they're already hard refs
       end
     end
+    @foreign_ch1,@foreign_ch2 = @foreign_hr1[0],@foreign_hr2[0]
     @foreign_text = foreign.extract(@foreign_hr1,@foreign_hr2)
     # The extracted text may begin with a paragraph break, which is represented by a double newline. But Epos.extract on verse won't keep this on
     # the front. So:
     before_me = foreign.lookbehind(@foreign_hr1,50)
     before_me = before_me.gsub(/[ \t]/,'')
     if before_me=~/(\n+)\Z/ then @foreign_text=$1+@foreign_text end
-    #if before_me=~/(\n+)\Z/ then @foreign_text=$1+@foreign_text; raise "totally doing it #{@foreign_hr1}, =#{$1}= #{@foreign_text}" end
     if t1.kind_of?(String) then # translation is referred to by word glob
       # Let word globs contain, e.g., Hera rather than Juno:
       t1 = Patch_names.antipatch(t1)
@@ -93,6 +92,12 @@ class Bilingual
       if ref1.kind_of?(Array) && ref2.kind_of?(Array) then return end
       raise "epos says prose, but refs are not strings or arrays"
     end
+  end
+  def label
+    # a string that can be used as part of latex labels, to identify this four-page spread
+    l = @foreign_first_line_number
+    if l.nil? then l=@foreign_hr1[1] end # use character offset rather than line number
+    return "#{@foreign_ch1+1}-#{l}"
   end
   def raise_failed_sanity_check(basic_message,t1,t2,translation_hr1,translation_hr2)
     debug_file = "epos_debug.txt"

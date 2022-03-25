@@ -66,7 +66,7 @@ def print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,cor
   if bilingual.foreign.genos.greek then header='Σχόλια' else header='Glosses' end
   print "\\renewcommand{\\rightheaderwhat}{#{header}}%\n"
   print ransom(treebank,db,bilingual,v,bilingual.foreign_first_line_number,start_chapter,ransom_spacing),"\n\n"
-  print bilingual.translation_text
+  print "\\label{#{bilingual.label}-d}"+bilingual.translation_text
   # https://tex.stackexchange.com/a/308934
   layout_for_illustration = next_layout  # place illustration at bottom of page coming immediately before the *next* four-page layout
   if !layout_for_illustration.nil? then print Illustrations.do_one(layout_for_illustration) end
@@ -99,22 +99,24 @@ def not_nil_or_zero(x)
 end
 
 def foreign(treebank,db,bilingual,first_line_number,start_chapter,ransom_spacing)
+  label_code = "\\label{#{bilingual.label}-b}"
   if bilingual.foreign.is_verse then
     main_code,garbage,environment = foreign_verse(treebank,db,bilingual,false,first_line_number,start_chapter,ransom_spacing,left_page_verse:true)
   else
     main_code,garbage,environment = foreign_prose(treebank,db,bilingual,false,first_line_number,start_chapter,ransom_spacing,left_page_verse:true)
   end
-  print postprocess_foreign_or_ransom('foreign',bilingual,main_code,environment,start_chapter)
+  print label_code+postprocess_foreign_or_ransom('foreign',bilingual,main_code,environment,start_chapter)
 end
 
 def ransom(treebank,db,bilingual,v,first_line_number,start_chapter,ransom_spacing)
   common,uncommon,rare = v
+  label_code = "\\label{#{bilingual.label}-c}"
   if bilingual.foreign.is_verse then
     main_code,gloss_code,environment = foreign_verse(treebank,db,bilingual,true,first_line_number,start_chapter,ransom_spacing,gloss_these:rare)
   else
     main_code,gloss_code,environment = foreign_prose(treebank,db,bilingual,true,first_line_number,start_chapter,ransom_spacing,gloss_these:rare)
   end
-  print postprocess_foreign_or_ransom('ransom',bilingual,main_code,environment,start_chapter,gloss_code:gloss_code)
+  print label_code+postprocess_foreign_or_ransom('ransom',bilingual,main_code,environment,start_chapter,gloss_code:gloss_code)
 end
 
 def foreign_prose(treebank,db,bilingual,ransom,first_line_number,start_chapter,ransom_spacing,gloss_these:[],left_page_verse:false)

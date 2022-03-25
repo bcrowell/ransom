@@ -20,7 +20,7 @@ def VocabPage.make(bilingual,db,vl,core)
   # Returns {'tex'=>...,'file_lists'=>...}, containing latex code for vocab page and the three file lists for later reuse.
   if Options.if_render_glosses then $stderr.print vl.console_messages end
   tex = ''
-  tex +=  "\\begin{vocabpage}\n"
+  tex +=  "\\begin{vocabpage}\\label{#{bilingual.label}-a}\n"
   tex +=  VocabPage.make_helper(bilingual,db,'uncommon',vl,0,2,core) # I used to have common (0) as one section and uncommon (1 and 2) as another. No longer separating them.
   tex +=  "\\end{vocabpage}\n"
   v = vl.list.map { |l| l.map{ |entry| entry[1] } }
