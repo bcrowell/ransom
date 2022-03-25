@@ -28,6 +28,8 @@ class TreeBank
     #   treebank.word_to_lemma_entry(word) ... fast lookup table, works when an inflected form has a unique lemmatization and POS, which is almost always
     #   LemmaUtil.disambiguate_lemmatization ... resolves ambiguities we don't care about if we don't care about POS (e.g., αἴξ, common gender)
     #   this routine ... should work unless the treebank's text isn't the same as our text
+    # On input to this routine, word should already have had punctuation standardized using standardize_greek_punctuation(), so that elision
+    # character is the standard one, etc.
     # loc = [text,ch,line_number,approx_word_index]
     # Approx_word_index is the approximate 0-based array index of the word within the line. This will in general have to be approximate, because
     # there is no guarantee that the treebank's text matches the one I'm using, e.g., treebank splits ουδέ into two words.

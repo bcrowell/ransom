@@ -83,6 +83,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
     line = lines[line_number_offset]
     word_index = 0
     line.scan(/[^\s—]+/).each { |word_raw|
+      word_raw = standardize_greek_punctuation(word_raw)
       word = word_raw.gsub(/[^[:alpha:]᾽'’]/,'') # word_raw is pretty useless, may e.g. have a comma on the end
       next unless word=~/[[:alpha:]]/
       if context.has_key?('line') then
@@ -115,7 +116,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
         if a.length==0 then
           warn_ambig[word] = \
               "warning(vlist): text,ch,line,word=#{loc}, lemma for #{word} is ambiguous, unable to resolve using line-by-line treebank data\n" + \
-              "  taking most common one: ambig=#{ambig}"
+              "  taking most common one: ambig=#{ambig}\n  #{misc['message']}"
           # This happens either when the Perseus text differs from the one I'm using, or when the Perseus data is missing POS data for a word.
           # As an example of the latter, at Iliad 4.50, treebank 2.1 has blank lemma and POS for βοῶπις. This occurs for several other usages of
           # βοῶπις, and also for some proper nouns and some other cases.
@@ -127,7 +128,8 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
           end
           if a.length>1 then
             warn_ambig[word] = \
-              "warning(vlist): text,ch,line,word=#{loc}, lemma for #{word} is ambiguous, unable to resolve using line-by-line treebank data??\n" + \
+              "warning(vlist): text,ch,line,word=#{loc}, lemma for #{word} is ambiguous,\n" + \
+              "  unable to resolve using line-by-line treebank data, multiple matches\n" + \
               "  taking the closest one on the line: #{a}"
           end
         end
