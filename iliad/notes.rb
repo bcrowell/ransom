@@ -465,6 +465,10 @@ class IliadNotes
     'about_what'    => %q{ἵπποι},
     'explain'       => %q{her horses, which evidently took her around on her mission to spread war}
   }],
+  ["4.88" , {
+    'about_what'    => %q{Πάνδαρον},
+    'explain'       => %q{The Trojan Pandarus was introduced at 2.827 as being from Zeleia, which is located where the the Aesepus River reaches the Sea of Marmara. He is a famed archer, to whom Apollo gave his bow.}
+  }],
   ["4.185" , {
     'about_what'    => %q{καιρίῳ},
     'explain'       => %q{From καίριος, deadly. Here, a fatal spot.}
