@@ -41,7 +41,8 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_entries:58,exclude_glosses:[],core:nil,if_texify_quotes:true,
+def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_entries:58,reduce_max_entries:0,
+             exclude_glosses:[],core:nil,if_texify_quotes:true,
              include_elided_forms:true,if_warn:true)
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
   # The frequency list is optional; if not using one, then set freq to nil. The main use of it is that if the
@@ -59,6 +60,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
   else
     using_thresholds = true
   end
+  max_entries -= reduce_max_entries
   whine = []
 
   t.gsub!(/\d/,'')

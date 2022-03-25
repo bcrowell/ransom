@@ -133,7 +133,7 @@ breaks = [
 
   [ [3,1], "But after they had each been marshalled along with their leaders"],
   [ [3,18], "but he brandishing two spears tipped with brass"],
-  [ [3,35], "backwards |< and paleness seizes his cheeks"],
+  [ [3,35], "backwards |< and paleness seizes his cheeks",{'reduce_max_entries'=>10}],
   [ [3,52], "Couldst thou not have awaited warlike Menelaus"],
   [ [3,69], "to sit down |< but match me and Mars-beloved Menelaus"],
   [ [3,86], "Hear from me, ye Trojans, and well-greaved Greeks"],
@@ -223,8 +223,11 @@ layouts = []
   if i<breaks.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
   ch_line = breaks[i][0] # ch and line number of start of page, for disambiguation of lemmas and for reporting in warnings
   context = {'ch'=>ch_line[0],'line'=>ch_line[1],'text'=>text}
+  opts = breaks[i][2] # hash or nil
+  reduce_max_entries = 0
+  if !opts.nil? && opts.has_key?('reduce_max_entries') then reduce_max_entries=opts['reduce_max_entries'] end
   four_page_layout(stuff,context,greek.genos,db,greek_wikt,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run,
-                   if_warn:Options.if_warn())
+                   if_warn:Options.if_warn(),reduce_max_entries:reduce_max_entries)
 }
 ch_range[0].upto(ch_range[1]) { |ch|
   filename = sprintf("vocab_ch_%02d.txt",ch)

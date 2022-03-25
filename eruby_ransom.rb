@@ -2,6 +2,10 @@ require 'json'
 require 'sdbm'
 require 'set'
 
+require './lib/file_util.rb'
+require './lib/latex.rb'
+require './lib/debug.rb'
+
 class Options
   if ARGV.length<1 then die("no command-line argument supplied") end
   @@the_options = JSON.parse(ARGV[0])
@@ -10,6 +14,7 @@ class Options
   def Options.if_render_glosses() return Options.has_flag('render_glosses') end
   def Options.if_clean() return Options.has_flag('clean') end # pre-delete .pos file; not actually needed, since we open it to write
   def Options.pos_file() return @@the_options['pos_file'] end
+  def Options.check_aux() return @@the_options['check_aux'] end
   def Options.if_warn() return Options.has_flag('if_warn') end
   def Options.vol() return @@the_options['vol'] end
   def Options.has_flag(flag)
@@ -21,6 +26,27 @@ class Options
   def Options.get(key)
     return @@the_options[key]
   end
+  if !Options.check_aux().nil? then
+    $stderr.print "Checking for text that overflows a page...\n"
+    aux_file = Options.check_aux()
+    contents,message = slurp_file_with_detailed_error_reporting(aux_file)
+    if contents.nil? then raise message end
+    labels,layouts = Latex.parse_aux_file(contents)
+    # The following assume four-page spreads labeled with -a through -d.
+    layouts.each { |layout|
+      pp = []
+      ['a','b','c','d'].each { |x|
+        key = layout+"-"+x
+        if !labels.has_key?(key) then raise "label #{key} not present in #{aux_file}" end
+        pp.push(labels[key])
+        # The following assumes that the a page is supposed to be odd.
+      }
+      1.upto(4) { |i|
+        if (pp[i-1]-i)%2!=0 then raise "Text overflowed from p. #{pp[i-1]-2} onto the next page, or for some other reason the parity of p. #{pp[i-1]} was unexpected. Layout=#{layout}. Vocab pages should be odd page numbers. The fix for this is normally to add a reduce_max_entries option to the relevant page-break data, or shrink the notes." end
+      }
+    }
+    $stderr.print "...No problems found.\n"
+  end
 end
 
 require_relative "lib/load_common"
@@ -29,21 +55,25 @@ require_relative "greek/load_common"
 if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
 
 
-def four_page_layout(stuff,context,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false,if_warn:true)
+def four_page_layout(stuff,context,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false,
+         if_warn:true,reduce_max_entries:0)
   # Doesn't get called if if_prose_trial_run is set.
   # The parameter wikt should be a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated,
   # and only a brief warning will be printed to stderr.
   treebank,freq,greek,translation,notes,core = stuff
   return if dry_run
-  print_four_page_layout(stuff,context,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter,if_warn:if_warn)
+  print_four_page_layout(stuff,context,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter,
+           if_warn:if_warn,reduce_max_entries:reduce_max_entries)
 end
 
-def print_four_page_layout(stuff,context,genos,db,wikt,bilingual,next_layout,vocab_by_chapter,start_chapter,if_warn:true)
+def print_four_page_layout(stuff,context,genos,db,wikt,bilingual,next_layout,vocab_by_chapter,start_chapter,
+            if_warn:true,reduce_max_entries:0)
   # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
   # doesn't get called if if_prose_trial_run is set
   treebank,freq,greek,translation,notes,core = stuff
   ch = bilingual.foreign_ch1
-  core,vl,vocab_by_chapter = VocabPage.helper(bilingual,context,genos,db,wikt,core,treebank,freq,notes,vocab_by_chapter,start_chapter,ch,if_warn:if_warn)
+  core,vl,vocab_by_chapter = VocabPage.helper(bilingual,context,genos,db,wikt,core,treebank,freq,notes,vocab_by_chapter,start_chapter,ch,
+          if_warn:if_warn,reduce_max_entries:reduce_max_entries)
   if bilingual.foreign_ch1!=bilingual.foreign_ch2 then
     # This should only happen in the case where reference 2 is to the very first line of the next book.
     if !(bilingual.foreign_hr2[1]<=5 && bilingual.foreign_hr2[0]==bilingual.foreign_hr1[0]+1) then

@@ -14,6 +14,23 @@ class Latex
     # x=1.0 for single spacing
     return "\n{\\linespread{#{x}} " + contents + "}\n"
   end
+  def Latex.parse_aux_file(aux)
+    # typical line: \newlabel{3-424-a}{{}{463}}
+    # Returns [table,layouts], where table is a hash that maps a label to a page number, and layouts is a list of all prefixes such as "3-424".
+    # This assumes that spreads have a common prefix, and that the first page of a spread has suffix -a. Doesn't assume anything about
+    # whether the layout is a certain number of pages.
+    table = {}
+    layouts = []
+    aux.split(/\n+/) { |line|
+      if line=~/newlabel{([^}]*)}{{([^}]*)}{([^}]*)}}/ then
+        label,garbage,page = [$1,$2,$3]
+        next if label=='' || page==''
+        table[label] = page.to_i
+        if label=~/(.*)-a$/ then layouts.push($1) end
+      end
+    }
+    return [table,layouts]
+  end
 end
 
 class RansomGloss

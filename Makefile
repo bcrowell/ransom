@@ -42,8 +42,9 @@ book_no_post: lib/*rb greek/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
 	@make figures # renders any figure whose pdf is older than its svg
 	@./fruby $(BOOK).rbtex '{$(GENERIC),"vol":"$(VOL)","clean":true,"if_warn":true}' >temp.tex
 	xelatex temp
+	mv temp.aux $(BOOK)-$(VOL).aux
 	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK)-$(VOL).pdf ; true
-	@./fruby $(BOOK).rbtex '{$(GENERIC),"vol":"$(VOL)","write_pos":true}' >temp.tex
+	@./fruby $(BOOK).rbtex '{$(GENERIC),"vol":"$(VOL)","write_pos":true,"check_aux":"$(BOOK)-$(VOL).aux"}' >temp.tex
 	xelatex temp
 	[ "$(OVERWRITE)" = "1" ] && mv temp.pdf $(BOOK)-$(VOL).pdf ; true
 	@./fruby $(BOOK).rbtex '{$(GENERIC),"vol":"$(VOL)","render_glosses":true}' >temp.tex
