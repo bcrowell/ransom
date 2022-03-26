@@ -9,11 +9,22 @@ end
 def patch(a)
   inflected = a[3]
   lemma = a[4]
+  pos = a[6]
+
+  patched_lemma = nil
+
+  if inflected=='φυλάξομεν' && a[0]=='iliad' then patched_lemma='φυλάσσω' end
   # iliad,8,529,φυλάξομεν,φυλάζω,,v1pfia---
   # This should be φυλάσσω. (φυλάζω is a different verb with a meaning that doesn't make sense here.)
   # https://github.com/PerseusDL/treebank_data/issues/33
-  if inflected=='φυλάξομεν' && a[0]=='iliad' then a[4]='φυλάσσω' end
-  if lemma=='Ἀί' then a[4]='Ἄϊδος' end
+
+  if lemma=='Ἀί' then patched_lemma='Ἄϊδος' end
+
+  if lemma=='ὄσσα' && pos[2]=='d' then patched_lemma='ὄσσε' end
+  # iliad,3,427,ὄσσε,ὄσσα,,n-d---na-
+  # https://www.textkit.com/greek-latin-forum/viewtopic.php?t=71621
+
+  if !patched_lemma.nil? then a[4]=patched_lemma end
   return a
 end
 

@@ -453,6 +453,10 @@ class IliadNotes
     'about_what'    => %q{τις ...},
     'explain'       => %q{Someone from among ...}
   }],
+  ["3.342" , {
+    'about_what'    => %q{δεινὸν},
+    'explain'       => %q{neuter adjective used as an adverb, ``terrifyingly''}
+  }],
   ["3.347" , {
     'about_what'    => %q{ἀσπίδα πάντοσε ἴσην},
     'explain'       => %q{the round shield (a circle, equal in all directions)}
