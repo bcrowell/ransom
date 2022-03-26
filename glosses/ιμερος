@@ -2,7 +2,9 @@
 // yearning, longing, desire, love
 {
   "word":"ἵμερος",
-  "medium":"desire",
-  "cog":"ἱμερόεις"
+  "short":"desire",
+  "medium":"desire, inclination (+gen)",
+  "cog":"ἱμερόεις",
+  "etym":"unknown"
 }
       

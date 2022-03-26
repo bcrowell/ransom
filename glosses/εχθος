@@ -2,6 +2,8 @@
 // 
 {
   "word":"ἔχθος",
-  "medium":"enmity; taking offense"
+  "medium":"enmity; taking offense",
+  "cog":"ἀπεχθάνομαι",
+  "mnemonic_cog":"external"
 }
       

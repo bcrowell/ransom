@@ -465,6 +465,10 @@ class IliadNotes
     'about_what'    => %q{τίσασθαι},
     'explain'       => %q{be avenged (lit.~to pay for myself)}
   }],
+  ["3.445" , {
+    'about_what'    => %q{Κρανάη},
+    'explain'       => %q{Lit. ``rocky, rugged,'' traditionally read as a place name and identified with a lighthouse island off the Peloponnesus whose claim to fame is this verse in Homer.}
+  }],
   ["4.27" , {
     'about_what'    => %q{ἵπποι},
     'explain'       => %q{her horses, which evidently took her around on her mission to spread war}

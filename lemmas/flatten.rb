@@ -24,6 +24,11 @@ def patch(a)
   # iliad,3,427,ὄσσε,ὄσσα,,n-d---na-
   # https://www.textkit.com/greek-latin-forum/viewtopic.php?t=71621
 
+  if lemma=='κραναός' && inflected=='Κραναῇ' then patched_lemma='Κρανάη' end
+  # iliad,3,445,Κραναῇ,κραναός,,a-s---fd-
+  # OCT, Cunliffe, and Buckley all read this as a proper noun. The lemma Κρανάη is Buckley's.
+
+
   if !patched_lemma.nil? then a[4]=patched_lemma end
   return a
 end
