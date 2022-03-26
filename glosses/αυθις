@@ -1,1 +1,8 @@
-{ "word":"αὖθις","medium":"back, again, moreover" }
+{
+  "word":"αὖτις",
+  "perseus":"αὖθις",
+  "medium":"back, again, moreover",
+  "mnemonic_cog":"after",
+  "etym":"lengthened form of αὖ",
+  "syn":"αὖ"
+}

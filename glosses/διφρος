@@ -1,6 +1,8 @@
 {
   "word":"δίφρος",
-  "short":"chariot seat",
-  "medium":"chariot seat for two people",
-  "etym":"δι+φέρω"
+  "short":"seat",
+  "medium":"seat, chariot box",
+  "long":"seat, chariot box, a seat for two people (Cunliffe) or a sedan chair carried by two people (Beekes)",
+  "etym":"δι+φέρω",
+  "mnemonic_cog":"bear"
 }
