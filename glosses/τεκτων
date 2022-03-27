@@ -3,6 +3,8 @@
 {
   "word":"τέκτων",
   "short":"worker",
-  "medium":"skilled worker"
+  "medium":"skilled worker",
+  "mnemonic_cog":"technician",
+  "cog":"τίκτω, τέκος, oxytocin"
 }
       

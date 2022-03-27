@@ -20,6 +20,7 @@ class TreeBank
       if !File.exist?(pos_index_file) then raise "file #{pos_index_file} does not exist; generate it by doing make dbs" end
       if File.mtime(pos_index_file)<File.mtime(@pos_file) then
         raise "file #{pos_index_file} is older than #{@pos_file}; rebuild it by doing make dbs"
+        # Failing to enforce this leads to errors seeking and reading in the file, since it contains utf-8, which has variable-length characters.
       end
       @pos_index = json_from_file_or_die(pos_index_file)
     end
