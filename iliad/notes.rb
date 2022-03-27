@@ -351,7 +351,7 @@ class IliadNotes
     'explain'       => %q{ἀμφί+dat.~= about, regarding}
   }],
   ["3.73" , {
-    'explain'       => %q{Paris proposes to end the entire war by single combat between him and Menelaus, Helen's original husband. In Homer's telling, Helen went with Paris willingly (3.174). The great wrong is that Paris abused Menelaus's hospitality (3.351).}
+    'explain'       => %q{Paris proposes to end the entire war by single combat between him and Menelaus, Helen's original husband. In Homer's telling, Helen went with Paris willingly (3.174) due to divine ἀτή. The great wrong is that Paris abused Menelaus's hospitality (3.351).}
   }],
   ["3.73" , {
     'about_what'    => %q{οἳ ... ἄλλοι},
@@ -453,6 +453,15 @@ class IliadNotes
     'about_what'    => %q{τις ...},
     'explain'       => %q{Someone from among ...}
   }],
+  ["3.324" , {
+    'about_what'    => %q{πάλλεν},
+    'explain'       => %q{shaking the lots introduced at line 316}
+  }],
+  ["3.327" , {
+    'about_what'    => %q{τεύχε'},
+    'explain'       => %q{the noun τεύχεα, not the verb τεῦχε}
+    # the first time the elided form occurs in Iliad
+  }],
   ["3.342" , {
     'about_what'    => %q{δεινὸν},
     'explain'       => %q{neuter adjective used as an adverb, ``terrifyingly''}
@@ -465,6 +474,10 @@ class IliadNotes
     'about_what'    => %q{τίσασθαι},
     'explain'       => %q{be avenged (lit.~to pay for myself)}
   }],
+  ["3.354" , {
+    'about_what'    => %q{},
+    'explain'       => %q{Ξενίη is holy, and Menelaus sees its violation, and the resulting dishonor to him, as the cause of the war. Helen's agency or ἀτή, if known to him, doesn't enter the equation.}
+  }],
   ["3.445" , {
     'about_what'    => %q{Κρανάη},
     'explain'       => %q{Lit. ``rocky, rugged,'' traditionally read as a place name and identified with a lighthouse island off the Peloponnesus whose claim to fame is this verse in Homer.}
@@ -476,6 +489,10 @@ class IliadNotes
   ["4.88" , {
     'about_what'    => %q{Πάνδαρον},
     'explain'       => %q{The Trojan Pandarus was introduced at 2.827 as being from Zeleia, which is located where the the Aesepus River reaches the Sea of Marmara. He is a famed archer, to whom Apollo gave his bow.}
+  }],
+  ["4.117" , {
+    'about_what'    => %q{ἕρμα},
+    'explain'       => %q{Figurative, ``cause?''}
   }],
   ["4.185" , {
     'about_what'    => %q{καιρίῳ},

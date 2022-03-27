@@ -166,7 +166,7 @@ breaks = [
   [ [4,50], "Him then the venerable full-eyed Juno answered"],
   [ [4,68], "begin to injure the most renowned Greeks, contrary to the leagues>"],
   [ [4,85], "he who has been ordained the arbiter of war amongst men>"],
-  [ [4,101], "and vow to Lycian-born Apollo, the renowned archer"],
+  [ [4,101], "and vow to Lycian-born Apollo, the renowned archer",{'reduce_max_entries'=>-6}],
   [ [4,118], "Forthwith he fitted the bitter arrow to the string"],
   [ [4,135], "The bitter arrow fell on his well-fitted belt>"],
   [ [4,153], "But Agamemnon, deeply sighing, and holding Menelaus with his hand"],

@@ -28,7 +28,7 @@ freq = json_from_file_or_die(freq_file)
 ... }
 
 very common words, 'scum words':
-  These tend to be particles that are hard to define, pronouns, common prepositions.
+  These tend to be particles that are hard to define, pronouns. I used to count common prepositions as scum, but changed my mind.
   Freq of about 500 is roughly where half the words are in this category.
   After that, they die out from freq of about 300 to about 100.
   I have a hand-constructed list of these below.
@@ -81,14 +81,9 @@ SUPER_EASY
 
 # see def above
 scum = (<<-'SCUM'
-δή ἕ ἐκ κατά ἤ μιν μή πέρ ἠδέ
-παρά ἀπό ὑπό ὅδε ὅτε ἦ μετά περί
-πρός αὖτε ἀμφί ἐμός οὗτος ἔτι ἑός
-τότε ὦ ἀνά σύν σός διά ἵνα
-ἤδη ὅτι ὧδε τῷ τόσος
-ὅθι τοῖος αὐτοῦ ὁπότε
-ὑπέρ πως εἷς ἆρα οὔτε πρό ὅπως τίς
-εἰς εἰ ὅσος ἐκεῖνος κεῖνος ἄμφω αὔτως ἠμέν ἐπεί ὅστις
+αὖτε αὐτοῦ ἆρα ἄμφω αὔτως δή ἕ ἐμός ἔτι ἑός εἷς εἰ ἐκεῖνος ἐπεί ἤ 
+ἠδέ ἦ ἤδη ἠμέν ἵνα κεῖνος μιν μή ὅδε ὅτε οὗτος ὅτι ὅθι ὁπότε οὔτε
+ὅπως ὅσος ὅστις πέρ πρός πως σός τότε τῷ τόσος τοῖος τίς ὦ ὧδε
 SCUM
 ).split(/\s+/)
 

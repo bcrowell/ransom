@@ -1,6 +1,9 @@
 {
-  "word":"τεῦχος",
+  "word":"τεύχεα",
+  "perseus":"τεῦχος",
   "medium":"tool, arms, gear",
-  "cog":"pentateuch, doughty, τεύχω, τυγχάνω, τιτύσκομαι"
+  "cog":"pentateuch, doughty, τεύχω, τυγχάνω, τιτύσκομαι",
+  "etym":"see τεύχω",
+  "notes":"3rd declension. Always in plural. The only common forms are τεύχεα (often with elision) and τεύχεσιν."
 }
       
