@@ -13,11 +13,15 @@ TACITUS = $(PERSEUS_LATIN_DIR)/phi1351.phi005.perseus-lat1.tb.xml
 # When adding a new target, add an appropriate line to flatten.rb in the following form:
 #   if line=~/urn:cts:latinLit:phi0972.phi001.perseus-lat1.tb/ then $text="satyricon"; book_and_chapter=false end
 
+.PHONY: default dbs
 
 default:
 	[ -f $(ILIAD) ]
 	[ -f $(ODYSSEY) ]
 	cat $(ILIAD) $(ODYSSEY) | ruby flatten.rb greek >homer_lemmas.csv
+	make dbs
+
+dbs:
 	ruby to_db.rb homer
 	# ...writes homer_lemmas.json ; doesn't write sdbm file because I have that commented out; removes macrons and breves
 	#    writes homer_lemmas.line_index.json

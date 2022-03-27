@@ -1,7 +1,7 @@
 BOOK = iliad
 POS = $(BOOK).pos
 GENERIC = "pos_file":"$(POS)"
-.PHONY: clean default check check_glosses core update_github_pages reconfigure_git book_no_post post flush_epos_cache test_epos
+.PHONY: clean default check check_glosses core update_github_pages reconfigure_git book_no_post post flush_epos_cache test_epos dbs
 
 default:
 	@make --no-print-directory --assume-new iliad.rbtex iliad-i.pdf
@@ -9,14 +9,14 @@ default:
 iliad-i.pdf: export FORMAT=whole
 iliad-i.pdf: export OVERWRITE=1
 iliad-i.pdf: export VOL=i
-iliad-i.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
+iliad-i.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex lemmas/homer_lemmas.line_index.json
 	make book_no_post
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 
 iliad-ii.pdf: export FORMAT=whole
 iliad-ii.pdf: export OVERWRITE=1
 iliad-ii.pdf: export VOL=ii
-iliad-ii.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex
+iliad-ii.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex lemmas/homer_lemmas.line_index.json
 	make book_no_post
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 
@@ -93,6 +93,12 @@ figures:
 clean:
 	rm -f *~ *.aux *.log *.idx *.toc *.ilg *.bak *.toc $(BOOK).tex 
 	rm -f glosses/*~ glosses/_latin/*~ help_gloss/*~
+
+lemmas/homer_lemmas.line_index.json: lemmas/homer_lemmas.csv
+	make dbs
+
+dbs:
+	make -C lemmas dbs
 
 core: core/homer.json
 	#

@@ -17,7 +17,10 @@ class TreeBank
       @pos_file=nil
     else
       pos_index_file = "#{data_dir}/#{corpus}_lemmas.line_index.json"
-      if !File.exist?(pos_index_file) then raise "file #{@pos_index_file} does not exist; generate it using the makefile in the lemmas subdirectory" end
+      if !File.exist?(pos_index_file) then raise "file #{pos_index_file} does not exist; generate it by doing make dbs" end
+      if File.mtime(pos_index_file)<File.mtime(@pos_file) then
+        raise "file #{pos_index_file} is older than #{@pos_file}; rebuild it by doing make dbs"
+      end
       @pos_index = json_from_file_or_die(pos_index_file)
     end
   end
@@ -40,7 +43,6 @@ class TreeBank
     # If there are matches to word but none that match approx_word_index, returns all word matches, sorted by distance from approx_word_index.
     # This is meant for use in constructing vocab lists, where it is optional and almost never needed for disambiguation. Therefore it's designed
     # to fail or degrade gracefully in most cases.
-    # FIXME: This will fail with a mysterious-looking error if the csv file has been modified but @pos_file hasn't been updated.
     text,book,line_number,approx_word_index = loc
     raise "illegal types for inputs" unless book.class==1.class && line_number.class==1.class
     if !File.exist?(@pos_file) then raise "file #{@pos_file} does not exist; generate it using the makefile in the lemmas subdirectory" end
