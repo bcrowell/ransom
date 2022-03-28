@@ -490,6 +490,9 @@ class IliadNotes
     'about_what'    => %q{Πάνδαρον},
     'explain'       => %q{The Trojan Pandarus was introduced at 2.827 as being from Zeleia, which is located where the the Aesepus River reaches the Sea of Marmara. He is a famed archer, to whom Apollo gave his bow.}
   }],
+  ["4.105" , {
+    'explain'       => %q{The long description of the bow seems to contradict the statement at 2.827 that his bow was given to him by Apollo.}
+  }],
   ["4.117" , {
     'about_what'    => %q{ἕρμα},
     'explain'       => %q{Figurative, ``cause?''}

@@ -133,7 +133,7 @@ breaks = [
 
   [ [3,1], "But after they had each been marshalled along with their leaders"],
   [ [3,18], "but he brandishing two spears tipped with brass"],
-  [ [3,35], "backwards |< and paleness seizes his cheeks",{'reduce_max_entries'=>10}],
+  [ [3,35], "backwards |< and paleness seizes his cheeks",{'reduce_max_entries'=>8}],
   [ [3,52], "Couldst thou not have awaited warlike Menelaus"],
   [ [3,69], "to sit down |< but match me and Mars-beloved Menelaus"],
   [ [3,86], "Hear from me, ye Trojans, and well-greaved Greeks"],

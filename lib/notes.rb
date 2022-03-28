@@ -18,6 +18,26 @@ def Notes.to_latex(linerefs,notes)
     }
 end
 
+def Notes.estimate_n_lines(linerefs,notes,notes_width_mm:120)
+  characters_per_line = 67.0 # at the default value of notes_width_mm
+  return (Notes.to_txt(linerefs,notes).length*(120.0/notes_width_mm)/characters_per_line).round
+end
+
+def Notes.to_txt(linerefs,notes)
+  # I use this only to count characters in order to estimate the space taken on the page.
+  lineref1,lineref2 = linerefs
+  if lineref2[1]-lineref1[1]>20 then raise "sanity check failed for inputs to Notes.to_latex, #{lineref1}->#{lineref2}" end
+  stuff = []
+  Notes.find(lineref1,lineref2,notes).each { |note|
+    h = note[1]
+    next if !(h.has_key?('explain'))
+    this_note = "#{note[0][0]}.#{note[0][1]} #{h['about_what']}: #{h['explain']}"
+    stuff.push(this_note)
+  }
+  if stuff.length==0 then return '' end
+  return stuff.join("\n")
+end
+
 def Notes.find(lineref1,lineref2,notes)
   # Finds notes that apply to the given range of linerefs. Converts the 0th element from a note's string into [book,line]. 
   # Sorts the results.

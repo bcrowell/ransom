@@ -44,7 +44,7 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_entries:58,reduce_max_entries:0,
+def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_entries:66,reduce_max_entries:0,
              exclude_glosses:[],core:nil,if_texify_quotes:true,
              include_elided_forms:true,if_warn:true)
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
