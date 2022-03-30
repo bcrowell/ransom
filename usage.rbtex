@@ -879,12 +879,23 @@ See \cite{Denniston} for more references to the literature on differing points o
 for examples that are clearly not generalizations (p.~530).
 ))
 
+subsection("Vows, admonitions, and grievances")
+
+text(%q(
+Τε turns up frequently in passionate speech as an indication of strong emotion or to tie the emotion
+to its cause.
+))
+
+example('iliad 3.366',%q(
+[Menelaus prays bitterly to Zeus, calling him the most woe-inflicting god.] Indeed, I hoped to pay back Alexander for his evil.
+))
+
 subsection("Miscellaneous uses")
 
 text(%q(
 In addition, τε has a number of other uses that grammarians have tried to infer, often based on
 a limited number of examples and allowing for exceptions. See
-\cite{Monro} (pp.~232, 241, 272) and \cite{LSJ}, which makes an attempt to catalog these
+\cite{Monro} (pp.~232, 241, 247) and \cite{LSJ}, which makes an attempt to catalog these
 in the entry for τε. For example, LSJ include among gnomic usages some in which τε is used to indicate that something is knowledge
 that is widely known, then using this thread to connect to an idiom in which ὅτε τε seems to be used when defining a time based on a
 well-known event:

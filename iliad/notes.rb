@@ -478,6 +478,11 @@ class IliadNotes
     'about_what'    => %q{},
     'explain'       => %q{Ξενίη is holy, and Menelaus sees its violation, and the resulting dishonor to him, as the cause of the war. Helen's agency or ἀτή, if known to him, doesn't enter the equation.}
   }],
+  ["3.366" , {
+    'about_what'    => %q{ἦ τε},
+    'explain'       => %q{an idiom used in passionate speech to highlight a complaint}
+    # LSJ sense C.3
+  }],
   ["3.445" , {
     'about_what'    => %q{Κρανάη},
     'explain'       => %q{Lit. ``rocky, rugged,'' traditionally read as a place name and identified with a lighthouse island off the Peloponnesus whose claim to fame is this verse in Homer.}

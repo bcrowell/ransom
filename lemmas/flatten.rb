@@ -19,6 +19,7 @@ def patch(a)
   # https://github.com/PerseusDL/treebank_data/issues/33
 
   if lemma=='Ἀί' then patched_lemma='Ἄϊδος' end
+  if lemma=='βουλεύς' then patched_lemma='βουλή' end
 
   if lemma=='ὄσσα' && pos[2]=='d' then patched_lemma='ὄσσε' end
   # iliad,3,427,ὄσσε,ὄσσα,,n-d---na-
