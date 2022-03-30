@@ -91,3 +91,4 @@ def latest_modification(file_or_dir)
   end
   return times.max
 end
+

@@ -67,7 +67,9 @@ If the software changes and you need to test whether it's still
 actually working, you need to prevent reuse of this caching, and
 likewise if you make any changes to the text. To do this, either
 do a 'make flush_epos_cache' or call the constructor using
-Epos.new(...,use_cache:false).
+Epos.new(...,use_cache:false). If you forget to do this, you should
+get an informative error message. This applies only to word globs; no caching
+is used for line references.
 
 A text may contain material like footnotes that we want to pretend are
 not there. This is done using the postfilter facility. Example:
@@ -309,7 +311,12 @@ class Epos
     if @use_cache then
       cache = self.auxiliary_filename_helper("cache")
       result = nil
-      if File.exists?(cache+".dir") then
+      cache_dir_file = cache+".dir"
+      if File.exists?(cache_dir_file) then
+        if File.mtime(cache_dir_file)<latest_modification(self.text) then
+          raise "cache files #{cache}.* are older than source file(s) #{self.text};"+ \
+                "  you probably need to do a 'make flush_epos_cache' or just delete #{cache}.*"
+        end
         SDBM.open(cache) { |db| if db.has_key?(glob) then result=JSON.parse(db[glob]) end }
       end
       if !(result.nil?) then return result end # return cached result

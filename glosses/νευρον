@@ -1,1 +1,8 @@
-{"word":"νεῦρον","genitive":"νεύρου","gender":"n","medium":"tendon","notes":"2nd declension"}
+{
+  "word":"νεῦρον",
+  "genitive":"νεύρου",
+  "gender":"n",
+  "medium":"tendon",
+  "notes":"2nd declension",
+  "mnemonic_cog":"neuro"
+}

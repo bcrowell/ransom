@@ -2,6 +2,8 @@
 // driver, especially of horses, charioteer, rower, oarsman, one that drives away, kind of broad, flat cake
 {
   "word":"ἐλατήρ",
-  "medium":"driver"
+  "medium":"driver",
+  "mnemonic_cog":"elastic",
+  "cog":"elastic, from ἐλατός, ductile;  ἐλαύνω; modern έλα, used as the imperative of έρχομαι"
 }
       

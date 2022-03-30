@@ -73,7 +73,7 @@ def print_four_page_layout(stuff,context,genos,db,wikt,bilingual,next_layout,voc
   treebank,freq,greek,translation,notes,core = stuff
   ch = bilingual.foreign_ch1
   n_lines_of_notes = Notes.estimate_n_lines(bilingual.foreign_linerefs,notes)
-  reduce_max_entries += 2*n_lines_of_notes
+  reduce_max_entries += 2*n_lines_of_notes # This assumes that notes go at the bottom of the vocab page, and subtract from its space.
   #Debug.print(n_lines_of_notes>0) {"#{bilingual.foreign_linerefs} #{reduce_max_entries}"}
   core,vl,vocab_by_chapter = VocabPage.helper(bilingual,context,genos,db,wikt,core,treebank,freq,notes,vocab_by_chapter,start_chapter,ch,
           if_warn:if_warn,reduce_max_entries:reduce_max_entries)

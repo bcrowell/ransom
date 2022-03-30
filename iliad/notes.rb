@@ -497,6 +497,15 @@ class IliadNotes
     'about_what'    => %q{ἕρμα},
     'explain'       => %q{Figurative, ``cause?''}
   }],
+  ["4.138" , {
+    'about_what'    => %q{εἴσατο},
+    'explain'       => %q{interpretable as a form of either ἵημι (it flew eagerly) or εἴδομαι (it appeared)}
+    # Perseus has εἴδω, Cunliffe has ἵημι. Chicago Morpho even suggests εἶμι, although that may just be a mindless parser...?
+  }],
+  ["4.151" , {
+    'about_what'    => %q{νεῦρόν},
+    'explain'       => %q{here, the cord that attaches the arrowhead to the shaft}
+  }],
   ["4.185" , {
     'about_what'    => %q{καιρίῳ},
     'explain'       => %q{From καίριος, deadly. Here, a fatal spot.}
