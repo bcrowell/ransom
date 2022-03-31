@@ -20,6 +20,25 @@ def patch(a)
 
   if lemma=='Ἀί' then patched_lemma='Ἄϊδος' end
   if lemma=='βουλεύς' then patched_lemma='βουλή' end
+  if lemma=='αἶσις' then patched_lemma='αἶσα' end
+  # ... Cunliffe's entry for αἶσα refers to both Α416 and Α418. There is a river Αἶσις, and possibly also a personification of fate.
+
+  # Simple typos by Perseus:
+  if lemma=='ἐυκνψμις' then patched_lemma='ἐυκνήμις' end
+  if lemma=='ἐυκϝήμις' then patched_lemma='ἐυκνήμις' end
+  if lemma=='ϝέκταρ' then patched_lemma='νέκταρ' end
+
+  # Lemmas that are just redundant; Perseus invents a different lemma because the form is different. Other sources like Cunliffe
+  # don't give these as head-words:
+  if lemma=='δαίτη' then patched_lemma='δαίς' end
+  if lemma=='δαίτης' then patched_lemma='δαίς' end
+  if lemma=='νευρή' then patched_lemma='νευρά' end
+  if lemma=='ἐυμελίης' then patched_lemma='ἐυμμελίης' end
+
+  # For the following, the neuter adjective in -ον is used as ad adverb, and Cunliffe lemmatizes it under ths -ος headword.
+  # Perseus creates a separate -ον lemma, which is redundant, and also gives a POS analysis as a noun, which is weird.
+  if lemma=='ἀντίον' then patched_lemma='ἀντίος' end
+  if lemma=='ἄριστον' then patched_lemma='ἄριστος' end
 
   if lemma=='ὄσσα' && pos[2]=='d' then patched_lemma='ὄσσε' end
   # iliad,3,427,ὄσσε,ὄσσα,,n-d---na-

@@ -495,6 +495,26 @@ class IliadNotes
     'about_what'    => %q{ἧσο},
     'explain'       => %q{imperative of ἧμαι}
   }],
+  ["3.409" , {
+    'about_what'    => %q{εἰς},
+    'explain'       => %q{until}
+  }],
+  ["3.412" , {
+    'about_what'    => %q{ἄχε᾽},
+    'explain'       => %q{ἄχεα, pl. acc. of ἄχος}
+  }],
+  ["3.414" , {
+    'about_what'    => %q{σχετλίη},
+    'explain'       => %q{stubborn one}
+  }],
+  ["3.420" , {
+    'about_what'    => %q{ἦρχε},
+    'explain'       => %q{Perfect or imperfect of ἄρχω. Imperfect or aorist would conform to the sequence of tenses with respect to the aorist λάθεν.}
+  }],
+  ["3.422" , {
+    'about_what'    => %q{τράποντο},
+    'explain'       => %q{turned themselves to}
+  }],
   ["3.445" , {
     'about_what'    => %q{Κρανάη},
     'explain'       => %q{Lit. ``rocky, rugged,'' traditionally read as a place name and identified with a lighthouse island off the Peloponnesus whose claim to fame is this verse in Homer.}
