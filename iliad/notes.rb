@@ -426,7 +426,7 @@ class IliadNotes
   }],
   ["3.252" , {
     'about_what'    => %q{τάμητε},
-    'explain'       => %q{Different manuscripts have various forms of the verb here. Τάμητε is 2pl, so the herald is shifting from addressing Priam to expressing a wish for both sides to do something. The meaning is ``cut a deal,'' or ``carve out a deal.''}
+    'explain'       => %q{Different manuscripts have various forms of the verb here. Τάμητε is 2pl, so the herald is shifting from addressing Priam to expressing a wish for both sides to do something. The meaning is to solemnize a deal (as with a sacrifice).}
     # https://archive.org/details/firstsixbooksofh01home/page/266/mode/2up
   }],
   ["3.261" , {
@@ -482,6 +482,18 @@ class IliadNotes
     'about_what'    => %q{ἦ τε},
     'explain'       => %q{an idiom used in passionate speech to highlight a complaint}
     # LSJ sense C.3
+  }],
+  ["3.382" , {
+    'about_what'    => %q{θαλάμῳ},
+    'explain'       => %q{Paris's}
+  }],
+  ["3.402" , {
+    'about_what'    => %q{φίλος},
+    'explain'       => %q{to Aphrodite}
+  }],
+  ["3.406" , {
+    'about_what'    => %q{ἧσο},
+    'explain'       => %q{imperative of ἧμαι}
   }],
   ["3.445" , {
     'about_what'    => %q{Κρανάη},
