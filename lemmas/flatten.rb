@@ -22,11 +22,16 @@ def patch(a)
   if lemma=='βουλεύς' then patched_lemma='βουλή' end
   if lemma=='αἶσις' then patched_lemma='αἶσα' end
   # ... Cunliffe's entry for αἶσα refers to both Α416 and Α418. There is a river Αἶσις, and possibly also a personification of fate.
+  if lemma=='σιμοείσιος' then patched_lemma='Σιμόεις' end
 
   # Simple typos by Perseus:
   if lemma=='ἐυκνψμις' then patched_lemma='ἐυκνήμις' end
   if lemma=='ἐυκϝήμις' then patched_lemma='ἐυκνήμις' end
   if lemma=='ϝέκταρ' then patched_lemma='νέκταρ' end
+  if lemma=='ἱππόσυνος' then patched_lemma='ἱπποσύνη' end
+  if lemma=='σοί' then patched_lemma='ἐγω' end # Iliad 1.170
+
+  if lemma=='χάλκειος' then patched_lemma='χάλκεος' end # not clear to me why Cunliffe and Perseus both lemmatize this separately
 
   # Lemmas that are just redundant; Perseus invents a different lemma because the form is different. Other sources like Cunliffe
   # don't give these as head-words:
@@ -34,6 +39,27 @@ def patch(a)
   if lemma=='δαίτης' then patched_lemma='δαίς' end
   if lemma=='νευρή' then patched_lemma='νευρά' end
   if lemma=='ἐυμελίης' then patched_lemma='ἐυμμελίης' end
+  if lemma=='ἥλιος' then patched_lemma='ἠέλιος' end
+  if lemma=='πολλός' then patched_lemma='πολύς' end
+
+  # Redundant lemmas, one for an Attic form and one for an epic one:
+  if lemma=='ῥόα' && inflected=='ῥοάων' then patched_lemma='ῥοή' end # There is also Attic ῥόα=pomegranate, epic ῥοιή.
+
+  # Redundant lemma based on the genitive stem:
+  if lemma=='καλλιγύναικος' then patched_lemma='καλλιγύναιξ' end
+  if lemma=='κόρσης' then patched_lemma='κόρση' end
+  if lemma=='λεχεποίης' then patched_lemma='λεχεποίη' end
+  if lemma=='χαλκοῦς' then patched_lemma='χαλκός' end
+
+  # Feminine form of an adjective lemmatized separately:
+  if lemma=='θοῦρις' then patched_lemma='θοῦρος' end # θοῦρις is feminine
+  if lemma=='ἱερή' then patched_lemma='ἱερός' end
+  if lemma=='μέλαινα' then patched_lemma='μέλας' end
+  if lemma=='χαλκεία' then patched_lemma='χάλκεος' end
+
+  # Redundant lemmas for verbs, both active and passive:
+  if lemma=='παραλέγω' then patched_lemma='παραλέχομαι' end
+  
 
   # For the following, the neuter adjective in -ον is used as ad adverb, and Cunliffe lemmatizes it under ths -ος headword.
   # Perseus creates a separate -ον lemma, which is redundant, and also gives a POS analysis as a noun, which is weird.
