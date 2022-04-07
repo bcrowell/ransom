@@ -156,7 +156,7 @@ breaks = [
   [ [3,373], "And now he had dragged him away, and obtained infinite glory, had not Venus"],
   [ [3,390], "Come hither, Alexander calls thee to return home"],
   [ [3,407], "And mayest thou no more return on thy feet to Olympus"],
-  [ [3,424], "laughter-loving Venus, carrying, placed a seat for her"],
+  [ [3,424], "chamber |< and then laughter-loving Venus, carrying, placed a seat for her"],
   [ [3,441], "But come, let us delight in dalliance, reclining together"],
   [ [3,456], "Hear me, ye Trojans, Greeks, and allies",{'end_at'=> "Thus spoke the son of Atreus, and the other Greeks approved>"}],
 
@@ -191,8 +191,24 @@ breaks = [
   [ [4,480], "For him advancing first, he struck on the breast, near the right pap"],
   [ [4,497], "But the Trojans retired in confusion"],
   [ [4,514], "Thus spoke the dreadful god from the city"],
-  [ [4,532], "But he did not spoil him of his armour",{'end_at'=> "were stretched prone in the dust beside one another"}],
+  [ [4,532], "But he did not spoil him of his armour",{'end_at'=> "were stretched prone in the dust beside one another>"}],
 
+
+  [ [5,1], "Then, moreover, Pallas Minerva gave strength and daring to Diomede"],
+  [ [5,19], "weapon fly in vain from his hand |< but struck his"],
+  [ [5,36], "she led impetuous Mars from the battle |< and afterwards seated him on grassy"],
+  [ [5,53], "But then at least arrow-rejoicing Diana availed him not"],
+  [ [5,69], "But Meges next slew Pedæus, son of Antenor"],
+  [ [5,87], "For he rushed through the plain, like unto a river swollen by mountain-streams"],
+  [ [5,103], "Rush on, ye magnanimous Trojans, spurrers of steeds |< for the bravest of the Greeks is wounded"],
+  [ [5,121], "Thus he spoke, praying, and Pallas Minerva heard him, and made light his limbs"],
+  [ [5,139], "he [the shepherd] has merely roused his ardour"],
+  [ [5,155], "These, then, Diomede slew, and took their life from both"],
+  [ [5,171], "O Pandarus, where are thy bow and thy winged shafts"],
+  [ [5,188], "For but just now I aimed an arrow at him, and struck him on the right shoulder"],
+  [ [5,205], "for lately I aimed [a shaft] at two chiefs"],
+  [ [5,221], "going against this man, make trial of him with arms>"],
+  [ [5,239], "Thus having said, ascending the variegated chariot"],
 ]
 
 format = ENV['FORMAT']

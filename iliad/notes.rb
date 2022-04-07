@@ -137,11 +137,9 @@ class IliadNotes
     'explain'       => %q{for if not}
   }],
   ["1.351" , {
-    'about_what'    => %q{},
     'explain'       => %q{Achilles prays for help to his mother, the sea nymph Thetis.}
   }],
   ["1.371" , {
-    'about_what'    => %q{},
     'explain'       => %q{Nine lines are repeated verbatim from 1.12-25.}
   }],
   ["1.397" , {
@@ -177,7 +175,6 @@ class IliadNotes
     'explain'       => %q{Here, anchor stones rather than beds.}
   }],
   ["1.590" , {
-    'about_what'    => %q{},
     'explain'       => %q{In Homer's account, Hephaestus' exile was done by Zeus, and was in retaliation for an attempt to intervene in some unspecified previous marital dispute.}
   }],
   ["2.28" , {
@@ -302,6 +299,10 @@ class IliadNotes
   }],
   ["2.494" , {
     'explain'       => %q{The catalog of the Achaean ships begins here and is followed at line 785 by some framing material and then a similar description of the Trojan forces.}
+  }],
+  ["2.575" , {
+    'about_what'    => %q{εὐρεῖαν},
+    'explain'       => %q{feminine of εὐρύς}
   }],
   ["2.653" , {
     'about_what'    => %q{ἠΰς},
@@ -475,7 +476,6 @@ class IliadNotes
     'explain'       => %q{be avenged (lit.~to pay for myself)}
   }],
   ["3.354" , {
-    'about_what'    => %q{},
     'explain'       => %q{Ξενίη is holy, and Menelaus sees its violation, and the resulting dishonor to him, as the cause of the war. Helen's agency or ἀτή, if known to him, doesn't enter the equation.}
   }],
   ["3.366" , {
@@ -509,15 +509,23 @@ class IliadNotes
   }],
   ["3.420" , {
     'about_what'    => %q{ἦρχε},
-    'explain'       => %q{Perfect or imperfect of ἄρχω. Imperfect or aorist would conform to the sequence of tenses with respect to the aorist λάθεν.}
+    'explain'       => %q{perfect or imperfect of ἄρχω}
   }],
   ["3.422" , {
     'about_what'    => %q{τράποντο},
     'explain'       => %q{turned themselves to}
   }],
+  ["3.440" , {
+    'about_what'    => %q{πάρα},
+    'explain'       => %q{here meaning with, in favor of}
+  }],
   ["3.445" , {
     'about_what'    => %q{Κρανάη},
     'explain'       => %q{Lit. ``rocky, rugged,'' traditionally read as a place name and identified with a lighthouse island off the Peloponnesus whose claim to fame is this verse in Homer.}
+  }],
+  ["3.453" , {
+    'about_what'    => %q{εἴ},
+    'explain'       => %q{would}
   }],
   ["4.27" , {
     'about_what'    => %q{ἵπποι},
@@ -546,6 +554,10 @@ class IliadNotes
   ["4.185" , {
     'about_what'    => %q{καιρίῳ},
     'explain'       => %q{From καίριος, deadly. Here, a fatal spot.}
+  }],
+  ["4.243" , {
+    'about_what'    => %q{τίφθ᾽},
+    'explain'       => %q{=τίπτε, here meaning why?}
   }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
