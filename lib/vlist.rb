@@ -150,6 +150,12 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
     next if excl
     did_lemma[lemma] = 1
     if freq.nil? then rank=1 else rank=freq.rank(lemma) end
+    if rank.nil? then
+      $stderr.print "Warning: lemma #{lemma}, frequency table contains no such key; this can happen if the lemma is erroneously lowercase\n"
+      # Happens for τυδείδης near Iliad 5.410-428. The lemmatization in the treebank is wrong (is uppercase everywhere else for this proper noun),
+      # but I don't know why this causes it not to be frequency-counted.
+      next
+    end
     misc = {}
     is_verb = (pos=~/^[vt]/)
     is_adj =  (pos=~/^[a]/)
