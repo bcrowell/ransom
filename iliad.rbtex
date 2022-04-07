@@ -229,6 +229,16 @@ breaks = [
   [ [5,547], "but Orsilochus begat magnanimous Diocles"],
   [ [5,565], "But him Antilochus, son of magnanimous Nestor, beheld"],
   [ [5,582], "having struck him with a hand-stone on the elbow"],
+  [ [5,598], "passing over a great plain |< has stopped at a swift-flowing river"],
+  [ [5,615], "Him Telamonian Ajax smote on the belt"],
+  [ [5,633], "Sarpedon, chief of the Lycians, what necessity is there for thee"],
+  [ [5,650], "famous Laomedon |< who reproved with harsh language him who had deserved well"],
+  [ [5,668], "But on the other side the well-greaved Greeks carried Tlepolemus from the fight"],
+  [ [5,684], "O son of Priam, I pray thee, suffer me not to lie a prey to the Greeks"],
+  [ [5,699], "But the Greeks, on account of Mars and brazen-helmed Hector"],
+  [ [5,714], "Strange! O daughter of ægis-bearing Jove, unwearied one"],
+  [ [5,733], "Minerva, on the other hand, the daughter of ægis-bearing Jove"],
+  [ [5,749], "The gates of heaven creaked spontaneously, the gates which the Hours guarded"],
 ]
 
 format = ENV['FORMAT']
