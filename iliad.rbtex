@@ -239,6 +239,15 @@ breaks = [
   [ [5,714], "Strange! O daughter of ægis-bearing Jove, unwearied one"],
   [ [5,733], "Minerva, on the other hand, the daughter of ægis-bearing Jove"],
   [ [5,749], "The gates of heaven creaked spontaneously, the gates which the Hours guarded"],
+  [ [5,767], "Come, incite the pillaging Minerva against him, who is very wont to cause him to approach grievous woes>"],
+  [ [5,784], "feeble |< there standing, the white-armed goddess Juno shouted aloud, having likened herself to great-hearted"],
+  [ [5,800], "Little like himself has Tydeus begotten a son"],
+  [ [5,817], "Neither does any disheartening fear possess me, nor any sloth"],
+  [ [5,835], "Thus having said, she forced Sthenelus from his horses to the ground"],
+  [ [5,853], "It then the azure-eyed goddess Minerva having caught in her hand"],
+  [ [5,872], "Father Jove, art thou not incensed beholding these violent deeds"],
+  [ [5,888], "Him sternly regarding, cloud-compelling Jove addressed"],
+  [ [5,905], "Hebe then washed him, and put on him beautiful garments",{'end_at'=> "after having stayed man-slaying Mars from his deeds of slaughter>"}],
 ]
 
 format = ENV['FORMAT']
