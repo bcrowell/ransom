@@ -55,12 +55,32 @@ end
 
 attr_reader :invalid
 
-def get_glosses(lexical)
+def get_glosses(lexical,decruft:true)
   # Input is a lemmatized form, whose accents are significant, but not its case or macrons and breves.
   # Output is an array of strings, possibly empty.
   key = remove_macrons_and_breves(lexical).downcase
   return [] if !(@glosses.has_key?(key))
-  return [@glosses[key]]
+  result = [@glosses[key]]
+  if decruft then result = result.map { |x| self.decruft(x) } end
+  return result
+end
+
+def decruft(gloss)
+  gloss = clean_up_greek(gloss)
+  gloss.sub!(/\A[\*†]*/,'')
+  gloss.gsub!(/[αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ][0-9]{1,3}(, \d{1,3})?/,'_')
+  # typical listing of occurrences: Cf. Ε223 = Θ107, Θ342 = Λ178, Λ121, 404, Μ136, Ο345: χ299.
+  gloss.gsub!(/_ = /,'_')
+  gloss.gsub!(/_: /,'_')
+  gloss.gsub!(/_[\.,]/,'_')
+  gloss.gsub!(/Cf\. _/,'_')
+  gloss.gsub!(/_/,'')
+  gloss.gsub!(/\s+\n/,"\n")
+  gloss.gsub!(/^ {3,}/,"__INDENT__")
+  gloss.gsub!(/ {2,}/,"  ")
+  gloss.gsub!(/__INDENT__/,"   ")
+  gloss = remove_macrons_and_breves(gloss)
+  return gloss
 end
 
 end
