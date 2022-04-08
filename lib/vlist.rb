@@ -281,7 +281,7 @@ def GlossHelp.prep(wikt,cunliffe,key,lemma)
   }
   if !cunliffe.nil? then
     g = cunliffe.get_glosses(lemma)[0]
-    if !g.nil? then h['cunliffe'] = ("Cunliffe:\n"+g).gsub(/(.*)/) {"        // #{$1}"} end
+    if !g.nil? then h['cunliffe'] = ("\n---Cunliffe---\n"+g).gsub(/(.+)/) {"        // #{$1}"} end
   end
   debug_gloss = false
   if debug_gloss then
