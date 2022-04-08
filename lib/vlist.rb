@@ -44,16 +44,18 @@ def total_entries
   return self.list.inject(0){|sum,x| sum + x.length }
 end
 
-def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,700],max_entries:66,reduce_max_entries:0,
+def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,700],max_entries:66,reduce_max_entries:0,
              exclude_glosses:[],core:nil,if_texify_quotes:true,
              include_elided_forms:true,if_warn:true)
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
   # The frequency list is optional; if not using one, then set freq to nil. The main use of it is that if the
   # glossary would be too long, we delete the most common words to cut it down to an appropriate length. If no frequency
   # list is given, then the choice of which words to cut is random/undefined.
-  # The wikt argument is a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated.
+  # The arg dicts['wikt'] is a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated.
   # The context argument should be a hash with keys 'ch','line', and 'text', where 'line' is the first line number on the page.
   # If the line key is absent, we can't make much use of this.
+  wikt = dicts['wikt']
+  cunliffe = dicts['cunliffe']
   lemmas = treebank.lemmas
   # typical entry when there's no ambiguity:
   #   "βέβασαν": [    "βαίνω",    "1",    "v3plia---",    1,    false,    null  ],
@@ -227,7 +229,8 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,wikt,thresholds:[1,50,700,7
       end
       next if skip
       key = remove_accents(lemma).downcase
-      if !wikt.nil? && Gloss.get(db,lemma).nil? then gloss_help.push(GlossHelp.prep(wikt,key,lemma)) end # it's OK if this was done in a previous pass
+      if !wikt.nil? && Gloss.get(db,lemma).nil? then gloss_help.push(GlossHelp.prep(wikt,cunliffe,key,lemma)) end
+      # ... it's OK if this was done in a previous pass
       if warn_ambig.has_key?(word) then ambig_warnings.push(warn_ambig[word]) end
       # stuff some more info in the misc element:
       misc['pos'] = pos # lemma and pos may be wrong if the same word can occur in more than one way
@@ -262,7 +265,8 @@ class GlossHelp
 #     with messages if the gloss help was already provided in a previous invocation
 @@warned_fatal = false
 
-def GlossHelp.prep(wikt,key,lemma)
+def GlossHelp.prep(wikt,cunliffe,key,lemma)
+  # cunliffe may be nil, e.g., if this isn't Homeric Greek
   if wikt.nil? && !@@warned_fatal then
     $stderr.print "*********** warning: wikt is nil in GlossHelp.prep, no gloss help can be generated\n"
     @@warned_fatal = true
@@ -275,6 +279,10 @@ def GlossHelp.prep(wikt,key,lemma)
     'url'=> "https://en.wiktionary.org/wiki/#{lemma} https://logeion.uchicago.edu/#{lemma}",
     'wikt'=> wikt.get_glosses(lemma).join(', ')
   }
+  if !cunliffe.nil? then
+    g = cunliffe.get_glosses(lemma)[0]
+    if !g.nil? then h['cunliffe'] = ("Cunliffe:\n"+g).gsub(/(.*)/) {"        // #{$1}"} end
+  end
   debug_gloss = false
   if debug_gloss then
      h['debug']="key=#{key}, raw=#{word_raw}, word=#{word}, lemma=#{lemma}, ignore=#{Ignore_words.patch(word)}, pr=#{Proper_noun.is(word,lemma,require_cap:false)}"
@@ -296,10 +304,12 @@ def GlossHelp.give(gloss_help)
     next if File.exist?(filename) # already done in a previous invocation
     list_written.push(h['lemma'])
     individual_info.push("no glossary entry for #{h['lemma']} , see gloss help file")
+    c = ''
+    if h.has_key?('cunliffe') then c=h['cunliffe'] end
     File.open(filename,"w") { |f|
       x = %Q(
         // #{h['url']}
-        // #{h['wikt']}
+        // #{h['wikt']}#{c}
         {
           \"word\":\"#{h['lemma']}\",
           \"medium\":\"#{h['wikt']}\"

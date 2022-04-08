@@ -52,21 +52,26 @@ end
 require_relative "lib/load_common"
 require_relative "greek/load_common"
 
-if Options.if_render_glosses then require_relative "lib/wiktionary" end # slow, don't load if not necessary
+if Options.if_render_glosses then
+  # slow, don't load if not necessary
+  require_relative "lib/wiktionary"
+  require_relative "lib/cunliffe"
+end
 
 
-def four_page_layout(stuff,context,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false,
+def four_page_layout(stuff,context,genos,db,dicts,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false,
          if_warn:true,reduce_max_entries:0)
   # Doesn't get called if if_prose_trial_run is set.
-  # The parameter wikt should be a WiktionaryGlosses object for the appropriate language; if nil, then no gloss help will be generated,
+  # The parameter dicts should be a hash with possible keys 'wikt' and 'cunliffe' whose values are
+  # a WiktionaryGlosses object for the appropriate language and a CunliffeGlosses object. If neither is present, then no gloss help will be generated,
   # and only a brief warning will be printed to stderr.
   treebank,freq,greek,translation,notes,core = stuff
   return if dry_run
-  print_four_page_layout(stuff,context,genos,db,wikt,layout,next_layout,vocab_by_chapter,start_chapter,
+  print_four_page_layout(stuff,context,genos,db,dicts,layout,next_layout,vocab_by_chapter,start_chapter,
            if_warn:if_warn,reduce_max_entries:reduce_max_entries)
 end
 
-def print_four_page_layout(stuff,context,genos,db,wikt,bilingual,next_layout,vocab_by_chapter,start_chapter,
+def print_four_page_layout(stuff,context,genos,db,dicts,bilingual,next_layout,vocab_by_chapter,start_chapter,
             if_warn:true,reduce_max_entries:0)
   # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
   # doesn't get called if if_prose_trial_run is set
@@ -75,7 +80,7 @@ def print_four_page_layout(stuff,context,genos,db,wikt,bilingual,next_layout,voc
   n_lines_of_notes = Notes.estimate_n_lines(bilingual.foreign_linerefs,notes)
   reduce_max_entries += 2*n_lines_of_notes # This assumes that notes go at the bottom of the vocab page, and subtract from its space.
   #Debug.print(n_lines_of_notes>0) {"#{bilingual.foreign_linerefs} #{reduce_max_entries}"}
-  core,vl,vocab_by_chapter = VocabPage.helper(bilingual,context,genos,db,wikt,core,treebank,freq,notes,vocab_by_chapter,start_chapter,ch,
+  core,vl,vocab_by_chapter = VocabPage.helper(bilingual,context,genos,db,dicts,core,treebank,freq,notes,vocab_by_chapter,start_chapter,ch,
           if_warn:if_warn,reduce_max_entries:reduce_max_entries)
   if bilingual.foreign_ch1!=bilingual.foreign_ch2 then
     # This should only happen in the case where reference 2 is to the very first line of the next book.

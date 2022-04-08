@@ -1,4 +1,4 @@
-# doesn't load wiktionary, because that's slow and often not needed
+# FIXME: shouldn't load wiktionary or cunliffe, because that's slow and often not needed, but that causes a crash
 
 require_relative "file_util"
 require_relative "string_util"
@@ -8,6 +8,7 @@ require_relative "treebank"
 require_relative "epos"
 require_relative "genos"
 require_relative "wiktionary"
+require_relative "cunliffe"
 require_relative "vlist"
 require_relative "frequency"
 require_relative "vocab_page"

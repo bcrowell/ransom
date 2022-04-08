@@ -9,8 +9,11 @@ text = 'iliad'
 treebank = TreeBank.new(author)
 freq = Frequency.new("lemmas/#{author}_freq.json")
 foreign_genos = GreekGenos.new('epic',is_verse:true)
+dicts = {}
 greek_wikt = WiktionaryGlosses.new(foreign_genos)
-if greek_wikt.invalid then greek_wikt=nil end
+if !greek_wikt.invalid then dicts['wikt']=greek_wikt end
+cunliffe = CunliffeGlosses.new()
+if !cunliffe.invalid then dicts['cunliffe']=cunliffe end
 db = GlossDB.from_genos(foreign_genos)
 core = json_from_file_or_die("core/homer.json").keys # array containing lemmas not to put in vocab lists, because they're in core vocab in back
 greek = Epos.new("text/ιλιας","greek",true,genos:foreign_genos)
@@ -281,7 +284,7 @@ layouts = []
   opts = breaks[i][2] # hash or nil
   reduce_max_entries = 0
   if !opts.nil? && opts.has_key?('reduce_max_entries') then reduce_max_entries=opts['reduce_max_entries'] end
-  four_page_layout(stuff,context,greek.genos,db,greek_wikt,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run,
+  four_page_layout(stuff,context,greek.genos,db,dicts,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run,
                    if_warn:Options.if_warn(),reduce_max_entries:reduce_max_entries)
 }
 ch_range[0].upto(ch_range[1]) { |ch|
