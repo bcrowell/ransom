@@ -201,7 +201,7 @@ def Gloss.validate(db,key)
     if !(eks.subset?(allowed_keys.to_set)) then return [true,"illegal key(s): #{eks-allowed_keys.to_set}"] end
     if !(mandatory_keys.to_set.subset?(eks)) then return [true,"required key(s) not present: #{mandatory_keys.to_set-eks}"] end
     eks.select! { |key| entry[key]!='' } # delete keys with null-string values
-    if !(mandatory_keys.to_set.subset?(eks)) then return [true,"required key(s) are null strings: #{mandatory_keys.to_set-eks}"] end
+    if !(entry.keys.to_set.subset?(eks)) then return [true,"values for these keys are null strings: #{entry.keys.to_set-eks}"] end
     if entry.has_key?('gender') then
       allowed_genders = ['m','f','n','m or f']
       if !(allowed_genders.to_set.include?(entry['gender'])) then return [true,"illegal value for gender, #{entry['gender']}, should be one of #{allowed_genders}"] end

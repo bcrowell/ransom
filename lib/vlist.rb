@@ -312,6 +312,7 @@ def GlossHelp.give(gloss_help)
         // #{h['wikt']}#{c}
         {
           \"word\":\"#{h['lemma']}\",
+          \"short\":\"\",
           \"medium\":\"#{h['wikt']}\"
         }
       )
