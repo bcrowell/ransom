@@ -1,0 +1,12 @@
+// https://en.wiktionary.org/wiki/πάσσαλος https://logeion.uchicago.edu/πάσσαλος
+// peg on which to hang clothes, membrum virile
+// ---Cunliffe---
+// πάσσαλος, ου, ὁ. Ablative πασσαλόφι  A
+//    peg on which to hang something
+//    = 105,
+
+{
+  "word":"πάσσαλος",
+  "medium":"clothes hook"
+}
+      

@@ -1,0 +1,14 @@
+// https://en.wiktionary.org/wiki/πρέσβα https://logeion.uchicago.edu/πρέσβα
+// feminine nominative singular of πρέσβυς (présbus, “revered, honored”)
+// ---Cunliffe---
+// πρέσβα, ἡ [fem. of πρέσβυς].
+// 1. The eldest: π. Διὸς θυγάτηρ Ἄτη
+// 2. That is senior in dignity. Of Here: π. θεά, queen of
+//    heaven  243.
+
+{
+  "word":"πρέσβα",
+  "short":"eldest",
+  "medium":"eldest, most dignified"
+}
+      

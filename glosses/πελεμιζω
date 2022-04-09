@@ -1,0 +1,20 @@
+// https://en.wiktionary.org/wiki/πελεμίζω https://logeion.uchicago.edu/πελεμίζω
+// 
+// ---Cunliffe---
+// πελεμίζω. 3 sing. aor. πελέμιξε  Infin.
+//    πελεμίξαι  3 sing. aor. pass. πελεμίχθη
+// 1. To cause to quiver or vibrate, shake: ὕλην  Cf.
+//    --To shake or force out of position: [σάκος]
+//    --To shake in impatience of effort, apply
+//    violent force to: τρὶς πελέμιξε μελίην (τόξον)
+//    ἐρύσσασθαι μενεαίνων
+// 2. In pass., to quiver, vibrate, shake: πελεμίζετ᾽
+//    Ὄλυμπος  --To reel, lose one's
+//    footing, stagger
+
+{
+  "word":"πελεμίζω",
+  "short":"shake",
+  "medium":"shake, shake something"
+}
+      

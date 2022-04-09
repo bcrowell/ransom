@@ -1,0 +1,14 @@
+// https://en.wiktionary.org/wiki/προσβάλλω https://logeion.uchicago.edu/προσβάλλω
+// strike [+accusative = something] [+dative = against something],, attack, assault, apply, affix, carry out, procure for; to assign to
+// ---Cunliffe---
+// προσβάλλω, προτιβάλλω [προσ- (3)].
+// 1. To smite. Of the rays of the sun: Ἠέλιος νέον
+//    προσέβαλλεν ἀρούρας =
+// 2. In mid., to give heed to, direct one's attention to:
+//    ταύτην οὐ προτιβάλλεαι
+
+{
+  "word":"προσβάλλω",
+  "medium":"hit (+acc+dat)"
+}
+      
