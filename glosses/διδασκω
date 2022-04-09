@@ -1,0 +1,23 @@
+// https://en.wiktionary.org/wiki/διδάσκω https://logeion.uchicago.edu/διδάσκω
+// teach, instruct, train
+// ---Cunliffe---
+// διδάσκω [redup. fr. δά-, δάω]. 3 sing. aor. (ἐ)δίδαξε
+//    1 pl. διδάξαμεν  3
+//    ἐδίδαξαν  Pf. infin. pass. δεδιδάχθαι
+// 1. To teach, instruct (a person)
+// 2. To teach, impart knowledge of (something)
+//    (ἐργάζεσθαι complementary).
+// 3. With double acc. of person and thing: σφέας οἴμας
+//    --With infin. of what is taught: βάλλειν ἄγρια
+//    πάντα --With acc. of person and this infin.:
+//    ὑψαγόρην σ᾽ ἔμεναι
+// 4. In pass., to gain knowledge of, learn: φάρμακα
+//    δεδιδάχθαι (i.e. their properties) --With
+//    genit.: διδασκόμενος πολέμοιο (concerning war, i.e.
+//    the art of war)
+
+{
+  "word":"διδάσκω",
+  "medium":"teach"
+}
+      
