@@ -1,0 +1,14 @@
+// https://en.wiktionary.org/wiki/ἔκγονος https://logeion.uchicago.edu/ἔκγονος
+// child, offspring, descendants
+// ---Cunliffe---
+// ἔκγονος [ἐκ- (2) + γον-, γεν-, γίγνομαι].
+// 1. The offspring, a child (= γόνος (1) (a)): Τυδέος
+// 2. A remoter descendant (= γόνος (1) (b)): Μελάμποδος
+//    (he was his great-grandson).
+
+{
+  "word":"ἔκγονος",
+  "short":"offspring",
+  "medium":"offspring, descendant"
+}
+      

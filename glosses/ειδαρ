@@ -1,0 +1,17 @@
+// https://en.wiktionary.org/wiki/εἶδαρ https://logeion.uchicago.edu/εἶδαρ
+// food
+// ---Cunliffe---
+// εἶδαρ, ατος, τό [ἐδ-Ϝαρ, fr. ἐδ-, ἔδω].
+// 1. Food, meat  --In pl. of food of
+//    various kinds: εἴδατα πόλλ᾽ ἐπιθεῖσα  =
+//    --Of food disposed on a
+//    table: ἀπὸ δ᾽ εἴδατα χεῦεν ἔραζε --Of food
+//    used as bait: ἰχθύσι δόλον κατὰ εἴδατα βάλλων
+// 2. Fodder for horses
+
+{
+  "word":"εἶδαρ",
+  "short":"food",
+  "medium":"food, fodder"
+}
+      

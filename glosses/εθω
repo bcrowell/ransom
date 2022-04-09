@@ -1,0 +1,20 @@
+// https://en.wiktionary.org/wiki/ἔθω https://logeion.uchicago.edu/ἔθω
+// am accustomed, I tend to
+// ---Cunliffe---
+// ἔθω [conn. with ἦθος and orig. σφέθω. Cf. L. suesco]. 3
+//    sing. pf. εἴωθε  ἔωθε  Pple.
+//    εἰωθώς, -ότος
+// 1. In pres. pple., after one's wont: οὓς παῖδες
+//    ἐριδμαίνωσιν ἔθοντες --Of a beast, after the
+//    manner of its kind
+// 2. In pf., to be wont or accustomed. With infin.:
+//    εἰωθότες ἔδμεναι ἅδην
+//    --Adjectivally in pple., to which
+//    one is accustomed: ἡνιόχῳ εἰωθότι
+
+{
+  "word":"ἔθω",
+  "medium":"be accustomed, tend to",
+  "mnemonic_cog":"ethology"
+}
+      

@@ -1,0 +1,22 @@
+// https://en.wiktionary.org/wiki/ἐκφεύγω https://logeion.uchicago.edu/ἐκφεύγω
+// flee from, escape
+// ---Cunliffe---
+// ἐκφεύγω [ἐκ- (1)]. 3 sing. aor. ἔκφυγε
+//    1 pl.
+//    ἐκφύγομεν  3 ἐξέφυγον  Infin. ἐκφυγέειν
+// 1. To escape, evade, avoid (impending danger or
+//    trouble): θάνατον
+// 2. To escape from, get clear or free of (danger, etc.,
+//    in which one is involved): μέγα πεῖραρ ὀϊζύος
+//    --Absol.: ἔνθεν ἐκφύγομεν  --
+//    To escape from or out of. With genit.: ἁλός
+// 3. Of a missile weapon, to fly from (the hand). With
+//    genit.: βέλος ἔκφυγε χειρός
+//    --Absol.: οὐδ᾽ ἅλιον βέλος ἔκφυγεν
+
+{
+  "word":"ἐκφεύγω",
+  "short":"flee",
+  "medium":"flee from, escape"
+}
+      

@@ -1,0 +1,24 @@
+// https://en.wiktionary.org/wiki/εἰλύω https://logeion.uchicago.edu/εἰλύω
+// wrap, enfold, cover, crawl, wriggle
+// ---Cunliffe---
+// εἰλύω [ϜελϜ-, Ϝελυ-. Cf. εἴλω]. Fut. εἰλύσω  3
+//    sing. pf. pass. εἴλυται  3 pl. εἰλύαται
+//    3 sing. plupf. εἴλυτο  Pple. εἰλυμένος,
+//    -ου  Also 3 sing. aor.
+//    pass. ἐλύσθη  Pple. ἐλυσθείς
+// 1. In aor. pple. pass., bent upon oneself, crouching:
+//    προπάροιθε ποδῶν Ἀχιλῆος ἐλυσθείς --Curled up:
+//    ὑπὸ γαστέρ᾽ [ἀρνειοῦ] ἐλυσθείς --In  (ῥυμὸς
+//    ἐπὶ γαῖαν ἐλύσθη) app., swung to the ground.
+// 2. To wrap something round (something), wrap up; hence,
+//    to cover up, cover: νεφέλῃ εἰλυμένος
+//    ; εἴλυτο ἁλὸς ἄχνῃ  Cf.
+
+{
+  "word":"εἰλύω",
+  "short":"curl",
+  "medium":"crouch, curl, wrap",
+  "mnemonic_cog":"helix",
+  "cog": "helix, vulgar, revolve, ἅλις, εἴλω"
+}
+      
