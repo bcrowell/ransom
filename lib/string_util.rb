@@ -435,6 +435,12 @@ def clean_up_grotty_greek_one_word(s,silent:true)
     $stderr.print "cleaning up what appears to be beta code, #{s} -> #{s2}\n" unless silent
     s = s2
   end
+  greek_koronis = [8125].pack('U')
+  if s[0]==greek_koronis then
+    s = s[1..-1] # this happens in perseus for the lemma ἀθήνη, which they have encoded as 787 7936 952 ..., i.e., the
+    #             breathing mark is there twice, once as a combining comma above and once as part of the composed character ἀ
+    #             https://github.com/PerseusDL/treebank_data/issues/37
+  end
   if s=~/[^[:alpha:]᾽[0-9]\?;]/ then raise "word #{s} contains unexpected characters; unicode=#{s.chars.map { |x| x.ord}}\n" end
   return s
 end
