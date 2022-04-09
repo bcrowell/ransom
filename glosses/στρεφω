@@ -1,0 +1,45 @@
+// https://en.wiktionary.org/wiki/στρέφω https://logeion.uchicago.edu/στρέφω
+// twist
+// ---Cunliffe---
+// στρέφω. 3 pl. pa. iterative στρέψασκον  3 sing.
+//    aor. στρέψε  3 pl. στρέψαν  Pple. στρέψας,
+//    -αντος  Infin. στρέψαι
+//    Fut. infin. mid. στρέψε-σθαι  Aor. pple. pass.
+//    στρεφθείς, -έντος  :
+//    Fem. στρεφθεῖσα  (ἀνα-, ἀπο-, ἐκ-,
+//    ἐν-, ἐπι-, μετα-, περι-, ὑπο-.)
+// 1. To turn, bend, deflect: εἰς Ἔρεβος στρέψας [ὄϊας]
+//    (i.e. bending their necks downwards)
+// 2. To turn or guide (one's horses) in a specified
+//    direction: ἵππους ἐπὶ νῆα
+// 3. To wheel (one's horses) round: ἵππους στρέψαι (so as
+//    to face the foe)  and  (in
+//    flight).--Absol., to wheel one's team round: ὁπότε
+//    στρέψαντες ἱκοίατο τέλσον ἀρούρης  --
+//    Absol., to guide one's horses round something: αἰεὶ
+//    τέρμ᾽ ὁρόων στρέφει ἐγγύθεν --To wheel or turn
+//    (one's horses) so as to keep them in a desired
+//    relative position: ὅς οἱ σχεδὸν ἔστρεφε ἵππους
+//    --Absol.: ὑπὸ δ᾽ ἔστρεφον ἡνιοχῆες
+// 4. To cause (a wind) to veer: ὅτ᾽ ἂψ θεοὶ οὖρον στρέψαν
+// 5. In mid. and pass.
+//    a. To turn oneself about, turn round: πρώτῳ
+//    στρεφθέντι μεταφρένῳ ἐν δόρυ πῆξεν (i.e. turning
+//    his horses to flight)  εὖτ᾽ ἔμελλε στρέψεσθ᾽
+//    ἐκ χώρης ὅθι ...
+//    --To turn one's body so
+//    that it lies face upwards: ἀώτου στρεφθεὶς
+//    ἐχόμην
+//    b. To turn oneself hither and thither: ὡς ὅτ᾽
+//    ἂν κάπριος στρέφεται  --To turn
+//    one's recumbent body (this way and that), lie
+//    tossing: ἐστρέφετ᾽ ἔνθα καὶ ἔνθα
+//    c. Of a heavenly body, to revolve: Ἄρκτον, ἥ τ᾽
+//    αὐτοῦ στρέφεται =
+
+{
+  "word":"στρέφω",
+  "short":"turn",
+  "medium":"turn, veer"
+}
+      

@@ -1,7 +1,7 @@
-// https://en.wiktionary.org/wiki/ῥινός https://logeion.uchicago.edu/ῥινός
-// skin of a man or a beast, leather, a hide of a beast, shield
 {
   "word":"ῥινός",
-  "medium":"skin, shield"
+  "vowel_length":"ῥι_νός",
+  "medium":"skin, leather",
+  "notes":"also ῥινόν"
 }
       

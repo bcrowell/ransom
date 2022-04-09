@@ -1,0 +1,17 @@
+// https://en.wiktionary.org/wiki/στρεπτός https://logeion.uchicago.edu/στρεπτός
+// Easily twisted, pliant., Collar of twisted or linked metal., Easily twisted, pliant., Bent or turned., Easily twisted, pliant., Bent, curved.
+// ---Cunliffe---
+// στρεπτός, ή, -όν [στρεπ-, στρέφω].
+// 1. Turning easily: στρεπτὴ γλῶσσ᾽ ἐστὶ βροτῶν (capable
+//    of uttering all kinds of speech, voluble, glib)
+// 2. Yielding to movement, pliant. Epithet of  the χιτών
+// 3. Yielding to influence, open to entreaty or reason:
+//    στρεπταὶ φρένες ἐσθλῶν
+
+{
+  "word":"στρεπτός",
+  "short":"articulate",
+  "medium":"easily turning, pliant, articulate",
+  "mnemonic_cog":"strep throat"
+}
+      

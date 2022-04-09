@@ -44,7 +44,6 @@ def patch(a)
   if lemma=='ἀλκί' then patched_lemma='ἀλκή' end
   if lemma=='βοείη' then patched_lemma='βόειος' end
   if lemma=='ἐλύω' then patched_lemma='εἰλύω' end
-  if lemma=='ἑλώριον' then patched_lemma='ἕλωρ' end # Cunliffe does give two separate lemmas for this.
   if lemma=='ἐργαθεῖν' then patched_lemma='ἔργω' end
   if lemma=='ζάω' then patched_lemma='ζώω' end # The latter is the form almost always used in Homer.
   if lemma=='ζυγός' then patched_lemma='ζυγόν' end
@@ -53,6 +52,10 @@ def patch(a)
   if lemma=='πρόσθεϝ' then patched_lemma='πρόσθεν' end
   if lemma=='πρυμνόν' then patched_lemma='πρύμνα' end
 
+  # Lemmas that are different, but in an obvious way. No reason for learners to learn them separately.
+  if lemma=='ἑλώριον' then patched_lemma='ἕλωρ' end
+  if lemma=='ῥινόν' then patched_lemma='ῥινός' end
+ 
   # Redundant lemmas, one for an Attic form and one for an epic one:
   if lemma=='ῥόα' && inflected=='ῥοάων' then patched_lemma='ῥοή' end # There is also Attic ῥόα=pomegranate, epic ῥοιή.
 

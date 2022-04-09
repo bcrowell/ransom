@@ -1,0 +1,26 @@
+// https://en.wiktionary.org/wiki/ῥέα https://logeion.uchicago.edu/ῥέα
+// Alternative form of ῥεῖα (rheîa)
+// ---Cunliffe---
+// ῥέα, ῥεῖα (Ϝρέα, Ϝρεῖα) (ῥέα in Iliad only. A
+//    monosyllable in  ).
+// 1. Easily, with ease, without effort or difficulty,
+//    readily: ῥέα πάλλεν  ὅπως ἵπποι ῥεῖα διέλθοιεν
+//    (without giving the driver trouble, without shying)
+//    (with
+//    effortless stride), 144 (without check),
+//    (nimbly),  (smoothly),  (without
+//    check, straight),  etc.:  (without more
+//    ado),  (you
+//    saw it at once), 305,
+// 2. At ease, at one's ease: θεοὶ ῥεῖα ζώοντες :
+// 3. Without thinking of the consequences, lightly,
+//    readily: ἄλλον κεν θεῶν ῥεῖα κατευνήσαιμι --
+//    Sim.: τούτοισι ταῦτα μέλει ῥεῖα (they enjoy
+//    themselves with no thought for the morrow)
+
+{
+  "word":"ῥέα",
+  "medium":"easily",
+  "syn":"ῥεῖα"
+}
+      
