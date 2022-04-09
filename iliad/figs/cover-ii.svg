@@ -10,14 +10,14 @@
    xmlns:xlink="http://www.w3.org/1999/xlink"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
-   width="12.637in"
+   width="13.132in"
    height="9.25in"
-   viewBox="0 0 320.97981 234.95001"
+   viewBox="0 0 333.55281 234.95001"
    version="1.1"
    id="svg8"
    inkscape:version="0.92.5 (2060ec1f9f, 2020-04-08)"
    sodipodi:docname="cover-ii.svg"
-   inkscape:export-filename="/home/bcrowell/Documents/programming/ransom/iliad/figs/cover.png"
+   inkscape:export-filename="/home/bcrowell/Documents/programming/ransom/iliad/figs/cover-ii.png"
    inkscape:export-xdpi="300"
    inkscape:export-ydpi="300">
   <defs
@@ -29,9 +29,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.36908852"
-     inkscape:cx="621.40882"
-     inkscape:cy="428.81465"
+     inkscape:zoom="0.24755194"
+     inkscape:cx="-229.59385"
+     inkscape:cy="528.32854"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -49,7 +49,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -59,41 +59,41 @@
      id="layer1"
      transform="translate(0,-62.049983)">
     <rect
-       style="opacity:1;vector-effect:none;fill:#d3fbff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.75968707;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+       style="opacity:1;vector-effect:none;fill:#d3fbff;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:0.77442288;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        id="rect824"
-       width="320.9798"
+       width="333.5528"
        height="234.95"
        x="-8.8817842e-16"
        y="62.049984" />
     <image
        sodipodi:absref="/home/bcrowell/Documents/programming/ransom/iliad/figs/ajax-and-patroclus-body.jpg"
        xlink:href="ajax-and-patroclus-body.jpg"
-       inkscape:export-ydpi="300"
-       inkscape:export-xdpi="300"
-       width="99.991341"
-       height="50.037998"
-       preserveAspectRatio="none"
+       y="135.13899"
+       x="207.88937"
        id="image971"
-       x="192.01459"
-       y="135.13899" />
+       preserveAspectRatio="none"
+       height="50.037998"
+       width="99.991341"
+       inkscape:export-xdpi="300"
+       inkscape:export-ydpi="300" />
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.17499995px;line-height:100%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.28222221px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       x="212.06532"
+       x="227.94011"
        y="122.74025"
        id="text978"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300"><tspan
          sodipodi:role="line"
          id="tspan976"
-         x="212.06532"
+         x="227.94011"
          y="122.74025"
          style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;font-family:'GFS Porson';-inkscape-font-specification:'GFS Porson';stroke-width:0.28222221px">ΟΜΗΡΟΥ ΙΛΙΑΣ</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.17499995px;line-height:100%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;opacity:1;vector-effect:none;fill:#010101;fill-opacity:1;stroke:none;stroke-width:0.28222221px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
        x="141.23854"
-       y="-157.97348"
+       y="-163.79424"
        id="text978-9"
        transform="rotate(90)"
        inkscape:export-xdpi="300"
@@ -101,20 +101,20 @@
          sodipodi:role="line"
          id="tspan976-0"
          x="141.23854"
-         y="-157.97348"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;font-family:'GFS Porson';-inkscape-font-specification:'GFS Porson';fill:#010101;fill-opacity:1;stroke-width:0.28222221px">ΟΜΗΡΟΥ ΙΛΙΑΣ 4</tspan></text>
+         y="-163.79424"
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;font-family:'GFS Porson';-inkscape-font-specification:'GFS Porson';fill:#010101;fill-opacity:1;stroke-width:0.28222221px">ΟΜΗΡΟΥ ΙΛΙΑΣ 4-5</tspan></text>
     <text
        xml:space="preserve"
        style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:3.17499995px;line-height:100%;font-family:'Liberation Sans';-inkscape-font-specification:'Liberation Sans';font-variant-ligatures:normal;font-variant-position:normal;font-variant-caps:normal;font-variant-numeric:normal;font-variant-alternates:normal;font-feature-settings:normal;text-indent:0;text-align:start;text-decoration:none;text-decoration-line:none;text-decoration-style:solid;text-decoration-color:#000000;letter-spacing:0px;word-spacing:0px;text-transform:none;writing-mode:lr-tb;direction:ltr;text-orientation:mixed;dominant-baseline:auto;baseline-shift:baseline;text-anchor:start;white-space:normal;shape-padding:0;opacity:1;vector-effect:none;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.28222221px;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
-       x="237.89459"
+       x="252.1819"
        y="133.32628"
        id="text978-3"
        inkscape:export-xdpi="300"
        inkscape:export-ydpi="300"><tspan
          sodipodi:role="line"
          id="tspan976-6"
-         x="237.89459"
+         x="252.1819"
          y="133.32628"
-         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;font-family:'GFS Porson';-inkscape-font-specification:'GFS Porson';stroke-width:0.28222221px">4</tspan></text>
+         style="font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:8.46666622px;font-family:'GFS Porson';-inkscape-font-specification:'GFS Porson';stroke-width:0.28222221px">4-5</tspan></text>
   </g>
 </svg>
