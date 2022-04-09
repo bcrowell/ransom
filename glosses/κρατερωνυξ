@@ -1,0 +1,14 @@
+// https://en.wiktionary.org/wiki/κρατερῶνυξ https://logeion.uchicago.edu/κρατερῶνυξ
+// having strong hooves or claws
+// ---Cunliffe---
+// κρατερῶνυξ, υχος [κρατερός + ὄνυξ]. With solid hooves,
+//    strong-hoofed. Epithet of horses and mules
+//    --Epithet of wolves,
+//    with powerful claws, strong-clawed
+
+{
+  "word":"κρατερῶνυξ",
+  "short":"strong-clawed",
+  "medium":"strong-clawed/hoofed"
+}
+      

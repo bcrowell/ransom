@@ -1,0 +1,31 @@
+// https://en.wiktionary.org/wiki/κύκλος https://logeion.uchicago.edu/κύκλος
+// circle, ring, Any circular object, such as a wheel, A crowd of people, marketplace, circular movement, sphere, globe
+// ---Cunliffe---
+// κύκλος, ου, ὁ. Acc. pl. (besides the regular form)
+//    κύκλα  A ring or circle.
+// 1. Each of a number of concentric circular pieces of
+//    metal forming a shield: ἔντοσθεν βοείας ῥάψε θαμειὰς
+//    χρυσείῃς ῥάβδοισι διηνεκέσιν περὶ κύκλον
+//    (corresponding with each circle, but no doubt
+//    covering the joints)  (the pieces of leather
+//    being sewed together with the wire), ἀσπίδα, ἣν πέρι
+//    κύκλοι δέκα χάλκεοι ἦσαν --Sim. of both an outer
+//    circle of metal and the corresponding inner circle
+//    of leather: διὰ δ᾽ ἀμφοτέρους ἕλεν [ἐγχείη] κύκλους
+//    ἀσπίδος (tore apart the metal facing and the leather
+//    backing)
+// 2. A chariot-wheel --In pl. κύκλα denoting rather
+//    vague quantity than plurality, a set of chariot-
+//    wheels: ἀμφ᾽ ὀχέεσσι βάλε κύκλα --So of wheels
+//    under a tripod
+// 3. A semi-circular range of seats for judges: ἥατ᾽ ἐπὶ
+//    ξεστοῖσι λίθοις ἱερῷ ἐνὶ κύκλῳ
+// 4. A cordon of men drawn round a hunted beast
+// 5. In dat. κύκλῳ, in a circle, round about: χέε δέσματα
+//    κύκλῳ ἁπάντῃ
+
+{
+  "word":"κύκλος",
+  "medium":"circle, wheel"
+}
+      

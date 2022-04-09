@@ -1,0 +1,18 @@
+// https://en.wiktionary.org/wiki/κτάομαι https://logeion.uchicago.edu/κτάομαι
+// get, obtain, acquire, gain, win, bring on oneself, incur, have acquired, have, own, possess
+// ---Cunliffe---
+// κτάομαι [cf. κτίζω].
+// 1. To become the owner of, get, gain, acquire: κτήμασι,
+//    τὰ γέρων ἐκτήσατο Πηλεύς --In reference to
+//    slaves: οἰκήων, οὓς κτήσατ᾽ Ὀδυσσεύς  --
+//    To found and stock (a house): ἐμοὶ ἐκτήσατο κεῖνος
+//    [οἶκον τόνδε] --To win (a bride)
+// 2. In pf., to possess, hold, have: ὅσα φασὶν Ἴλιον
+//    ἐκτῆσθαι
+
+{
+  "word":"κτάομαι",
+  "short":"acquire",
+  "medium":"acquire, possess"
+}
+      

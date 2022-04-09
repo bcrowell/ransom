@@ -1,0 +1,13 @@
+// https://en.wiktionary.org/wiki/κέραμος https://logeion.uchicago.edu/κέραμος
+// potter's clay, earthen vessel, pottery, wine-jar, tile
+// ---Cunliffe---
+// κέραμος, ου, ὁ. An earthenware vessel, a winejar
+//    --A vessel large enough to confine a person in:
+//    χαλκέῳ ἐν κεράμῳ δέδετο
+
+{
+  "word":"κέραμος",
+  "medium":"clay vessel",
+  "mnemonic_cog":"ceramic"
+}
+      
