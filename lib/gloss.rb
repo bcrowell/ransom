@@ -35,6 +35,8 @@ perseus
   we generate the list of core vocabulary, we get an error. Having this data could conceivably
   also be helpful if there is some danger of ambiguity in looking up the
   word based on its Perseus lemma.
+  In some cases, Perseus uses two different lemmas for what clearly seems like it should be one lemma. These
+  should be fixed by adding them to the code in lemmas/flatten.rb .
 
 vowel_length
   E.g., for νέκυς, this is νέκυ_ς. That is: for any doubtful vowel that is

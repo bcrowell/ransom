@@ -1,0 +1,17 @@
+// https://en.wiktionary.org/wiki/μόρσιμος https://logeion.uchicago.edu/μόρσιμος
+// Morsimus
+// ---Cunliffe---
+// μόρσιμος [= μόριμος]. Of or pertaining to fate:
+//    μόρσιμον ἦμαρ. See ἦμαρ (4) (f).--Destined to endure
+//    a specified fate: οὔ με κτενέεις, ἐπεὶ οὔ τοι μ.
+//    εἰμι --Destined or marked out by fate to achieve
+//    something: ἥ κε γήμαιθ᾽ ὅς κε μόρσιμος ἔλθοι  =
+//    --Absol. in neut. sing. in impers.
+//    construction, decreed by fate: σοὶ αὐτῷ μόρσιμόν
+//    ἐστι δαμῆναι
+
+{
+  "word":"μόρσιμος",
+  "medium":"fated"
+}
+      
