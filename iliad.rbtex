@@ -261,22 +261,30 @@ if format=='booklet_short' then breaks = breaks[0..17] end
 dry_run = !(ENV['DRY_RUN'].nil?)
 
 ch_range = {'i'=>[1,3],'ii'=>[4,6]}[Options.vol]
-breaks= breaks.filter { |a| a[0][0]>=ch_range[0] }
+breaks= breaks.filter { |a| a[0][0]>=ch_range[0] && a[0][0]<=ch_range[1] }
 
 current_chapter = -999
 vocab_by_chapter = []
 layouts = []
-0.upto(breaks.length-2) { |i|
+0.upto(breaks.length-1) { |i|
   a,b = breaks[i],breaks[i+1]
+  # b is nil for the final page, that's OK because a has an end_at
   starting_ch = nil
   if i==0 then current_chapter=1 end
   if a[0][0]>current_chapter then current_chapter=a[0][0]; starting_ch=current_chapter end
   a_opts = a[2] # hash or nil
-  if !a_opts.nil? && a_opts.has_key?('end_at') then end_at=a_opts['end_at'] else end_at=b[1] end
-  g1,g2,t1,t2 = a[0],b[0],a[1],end_at
+  if !a_opts.nil? && a_opts.has_key?('end_at') then
+    t2=a_opts['end_at']
+    g2 = [a[0][0]+1,1] # first line of next chapter; FIXME: will fail for end of the whole book
+    if a[0][0]==24 then raise "FIXME: going to end of book doesn't work yet" end
+  else
+    t2=b[1]
+    g2 = b[0]
+  end
+  g1,t1 = a[0],a[1]
   layouts.push([Bilingual.new(g1,g2,t1,t2,greek,translation),starting_ch,dry_run])
 }
-0.upto(breaks.length-2) { |i|
+0.upto(breaks.length-1) { |i|
   bilingual,starting_ch,dry_run = layouts[i]
   if i<breaks.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
   ch_line = breaks[i][0] # ch and line number of start of page, for disambiguation of lemmas and for reporting in warnings
