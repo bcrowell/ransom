@@ -1,0 +1,13 @@
+// https://en.wiktionary.org/wiki/ἀκήριος https://logeion.uchicago.edu/ἀκήριος
+// 
+// ---Cunliffe---
+// ἀκήριος [ἀ- + κῆρ].
+// 1. Lifeless: βέλος ἀκήριον τίθησιν
+// 2. Spiritless: δέος  ἥμενοι ἀκήριοι
+
+{
+  "word":"ἀκήριος",
+  "short":"spiritless",
+  "medium":"lifeless, spiritless"
+}
+      

@@ -1,0 +1,16 @@
+// https://en.wiktionary.org/wiki/ἀποφέρω https://logeion.uchicago.edu/ἀποφέρω
+// 
+// ---Cunliffe---
+// ἀποφέρω [ἀπο- (1) (4)]. 3 dual fut. ἀποίσετον
+//    Infin. ἀποίσειν  2 sing. aor. ἀπένεικας
+//    3 pl. -αν
+// 1. To carry away 360.
+// 2. To cause to be carried away or to go: Κόωνδέ μιν
+// 3. To bring back --To bring back (word): μῦθον
+
+{
+  "word":"ἀποφέρω",
+  "short":"carry off",
+  "medium":"carry off, carry back"
+}
+      

@@ -1,0 +1,16 @@
+// https://en.wiktionary.org/wiki/ἄμβροτος https://logeion.uchicago.edu/ἄμβροτος
+// immortal, divine, belonging to the gods
+// ---Cunliffe---
+// ἄμβροτος [ἀ- + (μ)βροτός].
+// 1. Immortal  --Of horses  =
+//    867.
+// 2. Of or belonging to a god, divine
+// 3. Befitting a god
+// 4. App., conferring divine qualities: δῶρα
+
+{
+  "word":"ἄμβροτος",
+  "medium":"not mortal",
+  "mnemonic_cog":"ambrosia"
+}
+      

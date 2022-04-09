@@ -1,0 +1,15 @@
+// https://en.wiktionary.org/wiki/ἀγκύλος https://logeion.uchicago.edu/ἀγκύλος
+// crooked, curved, rounded, intricate, wily, crafty
+// ---Cunliffe---
+// ἀγκύλος [ἄγκος]. Curved. Epithet of τόξα  :
+//    --Of ἅρμα (referring to the curved form of the
+//    front)
+
+{
+  "word":"ἀγκύλος",
+  "medium":"curved",
+  "mnemonic_cog":"angle",
+  "etym":"from PIE h2enkos, possibly related to h2eng, which would make it cognate with 'angle'",
+  "cog":"ankylosaurus, possibly angle"
+}
+      
