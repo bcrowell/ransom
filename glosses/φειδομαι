@@ -1,0 +1,20 @@
+// https://en.wiktionary.org/wiki/φείδομαι https://logeion.uchicago.edu/φείδομαι
+// 
+// ---Cunliffe---
+// φείδομαι. 3 sing. fut. πεφιδήσεται  3
+//    sing. aor. φείσατο  Aor. opt. πεφιδοίμην
+//    3 sing. πεφίδοιτο  Infin. πεφιδέσθαι  With
+//    genit.
+// 1. To abstain from harming, keep one's hands off, have
+//    mercy upon, spare: ἱκέτεω 187.
+// 2. To save from injury or inconvenience, be solicitous
+//    for, spare: ἵππων
+// 3. Not to have the heart to part with, to withhold,
+//    keep back, spare: δέπαος
+
+{
+  "word":"φείδομαι",
+  "short":"spare",
+  "medium":"not harm, save, keep back"
+}
+      
