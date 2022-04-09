@@ -1,0 +1,18 @@
+// https://en.wiktionary.org/wiki/λίνον https://logeion.uchicago.edu/λίνον
+// flax (Linum usitatissimum), anything made of flax:, cord, fishing line, thread, anything made of flax:, thread of destiny spun by the Fates, anything made of flax:, fishing net, hunting net, anything made of flax:, linen cloths or garments, anything made of flax:, flax for spinning
+// ---Cunliffe---
+// λίνον, ου, τό. Flax; things made thereof.
+// 1. A cord, a fishing-line --The thread of destiny:
+//    τὰ πείσεται ἅσσα οἱ Αἶσα γιγνομένῳ ἐπένησε λίνῳ
+// 2. Something made of cords, a net
+// 3. Linen; app. a sheet of linen wherewith to cover
+//    oneself in bed (cf. ῥῆγος): Ὀδυσσῆϊ στόρεσαν ῥῆγός
+//    τε λίνον τε  --λίνοιο ἄωτος. See ἄωτος
+//    (2) (a).
+
+{
+  "word":"λίνον",
+  "short":"cord",
+  "medium":"cord, net, bedsheet"
+}
+      

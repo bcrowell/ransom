@@ -1,0 +1,39 @@
+// https://en.wiktionary.org/wiki/λούω https://logeion.uchicago.edu/λούω
+// wash, bathe (generally of people), purify, cleanse, bathe oneself, take a bath
+// ---Cunliffe---
+// λούω (λόϜω) [λοϜ-. Cf. L. lavo]. 3 sing. aor. λοῦσε
+//    3 pl. λοῦσαν  3 sing.
+//    subj. λούσῃ  3 pl. opt. λούσειαν  Imp.
+//    λοῦσον  Pl. λούσατε  Nom. sing. fem. pple.
+//    λούσα–σα  Infin. λοῦσαι  3 sing. aor. λόε
+//    (λόϜε)  Infin. mid. λούεσθαι
+//    λοῦσθαι  3 pl. aor. λούσαντο
+//    3 sing. opt. λούσαιτο  Imp. pl. λούσασθε
+//    Infin. λούσασθαι  Pf. pple.
+//    λελουμένος  From λοέω (λοϜέω) impf. λόεον
+//    Aor. pple. λοέσσας  Infin. λοέσσαι  Fut.
+//    mid. (or aor. subj.) λοέσσομαι  3 sing. aor.
+//    λοέσσατο  Pple. λοεσσάμενος, -η  :
+//    (ἀπο-.)
+// 1. To wash the body of, cause to bathe: Τηλέμαχον λοῦσε
+//    Πολυκάστη
+//    etc.--In reference to cleansing a corpse
+//    --In reference to horses:
+//    λοέσσας [ἵππους] ὕδατι
+// 2. With ἀπό, to wash away or off: εἰς ὅ κε λούσῃ ἄπο
+//    βρότον --With double acc.  of what is cleansed
+//    and of what is washed away: ὄφρα Πάτροκλον λούσειαν
+//    ἄπο βρότον
+// 3. In mid., to wash one's body, bathe oneself: ἐς
+//    ἀσαμίνθους βάντες λούσαντο  λοεσσάμενος
+//    ποταμοῖο (genit. of space or material, 'in the ...᾽)
+//    etc.--Of a horse: εἰωθὼς λούεσθαι ποταμοῖο  =
+//    --Fig. of a star: λελουμένος Ὠκεα-νοῖο
+// 4. In mid., with ἀπό, to wash away or off from one's
+//    body: λούσασθαι ἄπο βρότον
+
+{
+  "word":"λούω",
+  "medium":"wash, bathe"
+}
+      
