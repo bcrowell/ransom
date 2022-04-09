@@ -42,6 +42,7 @@ def patch(a)
   if lemma=='ἥλιος' then patched_lemma='ἠέλιος' end
   if lemma=='πολλός' then patched_lemma='πολύς' end
   if lemma=='ἀλκί' then patched_lemma='ἀλκή' end
+  if lemma=='βοείη' then patched_lemma='βόειος' end
 
   # Redundant lemmas, one for an Attic form and one for an epic one:
   if lemma=='ῥόα' && inflected=='ῥοάων' then patched_lemma='ῥοή' end # There is also Attic ῥόα=pomegranate, epic ῥοιή.
