@@ -1,0 +1,24 @@
+// https://en.wiktionary.org/wiki/ἡνίοχος https://logeion.uchicago.edu/ἡνίοχος
+// one who holds the reins, charioteer, chariot-driver in games, guide, leader, class of rich citizens of Athens who had to furnish chariots for public service, Auriga, a winter constellation
+// ---Cunliffe---
+// ἡνίοχος, ου, ὁ [ἡνία + ὀχ-, ἔχω. 'He that holds the
+//    reins᾽].
+// 1. The driver of a war-chariot as distinguished from
+//    the παραιβάτης or fighting man: παραιβάται ἡνίοχοί
+//    τε  316,  =
+//    399,  537 =
+//    610,
+// 2. Used loosely of the παραιβάτης (cf. ἡνιοχεύς (2)):
+//    θρασὺν ἡνίοχον φορέοντες Ἕκτορα  (Eniopeus was
+//    driving, see 119, where he also is called ἡ.).--In
+//    pl. including both the ἡ. proper and the παραιβάτης:
+//    σὺν ἡνιόχοισι κακοῖσιν
+// 3. One who drives his chariot in a race: μήτι ἡ.
+//    περιγίγνεται ἡνιόχοιο  502.
+
+{
+  "word":"ἡνίοχος",
+  "medium":"rein holder",
+  "notes":"In Homer, a few times also occurring as ἡνιοχεύς."
+}
+      

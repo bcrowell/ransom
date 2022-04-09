@@ -1,0 +1,23 @@
+// https://en.wiktionary.org/wiki/ζώννυμι https://logeion.uchicago.edu/ζώννυμι
+// gird; especially to gird round the loins in wrestling, gird oneself, especially of athletes, gird oneself with something, gird up one's loins for battle, be fastened by means of girths, be formed in belts and seams
+// ---Cunliffe---
+// ζώννυμι. Nom. pl. masc. aor. pple. ζώσαντες  App.
+//    as 3 pl. pres. subj. mid. ζώννυνται  3 sing. pa.
+//    iterative ζωννύσκετο  3 sing. aor. ζώσατο :
+//    Imp. ζῶσαι  Nom. dual masc. pple. ζωσαμένω
+// 1. To gird up (a person) for action
+// 2. In mid.
+//    a. To gird oneself: ζώσατο ζώνῃ  (v.l.
+//    ζώνην, put on her ...).
+//    b. To gird oneself up for action: ζώννυσθαι
+//    ἄνωγεν
+//    --With acc. of what is girded on: κέλευσε
+//    χαλκὸν ζώννυσθαι  (cf. v.l. under (a) and
+//    μίτρην, v.l. for μίτρῃ ).
+
+{
+  "word":"ζώννυμι",
+  "vowel_length":"ζώννυ_μι",
+  "medium":"gird"
+}
+      

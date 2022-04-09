@@ -1,0 +1,18 @@
+// https://en.wiktionary.org/wiki/θαρσαλέος https://logeion.uchicago.edu/θαρσαλέος
+// 
+// ---Cunliffe---
+// θαρσαλέος, η, -ον [θάρσος].
+// 1. Bold, stout, courageous, spirited, confident:
+//    πολεμιστήν  :
+//    --Neut. comp. θαρσαλεώτερον in impers.
+//    construction: θ. ἔσται (one would feel more
+//    confidence, have better heart)
+// 2. Over-bold, audacious, presuming: θαρσαλέος τις
+//    προΐκτης
+
+{
+  "word":"θαρσαλέος",
+  "short":"bold",
+  "medium":"bold, over-bold"
+}
+      
