@@ -1,0 +1,9 @@
+// https://en.wiktionary.org/wiki/τῇ https://logeion.uchicago.edu/τῇ
+// feminine dative singular of ὁ (ho)
+{
+  "word":"τῇ",
+  "short":"there",
+  "medium":"there!, in that way, in that place",
+  "notes":"Cunliffe and CGL only describe it as an adverbial interjection, which doesn't fit the sense of Iliad 5.752 and 5.858. It can be the fem dat of ὁ, but Cunliffe, Perseus, and CGL all treat it as a separate lemma."
+}
+      

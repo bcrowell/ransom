@@ -1,0 +1,23 @@
+// https://en.wiktionary.org/wiki/τρέω https://logeion.uchicago.edu/τρέω
+// flee from fear, runaway, coward (compare τρεσᾶς (tresâs), τρεσᾶ (tresâ)), fear, dread, be afraid of
+// ---Cunliffe---
+// τρέω. 3 sing. aor. ἔτρεσε  τρέσε
+//    τρέσσε  3 pl. ἔτρεσαν
+//    τρέσσαν  Genit. pl. masc. pple. τρεσσάντων
+//    Infin. τρέσσαι  (δια-, παρα-, περι-,
+//    ὑπο-.)
+// 1. To be struck by fear and withdraw from that which is
+//    feared, to flee, retreat, retire: τρέσσεν ἐφ᾽ ὁμίλου
+//    (genit. absol.),
+//    589,  729,
+// 2. To shrink from or shirk the fight: τρεῖν μ᾽ οὐκ ἐᾷ
+//    Ἀθήνη
+// 3. To shrink from, be unable to face: δεταί, τάς τε
+//    τρεῖ
+
+{
+  "word":"τρέω",
+  "short":"flee",
+  "medium":"flee in fear"
+}
+      
