@@ -1,0 +1,23 @@
+// https://en.wiktionary.org/wiki/ἐξερύω https://logeion.uchicago.edu/ἐξερύω
+// 
+// ---Cunliffe---
+// ἐξερύω [ἐξ- (1) + ἐρύω]. 3 sing. opt. ἐξερύοι  3
+//    sing. aor. ἐξείρυσε  ἐξέρυσε
+//    3 pl. ἐξείρυσσαν  ἐξέρυσαν
+//    476. Pple. ἐξερύσας  Infin. ἐξερύσαι  3
+//    sing. pa. iterative ἐξερύσασκε
+// 1. To draw or pull out  --To pull out or away in
+//    way of mutilation: μήδεα
+// 2. With genit., to draw or pull out of: βέλος ὤμου
+//    --To snatch out of:
+//    χειρὸς τόξον
+// 3. To drag, haul or pull out or away: δίφρον ῥυμοῦ (by
+//    the pole) ἰχθύας δικτύῳ  --To
+//    drag or haul out of the power of the enemy: νεκρούς
+
+{
+  "word":"ἐξερύω",
+  "short":"draw out",
+  "medium":"draw out, haul off"
+}
+      

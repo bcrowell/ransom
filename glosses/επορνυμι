@@ -1,0 +1,26 @@
+// https://en.wiktionary.org/wiki/ἐπόρνυμι https://logeion.uchicago.edu/ἐπόρνυμι
+// 
+// ---Cunliffe---
+// ἐπόρνυμι [ἐπ-, ἐπι- (5)]. Also ἐπορνύω  3 sing.
+//    aor. ἐπῶρσε  3
+//    pl. opt. ἐπόρσειαν  Imp. ἔπορσον  3 sing.
+//    aor. mid. ἐπῶρτο
+// 1. To rouse to action, stir up: μένος  --To
+//    incite to do. With infin.: πολεμίζειν
+// 2. With dat.
+//    a. To rouse or incite to action against, set
+//    on: Ἀθηναίην οἱ  --To rouse or set
+//    in motion (a natural force) against: νηυσὶν
+//    ἄνεμον
+//    b. To bring (something evil) upon: ὀϊζύν μοι
+//    c. To cause (sleep) to come to: τῇ ὕπνον
+// 3. In mid., to rouse or bestir oneself to action
+//    against, rush upon. With dat.: ἐπῶρτ᾽ Ἀχιλῆϊ
+
+{
+  "word":"ἐπόρνυμι",
+  "vowel_length":"ἐπόρνυ_μι",
+  "medium":"stir up",
+  "long":"Simply an intensified version of ὄρνυμι?"
+}
+      

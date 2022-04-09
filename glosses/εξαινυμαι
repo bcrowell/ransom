@@ -1,0 +1,15 @@
+// https://en.wiktionary.org/wiki/ἐξαίνυμαι https://logeion.uchicago.edu/ἐξαίνυμαι
+// 
+// ---Cunliffe---
+// ἐξαίνυμαι [ἐξ- (1)].
+// 1. To take out (and deposit): νηῒ ἐνὶ πρύμνῃ δῶρα
+// 2. To take away, deprive of: θυμόν --With double
+//    acc. of what is taken and of the person deprived:
+//    θυμὸν ἀμφοτέρω
+
+{
+  "word":"ἐξαίνυμαι",
+  "short":"take",
+  "medium":"take, deprive of (+2 acc)"
+}
+      

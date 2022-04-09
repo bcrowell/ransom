@@ -1,0 +1,18 @@
+// https://en.wiktionary.org/wiki/ἐναλίγκιος https://logeion.uchicago.edu/ἐναλίγκιος
+// like, resembling (with dative)
+// ---Cunliffe---
+// ἐναλίγκιος [ἐν- (6) + ἀλίγκιος]. Like, resembling, in
+//    the likeness of. With dat.: ὄρνιθι  θεῷ αὐδήν
+//    (in ...)  ἀθανάτοις
+//    θεοῖς ἐναλίγκια μήδεα (like those of the gods)
+//    --In neut. in impers.
+//    construction: τῷ ἔην ἐναλίγκιον, ὡς εἰ ..., it was
+//    like the case or state of things as [it would be] if
+//    ..., it was as if ...
+
+{
+  "word":"ἐναλίγκιος",
+  "short":"like",
+  "medium":"like (+dat)"
+}
+      

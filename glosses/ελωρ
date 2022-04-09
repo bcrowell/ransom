@@ -1,0 +1,16 @@
+// https://en.wiktionary.org/wiki/ἕλωρ https://logeion.uchicago.edu/ἕλωρ
+// prey; spoil, plunder
+// ---Cunliffe---
+// ἕλωρ, τό [ἑλ-. See αἱρέω]. An object of prey or of
+//    spoiling: ἀνδράσι δυσμενέεσσιν ἑ. καὶ κύρμα
+//    οἰωνοῖσιν
+//    --In pl.: Πατρόκλοιο ἕλωρα ἀποτείσῃ  (pay
+//    the penalty for the spoiling of ...).
+
+{
+  "word":"ἕλωρ",
+  "short":"booty",
+  "medium":"prey, booty",
+  "notes":"plural ἑλώρια, lemmatized separately by both Perseus and Cunliffe (as ἑλώριον)"
+}
+      

@@ -1,0 +1,17 @@
+// https://en.wiktionary.org/wiki/ἐπιεικτός https://logeion.uchicago.edu/ἐπιεικτός
+// 
+// ---Cunliffe---
+// ἐπιεικτός, όν [app. ἐπι- (4) + (Ϝ)είκω. For the form
+//    cf. νεμεσητός (2)]. Always with neg., giving senses
+// 1. Unyielding, indomitable: μένος οὐκ ἐπιεικτόν
+// 2. Ungovernable, not to be restrained: μένος
+// 3. Irresistible: σθένος
+// 4. Irrepressible: πένθος
+// 5. Intolerable, unendurable: ἔργα
+
+{
+  "word":"ἐπιεικτός",
+  "medium":"yielding",
+  "mnemonic_cog":"victor"
+}
+      

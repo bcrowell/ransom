@@ -1,0 +1,20 @@
+// https://en.wiktionary.org/wiki/ἐμπνέω https://logeion.uchicago.edu/ἐμπνέω
+// 
+// ---Cunliffe---
+// ἐμπνέω [ἐμ-, ἐν- (2) (3)]. Dual pple. in form
+//    ἐμπνείοντε  3 sing. aor. ἐνέπνευσε
+//    ἔμπνευσε  3 sing. subj.
+//    ἐμπνεύσῃσι
+// 1. To breathe upon. With dat.: μεταφρένῳ
+// 2. To breathe into one, inspire him with: μένος
+//    --To breathe into. With dat.: τῷ
+//    μένος  --To put into
+//    (one's mind), suggest. With dat. and infin.: φᾶρός
+//    μοι ἐνέπνευσε φρεσὶν ὑφαίνειν
+
+{
+  "word":"ἐμπνέω",
+  "short":"inspire",
+  "medium":"inspire, breathe upon, suggest"
+}
+      

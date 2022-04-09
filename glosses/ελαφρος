@@ -1,0 +1,19 @@
+// https://en.wiktionary.org/wiki/ἐλαφρός https://logeion.uchicago.edu/ἐλαφρός
+// light, unheavy
+// ---Cunliffe---
+// ἐλαφρός, ή, όν.
+// 1. Light, of small weight: λᾶαν
+// 2. Moving easily, nimble: γυῖα
+//    χεῖρες --Active in movement, nimble: ἀνήρ
+//    --Swift. In comp. ἐλαφρότερος  (see ἀφνειός).--
+//    In superl. ἐλαφρότατος --Of birds :
+//    --Of the wind
+// 3. Light to bear, not burdensome. In comp.: ἐλαφρότερός
+//    κε πόλεμος γένοιτο
+
+{
+  "word":"ἐλαφρός",
+  "short":"light",
+  "medium":"light, nimble"
+}
+      

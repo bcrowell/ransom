@@ -1,0 +1,17 @@
+// https://en.wiktionary.org/wiki/ἐναίρω https://logeion.uchicago.edu/ἐναίρω
+// 
+// ---Cunliffe---
+// ἐναίρω [ἔναρα. 'To despoil᾽]. 3 sing. aor. mid. ἐνήρατο
+//    (κατ-.)
+// 1. To kill in fight  203,
+//    483,  --In mid.
+// 2. To kill in the chase: θῆρας
+// 3. In weakened sense, to mar, impair. In mid.: μηκέτι
+//    χρόα ἐναίρεο
+
+{
+  "word":"ἐναίρω",
+  "short":"kill",
+  "medium":"kill, impair"
+}
+      

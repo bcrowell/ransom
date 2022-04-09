@@ -43,6 +43,9 @@ def patch(a)
   if lemma=='πολλός' then patched_lemma='πολύς' end
   if lemma=='ἀλκί' then patched_lemma='ἀλκή' end
   if lemma=='βοείη' then patched_lemma='βόειος' end
+  if lemma=='ἐλύω' then patched_lemma='εἰλύω' end
+  if lemma=='ἑλώριον' then patched_lemma='ἕλωρ' end # Cunliffe does give two separate lemmas for this.
+  if lemma=='ἐργαθεῖν' then patched_lemma='ἔργω' end
 
   # Redundant lemmas, one for an Attic form and one for an epic one:
   if lemma=='ῥόα' && inflected=='ῥοάων' then patched_lemma='ῥοή' end # There is also Attic ῥόα=pomegranate, epic ῥοιή.

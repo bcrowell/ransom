@@ -1,0 +1,16 @@
+// https://en.wiktionary.org/wiki/ἐπικεύθω https://logeion.uchicago.edu/ἐπικεύθω
+// hide, conceal
+// ---Cunliffe---
+// ἐπικεύθω [ἐπι- (5)]. Fut. ἐπικεύσω
+//    744,  2 sing. aor.
+//    subj. ἐπικεύσῃς
+// 1. To withhold (speech)
+// 2. Absol., to conceal one's thoughts or knowledge,
+//    withhold speech
+
+{
+  "word":"ἐπικεύθω",
+  "short":"withhold",
+  "medium":"withhold, keep a lid on"
+}
+      

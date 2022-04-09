@@ -1,0 +1,37 @@
+// https://en.wiktionary.org/wiki/ἐναντίος https://logeion.uchicago.edu/ἐναντίος
+// opposite, facing, visible, in a hostile sense, opposing, facing in a fight, the opposite, contrary, reverse, contrariety
+// ---Cunliffe---
+// ἐναντίος, η, ον [ἐν- (6) + ἀντίος].
+// 1. Opposite, facing: ἔστησαν  --With
+//    genit.: ἕζετ᾽ Ὀδυσῆος ἐναντίη --With dat.: οἱ
+//    ἀλλήλοισιν (i.e. beginning at either end of
+//    the line and meeting in the middle)
+//    --Face to face --In hostile sense, opposite,
+//    facing. With genit.: Ἀχαιῶν  =
+// 2. Meeting, in order to meet, join, encounter or
+//    intercept a person, etc.: ἐναντίη ἦλθε
+//    --With genit.: ἐ. ἤλυθεν ἵππων --With
+//    dat.: ἐναντίη οἱ ἤλυθεν --Sim.: πόριες
+//    σκαίρουσιν ἐναντίαι (come frisking to meet their
+//    mothers) --In hostile sense. With dat.: ἐναντίω
+//    οἱ ὁπμηθήτην
+// 3. In neut. sing. ἐναντίον as adv.
+//    a. Opposite, facing. With genit.: σφοῦ πατρός
+//    --With dat.: ὑμῖν παράκειται ἐ. ἠὲ ...ἢ ...
+//    (the choice is before you) --Face to face:
+//    εἰς ὦπα ἰδέσθαι ἐ. --In hostile sense, face
+//    to face, man to man: μαχέσασθαι  Cf.
+//    --Face to face, close at hand:
+//    ὦρτο  --Face to genit., facing,
+//    opposing, against: ἄνακτος
+//    --So with dat.: Ἔκτορι
+//    b. In order to meet or join. With genit.: ἐ.
+//    ἤλυθον ἵππων --Sim.: τὸν ξεῖνον ἐ. κάλεσσον
+//    --In hostile sense. With genit.: θηρητῆρος
+
+{
+  "word":"ἐναντίος",
+  "short":"opposite",
+  "medium":"opposite, facing, meeting"
+}
+      

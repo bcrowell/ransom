@@ -1,0 +1,18 @@
+// https://en.wiktionary.org/wiki/εὐεργής https://logeion.uchicago.edu/εὐεργής
+// well wrought, well made, well done
+// ---Cunliffe---
+// εὐεργής, ές [εὐ- (1)(3) + ἔργω].
+// 1. Well or skilfully made, constituted or fashioned
+//    with art. Epithet of chariots, ships, etc.: δίφρου
+//    νηῦς  νῆα
+//    159,  λώπην --
+//    Of gold, app., fine
+// 2. Done by way of service or benefit. Absol. in neut.
+//    pl., services, benefits: χάρις εὐεργέων (for ...)
+
+{
+  "word":"εὐεργής",
+  "short":"well made",
+  "medium":"well made, serving"
+}
+      
