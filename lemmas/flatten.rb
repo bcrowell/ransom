@@ -51,6 +51,7 @@ def patch(a)
   if lemma=='ἡνιοχεύς' then patched_lemma='ἡνίοχος' end
   if lemma=='πρόσθεϝ' then patched_lemma='πρόσθεν' end
   if lemma=='πρυμνόν' then patched_lemma='πρύμνα' end
+  if lemma=='χραύω' then patched_lemma='χράω' end
 
   # Lemmas that are different, but in an obvious way. No reason for learners to learn them separately.
   if lemma=='ἑλώριον' then patched_lemma='ἕλωρ' end
