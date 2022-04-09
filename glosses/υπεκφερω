@@ -1,0 +1,16 @@
+// https://en.wiktionary.org/wiki/ὑπεκφέρω https://logeion.uchicago.edu/ὑπεκφέρω
+// 
+// ---Cunliffe---
+// ὑπεκφέρω [ὑπ-, ὑπο- (3) (4) + ἐκ (1)].
+// 1. To remove from the range or area of. With genit.:
+//    υἱὸν πολέμοιο
+// 2. To move (a shield) outwards by elevating the base
+// 3. Intrans. for reflexive, of horses, to carry
+//    themselves forward, speed onwards (cf. ἐκφέρω (6))
+
+{
+  "word":"ὑπεκφέρω",
+  "short":"move out",
+  "medium":"move out, outward, onward"
+}
+      
