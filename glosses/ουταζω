@@ -1,0 +1,22 @@
+// https://en.wiktionary.org/wiki/οὐτάζω https://logeion.uchicago.edu/οὐτάζω
+// 
+// ---Cunliffe---
+// οὐτάζω [cf. next]. 3 sing. aor. οὔτασε
+//    etc. 3 sing. subj. οὐτάσῃ
+//    Infin. οὐτάσαι  3 sing. pf. pass.
+//    οὔτασται  Pple. οὐτασμένος
+// 1. To strike or wound by a thrust or lunge: οὔτασε
+//    χεῖρα δουρί  etc.:
+//    --With cognate acc.: ἕλκος, ὅ με βροτὸς οὔτασεν
+//    ἀνήρ --In mid. of reciprocal action: καί νύ κε
+//    δὴ ξιφέεσσ᾽ αὐτοσχεδὸν οὐτάζοντο
+// 2. To wound by the cast of a weapon
+// 3. To thrust a weapon into, pierce (a shield): μέσον
+//    σάκος οὔτασε δουπί  646,
+
+{
+  "word":"οὐτάζω",
+  "medium":"pierce, wound",
+  "syn":"οὐτάω"
+}
+      

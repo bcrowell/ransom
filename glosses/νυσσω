@@ -1,0 +1,21 @@
+// https://en.wiktionary.org/wiki/νύσσω https://logeion.uchicago.edu/νύσσω
+// touch with a sharp point, prick, stab, pierce, nudge (with the elbow), sting, impinge upon, suffer lesion
+// ---Cunliffe---
+// νύσσω. 3 sing. aor. νύξε
+//    etc. Pple. νύξας
+// 1. To wound, pierce or strike by a thrust with a
+//    pointed weapon, make a thrust at with such a weapon:
+//    τὸν ἔγχεϊ νύξε κατὰ δεξιὸν ὦμον
+//    etc.--Without expressed object  =
+//    --Sim. in mid. of
+//    reciprocal action
+// 2. App. implying no more than striking with the hand:
+//    χείρεσσ᾽ ἀσπίδα νύσσων
+// 3. To give one a nudge (with the elbow): ἀγκῶνι νύξας
+
+{
+  "word":"νύσσω",
+  "short":"stab",
+  "medium":"stab, hit, nudge"
+}
+      
