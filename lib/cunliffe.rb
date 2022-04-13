@@ -9,11 +9,10 @@ ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=Cunliffe
 
 
 class CunliffeGlosses
-def initialize()
+def initialize(filename:"cunliffe/cunliffe.txt")
   # The caller should check whether the return has .invalid, and if so, replace the returned object with nil, which is
   # what other code expects when it's called with a CunliffeGlosses argument that doesn't actually work.
   # As presently implemented, this is pretty slow to start up.
-  filename = "cunliffe/cunliffe.txt"
   if not File.exists?(filename) then
     $stderr.print %Q{
       Warning: file #{filename} not found, so we won't be able to give automatic suggestions of glosses from Cunliffe.
@@ -91,7 +90,6 @@ def extract_line_refs(lexical)
     # Get list of all line refs.
     result |= gloss.scan(/[#{alphabet}]\d{1,3}/) # union of sets
   }
-  x = result.sort { |a,b| self.compare_line_refs(a,b)}
   return result.sort { |a,b| self.compare_line_refs(a,b)}
 end
 
@@ -100,6 +98,29 @@ def compare_line_refs(a,b)
   bb = self.cunliffe_line_ref_to_ints(b)
   if aa.nil? || bb.nil? then return 0 end
   return aa<=>bb
+end
+
+def csv_line_ref_to_ints(x)
+  # x = ['iliad',1,2]
+  # It doesn't matter whether x[1] and x[2] are strings or ints. They'll be ints in output.
+  # returns [0,1,2]
+  book = x[0]
+  if book=='iliad' then book=0 else book=1 end
+  return [book,x[1].to_i,x[2].to_i]
+end
+
+def csv_line_ref_to_cunliffe(x)
+  # x = ['iliad',1,2]
+  # It doesn't matter whether x[1] and x[2] are strings or ints.
+  # returns a Cunliffe-style line reference such as Α2
+  return ints_line_ref_to_cunliffe(csv_line_ref_to_ints(x))
+end
+
+def ints_line_ref_to_cunliffe(x)
+  alphabet = 'αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ'
+  book,ch,line = x
+  if book==0 then ch=alphabet[ch+24-1] else ch=alphabet[ch-1] end
+  return "#{ch}#{line}"
 end
 
 def cunliffe_line_ref_to_ints(a)
