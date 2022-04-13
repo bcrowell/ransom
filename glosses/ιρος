@@ -2,6 +2,7 @@
 // Epic and Ionic form of ἱερός (hierós)
 {
   "word":"ἱρός",
-  "medium":"=ἱερός"
+  "medium":"=ἱερός",
+  "mnemonic_cog":"hieroglyph"
 }
       
