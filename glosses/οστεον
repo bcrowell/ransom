@@ -1,1 +1,8 @@
-{"word":"ὀστέον","genitive":"ὀστέου","gender":"n","medium":"bone","notes":"2nd declension"}
+{
+  "word":"ὀστέον",
+  "genitive":"ὀστέου",
+  "gender":"n",
+  "medium":"bone",
+  "mnemonic_cog":"osteoporosis",
+  "notes":"2nd declension"
+}

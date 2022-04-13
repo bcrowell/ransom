@@ -26,6 +26,9 @@ class IliadNotes
     'explain'       => %q{referring to Agamemnon and Menelaus},
     'cite'          => "Anthon, p. 128"
   }],
+  ["1.24" , {
+    'explain'       => %q{Agamemnon is brother in law to Helen of Troy and the top military leader of the Greek expedition.},
+  }],
   ["1.25" , {
     'about_what'    => %q{ἐπὶ \ldots ἔτελλε},
     'explain'       => %q{ἐπὶ τέλλω: to command (lit.~``accomplish on'')},
@@ -127,6 +130,9 @@ class IliadNotes
   ["1.114" , {
     'about_what'    => %q{κουριδίης ἀλόχου},
     'explain'       => %q{Literally ``wedded bedmate,'' describing Clytemnestra. He compares his wife with his sex slave Chryseis, who is his unwedded bedmate. (The later, opposite sense of ἄλοχος as ``virgin''  is not found in Homer.)}
+  }],
+  ["1.159" , {
+    'explain'       => %q{Menelaus is husband to Helen and brother to Agamemnon.}
   }],
   ["1.170" , {
     'about_what'    => %q{οὐδέ σ᾽ ὀΐω},
