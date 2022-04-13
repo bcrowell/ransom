@@ -171,7 +171,7 @@ breaks = [
   [ [4,85], "he who has been ordained the arbiter of war amongst men>"],
   [ [4,101], "and vow to Lycian-born Apollo, the renowned archer",{'reduce_max_entries'=>-6}],
   [ [4,118], "Forthwith he fitted the bitter arrow to the string"],
-  [ [4,135], "The bitter arrow fell on his well-fitted belt"],
+  [ [4,135], "The bitter arrow fell on his well-fitted belt",{'reduce_max_entries'=>14}],
   [ [4,153], "But Agamemnon, deeply sighing, and holding Menelaus with his hand"],
   [ [4,171], "then, indeed, branded with shame, shall I return to much longed-for Argos"],
   [ [4,188], "King Agamemnon answering him replied"],

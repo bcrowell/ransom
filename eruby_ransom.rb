@@ -42,7 +42,7 @@ class Options
         # The following assumes that the a page is supposed to be odd.
       }
       1.upto(4) { |i|
-        if (pp[i-1]-i)%2!=0 then raise "Text overflowed from p. #{pp[i-1]-2} onto the next page, or for some other reason the parity of p. #{pp[i-1]} was unexpected. Layout=#{layout}. Vocab pages should be odd page numbers. The fix for this is normally to add a reduce_max_entries option to the relevant page-break data, or shrink the notes." end
+        if (pp[i-1]-i)%2!=0 then raise "Text overflowed from p. #{pp[i-1]-2} onto the next page, or for some other reason the parity of p. #{pp[i-1]} was unexpected. Layout=#{layout}. Vocab pages should be odd page numbers. The fix for this is normally to add a positive reduce_max_entries option to the relevant page-break data, or shrink the notes." end
       }
     }
     $stderr.print "...No problems found.\n"

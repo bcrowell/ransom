@@ -20,6 +20,7 @@ def FormatGloss.with_english(bilingual,db,stuff)
   }
   is_3rd_decl,is_dual,is_irregular_comparative = [flags['is_3rd_decl']==true,flags['is_dual']==true,flags['is_irregular_comparative']==true]
   explain_inflection ||= data['difficult_to_recognize']
+  if word==preferred_lex then explain_inflection=false end
   # Count chars, and if it looks too long to fit on a line, switch to the short gloss:
   if explain_inflection then
     text = [word.downcase,preferred_lex,gloss]
@@ -38,6 +39,7 @@ def FormatGloss.with_english(bilingual,db,stuff)
   items['g'] = explained
   if has_mnemonic_cog then items['c']=entry['mnemonic_cog'] end
   file_under = items['b']
+  Debug.print(word=='ἰητήρ') {"items=#{items}, explain_inflection=#{explain_inflection}"}
   return [file_under,FormatGloss.assemble(bilingual,items)+"\\\\\n"]
 end
 
@@ -60,8 +62,12 @@ def FormatGloss.explainer_in_gloss(word,flags,pos)
   is_3rd_decl,is_dual,is_irregular_comparative = [flags['is_3rd_decl']==true,flags['is_dual']==true,flags['is_irregular_comparative']==true]
   explainer = nil
   explainer = 'dual' if is_dual
-  explainer = describe_declension(pos,true)[1] if is_3rd_decl
-  # ... here the is_3rd_decl flag just means it's a hard declension, could be stuff like -φιν
+  if is_3rd_decl then
+    # ... here the is_3rd_decl flag just means it's a hard declension, could be stuff like -φιν
+    if !(pos[7]=='n' && pos[2]=='s') then # no point in giving an explainer if it's nominative singular
+      explainer = describe_declension(pos,true)[1]
+    end
+  end
   explainer = 'comparative' if is_irregular_comparative
   if explainer.nil? then return '' else return ", #{explainer}" end
 end

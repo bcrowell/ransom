@@ -6,6 +6,10 @@ def describe_declension(pos,tex)
   short = the_case
   long = "#{the_case} #{number}"
   if tex then long.gsub!(/\. /,".~") end
+  if tex then
+    short = "\\textsc{#{short}}".gsub(/\./,'')
+    long = "\\textsc{#{long}}".gsub(/\./,'')
+  end
   return [long,short]
 end
 

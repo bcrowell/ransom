@@ -65,6 +65,56 @@ def get_glosses(lexical,decruft:true)
   return result
 end
 
+def all_lemmas()
+  return @glosses.keys
+end
+
+def extract_line_refs(lexical)
+  # Given a lemma like ἀγχόθι, returns an array like ['Ξ412','Ψ762','ν103','ν347'].
+  # Testing: ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); print a.extract_line_refs('ἀγχόθι')"
+  alphabet = 'αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ'
+  result = []
+  self.get_glosses(lexical,decruft:false).each { |gloss|
+    gloss = gloss.gsub(/\s+/,' ')
+    gloss = gloss.gsub(/ = /,', ')
+    # First make implicit letters explicit, e.g., in ἄγω, we have this: η9, 248.
+    replacements = []
+    gloss.scan(/(([#{alphabet}])\d{1,3}(, \d{1,3})+)/) {
+      whole,letter = [$1,$2]
+      changed = whole.dup.gsub(/ (\d{1,3})/) {" #{letter}#{$1}"}
+      replacements.push([whole,changed])
+    }
+    replacements.each { |x|
+      a,b = x
+      gloss = gloss.gsub(/#{a}/,b)
+    }
+    # Get list of all line refs.
+    result |= gloss.scan(/[#{alphabet}]\d{1,3}/) # union of sets
+  }
+  x = result.sort { |a,b| self.compare_line_refs(a,b)}
+  return result.sort { |a,b| self.compare_line_refs(a,b)}
+end
+
+def compare_line_refs(a,b)
+  aa = self.cunliffe_line_ref_to_ints(a)
+  bb = self.cunliffe_line_ref_to_ints(b)
+  if aa.nil? || bb.nil? then return 0 end
+  return aa<=>bb
+end
+
+def cunliffe_line_ref_to_ints(a)
+  # returns [book,ch,line], where book=0 for iliad, 1 for odyssey
+  alphabet = 'αβγδεζηθικλμνξοπρστυφχψωΑΒΓΔΕΖΗΘΙΚΛΜΝΞΟΠΡΣΤΥΦΧΨΩ'
+  if a=~/(.)(\d+)/ then
+    letter,line = [$1,$2.to_i]
+    ch = alphabet.index(letter)
+    if ch<24 then book=1 else book=0; ch-=24; end
+    return [book,ch+1,line]
+  else
+    return nil
+  end
+end
+
 def decruft(gloss)
   gloss = clean_up_greek(gloss)
   gloss.sub!(/\A[\*†]*/,'')

@@ -153,7 +153,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
     did_lemma[lemma] = 1
     if freq.nil? then rank=1 else rank=freq.rank(lemma) end
     if rank.nil? then
-      $stderr.print "Warning: lemma #{lemma}, frequency table contains no such key; this happens for certain proper nouns, not sure why, possibly because capitalization is inconsistent"
+      $stderr.print "Warning: lemma #{lemma}, frequency table contains no such key; this happens for certain proper nouns, not sure why, possibly because capitalization is inconsistent\n"
       # Happens for τυδείδης near Iliad 5.410-428. The lemmatization in the treebank is wrong (is uppercase everywhere else for this proper noun),
       # but I don't know why this causes it not to be frequency-counted.
       next
