@@ -144,12 +144,20 @@ end
 
 def is_cross_ref(gloss)
   # example: κατέσσυτο, 3 sing. aor. mid. κατασεύω.
+  # example that's not a cross ref: δάκρυ, τό [cf. δάκρυον]. ... note comma
   # Input should have already been put through simplify().
   # Testing:
   #  true: ... ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); g=a.get_glosses('κατέσσυτο',decruft:false)[0]; g=a.simplify(g); print a.is_cross_ref(g)"
   #  false: ... ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); g=a.get_glosses('κατευνάω',decruft:false)[0]; g=a.simplify(g); print a.is_cross_ref(g)"
   number_of_lines = gloss.scan(/\n/).length
   if gloss=~/\A[[:alpha:]]+,/ then comma_after_head_word=true else comma_after_head_word=false end
+  if comma_after_head_word then
+    if gloss=~/\A[[:alpha:]]+, ([[:alpha:]]+)/ then
+      # don't count the comma if it's an entry like "δάκρυ, τό" or "ἄκρον, ου, τό"
+      second_word = $1
+      unless second_word=~/[0-9a-z]/ then comma_after_head_word=false end
+    end
+  end
   return (number_of_lines==1) && comma_after_head_word
 end
 

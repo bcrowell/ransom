@@ -1,5 +1,9 @@
 # coding: utf-8
 
+def capitalize(x)
+  return x.sub(/^(.)/) {$1.upcase}
+end
+
 def words(s)
   # fixme: handle apostrophes
   # Don't use this for making word-by-word running hashes; that's what split_string_at_whitespace() is for.

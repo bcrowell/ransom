@@ -368,11 +368,6 @@ END {
   }
 }
 
-def capitalize(x)
-  return x.sub(/^(.)/) {$1.upcase}
-end
-
-
 def die(message)
   #  $stderr.print message,"\n"
   raise message # gives a stack trace

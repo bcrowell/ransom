@@ -1,3 +1,4 @@
+# coding: utf-8
 # This class provides a wrapper for the Project Perseus treebank data.
 # Functions:
 #   lemmatize a given word
@@ -5,10 +6,9 @@
 #   lemmatize a word with extra disambguation based on line number in text
 
 class TreeBank
-  def initialize(corpus)
+  def initialize(corpus,data_dir:"lemmas")
     # Fails by raising an exception if the appropriate lemmas file doesn't exist.
     # It's not a problem if the POS file doesn't exist.
-    data_dir = "lemmas"
     @lemmas_file = "#{data_dir}/#{corpus}_lemmas.json"
     @lemmas = json_from_file_or_die(@lemmas_file)
     @inverse_index = nil
