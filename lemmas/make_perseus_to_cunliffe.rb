@@ -100,17 +100,30 @@ reverse_map = {} # reversed version of map
   1.upto(3) { |subpass|
     count = 0
     cun.all_lemmas.each { |cunliffe|
+      #debug = (cunliffe=='δηλέομαι')
+      debug = false
       next if map.has_key?(cunliffe) # done in a previous pass
       lines = cun.extract_line_refs(cunliffe) # array such as ['Ξ412','Ψ762','ν103','ν347']
+      delete_from_lines = [] # deal with, e.g., Odyssey 10.459, which is not in perseus
+      if debug then $stderr.print "#{cunliffe}, cunliffe references these lines: #{lines}\n" end
       coinc = {}
+      coinc_at = {} # for debugging
       lines.each { |line|
-        next if !perseus.has_key?(line) # shouldn't really happen, but avoid crashes if it does
+        if !perseus.has_key?(line) then
+          # happens, e.g., at Odyssey 10.459, which is not in perseus
+          delete_from_lines.push(line)
+          next
+        end
         perseus[line].keys.each { |perseus_lemma|
           next if reverse_map.has_key?(perseus_lemma)
           if !coinc.has_key?(perseus_lemma) then coinc[perseus_lemma]=0 end
           coinc[perseus_lemma] += 1
+          if coinc_at[perseus_lemma].nil? then coinc_at[perseus_lemma]=[] end
+          coinc_at[perseus_lemma].push(line)
         }
       }
+      lines = lines - delete_from_lines
+      if debug then print "coinc_at=#{coinc_at}\n" end
       next if coinc.keys.length==0
       ranked = coinc.keys.sort_by { |perseus_lemma| -coinc[perseus_lemma] } # sort in decreasing order by number of coincidences
       ranked.each { |perseus_lemma| # loop over ones that have the best fingerprints
@@ -144,6 +157,8 @@ return [map,unmatched]
 end # pass_a
 
 def if_hit(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_best_perseus,min_expected,m)
+  debug = (cunliffe=='δηλέομαι')
+  if debug then $stderr.print "cunliffe=#{cunliffe} perseus=#{perseus} coinc_best_perseus=#{coinc_best_perseus} min_expected=#{min_expected}\n" end
   if coinc_best_perseus<min_expected then return false end
   # ... Cunliffe has it on lines that this Perseus lemma never occurs on. This should never happen except in rare cases like an error in the OCR of Cunliffe.
   #     The converse is not true, because for very common lemmas, Cunliffe doesn't list all occurrences.

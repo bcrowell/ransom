@@ -1,3 +1,4 @@
+# coding: utf-8
 =begin
 class CunliffeGlosses -- accesses Cunliffe entries from a file on disk
 
