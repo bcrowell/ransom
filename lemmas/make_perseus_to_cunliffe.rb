@@ -41,7 +41,7 @@ $stderr.print "\n"
 m = MultiString.new('') # just need one object of the class for calling certain class methods, due to bad design
 map = {} # key=cunliffe lemma, value=perseus lemma
 reverse_map = {} # reversed version of map
-1.upto(3) { |pass|
+1.upto(4) { |pass|
   $stderr.print "-------------------pass #{pass}----------------------\n"
   1.upto(3) { |subpass|
     cun.all_lemmas.each { |cunliffe|
@@ -58,14 +58,22 @@ reverse_map = {} # reversed version of map
       }
       next if coinc.keys.length==0
       ranked = coinc.keys.sort_by { |perseus_lemma| -coinc[perseus_lemma] } # sort in decreasing order by number of coincidences
-      perseus_lemma = ranked[0]
-      hit = if_hit(pass,subpass,perseus_lemma,cunliffe,coinc[perseus_lemma],coinc[ranked[1]],lines.length,m)
-      #----
-      if hit then
-        map[cunliffe] = perseus_lemma
-        reverse_map[perseus_lemma] = cunliffe
-        print "#{cunliffe},#{perseus_lemma}\n"
-      end
+      ranked.each { |perseus_lemma| # loop over ones that have the best fingerprints
+        if perseus_lemma==ranked[0] then
+          coinc_next_best_perseus=coinc[ranked[1]]
+          if coinc_next_best_perseus.nil? then coinc_next_best_perseus=0 end
+        else
+          coinc_next_best_perseus=coinc[ranked[0]]
+        end
+        hit = if_hit(pass,subpass,perseus_lemma,cunliffe,coinc[perseus_lemma],coinc_next_best_perseus,lines.length,m)
+        #----
+        if hit then
+          map[cunliffe] = perseus_lemma
+          reverse_map[perseus_lemma] = cunliffe
+          print "#{cunliffe},#{perseus_lemma}\n"
+          break
+        end
+      }
     }
   }
 }
@@ -95,18 +103,25 @@ def if_hit(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_best_pers
 end
 
 def if_hit_helper(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_best_perseus,min_expected,m)
-  hit = false
-  how_superior = 0 # mow much better does the fingerprint of line numbers match up for perseus compared to next_best_perseus?
-  if !coinc_next_best_perseus.nil? then how_superior=coinc_best_perseus-coinc_next_best_perseus-6+2*subpass end
-  #----
-  if pass==1 then
-    if perseus==cunliffe && how_superior>=0 then hit=true end # strings are identical and next-best fingerprint is much worse
+  # How much better does the fingerprint of line numbers match up for perseus compared to next_best_perseus?
+  if coinc_next_best_perseus.nil? then
+    how_superior = 1
+  else
+    how_superior=coinc_best_perseus-coinc_next_best_perseus-6+2*subpass 
   end
-  if pass>=2 then
+  #----
+  hit = false
+  if pass==1 then
+    if perseus==cunliffe && how_superior>=0 then hit=true end # strings are identical and next-best fingerprint is worse
+  end
+  if pass==2 || pass==3 then
     l = [cunliffe.length,perseus.length].min
     d = m.atomic_lcs_distance(cunliffe,perseus)
     similarity =  1.0-d.to_f/l
     if similarity>1.0-0.2*subpass && how_superior>=0 then hit=true end
+  end
+  if pass==4 then
+    if how_superior>=1 then hit=true end
   end
   return hit
 end
