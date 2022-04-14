@@ -19,37 +19,43 @@ def initialize(filename:"cunliffe/cunliffe.txt")
       This has no effect on production of the pdf files. It just makes it more work to create glosses for new pages.
       }
     @invalid = true
-  else  
-    # $stderr.print "Reading #{filename}...\n"
-    @glosses = {}
-    accum = ''
-    w = nil
-    IO.foreach(filename) { |line|
-      if line=~/\*{20,}/ then # in the archive.org scan, entries are separated by lines of asterisks
-        if !w.nil? then
-          accum.sub!(/\n{2,}/,"\n")
-          @glosses[w] = accum
-        end
-        accum = ''
-        w = nil
-      else
-        next if accum=='' && line=~/^\s*$/ # skip blank line at top of entry
-        if accum=='' then
-          if line=~/^[\*†]*([[:alpha:]]+)/ then
-            w = $1
-          else
-            raise "In CunliffeGlosses.initialize(), unable to parse head word from this line:\n#{line}\n"
-            next
-          end
-        else
-          accum += "\n"
-        end
-        accum += line
-      end
-    }
-    # $stderr.print "...done\n"
-    @invalid = false
+    return
   end
+  # $stderr.print "Reading #{filename}...\n"
+  @glosses = {}
+  accum = ''
+  w = nil
+  IO.foreach(filename) { |line|
+    if line=~/\*{20,}/ then # in the archive.org scan, entries are separated by lines of asterisks
+      if !w.nil? then
+        accum.sub!(/\n{2,}/,"\n")
+        @glosses[w] = accum
+      end
+      accum = ''
+      w = nil
+    else
+      next if accum=='' && line=~/^\s*$/ # skip blank line at top of entry
+      if accum=='' then
+        if line=~/^[\*†]*([[:alpha:]]+)/ then
+          w = remove_macrons_and_breves(clean_up_greek($1)).downcase
+        else
+          raise "In CunliffeGlosses.initialize(), unable to parse head word from this line:\n#{line}\n"
+          next
+        end
+      else
+        accum += "\n"
+      end
+      accum += line
+    end
+  }
+  # $stderr.print "...done\n"
+  @invalid = false
+  @lemma_keys = {}
+  @glosses.keys.each { |head_word|
+    g = self.simplify(@glosses[head_word])
+    next if self.is_cross_ref(g)
+    @lemma_keys[head_word] = 1
+  }
 end
 
 attr_reader :invalid
@@ -65,7 +71,7 @@ def get_glosses(lexical,decruft:true)
 end
 
 def all_lemmas()
-  return @glosses.keys
+  return @lemma_keys.keys
 end
 
 def extract_line_refs(lexical)
@@ -134,6 +140,32 @@ def cunliffe_line_ref_to_ints(a)
   else
     return nil
   end
+end
+
+def is_cross_ref(gloss)
+  # example: κατέσσυτο, 3 sing. aor. mid. κατασεύω.
+  # Input should have already been put through simplify().
+  # Testing:
+  #  true: ... ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); g=a.get_glosses('κατέσσυτο',decruft:false)[0]; g=a.simplify(g); print a.is_cross_ref(g)"
+  #  false: ... ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); g=a.get_glosses('κατευνάω',decruft:false)[0]; g=a.simplify(g); print a.is_cross_ref(g)"
+  number_of_lines = gloss.scan(/\n/).length
+  if gloss=~/\A[[:alpha:]]+,/ then comma_after_head_word=true else comma_after_head_word=false end
+  return (number_of_lines==1) && comma_after_head_word
+end
+
+def simplify(gloss)
+  # Result is one line per paragraph.
+  # testing: ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); g=a.get_glosses('κατευνάω',decruft:false)[0]; g=a.simplify(g); print g"
+  gloss = clean_up_greek(gloss)
+  gloss = remove_macrons_and_breves(gloss)
+  gloss.sub!(/\A[\*†]*/,'')
+  gloss.gsub!(/^   \n/,"\n")
+  gloss.gsub!(/\s+\n/,"\n")
+  gloss.gsub!(/^ {3,}/,"__INDENT__")
+  gloss.gsub!(/ {2,}/,"  ")
+  gloss.gsub!(/__INDENT__/,"   ")
+  gloss.gsub!(/\n   /,' ')
+  return gloss
 end
 
 def decruft(gloss)

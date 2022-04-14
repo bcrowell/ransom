@@ -22,7 +22,8 @@ cun = CunliffeGlosses.new(filename:'../cunliffe/cunliffe.txt')
 
 author = 'homer'
 csv_file = "#{author}_lemmas.csv"
-perseus = {}
+perseus = {} # a hash of hashes, first index is a line ref like Ψ762, second is perseus lemma
+perseus2 = {} # same as perseus, but with indices transposed
 last_book = -1
 File.open(csv_file,"r") { |f|
   f.each_line { |line|
@@ -34,6 +35,8 @@ File.open(csv_file,"r") { |f|
     if book!=last_book then $stderr.print c[0]; last_book=book end
     if !perseus.has_key?(c) then perseus[c] = {} end
     perseus[c][lemma] = 1
+    if !perseus2.has_key?(lemma) then perseus2[lemma] = {} end
+    perseus2[lemma][c] = 1
   }
 }
 $stderr.print "\n"
