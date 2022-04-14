@@ -28,7 +28,7 @@ def initialize(filename:"cunliffe/cunliffe.txt")
   w = nil
   IO.foreach(filename) { |line|
     if line=~/\*{20,}/ then # in the archive.org scan, entries are separated by lines of asterisks
-      if !w.nil? then
+      if !w.nil? && w==w.downcase then # Don't do proper nouns.
         accum.sub!(/\n{2,}/,"\n")
         @glosses[w] = accum
       end
@@ -38,7 +38,7 @@ def initialize(filename:"cunliffe/cunliffe.txt")
       next if accum=='' && line=~/^\s*$/ # skip blank line at top of entry
       if accum=='' then
         if line=~/^[\*†]*([[:alpha:]]+)/ then
-          w = remove_macrons_and_breves(clean_up_greek($1)).downcase
+          w = remove_macrons_and_breves(clean_up_greek($1))
         else
           raise "In CunliffeGlosses.initialize(), unable to parse head word from this line:\n#{line}\n"
           next

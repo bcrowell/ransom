@@ -44,7 +44,14 @@ def main
   $stderr.print zz.join(' '),"\n"
   $stderr.print "\n"
 
+  print pretty_json_hash(c_to_p_2)
+
 end # main
+
+def pretty_json_hash(h)
+  return JSON.pretty_generate(Hash[*h.sort { |a,b| (a[0] <=> b[0])}.flatten])
+  #  https://stackoverflow.com/questions/5433241/sort-ruby-hash-when-using-json
+end
 
 def pass_b(treebank,c_to_p,unmatched_c)
 $stderr.print %Q{
@@ -82,6 +89,7 @@ File.open(csv_file,"r") { |f|
     next if a.nil?
     text,book,line,word_in_text,lemma,lemma_number,pos = a
     # typical line: iliad,1,2,οὐλομένην,οὐλόμενος,,a-s---fa-
+    next if lemma!=lemma.downcase # Don't do proper nouns.
     c = cun.csv_line_ref_to_cunliffe([text,book,line]) # c is a Cunliffe-style line reference such as Α2
     if book!=last_book then $stderr.print c[0]; last_book=book end
     if !perseus.has_key?(c) then perseus[c] = {} end
@@ -100,8 +108,8 @@ reverse_map = {} # reversed version of map
   1.upto(3) { |subpass|
     count = 0
     cun.all_lemmas.each { |cunliffe|
-      #debug = (cunliffe=='δηλέομαι')
       debug = false
+      #debug = (cunliffe=='ἀάζω')
       next if map.has_key?(cunliffe) # done in a previous pass
       lines = cun.extract_line_refs(cunliffe) # array such as ['Ξ412','Ψ762','ν103','ν347']
       delete_from_lines = [] # deal with, e.g., Odyssey 10.459, which is not in perseus
@@ -123,7 +131,7 @@ reverse_map = {} # reversed version of map
         }
       }
       lines = lines - delete_from_lines
-      if debug then print "coinc_at=#{coinc_at}\n" end
+      if debug then $stderr.print "coinc_at=#{coinc_at}\n" end
       next if coinc.keys.length==0
       ranked = coinc.keys.sort_by { |perseus_lemma| -coinc[perseus_lemma] } # sort in decreasing order by number of coincidences
       ranked.each { |perseus_lemma| # loop over ones that have the best fingerprints
@@ -133,7 +141,7 @@ reverse_map = {} # reversed version of map
         else
           coinc_next_best_perseus=coinc[ranked[0]]
         end
-        hit = if_hit(pass,subpass,perseus_lemma,cunliffe,coinc[perseus_lemma],coinc_next_best_perseus,lines.length,m)
+        hit = if_hit(pass,subpass,perseus_lemma,cunliffe,coinc[perseus_lemma],coinc_next_best_perseus,lines.length,m,debug)
         #----
         if hit then
           # Passes An are designed to look only for strict 1-1 mappings.
@@ -156,25 +164,28 @@ return [map,unmatched]
 
 end # pass_a
 
-def if_hit(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_best_perseus,min_expected,m)
-  debug = (cunliffe=='δηλέομαι')
-  if debug then $stderr.print "cunliffe=#{cunliffe} perseus=#{perseus} coinc_best_perseus=#{coinc_best_perseus} min_expected=#{min_expected}\n" end
-  if coinc_best_perseus<min_expected then return false end
-  # ... Cunliffe has it on lines that this Perseus lemma never occurs on. This should never happen except in rare cases like an error in the OCR of Cunliffe.
-  #     The converse is not true, because for very common lemmas, Cunliffe doesn't list all occurrences.
-  hit = if_hit_helper(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_best_perseus,min_expected,m)
+def if_hit(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_best_perseus,min_expected,m,debug)
+  #if debug then $stderr.print "cunliffe=#{cunliffe} perseus=#{perseus} coinc_best_perseus=#{coinc_best_perseus} min_expected=#{min_expected}\n" end
+  if coinc_best_perseus<min_expected then
+    # ... Cunliffe has it on lines that this Perseus lemma never occurs on. This should not happen except in unusual cases like an error in the OCR
+    #     of Cunliffe. The converse is not true, because for very common lemmas, Cunliffe doesn't list all occurrences.
+    if pass<3 then return false end
+    if min_expected<8 || coinc_best_perseus<0.8*min_expected || coinc_best_perseus<min_expected-2 then return false end
+    # ... On pass 3, allow cases where the expected number of coincidences was large and only one or two were absent.
+  end
+  hit = if_hit_helper(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_best_perseus,min_expected,m,debug)
   if !hit && pass>=3 then
     [['μαι','ω'],['η','α']].each { |x|
       c,p = x
       if cunliffe=~/#{c}$/ && perseus=~/#{p}$/ then
-        hit = if_hit_helper(pass,subpass,perseus,cunliffe.sub(/#{c}$/,p),coinc_best_perseus,coinc_next_best_perseus,min_expected,m)
+        hit = if_hit_helper(pass,subpass,perseus,cunliffe.sub(/#{c}$/,p),coinc_best_perseus,coinc_next_best_perseus,min_expected,m,debug)
       end
     }
   end
   return hit
 end
 
-def if_hit_helper(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_best_perseus,min_expected,m)
+def if_hit_helper(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_best_perseus,min_expected,m,debug)
   # How much better does the fingerprint of line numbers match up for perseus compared to next_best_perseus?
   if coinc_next_best_perseus.nil? then
     how_superior = 1
