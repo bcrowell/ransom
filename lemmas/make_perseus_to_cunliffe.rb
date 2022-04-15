@@ -107,8 +107,10 @@ def pass_c(c_to_p,unmatched_c,perseus,cun)
         dominates_all = true
         candidates.each { |b|
           next if b==a
-          dominates = (phonetic_similarity_score(a,c,m)>=phonetic_similarity_score(b,c,m) && count[a]>count[b]+3-pass)
-          if debug then $stderr.print " #{c} #{dominates} #{a} #{b} #{phonetic_similarity_score(a,c,m)} #{phonetic_similarity_score(b,c,m)} #{count[a]} #{count[b]}\n" end
+          sa,sb = phonetic_similarity_score(a,c,m),phonetic_similarity_score(b,c,m)
+          phon_dom = sa-sb
+          dominates = (phon_dom>0.0 && count[a]>=count[b]+3-pass) || (sa>0.7 && phon_dom>0.7 && count[a]>=count[b]+2-pass)
+          if debug then $stderr.print " #{c} #{dominates} #{a} #{b} #{sa} #{sb} #{count[a]} #{count[b]}\n" end
           if !dominates then dominates_all=false; break end
         }
         if dominates_all then best_p=a; break end
@@ -122,10 +124,18 @@ def pass_c(c_to_p,unmatched_c,perseus,cun)
 end
 
 def phonetic_similarity_score(a,b,m)
+  score1 = phonetic_similarity_score_helper(a,b,m)
+  stem_len_a = [(a.length*0.7).round,a.length-3,1].max # guess likely length of a's stem
+  stem_len_b = [(b.length*0.7).round,b.length-3,1].max # ... b's
+  score2 = phonetic_similarity_score_helper(a[0..(stem_len_a-1)],b[0..(stem_len_b-1)],m)
+  if a[0]==b[0] then score3=1.0 else score3=0.0 end
+  return 0.4*score1+0.45*score2+0.15*score3
+end
+
+def phonetic_similarity_score_helper(a,b,m)
   l = [a.length,b.length].min
   d = m.atomic_lcs_distance(remove_accents(a),remove_accents(b))
   similarity =  1.0-d.to_f/l
-  if a[0]==b[0] then similarity+=0.3 end
   return similarity
 end
 

@@ -150,16 +150,15 @@ def is_cross_ref(gloss)
   # Testing:
   #  true: ... ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); g=a.get_glosses('κατέσσυτο',decruft:false)[0]; g=a.simplify(g); print a.is_cross_ref(g)"
   #  false: ... ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); g=a.get_glosses('κατευνάω',decruft:false)[0]; g=a.simplify(g); print a.is_cross_ref(g)"
-  number_of_lines = gloss.scan(/\n/).length
   if gloss=~/\A[[:alpha:]]+,/ then comma_after_head_word=true else comma_after_head_word=false end
   if comma_after_head_word then
     if gloss=~/\A[[:alpha:]]+, ([[:alpha:]]+)/ then
-      # don't count the comma if it's an entry like "δάκρυ, τό" or "ἄκρον, ου, τό"
+      # don't count the comma if it's an entry like "δάκρυ, τό" or "ἄκρον, ου, τό". Also sometimes we have stuff like 'indeclinable'
       second_word = $1
       unless second_word=~/[0-9a-z]/ && !(['indeclinable'].include?(second_word)) then comma_after_head_word=false end
     end
   end
-  return (number_of_lines==1) && comma_after_head_word
+  return gloss.length<50 && comma_after_head_word
 end
 
 def simplify(gloss)
