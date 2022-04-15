@@ -146,10 +146,13 @@ end
 def is_cross_ref(gloss)
   # example: κατέσσυτο, 3 sing. aor. mid. κατασεύω.
   # example that's not a cross ref: δάκρυ, τό [cf. δάκρυον]. ... note comma
+  # example that is a cross ref: προτιεῖπον. See προσέειπον. (note no comma)
   # Input should have already been put through simplify().
   # Testing:
   #  true: ... ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); g=a.get_glosses('κατέσσυτο',decruft:false)[0]; g=a.simplify(g); print a.is_cross_ref(g)"
   #  false: ... ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); g=a.get_glosses('κατευνάω',decruft:false)[0]; g=a.simplify(g); print a.is_cross_ref(g)"
+  is_short = (gloss.length<50)
+  if is_short && gloss=~/\A\s*[[:alpha:]]+[\.,]\s+See\s+/ then return true end # can have period rather than comma, e.g., in προτιεῖπον
   if gloss=~/\A[[:alpha:]]+,/ then comma_after_head_word=true else comma_after_head_word=false end
   if comma_after_head_word then
     if gloss=~/\A[[:alpha:]]+, ([[:alpha:]]+)/ then
@@ -158,7 +161,7 @@ def is_cross_ref(gloss)
       unless second_word=~/[0-9a-z]/ && !(['indeclinable'].include?(second_word)) then comma_after_head_word=false end
     end
   end
-  return gloss.length<50 && comma_after_head_word
+  return is_short && comma_after_head_word
 end
 
 def simplify(gloss)

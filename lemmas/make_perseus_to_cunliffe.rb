@@ -24,6 +24,8 @@ example where two cunliffe lemmas map to the same perseus lemma:
 =end
 
 def main
+  File.open("explain.txt","w") { |f|  }
+
   author = "homer"
   treebank = TreeBank.new(author,data_dir:"../lemmas") # meant to be run froim lemmas subdirectory
 
@@ -60,7 +62,8 @@ def do_output(c_to_p,unmatched_c)
   nontrivial_file = "temp.json"
   unmatched_file = "unmatched.txt"
   $stderr.print "The complete mapping from Cunliffe to Perseus has been printed to stdout. A list of the\n"
-  $stderr.print "nontrivial ones is in #{nontrivial_file} . A list of unmatched words is in #{unmatched_file} .\n"
+  $stderr.print "nontrivial ones is in #{nontrivial_file} . A list of unmatched Cunliffe lemmas is in #{unmatched_file} .\n"
+  $stderr.print "The file explain.txt contains explanations of the criteria used for rach lemma.\n"
   File.open(nontrivial_file,"w") { |f|
     f.print pretty_json_hash(nontrivial)
   }
@@ -72,9 +75,11 @@ end
 
 #----------------------------------- C --------------------------------------
 def pass_c(c_to_p,unmatched_c,perseus,cun)
-  # By now we have about 90% of lemmas mapped. That means that on a typical line where an unmapped lemma occurs, it will be
-  # the only unmapped word on that line. Based on cunliffe's set of line references, find a list of candidates in this way.
-  # Look for one that occurs frequently and is phonetically similar.
+$stderr.print %Q{
+Pass C: By now we have about 90% of lemmas mapped. That means that on a typical line where an unmapped lemma occurs, it will be
+the only unmapped word on that line. Based on cunliffe's set of line references, find a list of candidates in this way.
+Look for one that occurs frequently and is phonetically similar.
+}
   # perseus is the data structure from pass A,  a hash of hashes, first index is a line ref like Ψ762, second is perseus lemma
   known_p = c_to_p.values.to_set 
   m = MultiString.new('') # just need one object of the class for calling certain class methods, due to bad design
@@ -84,13 +89,16 @@ def pass_c(c_to_p,unmatched_c,perseus,cun)
     unmatched_c.each { |c|
       if k%10==0 then $stderr.print "." end
       k += 1
-      debug = (c=='ἁπλοΐς')
+      debug = (c=='φαίνω')
       lines = cun.extract_line_refs(c) # array such as ['Ξ412','Ψ762','ν103','ν347']
+      if debug then $stderr.print "\n#{c} #{lines}\n" end
       candidates = []
       lines.each { |line|
         next if !perseus.has_key?(line) # e.g., Ι460
         perseus[line].keys.each { |p|
-          next if known_p.include?(p)
+          next if known_p.include?(p) && !(c==p)
+          # ... The second clause is for many-to-one mappings such as (φαείνω,φαίνω)->φαίνω. If a Cunliffe lemma like φαίνω is still unexplained,
+          #     and there is a Perseus lemma that is spelled identically, then they're probably the same.
           candidates.push(p)
         }
       }
@@ -116,6 +124,7 @@ def pass_c(c_to_p,unmatched_c,perseus,cun)
         if dominates_all then best_p=a; break end
       }
       next if best_p.nil?
+      explain(c,best_p,"C","candidates=#{candidates}")
       c_to_p[c] = best_p
     }
     $stderr.print "\n"
@@ -148,10 +157,9 @@ therefore is lemmatized in Perseus. These additional mappings may be many-to-one
 }
 
 unmatched_c.each { |c|
-  debug = (c=='δώδεκα')
   p,success = treebank.lemmatize(c)
-  if debug then $stderr.print "c=#{c}, treebank lemmatization=#{p}, #{success}\n" end
   next if !success
+  explain(c,p,"B",'')
   c_to_p[c] = p
 }
 return c_to_p
@@ -233,6 +241,7 @@ reverse_map = {} # reversed version of map
         hit = if_hit(pass,subpass,perseus_lemma,cunliffe,coinc[perseus_lemma],coinc_next_best_perseus,lines.length,m,debug)
         #----
         if hit then
+          explain(cunliffe,perseus_lemma,"A#{pass}.#{subpass}","coinc=#{coinc[perseus_lemma]}, coinc_next_best_perseus=#{coinc_next_best_perseus}")
           # Passes An are designed to look only for strict 1-1 mappings.
           map[cunliffe] = perseus_lemma
           reverse_map[perseus_lemma] = cunliffe
@@ -295,6 +304,14 @@ def if_hit_helper(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_be
     if similarity>1.0-0.2*subpass && how_superior>=0 then hit=true end
   end
   return hit
+end
+
+#----------------------------------- misc --------------------------------------
+
+def explain(c,p,pass,text)
+  File.open("explain.txt","a") { |f|
+    f.print "#{c} #{p} #{pass} #{text}\n"
+  }
 end
 
 def pretty_json_hash(h)
