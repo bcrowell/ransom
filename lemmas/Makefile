@@ -20,12 +20,16 @@ default:
 	[ -f $(ODYSSEY) ]
 	cat $(ILIAD) $(ODYSSEY) | ruby flatten.rb greek >homer_lemmas.csv
 	make dbs
+	make cunliffe_to_perseus
 
 dbs:
 	ruby to_db.rb homer
 	# ...writes homer_lemmas.json ; doesn't write sdbm file because I have that commented out; removes macrons and breves
 	#    writes homer_lemmas.line_index.json
 	ruby make_freq.rb homer >homer_freq.json
+
+cunliffe_to_perseus:
+	./make_cunliffe_to_perseus.rb >cunliffe_to_perseus.json
 
 classical_latin_freq.json:
 	ruby merge_freq.rb caesar_freq.json cicero_freq.json ovid_freq.json petronius_freq.json vergil_freq.json >classical_latin_freq.json
