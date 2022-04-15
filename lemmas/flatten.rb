@@ -56,6 +56,9 @@ def patch(a)
   # Lemmas that are different, but in an obvious way. No reason for learners to learn them separately.
   if lemma=='ἑλώριον' then patched_lemma='ἕλωρ' end
   if lemma=='ῥινόν' then patched_lemma='ῥινός' end
+
+  # Redundant lemmas, one just looks like a mistake:
+  if lemma=='ὀνειρόπολος' then patched_lemma='ὀνειροπόλος' end # Iliad 1.63 and 5.149
  
   # Redundant lemmas, one for an Attic form and one for an epic one:
   if lemma=='ῥόα' && inflected=='ῥοάων' then patched_lemma='ῥοή' end # There is also Attic ῥόα=pomegranate, epic ῥοιή.

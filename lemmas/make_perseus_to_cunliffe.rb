@@ -21,6 +21,9 @@ examples for testing (perseus, cunliffe)
   ψεύδω ψεύδομαι
 example where two cunliffe lemmas map to the same perseus lemma:
   ( δάκρυ , δάκρυον ) -> δάκρυον
+examples that it still fails on
+  ὑ -- is not actually a lemma in cunliffe, must me a bug in my parser
+  δεῖμος -- cunliffe lists it as lowercase, perseus calls it a proper noun, uppercase
 =end
 
 def main
@@ -195,8 +198,9 @@ therefore is lemmatized in Perseus. These additional mappings may be many-to-one
 }
 
 unmatched_c.each { |c|
-  p,success = treebank.lemmatize(c)
-  next if !success
+  p_candidates = treebank.lemmatize_ignoring_accents(c)
+  next unless p_candidates.length==1
+  p = p_candidates[0]
   explain(c,p,"B",'')
   c_to_p[c] = p
 }

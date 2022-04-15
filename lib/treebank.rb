@@ -12,6 +12,7 @@ class TreeBank
     @lemmas_file = "#{data_dir}/#{corpus}_lemmas.json"
     @lemmas = json_from_file_or_die(@lemmas_file)
     @inverse_index = nil
+    @accent_insensitive_index = nil
     @pos_file = "#{data_dir}/#{corpus}_lemmas.csv" # needn't exist, gets changed to nil below if it doesn't
     if !File.exist?(@pos_file) then
       @pos_file=nil
@@ -143,9 +144,32 @@ class TreeBank
     return result
   end
 
+  def lemmatize_ignoring_accents(word)
+    # This will cause a delay the first time it's called. The only reason to use this is if you have a version of the word that
+    # you suspect may have different accentuation than any occurrence in Homer. (See pass B of make_perseus_to_cunliffe.rb.)
+    # Returns list of lemmas, which may be empty.
+    if @accent_insensitive_index.nil? then
+      # First time we get called, build the special-purpose index.
+      @accent_insensitive_index = {}
+      @lemmas.keys.each { |key|
+        k = remove_accents(key).downcase
+        if !@accent_insensitive_index.has_key?(k) then
+          @accent_insensitive_index[k] = []
+        end
+        lemma,success = self.lemmatize(key)
+        next unless success
+        @accent_insensitive_index[k] |= [lemma]
+      }
+    end
+    w = remove_accents(word).downcase
+    if @accent_insensitive_index.has_key?(w) then return @accent_insensitive_index[w] else return [] end
+  end
+
   # Why do I have both this and word_to_lemma_entry?
   def lemmatize(word)
-    # returns [lemma,success]
+    # Returns [lemma,success].
+    # This will only work if word has exactly the right accentuation, which should normally be the case if word was taken from
+    # the text. For a search that's insensitive to accentuation, use lemmatize_ignoring_accents().
     if @lemmas.has_key?(word) then return self.lemma_helper(word) end
     if @lemmas.has_key?(word.downcase) then return self.lemma_helper(word.downcase) end
     if @lemmas.has_key?(capitalize(word)) then return self.lemma_helper(capitalize(word)) end
