@@ -2,6 +2,7 @@
 # coding: utf-8
 
 require "json"
+require "set"
 
 require '../lib/clown.rb'
 require '../lib/string_util.rb'
@@ -26,7 +27,9 @@ def main
   author = "homer"
   treebank = TreeBank.new(author,data_dir:"../lemmas") # meant to be run froim lemmas subdirectory
 
-  c_to_p,unmatched_c = pass_a
+  cun = CunliffeGlosses.new(filename:'../cunliffe/cunliffe.txt')
+
+  c_to_p,unmatched_c,perseus = pass_a(cun)
   # ... the version of c_to_p returned by pass A is one-to-one
 
   $stderr.print "After pass A, found the following number of 1-1 matches: #{c_to_p.keys.length}\n"
@@ -39,19 +42,88 @@ def main
   unmatched_c_2 = unmatched_c-c_to_p_2.keys
 
   $stderr.print "After pass B, found the following number of many-to-one maps from Cunliffe to Perseus: #{c_to_p_2.keys.length}\n"
-  $stderr.print "The following #{unmatched_c_2.length} Cunliffe lemmas were still not mapped in pass B (first 300 listed):\n"
-  if unmatched_c_2.length<=300 then zz=unmatched_c_2 else zz=unmatched_c_2[0..299] end
-  $stderr.print zz.join(' '),"\n"
-  $stderr.print "\n"
 
-  print pretty_json_hash(c_to_p_2)
+  c_to_p_3 = pass_c(clown(c_to_p_2),unmatched_c_2,perseus,cun)
+  unmatched_c_3 = unmatched_c_2-c_to_p_3.keys
+
+  do_output(c_to_p_3,unmatched_c_3)
 
 end # main
 
-def pretty_json_hash(h)
-  return JSON.pretty_generate(Hash[*h.sort { |a,b| (a[0] <=> b[0])}.flatten])
-  #  https://stackoverflow.com/questions/5433241/sort-ruby-hash-when-using-json
+def do_output(c_to_p,unmatched_c)
+  print pretty_json_hash(c_to_p)
+
+  nontrivial_file = "temp.json"
+  unmatched_file = "unmatched.txt"
+  nontrivial = c_to_p.select { |k,v| k!=v}
+  $stderr.print "The complete mapping from Cunliffe to Perseus has been printed to stdout. A list of the #{nontrivial.keys.length}\n"
+  $stderr.print "nontrivial ones is in #{nontrivial_file} . A list of #{unmatched_c.length} unmatched words is in #{unmatched_file} .\n"
+  File.open(nontrivial_file,"w") { |f|
+    f.print pretty_json_hash(nontrivial)
+  }
+  File.open(unmatched_file,"w") { |f|
+    f.print unmatched_c.map { |x| x+"\n" }.join('')
+  }
+
 end
+
+#----------------------------------- C --------------------------------------
+def pass_c(c_to_p,unmatched_c,perseus,cun)
+  # By now we have about 90% of lemmas mapped. That means that on a typical line where an unmapped lemma occurs, it will be
+  # the only unmapped word on that line. Based on cunliffe's set of line references, find a list of candidates in this way.
+  # Look for one that occurs frequently and is phonetically similar.
+  # perseus is the data structure from pass A,  a hash of hashes, first index is a line ref like Ψ762, second is perseus lemma
+  known_p = c_to_p.values.to_set 
+  m = MultiString.new('') # just need one object of the class for calling certain class methods, due to bad design
+  1.upto(3) { |pass|
+    $stderr.print "==== pass C#{pass} ====\n"
+    k = 0
+    unmatched_c.each { |c|
+      if k%10==0 then $stderr.print "." end
+      k += 1
+      lines = cun.extract_line_refs(c) # array such as ['Ξ412','Ψ762','ν103','ν347']
+      candidates = []
+      lines.each { |line|
+        next if !perseus.has_key?(line) # e.g., Ι460
+        perseus[line].keys.each { |p|
+          next if known_p.include?(p)
+          candidates.push(p)
+        }
+      }
+      next if candidates.length==0
+      count = {}
+      candidates.each { |p|
+        if !count.has_key?(p) then count[p]=0 end
+        count[p] += 1
+      }
+      # Look to see if one choice dominates on both statistical and phonetic criteria.
+      best_p = nil
+      candidates.each { |a|
+        dominates_all = true
+        candidates.each { |b|
+          next if b==a
+          dominates = (phonetic_similarity_score(a,c,m)>=phonetic_similarity_score(b,c,m) && count[a]>count[b]+3-pass)
+          if !dominates then dominates_all=false; break end
+        }
+        if dominates_all then best_p=a; break end
+      }
+      next if best_p.nil?
+      c_to_p[c] = best_p
+    }
+    $stderr.print "\n"
+  }
+  return c_to_p
+end
+
+def phonetic_similarity_score(a,b,m)
+  l = [a.length,b.length].min
+  d = m.atomic_lcs_distance(a,b)
+  similarity =  1.0-d.to_f/l
+  if a[0]==b[0] then similarity+=0.3 end
+  return similarity
+end
+
+#----------------------------------- B --------------------------------------
 
 def pass_b(treebank,c_to_p,unmatched_c)
 $stderr.print %Q{
@@ -59,23 +131,22 @@ Pass B: Looks for additional mappings from Cunliffe to Perseus in which the Cunl
 therefore is lemmatized in Perseus. These additional mappings may be many-to-one, e.g., (δάκρυ,δάκρυον)->δάκρυον.
 }
 
-
-  unmatched_c.each { |c|
-    p,success = treebank.lemmatize(c)
-    next if !success
-    c_to_p[c] = p
-  }
-  return c_to_p
+unmatched_c.each { |c|
+  p,success = treebank.lemmatize(c)
+  next if !success
+  c_to_p[c] = p
+}
+return c_to_p
 end
 
-def pass_a
+#----------------------------------- A --------------------------------------
+
+def pass_a(cun)
 
 $stderr.print %Q{
 Pass A: Looks for strict 1-1 mappings between cunliffe and perseus, based on the fingerprint of what lines they occur at,
 plus a requirement of phonetic similarity.
 }
-
-cun = CunliffeGlosses.new(filename:'../cunliffe/cunliffe.txt')
 
 author = 'homer'
 csv_file = "#{author}_lemmas.csv"
@@ -109,7 +180,7 @@ reverse_map = {} # reversed version of map
     count = 0
     cun.all_lemmas.each { |cunliffe|
       debug = false
-      #debug = (cunliffe=='ἀάζω')
+      #debug = (cunliffe=='προθέω')
       next if map.has_key?(cunliffe) # done in a previous pass
       lines = cun.extract_line_refs(cunliffe) # array such as ['Ξ412','Ψ762','ν103','ν347']
       delete_from_lines = [] # deal with, e.g., Odyssey 10.459, which is not in perseus
@@ -160,9 +231,11 @@ reverse_map = {} # reversed version of map
 
 unmatched = cun.all_lemmas.select { |cunliffe| !map.has_key?(cunliffe) }
 
-return [map,unmatched]
+return [map,unmatched,perseus]
 
 end # pass_a
+
+#----------------------------------- helper routines for pass A --------------------------------------
 
 def if_hit(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_best_perseus,min_expected,m,debug)
   #if debug then $stderr.print "cunliffe=#{cunliffe} perseus=#{perseus} coinc_best_perseus=#{coinc_best_perseus} min_expected=#{min_expected}\n" end
@@ -204,6 +277,11 @@ def if_hit_helper(pass,subpass,perseus,cunliffe,coinc_best_perseus,coinc_next_be
     if similarity>1.0-0.2*subpass && how_superior>=0 then hit=true end
   end
   return hit
+end
+
+def pretty_json_hash(h)
+  return JSON.pretty_generate(Hash[*h.sort { |a,b| (a[0] <=> b[0])}.flatten])
+  #  https://stackoverflow.com/questions/5433241/sort-ruby-hash-when-using-json
 end
 
 main

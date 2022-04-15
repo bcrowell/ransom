@@ -97,7 +97,7 @@ def extract_line_refs(lexical)
     # Get list of all line refs.
     result |= gloss.scan(/[#{alphabet}]\d{1,3}/) # union of sets
   }
-  return result.sort { |a,b| self.compare_line_refs(a,b)}
+  return result.sort { |a,b| self.compare_line_refs(a,b)}.uniq
 end
 
 def compare_line_refs(a,b)
