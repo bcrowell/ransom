@@ -22,7 +22,7 @@ examples for testing (perseus, cunliffe)
 example where two cunliffe lemmas map to the same perseus lemma:
   ( δάκρυ , δάκρυον ) -> δάκρυον
 examples that it still fails on
-  ὑ -- is not actually a lemma in cunliffe, must me a bug in my parser
+  ὑ -- is not actually a lemma in cunliffe, must be a bug in my parser
   δεῖμος -- cunliffe lists it as lowercase, perseus calls it a proper noun, uppercase
 =end
 

@@ -29,7 +29,7 @@ def initialize(filename:"cunliffe/cunliffe.txt")
   IO.foreach(filename) { |line|
     if line=~/\*{20,}/ then # in the archive.org scan, entries are separated by lines of asterisks
       if !w.nil? && w==w.downcase then # Don't do proper nouns.
-        if w=='ὑ' then raise "bogus data in parser for cunliffe, w=#{w}, gloss=#{accum}" end
+        if w=='τ' then raise "bogus data in parser for cunliffe, w=#{w}, gloss=#{accum}" end
         accum.sub!(/\n{2,}/,"\n")
         @glosses[w] = accum
       end

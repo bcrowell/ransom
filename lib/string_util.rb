@@ -268,7 +268,7 @@ def remove_macrons_and_breves(s)
   #         Furthermore, these seem to be represented as multiple characters, so that tr won't work. The following will be slow on short strings,
   #         but should perform well on long ones.
   #         The following isn't really an exhaustive list of vowels.
-  "άίύὰὶὺΆΊΎᾺῚῪἀἐἰὀὐἠὠἁἑἱὁὑἡὡἄἔἴὄὔἤὤἂἒἲὂὒἢὢἅἕἵὅὕἥὥἃἓἳὃὓἣὣ".chars.each { |c|
+  "άίύὰὶὺΆΊΎᾺῚῪἀἐἰὀὐἠὠἁἑἱὁὑἡὡἄἔἴὄὔἤὤἂἒἲὂὒἢὢἅἕἵὅὕἥὥἃἓἳὃὓἣὣΐῒ".chars.each { |c|
     [772,774].each { |combining| # 772=combining macron, 774=combining breve (773=combining overline, presumably used for math)
       m = [c.ord, combining].pack("U*") # is not a single character
       s = s.gsub(/#{m}/,c)
