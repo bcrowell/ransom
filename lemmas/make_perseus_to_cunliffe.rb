@@ -44,7 +44,10 @@ def main
   c_to_p_3 = pass_c(clown(c_to_p_2),unmatched_c_2,perseus,cun)
   unmatched_c_3 = unmatched_c_2-c_to_p_3.keys
 
-  do_output(c_to_p_3,unmatched_c_3)
+  c_to_p_4 = pass_d(clown(c_to_p_3),unmatched_c_3,perseus,cun)
+  unmatched_c_4 = unmatched_c_3-c_to_p_4.keys
+
+  do_output(c_to_p_4,unmatched_c_4)
 
 end # main
 
@@ -73,6 +76,38 @@ def do_output(c_to_p,unmatched_c)
 
 end
 
+#----------------------------------- D --------------------------------------
+def pass_d(c_to_p,unmatched_c,perseus,cun)
+$stderr.print %Q{
+Pass D: Words that are hapaxes according to Cunliffe and still haven't been matched. These seem to be
+mostly cases where Cunliffe uses two lemmas for something that's treated as one in Perseus. Look at
+every word in the line and match the one that is the most phonetically similar. This method may not be
+super reliable, so examine explain.txt to see what was done in pass D.
+}
+  m = MultiString.new('') # just need one object of the class for calling certain class methods, due to bad design
+  unmatched_c.each { |c|
+    lines = cun.extract_line_refs(c) # array such as ['Ξ412','Ψ762','ν103','ν347']
+    next if lines.length!=1 # only do hapaxes here
+    line=lines[0]
+    next if !perseus.has_key?(line) # e.g., Ι460
+    $stderr.print "."
+    scores = {}
+    perseus[line].keys.each { |p|
+      scores[p] = phonetic_similarity_score(p,c,m)
+    }
+    sorted = scores.keys.sort_by { |p| -scores[p] }
+    if sorted.length<2 then $stderr.print "Huh? only one word in line #{line}??"; next end
+    s0 = scores[sorted[0]]
+    s1 = scores[sorted[1]]
+    if s0>0.5 && s1<0.4 && s0-s1>0.4 then
+      c_to_p[c] = sorted[0]
+      explain(c,sorted[0],"D","similarities=#{sorted[0..2].map { |p| [p,scores[p].round(2)]} }")
+    end
+  }
+  $stderr.print "\n"
+  return c_to_p
+end
+
 #----------------------------------- C --------------------------------------
 def pass_c(c_to_p,unmatched_c,perseus,cun)
 $stderr.print %Q{
@@ -89,7 +124,8 @@ Look for one that occurs frequently and is phonetically similar.
     unmatched_c.each { |c|
       if k%10==0 then $stderr.print "." end
       k += 1
-      debug = (c=='φαίνω')
+      debug = false
+      #debug = (c=='φαίνω')
       lines = cun.extract_line_refs(c) # array such as ['Ξ412','Ψ762','ν103','ν347']
       if debug then $stderr.print "\n#{c} #{lines}\n" end
       candidates = []
@@ -124,7 +160,9 @@ Look for one that occurs frequently and is phonetically similar.
         if dominates_all then best_p=a; break end
       }
       next if best_p.nil?
-      explain(c,best_p,"C","candidates=#{candidates}")
+      next if candidates.length==1 && phonetic_similarity_score(best_p,c,m)<0.5
+      # ... otherwise, if candidates has length 1, we'd be going only based on dominance, which is meaningless
+      explain(c,best_p,"C","candidates=#{candidates.uniq} lines=#{first_n_of_array_string(lines,7)}")
       c_to_p[c] = best_p
     }
     $stderr.print "\n"
@@ -317,6 +355,17 @@ end
 def pretty_json_hash(h)
   return JSON.pretty_generate(Hash[*h.sort { |a,b| (a[0] <=> b[0])}.flatten])
   #  https://stackoverflow.com/questions/5433241/sort-ruby-hash-when-using-json
+end
+
+def first_n_of_array_string(a,n)
+  if n>=a.length then return a.join(' ') end
+  return first_n_of_array(a,n).join(' ')+" ..."
+end
+
+def first_n_of_array(a,n)
+  if a.length<=n then return a end
+  if a.length==0 || n<=0 then return [] end
+  return a[0..(n-1)]
 end
 
 main

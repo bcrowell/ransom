@@ -36,3 +36,5 @@ wiktextract/la_en.json
 ambig_temp.json
 temp_usage.tex
 *.bbcode
+explain.txt
+unmatched.txt
