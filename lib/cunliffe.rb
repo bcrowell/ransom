@@ -10,7 +10,7 @@ ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=Cunliffe
 
 
 class CunliffeGlosses
-def initialize(filename:"cunliffe/cunliffe.txt")
+def initialize(filename:"cunliffe/cunliffe.txt",cunliffe_to_perseus_file:"lemmas/cunliffe_to_perseus.json")
   # The caller should check whether the return has .invalid, and if so, replace the returned object with nil, which is
   # what other code expects when it's called with a CunliffeGlosses argument that doesn't actually work.
   # As presently implemented, this is pretty slow to start up.
@@ -58,6 +58,28 @@ def initialize(filename:"cunliffe/cunliffe.txt")
     next if self.is_cross_ref(g)
     @lemma_keys[head_word] = 1
   }
+  # The following will have to be rewritten if I make the C->P mapping one-to-many.
+  @cunliffe_to_perseus = json_from_file_or_die(cunliffe_to_perseus_file)
+  @perseus_to_cunliffe = {}
+  @cunliffe_to_perseus.keys.each { |c|
+    p = @cunliffe_to_perseus[c]
+    if !@perseus_to_cunliffe.has_key?(p) then @perseus_to_cunliffe[p] = [] end
+    @perseus_to_cunliffe[p].push(c)
+  }
+end
+
+def cunliffe_to_perseus(w)
+  # Given a lemma from Cunliffe, attempts to give the corresponding Project Perseus lemma.
+  # In some cases (presently about 2%), we don't have a reliable answer, so we just return w.
+  # As presently implemented, the mapping from Cunliffe to Perseus is assumed to be (stored on
+  # disk as) many to one, but for compatibility with future improvements, the return of this
+  # function is a list.
+  if @cunliffe_to_perseus.has_key?(w) then return [@cunliffe_to_perseus[w]] else return [w] end
+end
+
+def perseus_to_cunliffe(w)
+  # Similar to cunliffe_to_perseus(). Returns a list.
+  if @cunliffe_to_perseus.has_key?(w) then return @perseus_to_cunliffe[w] else return [w] end
 end
 
 attr_reader :invalid

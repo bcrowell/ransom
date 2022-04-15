@@ -280,8 +280,16 @@ def GlossHelp.prep(wikt,cunliffe,key,lemma)
     'wikt'=> wikt.get_glosses(lemma).join(', ')
   }
   if !cunliffe.nil? then
-    g = cunliffe.get_glosses(lemma)[0]
-    if !g.nil? then h['cunliffe'] = ("\n---Cunliffe---\n"+g).gsub(/(.+)/) {"        // #{$1}"} end
+    cunliffe_glosses = ''
+    #$stderr.print "-------- cunliffe.perseus_to_cunliffe(lemma)=#{cunliffe.perseus_to_cunliffe(lemma)}\n" # qwe
+    cunliffe.perseus_to_cunliffe(lemma).each { |cunliffe_lemma|
+      cunliffe.get_glosses(cunliffe_lemma).each { |g|
+        if !g.nil? then cunliffe_glosses += "#{cunliffe_lemma}: #{g}\n" end
+      }
+    }
+    if cunliffe_glosses!='' then
+      h['cunliffe'] = ("\n---Cunliffe---\n"+cunliffe_glosses).gsub(/(.+)/) {"        // #{$1}"}
+    end
   end
   debug_gloss = false
   if debug_gloss then
