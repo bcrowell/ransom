@@ -156,7 +156,7 @@ def is_cross_ref(gloss)
     if gloss=~/\A[[:alpha:]]+, ([[:alpha:]]+)/ then
       # don't count the comma if it's an entry like "δάκρυ, τό" or "ἄκρον, ου, τό"
       second_word = $1
-      unless second_word=~/[0-9a-z]/ then comma_after_head_word=false end
+      unless second_word=~/[0-9a-z]/ && !(['indeclinable'].include?(second_word)) then comma_after_head_word=false end
     end
   end
   return (number_of_lines==1) && comma_after_head_word

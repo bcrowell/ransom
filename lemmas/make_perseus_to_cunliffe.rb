@@ -34,10 +34,6 @@ def main
 
   $stderr.print "After pass A, found the following number of 1-1 matches: #{c_to_p.keys.length}\n"
 
-  $stderr.print "The following #{unmatched_c.length} Cunliffe lemmas were not matched in pass A (first 300 listed):\n"
-  $stderr.print unmatched_c[0..299].join(' '),"\n"
-  $stderr.print "\n"
-
   c_to_p_2 = pass_b(treebank,clown(c_to_p),unmatched_c) # a many-to-one mapping from Cunliffe to Perseus
   unmatched_c_2 = unmatched_c-c_to_p_2.keys
 
@@ -53,11 +49,18 @@ end # main
 def do_output(c_to_p,unmatched_c)
   print pretty_json_hash(c_to_p)
 
+  nontrivial = c_to_p.select { |k,v| k!=v}
+
+  $stderr.print "statistics:\n"
+  $stderr.print "  matches:            #{c_to_p.keys.length}\n"
+  $stderr.print "  trivial matches:    #{c_to_p.keys.length-nontrivial.length}\n"
+  $stderr.print "  nontrivial matches: #{nontrivial.length}\n"
+  $stderr.print "  unmatched:          #{unmatched_c.length}\n"
+
   nontrivial_file = "temp.json"
   unmatched_file = "unmatched.txt"
-  nontrivial = c_to_p.select { |k,v| k!=v}
-  $stderr.print "The complete mapping from Cunliffe to Perseus has been printed to stdout. A list of the #{nontrivial.keys.length}\n"
-  $stderr.print "nontrivial ones is in #{nontrivial_file} . A list of #{unmatched_c.length} unmatched words is in #{unmatched_file} .\n"
+  $stderr.print "The complete mapping from Cunliffe to Perseus has been printed to stdout. A list of the\n"
+  $stderr.print "nontrivial ones is in #{nontrivial_file} . A list of unmatched words is in #{unmatched_file} .\n"
   File.open(nontrivial_file,"w") { |f|
     f.print pretty_json_hash(nontrivial)
   }
@@ -81,6 +84,7 @@ def pass_c(c_to_p,unmatched_c,perseus,cun)
     unmatched_c.each { |c|
       if k%10==0 then $stderr.print "." end
       k += 1
+      debug = (c=='ἁπλοΐς')
       lines = cun.extract_line_refs(c) # array such as ['Ξ412','Ψ762','ν103','ν347']
       candidates = []
       lines.each { |line|
@@ -97,12 +101,14 @@ def pass_c(c_to_p,unmatched_c,perseus,cun)
         count[p] += 1
       }
       # Look to see if one choice dominates on both statistical and phonetic criteria.
+      if debug then $stderr.print "\n" end
       best_p = nil
       candidates.each { |a|
         dominates_all = true
         candidates.each { |b|
           next if b==a
           dominates = (phonetic_similarity_score(a,c,m)>=phonetic_similarity_score(b,c,m) && count[a]>count[b]+3-pass)
+          if debug then $stderr.print " #{c} #{dominates} #{a} #{b} #{phonetic_similarity_score(a,c,m)} #{phonetic_similarity_score(b,c,m)} #{count[a]} #{count[b]}\n" end
           if !dominates then dominates_all=false; break end
         }
         if dominates_all then best_p=a; break end
@@ -117,7 +123,7 @@ end
 
 def phonetic_similarity_score(a,b,m)
   l = [a.length,b.length].min
-  d = m.atomic_lcs_distance(a,b)
+  d = m.atomic_lcs_distance(remove_accents(a),remove_accents(b))
   similarity =  1.0-d.to_f/l
   if a[0]==b[0] then similarity+=0.3 end
   return similarity
@@ -132,7 +138,9 @@ therefore is lemmatized in Perseus. These additional mappings may be many-to-one
 }
 
 unmatched_c.each { |c|
+  debug = (c=='δώδεκα')
   p,success = treebank.lemmatize(c)
+  if debug then $stderr.print "c=#{c}, treebank lemmatization=#{p}, #{success}\n" end
   next if !success
   c_to_p[c] = p
 }
