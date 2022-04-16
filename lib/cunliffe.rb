@@ -79,7 +79,7 @@ end
 
 def perseus_to_cunliffe(w)
   # Similar to cunliffe_to_perseus(). Returns a list.
-  if @cunliffe_to_perseus.has_key?(w) then return @perseus_to_cunliffe[w] else return [w] end
+  if @perseus_to_cunliffe.has_key?(w) then return @perseus_to_cunliffe[w] else return [w] end
 end
 
 attr_reader :invalid

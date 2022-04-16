@@ -266,6 +266,7 @@ class GlossHelp
 @@warned_fatal = false
 
 def GlossHelp.prep(wikt,cunliffe,key,lemma)
+  return {} if lemma!=lemma.downcase # don't do proper nouns
   # cunliffe may be nil, e.g., if this isn't Homeric Greek
   if wikt.nil? && !@@warned_fatal then
     $stderr.print "*********** warning: wikt is nil in GlossHelp.prep, no gloss help can be generated\n"
@@ -277,16 +278,28 @@ def GlossHelp.prep(wikt,cunliffe,key,lemma)
     'filename'=>key,
     'lemma'=>lemma,
     'url'=> "https://en.wiktionary.org/wiki/#{lemma} https://logeion.uchicago.edu/#{lemma}",
-    'wikt'=> wikt.get_glosses(lemma).join(', ')
+    'wikt'=> wikt.get_glosses(lemma).join(', ') # may retry below if cunliffe lemma differs from perseus
   }
   if !cunliffe.nil? then
     cunliffe_glosses = ''
-    #$stderr.print "-------- cunliffe.perseus_to_cunliffe(lemma)=#{cunliffe.perseus_to_cunliffe(lemma)}\n" # qwe
-    cunliffe.perseus_to_cunliffe(lemma).each { |cunliffe_lemma|
+    $stderr.print "-------- cunliffe.perseus_to_cunliffe(lemma)=#{cunliffe.perseus_to_cunliffe(lemma)}\n" # qwe
+    cunliffe_lemmas = cunliffe.perseus_to_cunliffe(lemma)
+    cunliffe_lemmas.each { |cunliffe_lemma|
       cunliffe.get_glosses(cunliffe_lemma).each { |g|
         if !g.nil? then cunliffe_glosses += "#{cunliffe_lemma}: #{g}\n" end
       }
     }
+    $stderr.print "-------- cunliffe_lemmas=#{cunliffe_lemmas}\n" # qwe
+    if cunliffe_lemmas.length==1 && cunliffe_lemmas[0]!=lemma then
+      h['cunliffe_lemma']=cunliffe_lemmas[0]
+      $stderr.print "-------- cunliffe_lemma=#{h['cunliffe_lemma']}\n" # qwe
+      if h['wikt']=='' then
+        # This is unlikely to help, since wiktionary would typically have a gloss for the attic form, and Perseus is probably also
+        # using the attic form as a lemma.
+        x = wikt.get_glosses(cunliffe_lemmas[0])
+        if x.length!=0 then h['wikt']=x.join(', ') end
+      end
+    end
     if cunliffe_glosses!='' then
       h['cunliffe'] = ("\n---Cunliffe---\n"+cunliffe_glosses).gsub(/(.+)/) {"        // #{$1}"}
     end
@@ -301,7 +314,7 @@ end
 def GlossHelp.give(gloss_help)
   gloss_help_dir = "help_gloss"
   unless File.directory?(gloss_help_dir) then Dir.mkdir(gloss_help_dir) end
-  gloss_help = gloss_help.filter { |h| h['lemma']==h['lemma'].downcase } # filter out things that look like proper nouns
+  gloss_help = gloss_help.filter { |h| !h.nil? && h.has_key?('lemma') && h['lemma']==h['lemma'].downcase } # filter out things that look like proper nouns
   return [nil,[]] if gloss_help.length==0
   individual_info = []
   list_written = []
@@ -314,12 +327,20 @@ def GlossHelp.give(gloss_help)
     individual_info.push("no glossary entry for #{h['lemma']} , see gloss help file")
     c = ''
     if h.has_key?('cunliffe') then c=h['cunliffe'] end
+    if h.has_key?('cunliffe_lemma') then
+      lemmas = %Q(
+          \"word\":\"#{h['cunliffe_lemma']}\",
+          \"perseus\":\"#{h['lemma']}\",)
+    else
+      lemmas = %Q(
+          \"word\":\"#{h['lemma']}\",
+      )
+    end
     File.open(filename,"w") { |f|
       x = %Q(
         // #{h['url']}
         // #{h['wikt']}#{c}
-        {
-          \"word\":\"#{h['lemma']}\",
+        {#{lemmas}
           \"short\":\"\",
           \"medium\":\"#{h['wikt']}\"
         }
