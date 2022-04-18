@@ -533,6 +533,10 @@ class IliadNotes
     'about_what'    => %q{εἴ},
     'explain'       => %q{would}
   }],
+  ["4.13" , {
+    'about_what'    => %q{νίκη},
+    'explain'       => %q{implied: is, i.e., belongs to}
+  }],
   ["4.27" , {
     'about_what'    => %q{ἵπποι},
     'explain'       => %q{her horses, which evidently took her around on her mission to spread war}
@@ -564,6 +568,11 @@ class IliadNotes
   ["4.243" , {
     'about_what'    => %q{τίφθ᾽},
     'explain'       => %q{=τίπτε, here meaning why?}
+  }],
+  ["4.334" , {
+    'about_what'    => %q{πύργος},
+    'explain'       => %q{metaphorically, a wall of troops}
+    # Cunliffe gives it as a separate gloss with this meaning.
   }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
