@@ -1,7 +1,10 @@
 {
   "word": "ἀνύω",
   "princ": ",ἤνυσα",
-  "short": "cause",
-  "medium": "cause, consume, pass over, complete",
-  "syn": "φύω"
+  "short": "accomplish",
+  "medium": "accomplish, pass over, complete",
+  "long": "effect, accomplish, pass over, complete",
+  "syn": "ἄνυμι, φύω",
+  "cog":"ἄνυσις, ἄνυμι; no cognates in other languages likely to be familiar to English speakers",
+  "etym":"PIE senH"
 }

@@ -142,6 +142,14 @@ class IliadNotes
     'about_what'    => %q{γὰρ ἂν},
     'explain'       => %q{for if not}
   }],
+  ["1.297" , {
+    'about_what'    => %q{βάλλεο},
+    'explain'       => %q{mp. impv.: lay away, store up}
+  }],
+  ["1.297" , {
+    'about_what'    => %q{σῇσι},
+    'explain'       => %q{fem. dat. pl. of σος}
+  }],
   ["1.351" , {
     'explain'       => %q{Achilles prays for help to his mother, the sea nymph Thetis.}
   }],
@@ -544,6 +552,18 @@ class IliadNotes
   ["4.27" , {
     'about_what'    => %q{ἵπποι},
     'explain'       => %q{her horses, which evidently took her around on her mission to spread war}
+  }],
+  ["4.39" , {
+    'about_what'    => %q{βάλλεο},
+    'explain'       => %q{mp. impv.: lay away, store up}
+  }],
+  ["4.39" , {
+    'about_what'    => %q{σῇσιν},
+    'explain'       => %q{fem. dat. pl. of σος}
+  }],
+  ["4.41" , {
+    'about_what'    => %q{τὴν},
+    'explain'       => %q{referring to πόλιν}
   }],
   ["4.88" , {
     'about_what'    => %q{Πάνδαρον},

@@ -9,14 +9,14 @@ default:
 iliad-i.pdf: export FORMAT=whole
 iliad-i.pdf: export OVERWRITE=1
 iliad-i.pdf: export VOL=i
-iliad-i.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex lemmas/homer_lemmas.line_index.json
+iliad-i.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex lemmas/homer_lemmas.line_index.json iliad/notes.rb
 	make book_no_post
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 
 iliad-ii.pdf: export FORMAT=whole
 iliad-ii.pdf: export OVERWRITE=1
 iliad-ii.pdf: export VOL=ii
-iliad-ii.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex lemmas/homer_lemmas.line_index.json
+iliad-ii.pdf: lib/*rb eruby_ransom.rb iliad.rbtex iliad/core.tex lemmas/homer_lemmas.line_index.json iliad/notes.rb
 	make book_no_post
 	@sort help_gloss/__links.html | uniq >a.a && mv a.a help_gloss/__links.html
 

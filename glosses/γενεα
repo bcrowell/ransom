@@ -2,6 +2,7 @@
 // birth, race, descent, generation, offspring
 {
   "word":"γενεά",
-  "medium":"birth, race"
+  "medium":"birth, race",
+  "mnemonic_cog":"genus"
 }
       
