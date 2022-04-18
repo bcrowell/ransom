@@ -533,6 +533,10 @@ class IliadNotes
     'about_what'    => %q{εἴ},
     'explain'       => %q{would}
   }],
+  ["4.10" , {
+    'about_what'    => %q{αὖτε},
+    'explain'       => %q{on the other side}
+  }],
   ["4.13" , {
     'about_what'    => %q{νίκη},
     'explain'       => %q{implied: is, i.e., belongs to}
