@@ -2,6 +2,10 @@
 class Gloss
 
 =begin
+This contains two classes:
+  Gloss - utility class
+  GlossDB - a class for an object representing a database of glosses
+
 Format of glossary files:
 
 Sometimes two words have the same key, e.g.,
@@ -193,7 +197,7 @@ def Gloss.validate(db,key)
   if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
   n = a.length
   mandatory_keys = ['word','medium']
-  allowed_keys = ['word','short','medium','long','etym','cog','mnemonic_cog','syn','notes','pos','gender','genitive','princ','proper_noun','logdiff','mnem','vowel_length','aorist_difficult_to_recognize','perseus','no_interlinear']
+  allowed_keys = ['word','vowel_length','perseus','pos','gender','genitive','princ','short','medium','long','etym','cog','mnemonic_cog','syn','notes','proper_noun','logdiff','mnem','no_interlinear','aorist_difficult_to_recognize']
   # Try to detect duplicate keys.
   allowed_keys.each { |key|
     if json.scan(/\"#{key}\"\s*:/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
