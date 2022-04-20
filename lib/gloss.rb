@@ -312,9 +312,18 @@ class GlossDB
 
   def canonicalize_file_contents(key)
     # testing: ruby -e "require 'json'; require './lib/load_common'; require './lib/gloss'; require './lib/genos'; db=GlossDB.from_genos(GreekGenos.new('epic')); print db.canonicalize_file_contents('λαος')"
+    # preserves comments in a block of lines at the top
     path = key_to_path(key)
     if !FileTest.exist?(path) then return nil end
-    data = json_from_file_or_die(path)
+    json,err = slurp_file_with_detailed_error_reporting(path)
+    if !(err.nil?) then raise err end
+    begin
+      data = JSON.parse(json)
+    rescue
+      raise "error parsing JSON in file #{path}"
+    end
+    comments = json.scan(/\/\/.*/).join("\n")
+    if comments!='' then comments += "\n" end
     result = nil
     if data.kind_of?(Array) then
       l = data.map { |x| canonicalize_one_lemma(x,'') } # if I want 2-level indentation, can use '  ' for second arg, but I like that less
@@ -327,7 +336,7 @@ class GlossDB
     end
     err,message = Gloss.validate_string(result)
     if err then raise "canonicalize_file_contents generated invalid output: #{message}" end
-    return result
+    return comments+result
   end
 
   def canonicalize_one_lemma(data,indentation)
