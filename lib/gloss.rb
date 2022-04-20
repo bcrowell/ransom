@@ -181,6 +181,11 @@ def Gloss.standardize_diaresis(s)
   return s.gsub(/άϊ/,'άι').gsub(/έϊ/,'έι')
 end
 
+def Gloss.allowed_keys
+  return ['word','vowel_length','perseus','pos','gender','genitive','princ','short','medium','long','etym','cog','mnemonic_cog','syn','notes','proper_noun','logdiff','mnem','no_interlinear','aorist_difficult_to_recognize']
+  # This defines a preferred order for the keys.
+end
+
 def Gloss.validate(db,key)
   # Returns [err,message].
   if key.nil? then return [true,"key is nil"] end
@@ -189,6 +194,10 @@ def Gloss.validate(db,key)
   if !FileTest.exist?(path) then return [true,"file #{path} doesn't exist"] end
   json,err = slurp_file_with_detailed_error_reporting(path)
   if !(err.nil?) then return [true,err] end
+  return Gloss.validate_string(json)
+end
+
+def Gloss.validate_string(json)
   begin
     x = JSON.parse(json)
   rescue
@@ -197,14 +206,13 @@ def Gloss.validate(db,key)
   if x.kind_of?(Array) then a=x else a=[x] end # number of words for this key, normally 1, except for stuff like δαίς/δάϊς
   n = a.length
   mandatory_keys = ['word','medium']
-  allowed_keys = ['word','vowel_length','perseus','pos','gender','genitive','princ','short','medium','long','etym','cog','mnemonic_cog','syn','notes','proper_noun','logdiff','mnem','no_interlinear','aorist_difficult_to_recognize']
   # Try to detect duplicate keys.
-  allowed_keys.each { |key|
+  Gloss.allowed_keys.each { |key|
     if json.scan(/\"#{key}\"\s*:/).length>n then return [true,"key #{key} occurs more than #{n} times"] end
   }
   a.each { |entry|
     eks = entry.keys.to_set
-    if !(eks.subset?(allowed_keys.to_set)) then return [true,"illegal key(s): #{eks-allowed_keys.to_set}"] end
+    if !(eks.subset?(Gloss.allowed_keys.to_set)) then return [true,"illegal key(s): #{eks-allowed_keys.to_set}"] end
     if !(mandatory_keys.to_set.subset?(eks)) then return [true,"required key(s) not present: #{mandatory_keys.to_set-eks}"] end
     eks.select! { |key| entry[key]!='' } # delete keys with null-string values
     if !(entry.keys.to_set.subset?(eks)) then return [true,"values for these keys are null strings: #{entry.keys.to_set-eks}"] end
@@ -300,6 +308,39 @@ class GlossDB
   def get_from_file_helper(key)
     path = key_to_path(key)
     if FileTest.exist?(path) then return json_from_file_or_die(path) else return nil end
+  end
+
+  def canonicalize_file_contents(key)
+    # testing: ruby -e "require 'json'; require './lib/load_common'; require './lib/gloss'; require './lib/genos'; db=GlossDB.from_genos(GreekGenos.new('epic')); print db.canonicalize_file_contents('λαος')"
+    path = key_to_path(key)
+    if !FileTest.exist?(path) then return nil end
+    data = json_from_file_or_die(path)
+    result = nil
+    if data.kind_of?(Array) then
+      l = data.map { |x| canonicalize_one_lemma(x,'') } # if I want 2-level indentation, can use '  ' for second arg, but I like that less
+      l = l.sort { |a,b| alpha_compare(a['word'],b['word']) }
+      z = l.join(",")
+      z.gsub!(/\n,/,",\n")
+      result = "[\n"+z+"]\n"
+    else
+      result = canonicalize_one_lemma(data,'')
+    end
+    err,message = Gloss.validate_string(result)
+    if err then raise "canonicalize_file_contents generated invalid output: #{message}" end
+    return result
+  end
+
+  def canonicalize_one_lemma(data,indentation)
+    l = []
+    Gloss.allowed_keys.each { |key|
+      next unless data.has_key?(key)
+      next if key=='aorist_difficult_to_recognize' # deprecated
+      s = JSON.generate({key=>data[key]})
+      s.gsub!(/\A\s*\{/,'')
+      s.gsub!(/\}\s*\Z/,'')
+      l.push(indentation+'  '+s)
+    }
+    return indentation+"{\n"+l.join(",\n")+"\n"+indentation+"}\n"
   end
 
   def key_to_path(key)
