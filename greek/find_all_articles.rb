@@ -4,6 +4,8 @@ require_relative "../lib/string_util"
 require_relative "../lib/treebank"
 
 
+# Mostly duplicates a subset of the code in find_all_pronouns.rb.
+
 =begin
 
 σέθεν
