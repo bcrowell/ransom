@@ -59,13 +59,16 @@ def initialize(filename:"cunliffe/cunliffe.txt",cunliffe_to_perseus_file:"lemmas
     @lemma_keys[head_word] = 1
   }
   # The following will have to be rewritten if I make the C->P mapping one-to-many.
-  @cunliffe_to_perseus = json_from_file_or_die(cunliffe_to_perseus_file)
-  @perseus_to_cunliffe = {}
-  @cunliffe_to_perseus.keys.each { |c|
-    p = @cunliffe_to_perseus[c]
-    if !@perseus_to_cunliffe.has_key?(p) then @perseus_to_cunliffe[p] = [] end
-    @perseus_to_cunliffe[p].push(c)
-  }
+  json,err = slurp_file_with_detailed_error_reporting(cunliffe_to_perseus_file)
+  if err.nil? then
+    @cunliffe_to_perseus = JSON.parse(json)
+    @perseus_to_cunliffe = {}
+    @cunliffe_to_perseus.keys.each { |c|
+      p = @cunliffe_to_perseus[c]
+      if !@perseus_to_cunliffe.has_key?(p) then @perseus_to_cunliffe[p] = [] end
+      @perseus_to_cunliffe[p].push(c)
+    }
+  end
 end
 
 def cunliffe_to_perseus(w)
@@ -176,7 +179,7 @@ def is_cross_ref(gloss)
   # Testing:
   #  true: ... ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); g=a.get_glosses('κατέσσυτο',decruft:false)[0]; g=a.simplify(g); print a.is_cross_ref(g)"
   #  false: ... ruby -e "require './lib/cunliffe.rb'; require './lib/string_util.rb'; a=CunliffeGlosses.new(); g=a.get_glosses('κατευνάω',decruft:false)[0]; g=a.simplify(g); print a.is_cross_ref(g)"
-  is_short = (gloss.length<50)
+  is_short = (gloss.length<60) # example of a long one (53 chars): κεκλήγοντες, nom. pl. masc. thematic pf. pple. κλάζω.
   if is_short && gloss=~/\A\s*[[:alpha:]]+[\.,]\s+See\s+/ then return true end # can have period rather than comma, e.g., in προτιεῖπον
   if is_short && gloss=~/\A\s*[[:alpha:]]+[\.,]\s+=\s+/ then return true end # e.g., ἔριον
   if gloss=~/\A[[:alpha:]]+,/ then comma_after_head_word=true else comma_after_head_word=false end

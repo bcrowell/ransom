@@ -31,7 +31,7 @@ def main
   author = "homer"
   treebank = TreeBank.new(author,data_dir:"../lemmas") # meant to be run froim lemmas subdirectory
 
-  cun = CunliffeGlosses.new(filename:'../cunliffe/cunliffe.txt')
+  cun = CunliffeGlosses.new(filename:'../cunliffe/cunliffe.txt',cunliffe_to_perseus_file:"../lemmas/cunliffe_to_perseus.json")
 
   c_to_p,unmatched_c,perseus = pass_a(cun)
   # ... the version of c_to_p returned by pass A is one-to-one
@@ -197,6 +197,7 @@ therefore is lemmatized in Perseus. These additional mappings may be many-to-one
 }
 
 unmatched_c.each { |c|
+  next if c=~/οντες/ # Cunliffe has separate entries with English glosses for words like ἀμείβοντες that are really not lemmas of verbs.
   p_candidates = treebank.lemmatize_ignoring_accents(c)
   next unless p_candidates.length==1
   p = p_candidates[0]

@@ -29,7 +29,8 @@ dbs:
 	ruby make_freq.rb homer >homer_freq.json
 
 cunliffe_to_perseus:
-	./make_cunliffe_to_perseus.rb >cunliffe_to_perseus.json
+	./make_cunliffe_to_perseus.rb >temp.json
+	mv temp.json cunliffe_to_perseus.json
 
 classical_latin_freq.json:
 	ruby merge_freq.rb caesar_freq.json cicero_freq.json ovid_freq.json petronius_freq.json vergil_freq.json >classical_latin_freq.json

@@ -589,6 +589,10 @@ class IliadNotes
     'about_what'    => %q{καιρίῳ},
     'explain'       => %q{From καίριος, deadly. Here, a fatal spot.}
   }],
+  ["4.200" , {
+    'about_what'    => %q{παπταίνω},
+    'explain'       => %q{here, to look around \\emph{for}}
+  }],
   ["4.243" , {
     'about_what'    => %q{τίφθ᾽},
     'explain'       => %q{=τίπτε, here meaning why?}

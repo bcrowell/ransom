@@ -75,6 +75,9 @@ end
 def FormatGloss.assemble(bilingual,items,force_no_space:false)
   # items is a hash whose keys are one-letter codes
   # b=head word, h=hard space, g=gloss, f=from symbol, l=lemma, c=cognate, p=POS tag
+  items = clown(items)
+  if items.has_key?('l') && items.has_key?('b') && items['b']==items['l'] then items.delete('l') end
+  # ... don't do stuff like ἰητήρ ≺ ἰητήρ
   format = 'b '
   format = format+'h ' if !(force_no_space || items.has_key?('l'))
   format = format+'f' if items.has_key?('l')
