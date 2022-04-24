@@ -60,7 +60,7 @@ end
 
 
 def four_page_layout(stuff,context,genos,db,dicts,layout,next_layout,vocab_by_chapter,start_chapter:nil,dry_run:false,
-         if_warn:true,reduce_max_entries:0)
+         if_warn:true,reduce_max_entries:0,debugger:SpecialPurposeDebugger.new(false))
   # Doesn't get called if if_prose_trial_run is set.
   # The parameter dicts should be a hash with possible keys 'wikt' and 'cunliffe' whose values are
   # a WiktionaryGlosses object for the appropriate language and a CunliffeGlosses object. If neither is present, then no gloss help will be generated,
@@ -68,11 +68,11 @@ def four_page_layout(stuff,context,genos,db,dicts,layout,next_layout,vocab_by_ch
   treebank,freq,greek,translation,notes,core = stuff
   return if dry_run
   print_four_page_layout(stuff,context,genos,db,dicts,layout,next_layout,vocab_by_chapter,start_chapter,
-           if_warn:if_warn,reduce_max_entries:reduce_max_entries)
+           if_warn:if_warn,reduce_max_entries:reduce_max_entries,debugger:debugger)
 end
 
 def print_four_page_layout(stuff,context,genos,db,dicts,bilingual,next_layout,vocab_by_chapter,start_chapter,
-            if_warn:true,reduce_max_entries:0)
+            if_warn:true,reduce_max_entries:0,debugger:SpecialPurposeDebugger.new(false))
   # vocab_by_chapter is a running list of all lexical forms, gets modified; is an array indexed on chapter, each element is a list
   # doesn't get called if if_prose_trial_run is set
   treebank,freq,greek,translation,notes,core = stuff
@@ -81,21 +81,22 @@ def print_four_page_layout(stuff,context,genos,db,dicts,bilingual,next_layout,vo
   reduce_max_entries += 2*n_lines_of_notes # This assumes that notes go at the bottom of the vocab page, and subtract from its space.
   #Debug.print(n_lines_of_notes>0) {"#{bilingual.foreign_linerefs} #{reduce_max_entries}"}
   core,vl,vocab_by_chapter = VocabPage.helper(bilingual,context,genos,db,dicts,core,treebank,freq,notes,vocab_by_chapter,start_chapter,ch,
-          if_warn:if_warn,reduce_max_entries:reduce_max_entries)
+          if_warn:if_warn,reduce_max_entries:reduce_max_entries,debugger:debugger)
   if bilingual.foreign_ch1!=bilingual.foreign_ch2 then
     # This should only happen in the case where reference 2 is to the very first line of the next book.
     if !(bilingual.foreign_hr2[1]<=5 && bilingual.foreign_hr2[0]==bilingual.foreign_hr1[0]+1) then
       raise "four-page layout spans books, #{bilingual.foreign_hr1} - #{bilingual.foreign_hr2}"
     end
   end
-  print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,core,start_chapter,notes)
+  print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,core,start_chapter,notes,debugger:debugger)
 end
 
-def print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,core,start_chapter,notes,ransom_spacing:0.85)
+def print_four_page_layout_latex_helper(treebank,db,bilingual,next_layout,vl,core,start_chapter,notes,ransom_spacing:0.85,
+             debugger:SpecialPurposeDebugger.new(false))
   # prints
   # Doesn't get called if Options.if_prose_trial_run is set
   # Ransom_spacing is the tightness inter-line spacing in the glosses given in the ransom notes.
-  stuff = VocabPage.make(bilingual,db,vl,core)
+  stuff = VocabPage.make(bilingual,db,vl,core,debugger:debugger)
   tex,v = stuff['tex'],stuff['file_lists']
   print tex
   if notes.length>0 then print Notes.to_latex(bilingual.foreign_linerefs,notes) end # FIXME: won't work if foreign text is prose, doesn't have linerefs

@@ -593,9 +593,17 @@ class IliadNotes
     'about_what'    => %q{παπταίνω},
     'explain'       => %q{here, to look around \\emph{for}}
   }],
+  ["4.226" , {
+    'about_what'    => %q{ἐάω},
+    'explain'       => %q{here, unusually, to leave, not use}
+  }],
   ["4.243" , {
     'about_what'    => %q{τίφθ᾽},
     'explain'       => %q{=τίπτε, here meaning why?}
+  }],
+  ["4.275" , {
+    'about_what'    => %q{ὡς ὅτι},
+    'explain'       => %q{as when}
   }],
   ["4.334" , {
     'about_what'    => %q{πύργος},

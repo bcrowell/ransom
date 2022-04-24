@@ -3,7 +3,7 @@ class Vlist
 
 def initialize(list)
   # List is a list whose elements are lists of common, uncommon, and rare words.
-  # Each element of a is a list of items of the form [word,lexical] or [word,lexical,data].
+  # Each sublist is a list of items of the form [word,lexical] or [word,lexical,data].
   # The data field is a hash with keys that may include 'is_3rd_decl', 'is_epic', 'is_dual', 'pos',
   # and 'difficult_to_recognize'. 
   # The pos field is a 9-character string in the format used by Project Perseus:
@@ -33,9 +33,17 @@ def to_s
 end
 
 def all_lexicals
+  return all_words_or_lexicals(1)
+end
+
+def all_words
+  return all_words_or_lexicals(0)
+end
+
+def all_words_or_lexicals(i)
   result = []
   @list.each { |l|
-    result = result + l.map { |a| a[1] }
+    result = result + l.map { |a| a[i] }
   }
   return alpha_sort(result)
 end
@@ -46,7 +54,8 @@ end
 
 def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,700],max_entries:66,reduce_max_entries:0,
              exclude_glosses:[],core:nil,if_texify_quotes:true,
-             include_elided_forms:true,if_warn:true)
+             include_elided_forms:true,if_warn:true,
+             debugger:SpecialPurposeDebugger.new(false))
   # If there's both a perseus lemma and a Homeric lemma for a certain item on the list, this returns the perseus lemma.
   # The frequency list is optional; if not using one, then set freq to nil. The main use of it is that if the
   # glossary would be too long, we delete the most common words to cut it down to an appropriate length. If no frequency
@@ -100,6 +109,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
       end
       words.push([word,loc,word_raw])
       word_index += 1
+      debugger.d("#{word} found in text, loc=#{loc}")
     }
   }
 
@@ -114,7 +124,11 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
     # ... These occur in Perseus treebank only as lemmas, never as inflected forms, although they are in the text. This seems to be because
     #     they split them into two words, e.g., at Iliad 1.124...? Confusing, haven't puzzled it out.
     do_not_try = ((elision && !include_elided_forms) || ουδε_μηδε)
-    if lemma_entry.nil? && !do_not_try then whine.push("error(vlist): no index entry for #{word}, raw=#{word_raw}"); next end
+    if lemma_entry.nil? && !do_not_try then
+      whine.push("error(vlist): no index entry for #{word}, raw=#{word_raw}")
+      debugger.d("#{word} omitted, could not be lemmatized (1)")
+      next
+    end
     lemma,lemma_number,pos,count,if_ambiguous,ambig = lemma_entry
     if if_ambiguous then
       sadness,garbage = LemmaUtil.disambiguate_lemmatization(word,ambig)
@@ -143,6 +157,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
       end
     end
     if lemma.nil? then
+      debugger.d("#{word} omitted, could not be lemmatized (2)")
       if !do_not_try then whine.push("warning(vlist): lemma is nil for #{word} in lemmas file") end
       next
     end
@@ -153,6 +168,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
     did_lemma[lemma] = 1
     if freq.nil? then rank=1 else rank=freq.rank(lemma) end
     if rank.nil? then
+      debugger.d("#{word} omitted, not in frequency table")
       $stderr.print "Warning: lemma #{lemma}, frequency table contains no such key; this happens for certain proper nouns, not sure why, possibly because capitalization is inconsistent\n"
       # Happens for τυδείδης near Iliad 5.410-428. The lemmatization in the treebank is wrong (is uppercase everywhere else for this proper noun),
       # but I don't know why this causes it not to be frequency-counted.
@@ -184,6 +200,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
       gloss_this = ( rank.nil? || rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize) )
     else
       gloss_this = !(core.include?(lemma))
+      debugger.d("#{word} omitted, is core lemma #{lemma}")
     end
     next unless gloss_this
     misc['difficult_to_recognize'] = difficult_to_recognize
@@ -200,7 +217,11 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
     count = 0
     result.each { |entry|
       word_raw,word,lemma,rank,pos,difficult_to_recognize,misc = entry
-      if !difficult_to_recognize then kill_em=count; break end
+      if !difficult_to_recognize then
+        debugger.d("#{word} omitted, frequency is too high, and length of list is >#{max_entries}")
+        kill_em=count
+        break 
+      end
       count += 1
     }
     if kill_em.nil? then break end # couldn't find anything to kill off, don't spin forever
@@ -235,6 +256,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
       # stuff some more info in the misc element:
       misc['pos'] = pos # lemma and pos may be wrong if the same word can occur in more than one way
       this_part_of_result2.push([word,lemma,misc])
+      debugger.d("#{word} included in commonness=#{commonness}, lemma=#{lemma}")
     }
     result2.push(this_part_of_result2)
   }

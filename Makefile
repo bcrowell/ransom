@@ -93,7 +93,7 @@ figures:
 clean:
 	rm -f *~ *.aux *.log *.idx *.toc *.ilg *.bak *.toc $(BOOK).tex 
 	rm -f glosses/*~ glosses/_latin/*~ help_gloss/*~
-	rm -f lemmas/explain.txt lemmas/unmatched.txt
+	rm -f lemmas/explain.txt lemmas/unmatched.txt debug_vocab.txt
 
 
 lemmas/homer_lemmas.line_index.json: lemmas/homer_lemmas.csv

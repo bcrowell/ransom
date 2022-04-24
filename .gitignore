@@ -25,6 +25,7 @@ core/*
 core.txt
 core/homer.freq
 debug.txt
+debug_vocab.txt
 iliad/core.tex
 iliad/figs/cover.png
 iliad/figs/cover-ii.png

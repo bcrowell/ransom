@@ -179,7 +179,7 @@ breaks = [
   [ [4,223], "Then would you not see divine Agamemnon slumbering"],
   [ [4,240], "But whomsoever on the other hand he saw declining hateful battle"],
   [ [4,257], "O Idomeneus, I honour thee, indeed, above the swift-horsed Greeks"],
-  [ [4,274], "But they were armed, and with them followed a cloud of infantry"],
+  [ [4,274], "But they were armed, and with them followed a cloud of infantry",{'reduce_max_entries'=>-6}],
   [ [4,292], "Thus having said, he left them there and went to the others"],
   [ [4,308], "for so it is much better: for thus the ancients overturned cities"],
   [ [4,326], "confide in their strength, brandish their spears>"],
@@ -284,6 +284,8 @@ layouts = []
   g1,t1 = a[0],a[1]
   layouts.push([Bilingual.new(g1,g2,t1,t2,greek,translation),starting_ch,dry_run])
 }
+vocab_debugger = SpecialPurposeDebugger.new(false)
+#vocab_debugger = SpecialPurposeDebugger.new(true,file:"debug_vocab.txt",purpose:'==== debugging file to explain why words are included or omitted ====')
 0.upto(breaks.length-1) { |i|
   bilingual,starting_ch,dry_run = layouts[i]
   if i<breaks.length-2 then next_layout=layouts[i+1][0] else next_layout=nil end
@@ -293,7 +295,8 @@ layouts = []
   reduce_max_entries = 0
   if !opts.nil? && opts.has_key?('reduce_max_entries') then reduce_max_entries=opts['reduce_max_entries'] end
   four_page_layout(stuff,context,greek.genos,db,dicts,bilingual,next_layout,vocab_by_chapter,start_chapter:starting_ch,dry_run:dry_run,
-                   if_warn:Options.if_warn(),reduce_max_entries:reduce_max_entries)
+                   if_warn:Options.if_warn(),reduce_max_entries:reduce_max_entries,
+                   debugger:vocab_debugger)
 }
 ch_range[0].upto(ch_range[1]) { |ch|
   filename = sprintf("vocab_ch_%02d.txt",ch)
