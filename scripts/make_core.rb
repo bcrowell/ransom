@@ -87,10 +87,11 @@ scum = (<<-'SCUM'
 SCUM
 ).split(/\s+/)
 
-# words that are more common than πατήρ but seem too weird to be on the core list; often these are compound verbs,
-# military terms, or words that occur in Homer's favorite set phrase
+# Words that are more common than πατήρ but seem too weird to be on the core list; often these are compound verbs,
+# military terms, or words that occur in Homer's set phrases. However, some phrases like πτερόεντα προσηύδα are
+# so common that if we gloss the words every time, it takes up a silly amount of space.
 goofy = (<<-'GOOFY'
-προσαυδάω πτερόεις βροτός δῆμος
+βροτός δῆμος
 ἀσπίς γλαυκῶπις
 πυκνός γλαφυρός φαεινός κάρα
 μίγνυμι πέπνυμαι σάκος μεγάθυμος

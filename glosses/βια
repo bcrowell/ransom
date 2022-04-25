@@ -1,9 +1,9 @@
 // https://en.wiktionary.org/wiki/βία https://logeion.uchicago.edu/βία
 // bodily strength, force, act of violence
 {
-  "word":"βία",
+  "word":"βίη",
+  "perseus":"βία",
   "medium":"strength, force",
-  "notes":"Also βίη.",
   "etym":"PIE gwey, to win, conquer.",
   "cog":"Zenobia (Zeus's power), ἀντίβιος. Not cognate with Latin vis, Greek ἴς."
 }

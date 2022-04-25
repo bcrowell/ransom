@@ -181,7 +181,7 @@ breaks = [
   [ [4,257], "O Idomeneus, I honour thee, indeed, above the swift-horsed Greeks"],
   [ [4,274], "But they were armed, and with them followed a cloud of infantry",{'reduce_max_entries'=>-6}],
   [ [4,292], "Thus having said, he left them there and went to the others"],
-  [ [4,308], "for so it is much better: for thus the ancients overturned cities"],
+  [ [4,308], "for so it is much better: |< for thus the ancients overturned cities"],
   [ [4,326], "confide in their strength, brandish their spears>"],
   [ [4,343], "for ye are the first invited by me to the feast"],
   [ [4,360], "For I am aware that thy mind in thy breast kens friendly counsels"],
