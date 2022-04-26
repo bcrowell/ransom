@@ -614,6 +614,10 @@ class IliadNotes
     'explain'       => %q{metaphorically, a wall of troops}
     # Cunliffe gives it as a separate gloss with this meaning.
   }],
+  ["4.371" , {
+    'about_what'    => %q{γεφύρας},
+    'explain'       => %q{As with πύργος at 334 and 347, a metaphor describing a row of soldiers.}
+  }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}

@@ -161,11 +161,9 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
       if !do_not_try then whine.push("warning(vlist): lemma is nil for #{word} in lemmas file") end
       next
     end
-    next if did_lemma.has_key?(lemma)
     excl = false
     [lemma,word].each { |x| excl = excl || exclude_glosses.include?(remove_accents(x).downcase) }
     next if excl
-    did_lemma[lemma] = 1
     if freq.nil? then rank=1 else rank=freq.rank(lemma) end
     if rank.nil? then
       debugger.d("#{word} omitted, not in frequency table")
@@ -196,16 +194,23 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
       if is_dual then misc['is_dual']=true end
       if is_irregular_comparative then misc['is_irregular_comparative']=true end
     end
+    misc['difficult_to_recognize'] = difficult_to_recognize
+    if did_lemma.has_key?(lemma) && !difficult_to_recognize then
+      debugger.d("#{word} < #{lemma} omitted, lemma already done for a different inflected form on the same page, and not difficult to recognize")
+      next
+    end
+    did_lemma[lemma] = 1
     if using_thresholds then
       gloss_this = ( rank.nil? || rank>=threshold_no_gloss || (rank>=threshold_difficult && difficult_to_recognize) )
+      debugger.d("#{word} < #{lemma}, gloss_this=#{gloss_this} based on frequency")
     else
       gloss_this = !(core.include?(lemma))
-      debugger.d("#{word} omitted, is core lemma #{lemma}")
+      debugger.d("#{word} < #{lemma}, gloss_this=#{gloss_this} based on whether it's core")
     end
     next unless gloss_this
-    misc['difficult_to_recognize'] = difficult_to_recognize
     entry = word_raw,word,lemma,rank,pos,difficult_to_recognize,misc
-    # ... word and word_raw are not super useful, in many cases will be just the first example in this passage
+    # ... word and word_raw are often not super useful, in many cases will be just the first example in this passage, but are used
+    #     in explaining non-obvious conjugations and declensions
     #$stderr.print "entry=#{entry}\n"
     result.push(entry)
   }
@@ -236,15 +241,32 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
     this_part_of_result2 = []
     result.sort { |a,b| a[1] <=> b[1] } .each { |entry|
       word_raw,word,lemma,rank,pos,difficult_to_recognize,misc = entry
-      next if Proper_noun.is(word_raw,lemma) # ... use word_raw to preserve capitalization, since some proper nouns have the same letters as other words
-      next if Ignore_words.patch(word) || Ignore_words.patch(lemma)
+      if Proper_noun.is(word_raw,lemma) then
+        # ... use word_raw to preserve capitalization, since some proper nouns have the same letters as other words
+        debugger.d("#{word} < #{lemma} omitted because it's a proper noun")
+        next
+      end
+      if Ignore_words.patch(word) || Ignore_words.patch(lemma) then
+        debugger.d("#{word} < #{lemma} omitted because it's in Ignore_words")
+        next
+      end
       if !freq.nil? then
         skip = false
-        skip = skip || !(!rank.nil? && rank>=threshold_difficult)
-        skip = skip || (rank<threshold_no_gloss && !difficult_to_recognize)
-        skip = skip || !(rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2)
+        if !skip && !(rank<threshold && commonness==0 or rank>=threshold && rank<threshold2 && commonness==1 or rank>=threshold2 && commonness==2) then
+          # Don't give debugging output, it just isn't the right commonness for this time through the loop.
+          skip = true
+        end
+        if !skip && !(!rank.nil? && rank>=threshold_difficult) then
+          debugger.d("#{word} < #{lemma} omitted because rank #{rank} is less than threshold_difficult=#{threshold_difficult}")
+          skip = true
+        end
+        if !skip && (rank<threshold_no_gloss && !difficult_to_recognize) then
+          debugger.d("#{word} < #{lemma} omitted because rank #{rank} is less than threshold_no_gloss=#{threshold_no_gloss} and not difficult to recognize")
+          skip = true
+        end
       else
         skip = (commonness!=2)
+        debugger.d("#{word} < #{lemma}, included because we have no frequency data") if commonness==2
         # Without frequency data, no way to judge, so just arbitrarily put everything in class 2, rare. When we do
         # ransom-note glosses, we normally gloss everything in the rare category.
       end
@@ -256,7 +278,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
       # stuff some more info in the misc element:
       misc['pos'] = pos # lemma and pos may be wrong if the same word can occur in more than one way
       this_part_of_result2.push([word,lemma,misc])
-      debugger.d("#{word} included in commonness=#{commonness}, lemma=#{lemma}")
+      debugger.d("#{word} < #{lemma} included in commonness=#{commonness}")
     }
     result2.push(this_part_of_result2)
   }
