@@ -605,6 +605,10 @@ class IliadNotes
     'about_what'    => %q{ὡς ὅτι},
     'explain'       => %q{as when}
   }],
+  ["4.343" , {
+    'about_what'    => %q{ἀκουάζεσθον},
+    'explain'       => %q{Here meaning literally ``to hear of,'' with a double genitive for the thing being heard of and the person from whom it is heard. Describing an invitation.}
+  }],
   ["4.334" , {
     'about_what'    => %q{πύργος},
     'explain'       => %q{metaphorically, a wall of troops}

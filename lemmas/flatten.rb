@@ -33,6 +33,10 @@ def patch(a)
 
   if lemma=='χάλκειος' then patched_lemma='χάλκεος' end # not clear to me why Cunliffe and Perseus both lemmatize this separately
 
+  if lemma=='συμμαχέω' then patched_lemma='μάχομαι' end
+  # Cunliffe doesn't have συμμαχέω. Everything that Perseus lemmatizes as συμμαχέω actually seems like it should be μάχομαι, has no
+  # συν or χυν prefix at all. CGL lists συμμαχέω as not Homeric.
+
   # Lemmas that are just redundant; Perseus invents a different lemma because the form is different. Other sources like Cunliffe
   # don't give these as head-words:
   if lemma=='δαίτη' then patched_lemma='δαίς' end
