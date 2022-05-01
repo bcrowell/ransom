@@ -2,7 +2,9 @@
 // connected with the gods, supernatural, holy, sacred, consecrated, under divine protection
 {
   "word":"ἱερός",
-  "medium":"holy",
+  "short":"holy",
+  "medium":"holy, holy thing",
+  "long":"holy, shrine, sacrifice",
   "notes":"also Ionic ἱρός",
   "mnemonic_cog":"hieroglyph"
 }

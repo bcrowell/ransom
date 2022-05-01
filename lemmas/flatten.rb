@@ -81,12 +81,14 @@ def patch(a)
 
   # Redundant lemmas for verbs, both active and passive:
   if lemma=='παραλέγω' then patched_lemma='παραλέχομαι' end
-  
 
   # For the following, the neuter adjective in -ον is used as ad adverb, and Cunliffe lemmatizes it under ths -ος headword.
   # Perseus creates a separate -ον lemma, which is redundant, and also gives a POS analysis as a noun, which is weird.
   if lemma=='ἀντίον' then patched_lemma='ἀντίος' end
   if lemma=='ἄριστον' then patched_lemma='ἄριστος' end
+
+  if lemma=='ἱερόν' then patched_lemma='ἱερός' end
+  # Perseus has separate lemmas for adj -ος and noun -ον. Cunliffe has them together.
 
   if lemma=='ὄσσα' && pos[2]=='d' then patched_lemma='ὄσσε' end
   # iliad,3,427,ὄσσε,ὄσσα,,n-d---na-

@@ -141,6 +141,7 @@ class Epos
                      {'type'=>'lookahead','n'=>999}],
         ['pooh',"shook his head","seem to have felt at all how",%Q{Pooh.},%q{},"basic lookbehind",
                      {'type'=>'lookbehind','n'=>5}],
+        ['diomede',"sternly","accosted thus |< My friend Sthenelus",%Q{Him sternly regarding},%q{thus:},"start of quote",{}],
       ]
       tests.each { |test|
         label,glob1,glob2,at_start,at_end,testing_what,misc = test
@@ -150,7 +151,7 @@ class Epos
         r1,non_unique_1,junk = e.word_glob_to_hard_ref(glob1)
         r2,non_unique_2,junk = e.word_glob_to_hard_ref(glob2)
         describe_test = "#{test}"
-        if r1.nil? || r2.nil? || non_unique_1 || non_unique_2 then raise "error or not unique on this test: #{describe_test}" end
+        if r1.nil? || r2.nil? || non_unique_1 || non_unique_2 then raise "error or not unique on this test: #{describe_test}, r1.nil?=#{r1.nil?}, r2.nil?=#{r2.nil?}, non_unique=#{[non_unique_1,non_unique_2]}" end
         re = Regexp.new("\\A#{Regexp::quote(at_start)}.*#{Regexp::quote(at_end)}\\Z",Regexp::MULTILINE)
         test_type = 'extract'
         if misc.has_key?('type') then test_type=misc['type'] end
@@ -168,6 +169,11 @@ class Epos
     if label=='foo' then
     x = %q{
         a. b, c d. e
+    }
+    end
+    if label=='diomede' then
+    x = %q{
+        Him sternly regarding, brave Diomede accosted thus: "My friend Sthenelus
     }
     end
     if label=='num' then
@@ -366,6 +372,7 @@ class Epos
       offset = t.index(left_match)
       ii = offset+left_match.length+1 # an index into t
       while ii<t.length-1 && !(t[ii]=~/[[:alpha:]]/) do ii+=1 end # skip past white space
+      if ii>0 && t[ii-1]=~/["“]/ then ii-=1 end # see diomede test
       result = [r1[0],r1[1]+ii]
       return [result,non_unique,ambig_list]
     end
