@@ -2,7 +2,8 @@
   "word":"θρόνος",
   "short":"chair",
   "medium":"seat, chair, throne",
-  "notes":"The preposition εἰνί exists in Homer seemingly for the sole purpose of use in the phrase εἰνὶ θρόνῳ."
+  "notes":"The preposition εἰνί exists in Homer seemingly for the sole purpose of use in the phrase εἰνὶ θρόνῳ.",
   // https://latin.stackexchange.com/q/17253/3597
+  "mnemonic_cog":"throne"
 }
       

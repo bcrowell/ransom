@@ -2,6 +2,7 @@
 // milk, milky sap, the Milky Way galaxy
 {
   "word":"γάλα",
-  "medium":"milk"
+  "medium":"milk",
+  "mnemonic_cog":"galaxy"
 }
       

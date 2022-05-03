@@ -630,6 +630,14 @@ class IliadNotes
     'about_what'    => %q{περ ἐὼν},
     'explain'       => %q{despite being}
   }],
+  ["4.437" , {
+    'about_what'    => %q{ἴα},
+    'explain'       => %q{epic form of εἷς, fem. (Attic μία)}
+  }],
+  ["4.442" , {
+    'about_what'    => %q{ὀλίγη},
+    'explain'       => %q{just a little}
+  }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}

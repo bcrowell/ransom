@@ -1,6 +1,7 @@
 // https://en.wiktionary.org/wiki/νίκη https://logeion.uchicago.edu/νίκη
 {
   "word":"νίκη",
-  "medium":"victory"
+  "medium":"victory",
+  "mnemonic_cog":"Nike"
 }
       

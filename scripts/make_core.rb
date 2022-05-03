@@ -51,6 +51,8 @@ words_added_by_hand:
    would be indicated by its low frequency as an independent word (e.g., μῆτις, λέχος, ἥμισυς, χῶρος, ἐλεέω).
   -A word for a basic human concept that one should know in any
    language one is learning (e.g., ἀδελφός, γελάω).
+add_moderate_freq:
+  Words that are slightly different than the cut-off but that seem useful, or are easy to remember.
 super_easy:
   Like words_added_by_hand, but is for words that, although not particularly frequent or important, are
   very easy to learn, usually because it has obvious cognates.
@@ -74,8 +76,17 @@ words_added_by_hand = (<<-'BY_HAND'
 BY_HAND
 ).split(/\s+/)
 
+# see above for criteria
+add_moderate_freq = (<<-'MODERATE'
+χρή πάρειμι τανύω πέτομαι μίμνω  ῥέω κρέας λούω πύργος ἀέκων ἴφθιμος
+ ἡγήτωρ  κάθημαι ἴσχω γένος ἕρκος ὀφέλλω 
+MODERATE
+).split(/\s+/)
+
 super_easy = (<<-'SUPER_EASY'
 κλέπτω γλῶσσα σκῆπτρον ἑκατόμβη καρδία ὄρνις δευτερος θωραξ
+θρόνος ὀστέον νικάω γλυκύς κλίνω φοβέω φόβος φάλαγξ 
+δεξιός μυρίος  ἔθνος  λίθος
 SUPER_EASY
 ).split(/\s+/)
 
@@ -100,20 +111,25 @@ goofy = (<<-'GOOFY'
 μεγαλήτωρ κονία μετεῖπον τόφρα
 κατακτείνω λυγρός ἀντίθεος ὄχος
 εὕδω ἀργαλέος ἐπέρχομαι ἐρύκω
-δαίφρων περίφρων ὀδύρομαι χρή
+δαίφρων περίφρων ὀδύρομαι
 ἐπιτέλλω αἰγίοχος περικαλλής
 χαλεπός ὀιστός ὀπίσω ἐπιβαίνω
 GOOFY
 ).split(/\s+/)
 
-contradiction = (scum | goofy) & (words_added_by_hand | super_easy)
+contradiction = (scum | goofy) & (words_added_by_hand | add_moderate_freq | super_easy)
 if contradiction.length>0 then
-  $stderr.print "words in words_added_by_hand or super_easy are also present in scum or goofy: #{contradiction}\n"
+  $stderr.print "contradiction: words in words_added_by_hand, add_moderate_freq, or super_easy are also present in scum or goofy: #{contradiction}\n"
+  exit(-1)
+end
+redundant = (scum & goofy) | (words_added_by_hand & add_moderate_freq ) | (words_added_by_hand & super_easy) | (add_moderate_freq & super_easy)
+if redundant.length>0 then
+  $stderr.print "redundant: words are specified more than once #{redundant}\n"
   exit(-1)
 end
 
 words = freq.keys.sort { |a,b| freq[b] <=> freq[a] }.select { |w| freq[w]<=max_freq && freq[w]>=min_freq }
-words = words.to_set.merge((words_added_by_hand | super_easy).to_set).to_a
+words = words.to_set.merge((words_added_by_hand | super_easy | add_moderate_freq).to_set).to_a
 words = words.select { |w| w==w.downcase }.select { |w| w!='υνκνοων'}
 
 

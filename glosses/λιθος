@@ -2,6 +2,7 @@
 // a stone, stone as a substance
 {
   "word":"λίθος",
-  "medium":"stone"
+  "medium":"stone",
+  "mnemonic_cog":"lithograph"
 }
       
