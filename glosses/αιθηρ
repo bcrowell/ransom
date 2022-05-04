@@ -1,6 +1,9 @@
 {
   "word":"αἰθήρ",
   "short":"ether",
-  "medium":"ether, air, sky"
+  "medium":"ether, air, sky",
+  "etym":"from αἴθω, to light, burn, from PIE h2eydh",
+  "mnemonic_cog":"ether",
+  "cog":"ether, αἶθοψ, αἴθω, αἶθος, αἴθων"
 }
       

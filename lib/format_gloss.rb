@@ -3,6 +3,7 @@ class FormatGloss
 def FormatGloss.with_english(bilingual,db,stuff)
   # Returns [file_under,latex_code]. The file_under in stuff[0] is ignored, only we can determine it properly.
   garbage_under,word,lexical,data = stuff
+  pos = data['pos']
   entry = Gloss.get(db,lexical)
   return ['',nil] if entry.nil?
   preferred_lex = entry['word']
@@ -32,14 +33,20 @@ def FormatGloss.with_english(bilingual,db,stuff)
   has_mnemonic_cog = entry.has_key?('mnemonic_cog')
   # Generate latex:
   inflected = LemmaUtil.make_inflected_form_flavored_like_lemma(word)
-  # FIXME: The explainer doesn't actually get printed for θᾶσσον ≺ ταχύς in Ilid 2.440.
-  explained = gloss+FormatGloss.explainer_in_gloss(inflected,flags,data['pos'])
+  # FIXME: The explainer doesn't actually get printed for θᾶσσον ≺ ταχύς in Iliad 2.440.
+  explained = gloss+FormatGloss.explainer_in_gloss(inflected,flags,pos)
   items = {}
-  if explain_inflection then items['b']=inflected; items['l']=preferred_lex else items['b']=preferred_lex end
+  if explain_inflection then
+    items['b']=inflected
+    items['l']=preferred_lex
+    items['p']=FormatGloss.format_pos(pos,preferred_lex) if pos[0]=~/[vt]/
+  else
+    items['b']=preferred_lex
+  end
   items['g'] = explained
   if has_mnemonic_cog then items['c']=entry['mnemonic_cog'] end
   file_under = items['b']
-  Debug.print(word=='ἰητήρ') {"items=#{items}, explain_inflection=#{explain_inflection}"}
+  Debug.print(word=='ἤριπε') {"items=#{items}, explain_inflection=#{explain_inflection}"}
   return [file_under,FormatGloss.assemble(bilingual,items)+"\\\\\n"]
 end
 
@@ -50,12 +57,14 @@ def FormatGloss.inflection(bilingual,stuff)
   items = nil
   if pos[0]=='n' then items={'b'=>lemma_flavored,'l'=>lexical,'p'=>describe_declension(pos,true)[0]} end
   if pos[0]=~/[vt]/ then
-    #if word=='ἑλὼν' then File.open("debug.txt",'a') { |f| f.print "          #{word} #{lexical} #{pos} #{lemma_flavored} \n" } end
-    items = {'b'=>lemma_flavored,'l'=>lexical,
-                 'p'=>Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical,omit_easy_number_and_person:true,omit_voice:true)}
+    items = {'b'=>lemma_flavored,'l'=>lexical,'p'=>FormatGloss.format_pos(pos,lexical)}
   end
   if items.nil? then items={'b'=>lemma_flavored,'l'=>lexical} end
   return FormatGloss.assemble(bilingual,items)+"\\\\\n"
+end
+
+def FormatGloss.format_pos(pos,lexical)
+  return Vform.new(pos).to_s_fancy(tex:true,relative_to_lemma:lexical,omit_easy_number_and_person:true,omit_voice:true)
 end
 
 def FormatGloss.explainer_in_gloss(word,flags,pos)
