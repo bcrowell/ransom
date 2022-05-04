@@ -1,8 +1,9 @@
 {
   "word": "αἱρέω",
   "princ": "αἱρήσω,ἕελον",
-  "medium": "take; mp: choose",
-  "long": "take, grasp, win; mp: choose, prefer",
+  "short": "take, kill",
+  "medium": "take, kill; mp: choose",
+  "long": "kill, take, grasp, win; mp: choose, prefer",
   "mnemonic_cog":"heresy",
   "cog": "Heresy. Ἕελον is cognate with 'sell.'",
   "notes": "Koine also has ᾕρησα. The meaning of the mp makes sense as 'take for oneself.' Third-person forms can involve the contraction ε+ε -> ει.",

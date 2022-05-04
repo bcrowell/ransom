@@ -638,6 +638,14 @@ class IliadNotes
     'about_what'    => %q{ὀλίγη},
     'explain'       => %q{just a little}
   }],
+  ["4.455" , {
+    'about_what'    => %q{ποιμήν},
+    'explain'       => %q{here, unusually, a literal shepherd}
+  }],
+  ["4.474" , {
+    'about_what'    => %q{Σιμόεις},
+    'explain'       => %q{here referring to a boy, not the river}
+  }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}

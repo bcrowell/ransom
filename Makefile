@@ -102,7 +102,7 @@ lemmas/homer_lemmas.line_index.json: lemmas/homer_lemmas.csv
 dbs:
 	make -C lemmas dbs
 
-core: core/homer.json
+core: core/homer.json glosses/*
 	#
 
 core/homer.json: scripts/make_core.rb
