@@ -39,13 +39,26 @@ class Genos
   
 end # class Genos
 
+class AncientGreekRegion
+  # This is only meant to describe periods before Koine. Koine was "supra-regional" ( https://en.wikipedia.org/wiki/Koine_Greek ).
+  # https://en.wikipedia.org/wiki/File:AncientGreekDialects_(Woodard)_en.svg
+  # The default is set up for Homer. If you want classical Attic, use eastern:true,attic:true.
+  # If you want Doric or Achaean, use eastern:false.
+  # To do: allow finer distinctions like Doric as distinguished from Achaean.
+  def initialize(eastern:true,attic:false)
+    @eastern = eastern
+    @attic = attic
+  end
+end
+
 class GreekGenos < Genos
-  @@period_labels = {'mycenaean'=>0, 'epic'=>1, 'attic'=>2, 'koine'=>3, 'νεα_ελληνικα'=>4} # https://en.wikipedia.org/wiki/Modern_Greek
-  def initialize(period,is_verse:false)
+  @@period_labels = {'mycenaean'=>0, 'epic'=>1, 'attic'=>2, 'koine'=>3, 'medieval'=>4, 'νεα_ελληνικα'=>5} # https://en.wikipedia.org/wiki/Modern_Greek
+  def initialize(period,is_verse:false,region:new AncientGreekRegion())
     # See below for allowed values of the string period.
     super('grc',is_verse:is_verse)
     @period = @@period_labels[period]
     if @period.nil? then raise "unrecognized period: #{period}, allowed values are #{@@period_labels.keys.join(' ')}" end
+    @region = region
   end
 
   attr_reader :period

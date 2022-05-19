@@ -214,6 +214,37 @@ def to_single_accent(w)
   end
 end
 
+def add_rough_breathing(s)
+  # testing: ruby -e 'require "./lib/string_util"; print add_rough_breathing("α")'
+  if s.length>0 then s[0]=add_rough_breathing_to_character(s[0]) end
+  return s
+end
+
+def add_rough_breathing_to_character(c)
+  x = disassemble_greek_accent(c)
+  x[0] = x[0].unicode_normalize(:nfc).tr("αειουηω","ἁἑἱὁὑἡὡ")
+  return reassemble_greek_accent(x)
+end
+
+def disassemble_greek_accent(c)
+  # Takes a Greek letter and breaks it down into a string like "α`" or "α`+", the latter being for uppercase; doesn't do anything with breathing.
+  # Somewhat slow.
+  if c!=c.downcase then return disassemble_greek_accent(c.downcase)+"+" end
+  if has_circumflex(c) then return remove_circumflex(c)+"~" end
+  if has_acute(c) then return remove_acute(c)+"'" end
+  if has_grave(c) then return remove_grave(c)+"`" end
+  return c
+end
+
+def reassemble_greek_accent(x)
+  # inverse of disassemble_greek_accent
+  if x=~/(.*)\+$/ then return reassemble_greek_accent($1).upcase end
+  if x=~/(.*)\~$/ then return add_circumflex(reassemble_greek_accent($1)) end
+  if x=~/(.*)\'$/ then return add_acute(reassemble_greek_accent($1)) end
+  if x=~/(.*)\`$/ then return add_grave(reassemble_greek_accent($1)) end
+  return x
+end
+
 def remove_punctuation(s)
   return s.gsub(/[^[:alpha:]]/,'')
 end
@@ -248,14 +279,39 @@ def add_acute(s)
   return s.unicode_normalize(:nfc).tr("aeiouyÀÁÂÆÇÈÉÊÌÍÏÒÓÔØÙÚÜÝàáâæçèéêìíïòóôøùúüýΆΈΊΌΐάέήίΰαεηιουωϊϋόύώἀἁἂἃἄἅἈἉἊἌἍἐἑἒἓἔἕἘἙἜἝἠἡἢἣἤἥἨἩἫἬἭἰἱἲἳἴἵἸἹἼἽὀὁὂὃὄὅὈὉὊὋὌὍὐὑὓὔὕὙὝὠὡὢὣὤὥὨὩὫὬὭὰὲὴὶὸὺὼᾓᾔᾕᾤᾴῂῄῒῢῴῸ","áéíóúýÁÁẤǼḈÉÉẾÍÍḮÓÓỐǾÚÚǗÝááấǽḉééếííḯóóốǿúúǘýΆΈΊΌΐάέήίΰάέήίόύώΐΰόύώἄἅἄἅἄἅἌἍἌἌἍἔἕἔἕἔἕἜἝἜἝἤἥἤἥἤἥἬἭἭἬἭἴἵἴἵἴἵἼἽἼἽὄὅὄὅὄὅὌὍὌὍὌὍὔὕὕὔὕὝὝὤὥὤὥὤὥὬὭὭὬὭάέήίόύώᾕᾔᾕᾤᾴῄῄΐΰῴΌ")
 end
 
+def has_acute(s)
+  s.chars.each { |c|
+    if add_acute(c)==c then return true end
+  }
+  return false
+end
+
+def remove_acute(s)
+  if has_acute(s) then return remove_acute_and_grave(s) else return s end
+end
+
 def add_circumflex(s)
   # FIXME: very restricted compared to add_acute
-  return s.unicode_normalize(:nfc).tr("αιυηωaeiou","ᾶῖῦῆῶâêîôû")
+  return s.unicode_normalize(:nfc).tr("αιυηωaeiouἀἰἠὠἁἱἡὡ","ᾶῖῦῆῶâêîôûἆἶἦὦἇἷἧὧ")
+end
+
+def remove_circumflex(s)
+  # FIXME: same limitations as add_circumflex
+  return s.unicode_normalize(:nfc).tr("ᾶῖῦῆῶâêîôûἆἶἦὦἇἷἧὧ","αιυηωaeiouἀἰἠὠἁἱἡὡ")
+end
+
+def has_grave(s)
+  if remove_grave(s)!=s then return true else return false end
 end
 
 def add_grave(s)
   # FIXME: very restricted compared to add_acute
-  return s.unicode_normalize(:nfc).tr("αειουηωaeiou","ὰὲὶὸὺὴὼàèìòù")
+  return s.unicode_normalize(:nfc).tr("αειουηωaeiouἀἐἰὀὐἠὠἁἑἱὁὑἡὡ","ὰὲὶὸὺὴὼàèìòùἂἒἲὂὒἢὢἃἓἳὃὓἣὣ")
+end
+
+def remove_grave(s)
+  # FIXME: same limitations as add_grave
+  return s.unicode_normalize(:nfc).tr("ὰὲὶὸὺὴὼàèìòùἂἒἲὂὒἢὢἃἓἳὃὓἣὣ","αειουηωaeiouἀἐἰὀὐἠὠἁἑἱὁὑἡὡ")
 end
 
 def remove_macrons_and_breves(s)

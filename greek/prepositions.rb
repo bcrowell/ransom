@@ -18,6 +18,43 @@ module Preposition
     return Preposition.prefix_form(prep,stem)+MultiString.new(stem)
   end
 
+  def Preposition.recognize_prefix(word,genos:new GreekGenos('epic'))
+    a = Preposition.recognize_prefix_helper(word,genos)
+    has_preposition,prefix,stem,preposition = a
+    if !has_preposition then return a end
+    if ['ἀπό','ἐπί','ὑπό'].include?(preposition) && prefix=~/φ$/ then
+      stem = add_rough_breathing(stem)
+    end
+    return [has_preposition,prefix,stem,preposition]
+  end
+
+  def Preposition.recognize_prefix_helper(word,genos)
+    Preposition.all_the_ones_used_in_verbs.each { |p|
+      poss = [p] # list possible forms for this preposition
+      poss = ['ἐκ','ἐξ','ἐγ'] if p=='ἐκ'
+      poss = ['ἐν','ἐμ','ἐγ','ἐνι'] if p=='ἐν' # e.g., ἐνιπλήξωμεν
+      poss = ['ἀπό','ἀφ'] if p=='ἀπό'
+      poss = ['ἐπί','ἐφ'] if p=='ἐπί'
+      poss = ['ὑπό','ὑφ'] if p=='ὑπό'
+      if p=='σύν' then
+        poss = ['σύν','σύμ','σύγ','σύλ','σύρ','σύσ','σύ']
+        if genos.period<=1 then poss=poss+poss.map { |x| x.sub(/^σ/,'ξ') } end # handle Homeric ξύν
+      end
+      w = remove_accents(word)
+      poss.each { |x|
+        xx = remove_accents(x)
+        0.upto(1) { |i| # on pass 1, check for elided vowel
+          if i==1 && xx=~/(.*)[αειουηω]$/ then xxx=$1 else xxx=xx end
+          next unless w=~/^#{xxx}.{1,}/
+          prefix = word[0..(xxx.length-1)]
+          stem = word[xxx.length..(word.length-1)]
+          return [true,prefix,stem,x]
+        }
+      }
+    }
+    return [false,'',word,nil]
+  end
+
   def Preposition.prefix_form(prep,stem)
     # Returns a MultiString representing possible forms for the preposition when it occurs on the front of the given stem.
     stem_phoneticized = Writing.phoneticize(stem)
