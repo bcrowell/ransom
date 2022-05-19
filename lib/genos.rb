@@ -53,7 +53,7 @@ end
 
 class GreekGenos < Genos
   @@period_labels = {'mycenaean'=>0, 'epic'=>1, 'attic'=>2, 'koine'=>3, 'medieval'=>4, 'νεα_ελληνικα'=>5} # https://en.wikipedia.org/wiki/Modern_Greek
-  def initialize(period,is_verse:false,region:new AncientGreekRegion())
+  def initialize(period,is_verse:false,region:AncientGreekRegion.new())
     # See below for allowed values of the string period.
     super('grc',is_verse:is_verse)
     @period = @@period_labels[period]

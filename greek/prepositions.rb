@@ -18,7 +18,7 @@ module Preposition
     return Preposition.prefix_form(prep,stem)+MultiString.new(stem)
   end
 
-  def Preposition.recognize_prefix(word,genos:new GreekGenos('epic'))
+  def Preposition.recognize_prefix(word,genos:GreekGenos.new('epic'))
     a = Preposition.recognize_prefix_helper(word,genos)
     has_preposition,prefix,stem,preposition = a
     if !has_preposition then return a end
