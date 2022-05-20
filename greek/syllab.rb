@@ -2,9 +2,9 @@ require 'set'
 
 =begin
 
-A module to be used for syllabification of Greek words.
-This should be fairly accurate, but won't be perfect because it uses heuristics to guess
-what things are compounds.
+A module to be used for syllabification of Greek words.  This should
+be fairly accurate, but won't be perfect because it uses heuristics to
+guess what things are compounds. The main function is Syllab.ify().
 
 =end
 
@@ -43,6 +43,57 @@ module Syllab
       if err then raise "test failed: #{word} gives #{b}, expected #{a}" end
       print "test passed: #{word} -> #{a}\n"
     }
+  end
+
+  def Syllab.move_accent_to(s,k,vform:nil,genos:GreekGenos.new('epic'))
+    # k=0 for ultima, 1 for penult, 2 for antepenult
+    # If vform is not nil, it should be a Vform object.
+    # Assumes the accent is to be an acute, except if the sotera rule requires it to be a circumflex.
+    # testing:
+    #   ruby -e 'require "./lib/load_common"; require "./greek/load_common"; print Syllab.move_accent_to("ἠμύνα",2)'
+    #   ruby -e 'require "./lib/load_common"; require "./greek/load_common"; print Syllab.move_accent_to("σωτήρα",1)'
+    #   ruby -e 'require "./lib/load_common"; require "./greek/load_common"; print Syllab.move_accent_to("ποιήσαι",1,vform:Vform.new("v3saoa---"))'
+    cons = "βγδζθκλμνξπρσςτφχψ"
+    s = remove_greek_tonal_accents(s)
+    a = Syllab.ify(s,genos:genos)
+    if k>=a.length then raise "error in Syllab.move_accent_to, s=#{s}, k=#{k}, k is too big" end
+    what = 'acute'
+    if k==1 && genos.has_sotera_rule then
+      # apply sotera rule
+      # https://en.wikipedia.org/wiki/Ancient_Greek_accent#%CF%83%CF%89%CF%84%E1%BF%86%CF%81%CE%B1_(s%C5%8Dt%C3%AAra)_Law
+      final_vowel = remove_accents(Syllab.extract_vowel_from_syllable(a[-1]))
+      penult_vowel = remove_accents(Syllab.extract_vowel_from_syllable(a[-2]))
+      s=~/([#{cons}]*)$/
+      final_is_long = ( ['η','ω'].include?(final_vowel) || (final_vowel.length==2))
+      is_optative = !vform.nil? && vform.optative
+      if ['αι','οι'].include?(final_vowel) && !is_optative then final_is_long=false end
+      n_final_consonants = $1.length
+      final_is_heavy = (final_is_long || n_final_consonants>=2) # not sure if the n_final_consonants part is right
+      penult_is_long = ( ['η','ω'].include?(penult_vowel) || (penult_vowel.length==2) )
+      if !final_is_heavy && penult_is_long then
+        what = 'circumflex'
+      end
+      print "what=#{what} final_is_heavy=#{final_is_heavy} penult_is_long=#{penult_is_long}\n"
+    end
+    i = (-1-k)
+    a[i] = Syllab.add_acute_or_circumflex_to_syllable(a[i],what)
+    return a.join('')
+  end
+
+  def Syllab.add_acute_or_circumflex_to_syllable(s,what)
+    v = Syllab.extract_vowel_from_syllable(s)
+    v2 = clown(v)
+    if what=='acute' then
+      v2[-1] = add_acute(v2[-1])
+    else
+      v2[-1] = add_circumflex(v2[-1])
+    end
+    return s.sub(/#{v}/,v2)
+  end
+
+  def Syllab.extract_vowel_from_syllable(s)
+    cons = "βγδζθκλμνξπρσςτφχψ"
+    return s.gsub(/[#{cons}᾽’']/,'')
   end
 
   def Syllab.ify(s,genos:GreekGenos.new('epic'))

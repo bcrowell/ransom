@@ -49,6 +49,8 @@ class AncientGreekRegion
     @eastern = eastern
     @attic = attic
   end
+
+  attr_reader :eastern,:attic
 end
 
 class GreekGenos < Genos
@@ -70,6 +72,13 @@ class GreekGenos < Genos
   def to_s
     return "lang=#{@lang}, script=#{@script}, period=#{@@period_labels.invert[@period]}"
   end
+
+  def has_sotera_rule
+    if !@region.eastern && @period<2 then return false end
+    # ... not sure if this is precisely right, but apparently Doric doesn't have the sotera rule
+    return true
+  end
+
 end # class GreekGenos
 
 class LatinGenos < Genos
