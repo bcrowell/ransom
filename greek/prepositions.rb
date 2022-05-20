@@ -48,7 +48,7 @@ module Preposition
           next unless w=~/^#{xxx}.{1,}/
           prefix = word[0..(xxx.length-1)]
           stem = word[xxx.length..(word.length-1)]
-          return [true,prefix,stem,x]
+          return [true,prefix,stem,p]
         }
       }
     }

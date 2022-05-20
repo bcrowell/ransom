@@ -27,9 +27,17 @@ class Hop
     @history = []
   end
 
-  attr_reader :word,:genos,:pos,:lemma,:preposition_is_detached,:preposition,:history
+  attr_accessor :word,:genos,:pos,:lemma,:preposition_is_detached,:preposition,:history
+
+  def to_s
+    s = "#{@word} #{@pos}"
+    if @preposition_is_detached then s="#{@preposition}- + "+s end
+    return s
+  end
 
   def detach_preposition
+    # testing:
+    #   ruby -e 'require "./lib/string_util"; require "./lib/load_common"; require "./greek/prepositions"; require "./greek/hop"; print Hop.new("αφίημι",Tagzig.from_perseus("v1spia---")).detach_preposition()'
     return self if @preposition_is_detached
     has_preposition,prefix,stem,preposition = Preposition.recognize_prefix(@word,genos:@genos)
     if !has_preposition then return self end
@@ -37,7 +45,7 @@ class Hop
       a = Preposition.recognize_prefix(@lemma,genos:@genos)
       if !a[0] then return self end # can remove preposition from inflected form, but not from lemma
     end
-    x = self.morph("Separate the #{preposition} from the stem #{stem}.")
+    x = self.morph("Separate the preposition #{preposition} from the stem #{stem}.")
     x.word = stem
     if !@lemma.nil? then x.lemma = a[2] end
     x.preposition_is_detached = true
