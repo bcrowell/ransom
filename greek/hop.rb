@@ -15,7 +15,7 @@ class Hop
   def initialize(word,pos,genos:GreekGenos.new('epic'),lemma:nil)
     # word is a unicode string
     # genos is a Genos object
-    # pos is a Tagzig object saying what part of speech it is (number, tense, etc.)
+    # pos is a Vform object (verbs.rb) saying what part of speech it is (number, tense, etc.)
     # lemma is a unicode string, if necessary in order to disambiguate
     # preposition is a unicode string, which can be supplied if auto_detect_preposition is false
     @word = word
@@ -37,7 +37,7 @@ class Hop
 
   def detach_preposition
     # testing:
-    #   ruby -e 'require "./lib/string_util"; require "./lib/load_common"; require "./greek/prepositions"; require "./greek/hop"; print Hop.new("αφίημι",Tagzig.from_perseus("v1spia---")).detach_preposition()'
+    #   ruby -e 'require "./lib/load_common"; require "./greek/load_common"; print Hop.new("αφίημι",Vform.new("v1spia---")).detach_preposition()'
     return self if @preposition_is_detached
     has_preposition,prefix,stem,preposition = Preposition.recognize_prefix(@word,genos:@genos)
     if !has_preposition then return self end
