@@ -7,6 +7,8 @@ module Syllab
       ἅλς
       ἄλ λος
       ἔ πος
+      ἱ ε ρῆ α
+      ταύ ρων
     }
     t.split(/\s*\n\s*/) { |x|
       next if x==''
@@ -27,13 +29,21 @@ module Syllab
 
   def Syllab.ify(s)
     # Returns an array of syllables.
+    # To do: handle diaresis, e.g., Ἀτρεΐδης
     d = Syllab.diphthong_maps()
     x = Syllab.encode_diphthongs(remove_accents(s).downcase,d)
     m = Syllab.helper(x)
-    result = []
+    mm = []
     start = 0
     m.each { |len|
-      syll = Syllab.decode_diphthongs(s[start..(start+len-1)],d)
+      syll = Syllab.decode_diphthongs(x[start..(start+len-1)],d) # convert encoded length to decoded length
+      mm.push(syll.length)
+      start += len
+    }
+    result = []
+    start = 0
+    mm.each { |len|
+      syll = s[start..(start+len-1)]
       result.push(syll)
       start += len
     }
@@ -55,22 +65,25 @@ module Syllab
     if s=~/^(.*[#{v}])([#{cons}][#{v}].*)$/ then # VCV -> V-CV
       return Syllab.helper($1)+Syllab.helper($2)
     end
+    if s=~/^(.*[#{v}])([#{v}].*)$/ then # VV -> V-V (because diphthongs have already been encoded as a single vowel)
+      return Syllab.helper($1)+Syllab.helper($2)
+    end
     return [s.length]
   end
 
   def Syllab.encode_diphthongs(s,d)
     # assumes all accents have already been removed
     diphthongs,diphthong_encode,diphthong_decode = d
-    diphthongs.each { |d|
-      s.gsub!(/#{d}/,diphthong_encode[d])
+    diphthongs.each { |dip|
+      s.gsub!(/#{dip}/,diphthong_encode[dip])
     }
     return s
   end
 
   def Syllab.decode_diphthongs(s,d)
     diphthongs,diphthong_encode,diphthong_decode = d
-    diphthongs.each { |d|
-      s.gsub!(/#{diphthong_encode[d]}/,d)
+    diphthongs.each { |dip|
+      s.gsub!(/#{diphthong_encode[dip]}/,dip)
     }
     return s
   end
