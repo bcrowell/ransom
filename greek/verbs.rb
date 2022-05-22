@@ -315,10 +315,33 @@ end
   end
 end
 
+class Vancillary
+  # Encapsulates some ancillary data about a verb.
+  def initialize(athematic:nil,athematic_class:nil,iterative:nil,second_aorist:nil,participle_gender:nil,participle_case:nil)
+    @athematic = athematic
+    @athematic_class = athematic_class
+    # ... can be 'α', 'ο', 'ε', 'υ' or nil, labeling verbs like ἵστημι/στάτο, τίθημι/θέτο, δίδωμι/δότο, δείκνυμι/δέξατο
+    @iterative = iterative
+    @second_aorist = second_aorist
+    @participle_gender = participle_gender # perseus POS character, m, f, or n
+    @participle_case = participle_case # perseus POS character, n, g, d, a, v, or l
+  end
+
+  attr_accessor :athematic,:athematic_class,:iterative,:second_aorist,:participle_gender,:participle_case
+  # ... all of these have methods in Vform as well
+
+  # The following boolean methods are written to be used by code that has already made sure every field is set properly, not
+  # nil. If this might not be the case, just access the instance variable directly and handle nil separately.
+  def is_athematic() return !@athematic.nil? && @athematic end
+  def is_iterative() return !@iterative.nil? && @iterative end
+  def is_second_aorist() return !@second_aorist.nil? && @second_aorist end
+
+end
+
 class Vform
   # An instance of this class basically embodies a Project Perseus part-of-speech tag for a verb in a form that is more convenient to
-  # manipulate.
-  def initialize(perseus_pos)
+  # manipulate. There is also some data that is more ancillary.
+  def initialize(perseus_pos,ancillary:Vancillary.new())
     # definition of perseus 9-character pos tags: https://github.com/cltk/greek_treebank_perseus
     # First character has to be there as a placeholder, but is ignored.
     # Final three characters are optional, ignored.
@@ -330,9 +353,10 @@ class Vform
     @mood = perseus_pos[4] # isonmp = indicative,subjunctive,optative,infinitive,imperative,participle
     @voice = perseus_pos[5] # apme = active,passive,middle,medio-passive
     @participle_stuff = perseus_pos[6..7]
+    @ancillary = ancillary
   end
 
-  attr_reader :person,:number,:tense,:mood,:voice
+  attr_reader :person,:number,:tense,:mood,:voice,:ancillary
 
   def make_lemma(lemma)
     # take a Vform describing an inflected form, and a string representing its lemma, and try to make the correct Vform for the lemma
@@ -377,6 +401,16 @@ class Vform
   def imperfect() return (@tense=='i') end
   def infinitive() return (@mood=='n') end
   def participle() return (@mood=='p') end
+
+  # The following boolean methods, which access the ancillary data, are written to be used by code that has
+  # already made sure every field is set properly, not nil. If this might not be the case, just access the
+  # instance variable directly and handle nil separately.
+  def is_athematic() return @ancillary.is_athematic end
+  def is_iterative() return @ancillary.is_iterative end
+  def is_second_aorist() return @ancillary.is_second_aorist end
+  def athematic_class() return @ancillary.athematic_class end
+  def participle_gender() return @ancillary.participle_gender end
+  def participle_case() return @ancillary.participle_case end
 
   def to_s
     # for fancier stringification, see to_s_fancy, which has optional args

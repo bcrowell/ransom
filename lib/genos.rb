@@ -74,6 +74,9 @@ class GreekGenos < Genos
   end
 
   def has_sotera_rule
+    # applies to Attic, Ionic, and koine according to
+    #       https://referenceworks.brillonline.com/entries/encyclopedia-of-ancient-greek-language-and-linguistics/sotera-rule-SIM_000042?lang=en
+    if @period>3 then return false end
     if !@region.eastern && @period<2 then return false end
     # ... not sure if this is precisely right, but apparently Doric doesn't have the sotera rule
     return true

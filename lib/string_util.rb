@@ -279,6 +279,10 @@ def remove_greek_tonal_accents(s)
   return remove_circumflex(remove_acute_and_grave(s))
 end
 
+def has_greek_tonal_accent(s)
+  return remove_greek_tonal_accents(s)!=s
+end
+
 def add_acute(s)
   return s.unicode_normalize(:nfc).tr("aeiouyÀÁÂÆÇÈÉÊÌÍÏÒÓÔØÙÚÜÝàáâæçèéêìíïòóôøùúüýΆΈΊΌΐάέήίΰαεηιουωϊϋόύώἀἁἂἃἄἅἈἉἊἌἍἐἑἒἓἔἕἘἙἜἝἠἡἢἣἤἥἨἩἫἬἭἰἱἲἳἴἵἸἹἼἽὀὁὂὃὄὅὈὉὊὋὌὍὐὑὓὔὕὙὝὠὡὢὣὤὥὨὩὫὬὭὰὲὴὶὸὺὼᾓᾔᾕᾤᾴῂῄῒῢῴῸ","áéíóúýÁÁẤǼḈÉÉẾÍÍḮÓÓỐǾÚÚǗÝááấǽḉééếííḯóóốǿúúǘýΆΈΊΌΐάέήίΰάέήίόύώΐΰόύώἄἅἄἅἄἅἌἍἌἌἍἔἕἔἕἔἕἜἝἜἝἤἥἤἥἤἥἬἭἭἬἭἴἵἴἵἴἵἼἽἼἽὄὅὄὅὄὅὌὍὌὍὌὍὔὕὕὔὕὝὝὤὥὤὥὤὥὬὭὭὬὭάέήίόύώᾕᾔᾕᾤᾴῄῄΐΰῴΌ")
 end

@@ -50,7 +50,21 @@ class Hop
     if !@lemma.nil? then x.lemma = a[2] end
     x.preposition_is_detached = true
     x.preposition = preposition
+    x.adjust_accent
     return x
+  end
+
+  def adjust_accent
+    is_recessive = false
+    if @pos.infinitive || @pos.participle then is_recessive end
+    # ... FIXME: this is oversimplified
+    if is_recessive then
+      n_syllables = Syllab.ify(@word,genos:@genos).length
+      k = [2,n_syllables-1].max
+    else
+      k = Syllab.locate_accent(@word,genos:@genos) # This may not mean a no-op ... could invoke sotera rule.
+    end
+    @word = Syllab.move_accent_to(@word,k,vform:@pos,genos:@genos)
   end
 
   def morph(explanation)

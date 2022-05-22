@@ -45,10 +45,20 @@ module Syllab
     }
   end
 
+  def Syllab.locate_accent(s,genos:GreekGenos.new('epic'))
+    # returns 0 for ultima, 1 for penult, 2 for antepenult
+    a = Syllab.ify(s,genos).reverse
+    0.upto(a.length-1) { |k|
+      if has_greek_tonal_accent(a[k]) then return k end
+    }
+    return nil
+  end
+
   def Syllab.move_accent_to(s,k,vform:nil,genos:GreekGenos.new('epic'))
     # k=0 for ultima, 1 for penult, 2 for antepenult
-    # If vform is not nil, it should be a Vform object.
     # Assumes the accent is to be an acute, except if the sotera rule requires it to be a circumflex.
+    # We try to take into account the dialect (no sotera rule in Doric, I think).
+    # If vform is not nil, it should be a Vform object.
     # testing:
     #   ruby -e 'require "./lib/load_common"; require "./greek/load_common"; print Syllab.move_accent_to("ἠμύνα",2)'
     #   ruby -e 'require "./lib/load_common"; require "./greek/load_common"; print Syllab.move_accent_to("σωτήρα",1)'
