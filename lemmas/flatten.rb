@@ -17,6 +17,7 @@ def patch(a)
   # iliad,8,529,φυλάξομεν,φυλάζω,,v1pfia---
   # This should be φυλάσσω. (φυλάζω is a different verb with a meaning that doesn't make sense here.)
   # https://github.com/PerseusDL/treebank_data/issues/33
+  if inflected=='Αἰνόθεν' then patched_lemma='Αἰνείας' end # Iliad 4.520; lemma was null string in perseus xml
 
   if lemma=='Ἀί' then patched_lemma='Ἄϊδος' end
   if lemma=='βουλεύς' then patched_lemma='βουλή' end
@@ -30,6 +31,7 @@ def patch(a)
   if lemma=='ϝέκταρ' then patched_lemma='νέκταρ' end
   if lemma=='ἱππόσυνος' then patched_lemma='ἱπποσύνη' end
   if lemma=='σοί' then patched_lemma='ἐγω' end # Iliad 1.170
+  if lemma=='τύφω' then patched_lemma='τύπτω' end # They lemmatize τύψε as τύφω, which just seems like a goof.
 
   if lemma=='χάλκειος' then patched_lemma='χάλκεος' end # not clear to me why Cunliffe and Perseus both lemmatize this separately
 

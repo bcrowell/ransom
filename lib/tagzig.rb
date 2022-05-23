@@ -10,10 +10,11 @@ def initialize(pos,data)
   # If you want to create a Tagzig object directly from a 9-character Perseus POS tag, don't use this, use from_perseus().
   # pos should be a Project Perseus one-character part-of-speech tag, e.g., 'v' for verb, 't' for participle, ...
   # data is a hash such as {'tense'=>'f','mood'=>'o'}, again structured as in perseus
-  # Key 'number' can have a value that is either an integer or a one-character string such as '3'.
+  # Keys 'number' and 'person' can have a value that is either an integer or a one-character string such as 's' or '3'.
   # A lot of the semantics and intended idiomatic usages here depend on the fact that in ruby only nil and false evaluate to a logical false.
   @pos = pos
   if data['number'].class==1.class then data['number']=data['number'].to_s end
+  if data['person'].class==1.class then data['person']=data['person'].to_s end
   # info for verbs; any of these may be nil on input to the constructor, and in any case will be stored as nil if not the marked value
   @tense  = data['tense']  if data['tense'] && data['tense']!='p'
   @mood   = data['mood']   if data['mood']  && data['mood']!='i'

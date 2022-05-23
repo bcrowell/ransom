@@ -53,6 +53,7 @@ words_added_by_hand:
    language one is learning (e.g., ἀδελφός, γελάω).
 add_moderate_freq:
   Words that are slightly different than the cut-off but that seem useful, or are easy to remember.
+  Includes words that are straightforward compounds or superlatives like ἱππόδαμος, κύδιστος.
 super_easy:
   Like words_added_by_hand, but is for words that, although not particularly frequent or important, are
   very easy to learn, usually because it has obvious cognates.
@@ -79,7 +80,7 @@ BY_HAND
 # see above for criteria
 add_moderate_freq = (<<-'MODERATE'
 πάρειμι τανύω πέτομαι μίμνω  ῥέω πύργος ἀέκων ἴφθιμος
-ἡγήτωρ ἴσχω  ἕρκος ὀφέλλω ἱππόδαμος
+ἡγήτωρ ἴσχω  ἕρκος ὀφέλλω ἱππόδαμος κύδιστος
 MODERATE
 ).split(/\s+/)
 

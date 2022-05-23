@@ -50,7 +50,7 @@ def VocabPage.make_helper(bilingual,db,commonness,vl,lo,hi,core,debugger:Special
         next
       end
       difficult_to_recognize = data['difficult_to_recognize']
-      debug = false
+      debug = (word=='βέλος' && pos=='n-s---na-') # qwe
       debug_this_page ||= debug
       Debug.print(debug) {"... 100 #{word} #{lexical} #{difficult_to_recognize}\n"}
       difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lexical,pos)[0])
@@ -75,7 +75,6 @@ def VocabPage.make_helper(bilingual,db,commonness,vl,lo,hi,core,debugger:Special
       end
     }
   }
-  Debug.print(debug_this_page) {"... 300 #{l}"}
   secs = []
   ['gloss','conjugation','declension'].each { |type|
     envir = {'gloss'=>'vocaball','conjugation'=>'conjugations','declension'=>'declensions'}[type]

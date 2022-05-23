@@ -1,7 +1,9 @@
 // https://en.wiktionary.org/wiki/ἀπαλοάω https://logeion.uchicago.edu/ἀπαλοάω
 // 
 {
-  "word":"ἀπαλοάω",
-  "medium":"thresh"
+  "word":"ἀπαλοιάω",
+  "perseus":"ἀπαλοάω",
+  "medium":"crush",
+  "etym":"from αλοιάω, to beat"
 }
       

@@ -52,24 +52,41 @@ def guess_difficulty_of_recognizing_declension(word,lemma,pos)
   if !(l=~/ος/) then decl=1 end
   if is_3rd_decl then decl=3 end
   # Find stem based on lemma. We don't even want this to be super accurate, just want to catch the ones that are
-  # obvious the the *human* as inflectional endings on the lemma
+  # obvious to the *human* as inflectional endings on the lemma. In the following, everything has to be compatible
+  # with phoneticized strings, hence σ at the end of many strings.
   if decl==1 then lemma_endings=['η','α'] end
-  if decl==2 then lemma_endings=['ος','ον'] end
-  if decl==3 then lemma_endings=['α','ος','υς','ις','ος','ας'] end
+  if decl==2 then lemma_endings=['οσ','ον'] end
+  if decl==3 then lemma_endings=['α','οσ','υσ','ισ','οσ','ασ'] end
+  # Pick off anything the *reader* would see as an inflectional ending.
+  infl_endings = lemma_endings+['ησ','ασ','ουσ','οιο','ω','ι','ην','αν','ον','ν','αι','οι','ων','αων','ησ','οισ','εσσι','εσσιν','σι','σιν','ισ','υσ']
   e = lemma_endings.join('|')
   stem_from_lemma = l.sub(/(#{e})$/,'')
-  # Pick off anything the *reader* would see as an inflectional ending.
-  infl_endings = lemma_endings+['ης','ας','ους','οιο','ω','ι','ην','αν','ον','ν','αι','οι','ων','αων','ης','οις','εσσι','εσσιν','σι','σιν','ις','υς']
   e2 = infl_endings.join('|')
   stem_from_word = w.sub(/(#{e2})$/,'')
+  if w=~/(#{e2})$/ then ending=$1 else ending='' end # ending is phoneticized
   ls = MultiString.new(stem_from_lemma)
   ws = MultiString.new(stem_from_word)
   dist = ls.distance(ws) # is 0 if identical, or number of chars unexplainable by longest common subsequence
   x = dist.to_f/([stem_from_lemma.length,stem_from_word.length].max) # basically the fraction of chars that are unexplainable
   if is_3rd_decl then x=x+0.2 end
   if is_feminine_ending_in_os(l) then x=x+0.2 end
+  if is_gotcha_ending(word,decl,pos) then x=x+0.4 end
   threshold = 0.4
   return [x>threshold,x,threshold]
+end
+
+def is_gotcha_ending(word,decl,pos)
+  # word is not phoneticized
+  if word=='βέλος' then # qwe
+    Debug.print(true) {"in is_gotcha_ending, word=#{word}, pos=#{pos}, decl=#{decl}"}
+  end
+  if decl==3 && word=~/ος$/ then
+    # e.g., βέλος can be accusative, which keeps biting me
+    t = Tagzig.from_perseus(pos)
+    Debug.print(true) {"in is_gotcha_ending, word=#{word}, pos=#{pos}, #{t}, #{t.case=='a'}\n"} # qwe
+    if t.case=='a' then return true end
+  end
+  return false
 end
 
 def guess_whether_hard_declension(word,lemma,pos)
@@ -136,7 +153,6 @@ end
 
 def guess_whether_third_declension_helper(gender,w)
   # Given the singular nominative form w (which is the lexical form), try to guess whether it's 3rd declension.
-  # List of words that are feminine and end if -ος:
   return false if is_feminine_ending_in_os(w)
   return true if gender=='m' && !(w=~/ος$/)
   return true if gender=='f' && !(w=~/(α|η)$/)

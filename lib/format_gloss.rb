@@ -46,7 +46,7 @@ def FormatGloss.with_english(bilingual,db,stuff)
   items['g'] = explained
   if has_mnemonic_cog then items['c']=entry['mnemonic_cog'] end
   file_under = items['b']
-  Debug.print(word=='ἤριπε') {"items=#{items}, explain_inflection=#{explain_inflection}"}
+  #Debug.print(word=='ἤριπε') {"items=#{items}, explain_inflection=#{explain_inflection}"}
   return [file_under,FormatGloss.assemble(bilingual,items)+"\\\\\n"]
 end
 

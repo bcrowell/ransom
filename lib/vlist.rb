@@ -182,7 +182,7 @@ def Vlist.from_text(t,context,treebank,freq,genos,db,dicts,thresholds:[1,50,700,
       is_epic = Epic_form.is(word)
       is_dual = (pos[2]=='d')
       is_irregular_comparative = (is_comparative && Adjective.is_irregular_comparative(word,lemma,pos[8]))
-      if !alpha_equal(word,lemma) then
+      if !alpha_equal(word,lemma) || (is_3rd_decl && is_gotcha_ending(word,3,pos)) then
         difficult_to_recognize ||= (is_3rd_decl && guess_difficulty_of_recognizing_declension(word,lemma,pos)[0])
         difficult_to_recognize ||= is_epic
         difficult_to_recognize ||= (is_verb && Verb_difficulty.guess(word,lemma,pos)[0])

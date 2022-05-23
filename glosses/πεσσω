@@ -2,8 +2,10 @@
 // soften, ripen, boil, cook, bake, digest, brood
 {
   "word":"πέσσω",
-  "short":"digest",
-  "medium":"digest; ripen",
-  "notes":"in other dialects, also to cook, boil, bake"
+  "short":"brood on",
+  "medium":"brood on; ripen",
+  "long":"brood on, nurse; ripen",
+  "notes":"in other dialects, also to cook, boil, bake",
+  "mnemonic_cog":"peptic"
 }
       

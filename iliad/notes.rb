@@ -646,6 +646,18 @@ class IliadNotes
     'about_what'    => %q{Σιμόεις},
     'explain'       => %q{here referring to a boy, not the river}
   }],
+  ["4.508" , {
+    'about_what'    => %q{Πέργαμος},
+    'explain'       => %q{Apollo's citadel in Troy}
+  }],
+  ["4.514" , {
+    'about_what'    => %q{πτόλιος},
+    'explain'       => %q{his citadel}
+  }],
+  ["4.515" , {
+    'about_what'    => %q{Τριτογένεια},
+    'explain'       => %q{obscure epithet of Athena}
+  }],
   ["5.258" , {
     'about_what'    => %q{γ’ οὖν},
     'explain'       => %q{in any case}
