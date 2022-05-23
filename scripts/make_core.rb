@@ -79,7 +79,7 @@ BY_HAND
 # see above for criteria
 add_moderate_freq = (<<-'MODERATE'
 πάρειμι τανύω πέτομαι μίμνω  ῥέω πύργος ἀέκων ἴφθιμος
-ἡγήτωρ ἴσχω  ἕρκος ὀφέλλω 
+ἡγήτωρ ἴσχω  ἕρκος ὀφέλλω ἱππόδαμος
 MODERATE
 ).split(/\s+/)
 
