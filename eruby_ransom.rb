@@ -338,7 +338,7 @@ end
 
 class Patch_names
   @@patches = {"Latona"=>"Leto","Ulysses"=>"Odysseus","Jove"=>"Zeus","Atrides"=>"Atreides","Minerva"=>"Athena","Juno"=>"Hera","Saturn"=>"Cronus",
-                "Vulcan"=>"Hephaestus","Venus"=>"Aphrodite"}
+                "Vulcan"=>"Hephaestus","Venus"=>"Aphrodite","Pluto"=>"Hades"}
   def Patch_names.patch(text)
     @@patches.each { |k,v|
       text = text.gsub(/#{k}/,v)

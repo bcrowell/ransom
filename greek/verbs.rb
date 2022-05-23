@@ -317,7 +317,7 @@ end
 
 class Vancillary
   # Encapsulates some ancillary data about a verb.
-  def initialize(athematic:nil,athematic_class:nil,iterative:nil,second_aorist:nil,participle_gender:nil,participle_case:nil)
+  def initialize(athematic:nil,athematic_class:nil,iterative:nil,second_aorist:nil,participle_gender:nil,participle_case:nil,augmented:nil)
     @athematic = athematic
     @athematic_class = athematic_class
     # ... can be 'α', 'ο', 'ε', 'υ' or nil, labeling verbs like ἵστημι/στάτο, τίθημι/θέτο, δίδωμι/δότο, δείκνυμι/δέξατο
@@ -325,9 +325,10 @@ class Vancillary
     @second_aorist = second_aorist
     @participle_gender = participle_gender # perseus POS character, m, f, or n
     @participle_case = participle_case # perseus POS character, n, g, d, a, v, or l
+    @augmented = augmented
   end
 
-  attr_accessor :athematic,:athematic_class,:iterative,:second_aorist,:participle_gender,:participle_case
+  attr_accessor :athematic,:athematic_class,:iterative,:second_aorist,:participle_gender,:participle_case,:augmented
   # ... all of these have methods in Vform as well
 
   # The following boolean methods are written to be used by code that has already made sure every field is set properly, not
@@ -408,6 +409,7 @@ class Vform
   def is_athematic() return @ancillary.is_athematic end
   def is_iterative() return @ancillary.is_iterative end
   def is_second_aorist() return @ancillary.is_second_aorist end
+  def is_augmented() return @ancillary.is_augmented end
   def athematic_class() return @ancillary.athematic_class end
   def participle_gender() return @ancillary.participle_gender end
   def participle_case() return @ancillary.participle_case end
