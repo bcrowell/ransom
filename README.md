@@ -34,4 +34,3 @@ where 01 is the chapter.
 The license of the decks is CC-BY-SA, and many entries are taken from
 Wiktionary, which has the same license. Source code is at
 https://github.com/bcrowell/ransom .
- 
