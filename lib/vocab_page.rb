@@ -96,6 +96,8 @@ def VocabPage.make_helper(bilingual,db,commonness,vl,lo,hi,core,debugger:Special
         end
         entries.push([file_under,s])
       }
+      entries = entries.map { |x| x[0]+"__DELIM__"+x[1] }.uniq.map { |y| y.split(/__DELIM__/)}
+      # ... eliminate duplicates, as with "δουρί ≺ δόρυ, DAT S" in Iliad 4.514
       entries.sort { |a,b| alpha_compare(a[0],b[0])}.each { |x|
         this_sec += (x[1]+"\n")
       }
