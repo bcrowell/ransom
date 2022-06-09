@@ -59,6 +59,7 @@ long
 etym
 cog
 mnemonic_cog -- a single English cognate that is helpful as a mnemonic; to be shown in glossaries
+der -- a more basic Greek word from which this is derived; used when there is no mnemonic_cog; should be included only if the relationship isn't obvious
 syn
 notes
 
@@ -182,7 +183,7 @@ def Gloss.standardize_diaresis(s)
 end
 
 def Gloss.allowed_keys
-  return ['word','vowel_length','perseus','pos','gender','genitive','princ','short','medium','long','etym','cog','mnemonic_cog','syn','notes','proper_noun','logdiff','mnem','no_interlinear','aorist_difficult_to_recognize']
+  return ['word','vowel_length','perseus','pos','gender','genitive','princ','short','medium','long','etym','cog','mnemonic_cog','der','syn','notes','proper_noun','logdiff','mnem','no_interlinear','aorist_difficult_to_recognize']
   # This defines a preferred order for the keys.
 end
 

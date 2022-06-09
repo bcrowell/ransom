@@ -31,6 +31,7 @@ def FormatGloss.with_english(bilingual,db,stuff)
   total_chars = text.map { |t| t.length}.sum+text.length-1 # final terms count blanks
   if total_chars>35 && entry.has_key?('short') then gloss=entry['short'] end
   has_mnemonic_cog = entry.has_key?('mnemonic_cog')
+  has_der = entry.has_key?('der')
   # Generate latex:
   inflected = LemmaUtil.make_inflected_form_flavored_like_lemma(word)
   # FIXME: The explainer doesn't actually get printed for θᾶσσον ≺ ταχύς in Iliad 2.440.
@@ -44,7 +45,12 @@ def FormatGloss.with_english(bilingual,db,stuff)
     items['b']=preferred_lex
   end
   items['g'] = explained
-  if has_mnemonic_cog then items['c']=entry['mnemonic_cog'] end
+  if has_mnemonic_cog then
+    items['c']=entry['mnemonic_cog']
+  end
+  if has_der then
+    items['d']=entry['der']
+  end
   file_under = items['b']
   #Debug.print(word=='ἤριπε') {"items=#{items}, explain_inflection=#{explain_inflection}"}
   return [file_under,FormatGloss.assemble(bilingual,items)+"\\\\\n"]
@@ -90,7 +96,8 @@ def FormatGloss.assemble(bilingual,items,force_no_space:false)
   format = 'b '
   format = format+'h ' if !(force_no_space || items.has_key?('l'))
   format = format+'f' if items.has_key?('l')
-  ['l','g','p','c'].each { |code|
+  ['l','g','p','c','d'].each { |code|
+    next if code=='d' && items.has_key?('c') # prefer mnemonic_cog to der
     next unless items.has_key?(code)
     format = format+code
     format = format+',' if code=='l'
@@ -105,7 +112,7 @@ def FormatGloss.assemble_helper(bilingual,format,items)
   # format is, e.g., 'b h g' for boldfaced lemma, hard space, and gloss
   # items is a hash whose keys are the one-letter codes
   codes_0 = ['h','f'] # codes that take no arguments
-  codes_1 = ['b','g','l','c','p'] # codes that take one argument
+  codes_1 = ['b','g','l','c','d','p'] # codes that take one argument
   (codes_0+codes_1).each { |code|
     format = format.gsub(/#{code}/,"__#{code}__")
   }
@@ -134,6 +141,7 @@ def FormatGloss.mark_up_element(bilingual,type,s)
     if greek then return "{\\greekfont{}#{s}}" else return s end
   end
   if type=='c' then return Latex.macro('cog',s) end # cognate
+  if type=='d' then return '('+s+')' end # derived from
   if type=='p' then return Latex.macro('textsc',s.gsub(/\./,'')) end # part of speech
   raise "unknown type=#{type}, string=#{s}"
 end
