@@ -2,7 +2,8 @@
 // counselor, adviser
 {
   "word":"μήστωρ",
-  "medium":"adviser; doer",
+  "short":"adviser; doer",
+  "medium":"adviser; doer, maker of (+gen.)",
   "etym":"from μήδεα, counsel, plan",
   "cog":"medical, meditate, moderate, μήδεα",
   "mnemonic_cog":"medical"

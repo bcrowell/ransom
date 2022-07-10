@@ -23,6 +23,8 @@ def patch(a)
   # Cunliffe has ἀλέομαι=escape, shun, ἀλέω=grind.
   if lemma=='ἀλέω' && inflected!='ἄλεσσαν' then patched_lemma='ἀλέομαι' end
 
+  if inflected=='πρυμνὸν' then patched_lemma='πρυμνός' end
+
   if lemma=='Ἀί' then patched_lemma='Ἄϊδος' end
   if lemma=='βουλεύς' then patched_lemma='βουλή' end
   if lemma=='αἶσις' then patched_lemma='αἶσα' end

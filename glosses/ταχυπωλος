@@ -2,6 +2,8 @@
 // having swift horses
 {
   "word":"ταχύπωλος",
-  "medium":"having swift horses"
+  "medium":"having swift horses",
+  "der":"πῶλος",
+  "mnemonic_cog":"foal"
 }
       
