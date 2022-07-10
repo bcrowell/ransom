@@ -130,7 +130,11 @@ File.open(json_file,'w') { |f|
   f.print JSON.pretty_generate(db)
 }
 
-if false then
+do_sdbm = false
+if !do_sdbm then
+  print "do_sdbm is false, not writing sdbm database\n"
+end
+if do_sdbm then
 
 stringified_db = {}
 db.keys.sort.each { |word|

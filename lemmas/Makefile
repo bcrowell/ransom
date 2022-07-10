@@ -1,5 +1,5 @@
-# https://github.com/PerseusDL/treebank_data
-PERSEUS_DIR = /home/bcrowell/a/treebank_data/v2.1
+# cd ~ ; mkdir perseus_treebank_temp ; cd perseus_treebank_temp; git clone https://github.com/PerseusDL/treebank_data
+PERSEUS_DIR = /home/bcrowell/perseus_treebank_temp/treebank_data/v2.1
 PERSEUS_GREEK_DIR = $(PERSEUS_DIR)/Greek/texts
 PERSEUS_LATIN_DIR = $(PERSEUS_DIR)/Latin/texts
 ILIAD =   $(PERSEUS_GREEK_DIR)/tlg0012.tlg001.perseus-grc1.tb.xml

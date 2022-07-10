@@ -39,8 +39,8 @@ def json_from_file_or_stdin_or_die(file)
 end
 
 def dir_and_file_to_path(dir,file)
-  # I'm not sure what happens with this on windows. For glob(), it appears from the docs that using / rather than \ is actually mandatory
-  # on windows. Not sure about things like File.open.
+  # Using / rather than \ is actually mandatory, even on windows.
+  # more discussion: https://stackoverflow.com/questions/7173000/slash-and-backslash-in-ruby
   return dir+"/"+file
 end
 

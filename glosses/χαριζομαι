@@ -1,8 +1,10 @@
 {
   "word":"χαρίζομαι",
-  "medium":"behave agreeably to someone",
+  "short":"gratify",
+  "medium":"gratify someone",
   "long":"gratify, seek favor of, be pleasing to, conciliate, satisfy; always a person acting on another person",
   "notes":"middle deponent",
-  "mnemonic_cog":"charisma; not related to charm",
-  "etym":"from χάρις, χαίρω, from PIE gher, to rejoice"
+  "mnemonic_cog":"charisma",
+  "etym":"from χάρις, χαίρω, from PIE gher, to rejoice",
+  "cog":"not related to charm"
 }

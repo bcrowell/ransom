@@ -19,6 +19,10 @@ def patch(a)
   # https://github.com/PerseusDL/treebank_data/issues/33
   if inflected=='Αἰνόθεν' then patched_lemma='Αἰνείας' end # Iliad 4.520; lemma was null string in perseus xml
 
+  # ἀλέαιτο (2), ἀλέασθαι (3), ἀλεώμεθα (1), ἄλεσσαν (1)
+  # Cunliffe has ἀλέομαι=escape, shun, ἀλέω=grind.
+  if lemma=='ἀλέω' && inflected!='ἄλεσσαν' then patched_lemma='ἀλέομαι' end
+
   if lemma=='Ἀί' then patched_lemma='Ἄϊδος' end
   if lemma=='βουλεύς' then patched_lemma='βουλή' end
   if lemma=='αἶσις' then patched_lemma='αἶσα' end
