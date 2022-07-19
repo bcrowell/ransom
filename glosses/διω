@@ -1,9 +1,10 @@
 // https://en.wiktionary.org/wiki/δίω https://logeion.uchicago.edu/δίω
 // first-person singular aorist active subjunctive of δείδω (deídō)
 {
-  "word":"δίεμαι",
-  "perseus":"δίω",
-  "short":"chase",
-  "medium":"chase, drive, drive off"
+  "word":"δίω",
+  "short":"be afraid",
+  "medium":"be afraid, afraid to",
+  "der":"δείδω",
+  "notes":"Lemmatized by Perseus as δίω, CGL as δίομαι, Cunliffe as δίον."
 }
       

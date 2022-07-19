@@ -1,8 +1,9 @@
 // https://en.wiktionary.org/wiki/κλείς https://logeion.uchicago.edu/κλείς
 // bar, bolt, a catch or hook passed through the door from the outside to catch the strap attached to the bar, bar, bolt, key, bar, bolt, a means to something; key, hook or tongue of a clasp, stopcock, collarbone (probably so called from its hook shape), rowing bench of a ship, narrow strait, promontory or pass, sacred chaplets, clausula, cadence
 {
-  "word":"κλείς",
-  "medium":"bar, bolt",
+  "word":"κληΐς,",
+  "perseus":"κλείς",
+  "medium":"bar, bolt; collar bone",
   "mnemonic_cog":"clef"
 }
       
