@@ -219,6 +219,7 @@ breaks = [
   [ [5,323], "and rushing forward, drove from the Trojans to the well-greaved Greeks"],
   [ [5,341], "For they eat not bread, nor drink dark wine"],
   [ [5,359], "Dear brother, render me a service, and give me thy steeds"],
+                 # ... bug, can't seem to get this to work as described in my spec for Epos library?
   [ [5,375], "But her laughter-loving Venus answered"],
   [ [5,392], "Juno also suffered, when the brave son of Amphitryon"],
   [ [5,410], "Therefore, let the son of Tydeus now, though he be very brave, have a care"],
